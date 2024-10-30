@@ -7,7 +7,7 @@
 - [Getting started](./1-0-getting_started.md)
     - [Installing Catala on your machine](./1-1-installing.md)
     - [Creating your first Catala program](./1-2-first.md)
-- [Tutorial](./2-tutorial.md)
+- [Tutorial : computing your taxes](./2-tutorial.md)
 - [Setting up a Catala project](./3-project.md)
 - [How to code the law?](./4-howto.md)
 
