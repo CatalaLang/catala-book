@@ -44,7 +44,25 @@ scientists collaborate in a truly *agile* manner, going beyond the separation
 between development and quality assurance teams that communicate only via test
 cases and specification documents.
 
-### Government agencies and organizations performing public service
+### Government agencies and public service organizations
+
+Automating the enforcement of a law or regulation through a computer program is
+no small task. To make sure all are treated fairly under the Rule of Law, your
+program should exhaustively take into account every situation described by the
+law or regulation. While automating only the most simple situation corresponding
+to a majority of users might OK when propping up a proof of concept simulator,
+it cannot be the basis for a production-ready public service. Indeed, creating a
+difference between an automated "simple path" and a non-automated handling of
+complex situation widens the digital divide, and increases confusion for users
+and case workers alike.
+
+Catala shines when the goal is to automate exhaustively and with high assurance
+a given law or regulation. The language and tooling will help you manage the
+growing complexity, maintenance over legal changes, corner cases and
+production-ready deployment inside a legacy IT system. If you are looking for a
+tool to make a quick-and-dirty prototype for a proof of concept, or a simplified
+model of a law for an economic study, then you should consider using
+other tools.
 
 
 
