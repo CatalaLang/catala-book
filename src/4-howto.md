@@ -21,6 +21,14 @@ scope Rounding10Cents:
     round of ($4.13 * 10.) / 10.
 ```
 
+```bash
+$ clerk run round.catala_en --scope Rounding10Cents
+[0/1] <catala> interpret Rounding10Cents ⇐ _build/round.catala_en
+┌─[RESULT]─
+│ result = $4.10
+└─
+```
+
 ### Rounding up or down
 
 To round up or down, add or subtract half a unit before performing the computation and rounding.
