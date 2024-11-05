@@ -1177,7 +1177,7 @@ var hljs = (function () {
           and joined by `|` - using match groups to track position.  When a match is
           found checking which position in the array has content allows us to figure
           out which of the original regexes / match groups triggered the match.
-  
+
           The match object itself (the result of `Regex.exec`) is returned but also
           enhanced by merging in any meta-data that was registered with the regex.
           This is how we keep track of which mode matched, and what type of rule
@@ -1237,28 +1237,28 @@ var hljs = (function () {
           ignored.  An example: if we matched say the 3rd regex in a large group but
           decided to ignore it - we'd need to started testing again at the 4th
           regex... but MultiRegex itself gives us no real way to do that.
-  
+
           So what this class creates MultiRegexs on the fly for whatever search
           position they are needed.
-  
+
           NOTE: These additional MultiRegex objects are created dynamically.  For most
           grammars most of the time we will never actually need anything more than the
           first MultiRegex - so this shouldn't have too much overhead.
-  
+
           Say this is our search group, and we match regex3, but wish to ignore it.
-  
+
             regex1 | regex2 | regex3 | regex4 | regex5    ' ie, startAt = 0
-  
+
           What we need is a new MultiRegex that only includes the remaining
           possibilities:
-  
+
             regex4 | regex5                               ' ie, startAt = 3
-  
+
           This class wraps all that complexity up in a simple API... `startAt` decides
           where in the array of expressions to start doing the matching. It
           auto-increments, so if a match is found at position 2, then startAt will be
           set to 3.  If the end is reached startAt will return to 0.
-  
+
           MOST of the time the parser will be setting startAt manually to 0.
         */
         class ResumableMultiRegex {
@@ -2101,7 +2101,7 @@ var hljs = (function () {
                 Why might be find ourselves here?  An potential end match that was
                 triggered but could not be completed.  IE, `doEndMatch` returned NO_MATCH.
                 (this could be because a callback requests the match be ignored, etc)
-      
+
                 This causes no real harm other than stopping a few times too many.
                 */
 
@@ -2223,13 +2223,13 @@ var hljs = (function () {
         /**
         Highlighting with language detection. Accepts a string with the code to
         highlight. Returns an object with the following properties:
-  
+
         - language (detected language)
         - relevance (int)
         - value (an HTML string with highlighting markup)
         - secondBest (object with the same structure for second-best heuristically
           detected language, may be absent)
-  
+
           @param {string} code
           @param {Array<string>} [languageSubset]
           @returns {AutoHighlightResult}
@@ -3814,6 +3814,97 @@ if (typeof exports === 'object' && typeof module !== 'undefined') { module.expor
         }
 
         return ocaml;
+
+    })();
+
+    hljs.registerLanguage('ocaml', hljsGrammar);
+})();/*! `catala_en` grammar compiled for Highlight.js 11.10.0 */
+(function () {
+    var hljsGrammar = (function () {
+        'use strict';
+
+        /*
+        Language: Catala English
+        Author: Denis Merigoux <denis.merigoux@inria.fr>
+        Description: Catala language definition.
+        Website: https://catala-lang.org
+        Category: functional
+        */
+
+        function catala(hljs) {
+            return {
+                name: 'Catala (English)',
+                aliases: ['catala'],
+                keywords: {
+                    keyword: ['match', 'with pattern', 'but replace', 'we have',
+                        'let', 'in', 'such that', 'exists', 'among', 'for all',
+                        'of', 'if', 'then', 'else', 'initial',
+                        'scope', 'depends on', 'result', 'declaration', 'includes',
+                        'content', 'optional', 'structure', 'enumeration',
+                        'context', 'input', 'output', 'internal', 'rule',
+                        'under condition', 'condition', 'data', 'consequence',
+                        'fulfilled', 'equals', 'assertion', 'definition', 'state',
+                        'label', 'exception', 'anything', 'list empty',
+                        'is maximum', 'is minimum', 'minimum of', 'maximum of',
+                        'combine', 'initially'],
+                    built_in:
+                        /* built-in types */
+                        ['list of', 'decimal', 'money', 'integer', 'date', 'duration'],
+                    operator: ['+', '-', '*', '/', '>=', '>', '<=', '<', '=', 'not', 'or', 'xor', 'and', '%', 'year', 'month', 'day'],
+                    literal:
+                        'true false'
+                },
+                illegal: /\/\/|>>/,
+                contains: [
+                    {
+                        className: 'literal',
+                        begin: '\\[(\\|\\|)?\\]|\\(\\)',
+                        relevance: 0
+                    },
+                    hljs.COMMENT(
+                        '#',
+                        '\n',
+                    ),
+                    { /* type variable */
+                        className: 'symbol',
+                        begin: '\'[A-Za-z_](?!\')[\\w\']*'
+                        /* the grammar is ambiguous on how 'a'b should be interpreted but not the compiler */
+                    },
+                    { /* polymorphic variant */
+                        className: 'type',
+                        begin: '`[A-Z][\\w\']*'
+                    },
+                    { /* module or constructor */
+                        className: 'type',
+                        begin: '\\b[A-Z][\\w\']*',
+                        relevance: 0
+                    },
+                    { /* don't color identifiers, but safely catch all identifiers with ' */
+                        begin: '[a-z_]\\w*\'[\\w\']*',
+                        relevance: 0
+                    },
+                    hljs.inherit(hljs.APOS_STRING_MODE, {
+                        className: 'string',
+                        relevance: 0
+                    }),
+                    hljs.inherit(hljs.QUOTE_STRING_MODE, { illegal: null }),
+                    {
+                        className: 'number',
+                        begin:
+                            '\\b(0[xX][a-fA-F0-9_]+[Lln]?|'
+                            + '0[oO][0-7_]+[Lln]?|'
+                            + '0[bB][01_]+[Lln]?|'
+                            + '[0-9][0-9_]*([Lln]|(\\.[0-9_]*)?([eE][-+]?[0-9_]+)?)?)',
+                        relevance: 0
+                    },
+                    {
+                        begin: /->/ // relevance booster
+                    }
+                ]
+            };
+        }
+
+        return catala;
 
     })();
 
