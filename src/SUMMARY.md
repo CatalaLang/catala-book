@@ -9,7 +9,7 @@
     - [Creating your first Catala program](./1-2-first.md)
 - [Tutorial : computing your taxes](./2-tutorial.md)
 - [Setting up a Catala project](./3-project.md)
-- [How to code the law?](./4-howto.md)
+- [FAQ: How to code the law?](./4-howto.md)
 
 # Reference guide
 

@@ -4,3 +4,8 @@ language = "en"
 multilingual = false
 src = "src"
 title = "The Catala domain-specific programming language"
+
+[preprocessor.curly-quotes]
+
+[output.wordcount]
+[output.html]

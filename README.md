@@ -1,7 +1,13 @@
 # The Catala book
 
 This book relies on the [mdbook](https://github.com/rust-lang/mdBook) utility
-for creating HTML books from Markdown files. The book can be previewed locally
+for creating HTML books from Markdown files.
+
+The dependencies for building the book can be installed through `cargo` with:
+
+    cargo install mdbook mdbook-curly-quotes
+
+The book can be previewed locally
 in a Web browser using the following command:
 
     mdbook serve --open

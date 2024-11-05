@@ -60,13 +60,13 @@ Catala shines when the goal is to automate exhaustively and with high assurance
 a given law or regulation. The language and tooling will help you manage the
 growing complexity, maintenance over legal changes, corner cases and
 production-ready deployment inside a legacy IT system. If you are looking for a
-tool to make a quick-and-dirty prototype for a proof of concept, or a simplified
-model of a law for an economic study, then you should consider using
-other tools.
+tool to make a first-level user help chatbot backend that only answers basic
+questions, or a simplified model of a law for an economic study, then you should
+consider using other tools.
 
 
 
-### CS and Law academics
+### CS and Law students and academics
 
 ## Who this book is for
 
