@@ -1,6 +1,6 @@
-# How to code the law?
+# FAQ: How to code the law?
 
-## Tip: Money and rounding
+## Money and rounding
 
 In catala, monetary values are represented as an integer number of cents.
 
@@ -62,4 +62,8 @@ scope Rounding:
 ```
 
 Besides being more readable, this has the benefit of making it more obvious that any computation that requires keeping a fractional number of cents should be performed on decimals, and converted to a monetary amount at the end.
+
+## Can we use Large Language Models (LLMs) to translate the law into code?
+
+## Can every law be formalized?
 
