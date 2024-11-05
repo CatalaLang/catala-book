@@ -4,7 +4,7 @@
 
 In catala, monetary values are represented as an integer number of cents.
 
-A calculation with the catala `money` type always result in an amount rounded to the nearest cent.
+A calculation with the catala `money` type always result in an amount rounded to the nearest cent. This means, that, when performing intermediate computations on money, rounding must be considered by the programmer at each step. This aims at making review by domain experts easier, since for each intermediate value, they can follow along and perform example computations with a simple desk calculator.
 
 The `round of` builtin will round to the nearest monetary unit (e.g. euro or dollar).
 
