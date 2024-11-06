@@ -3834,6 +3834,7 @@ if (typeof exports === 'object' && typeof module !== 'undefined') { module.expor
         function catala(hljs) {
             return {
                 name: 'Catala (English)',
+                case_insensitive: false,
                 aliases: ['catala'],
                 keywords: {
                     keyword: ['match', 'with pattern', 'but replace', 'we have',
@@ -3848,58 +3849,45 @@ if (typeof exports === 'object' && typeof module !== 'undefined') { module.expor
                         'is maximum', 'is minimum', 'minimum of', 'maximum of',
                         'combine', 'initially'],
                     built_in:
-                        /* built-in types */
                         ['list of', 'decimal', 'money', 'integer', 'date', 'duration'],
-                    operator: ['+', '-', '*', '/', '>=', '>', '<=', '<', '=', 'not', 'or', 'xor', 'and', '%', 'year', 'month', 'day'],
-                    literal:
-                        'true false'
+                    operator: ['not', 'or', 'xor', 'and', 'year', 'month', 'day'],
+                    literal: ['true', 'false'],
                 },
-                illegal: /\/\/|>>/,
                 contains: [
-                    {
-                        className: 'literal',
-                        begin: '\\[(\\|\\|)?\\]|\\(\\)',
-                        relevance: 0
-                    },
                     hljs.COMMENT(
                         '#',
                         '\n',
                     ),
-                    { /* type variable */
-                        className: 'symbol',
-                        begin: '\'[A-Za-z_](?!\')[\\w\']*'
-                        /* the grammar is ambiguous on how 'a'b should be interpreted but not the compiler */
+                    { /* Scope name or Enum variant or structure name */
+                        scope: 'title',
+                        begin: '\\b[A-Z]\\w*',
                     },
-                    { /* polymorphic variant */
-                        className: 'type',
-                        begin: '`[A-Z][\\w\']*'
+                    { /* struct field ' */
+                        scope: 'variable',
+                        begin: '\\.[a-z_]\\w*',
                     },
-                    { /* module or constructor */
-                        className: 'type',
-                        begin: '\\b[A-Z][\\w\']*',
-                        relevance: 0
-                    },
-                    { /* don't color identifiers, but safely catch all identifiers with ' */
-                        begin: '[a-z_]\\w*\'[\\w\']*',
-                        relevance: 0
-                    },
-                    hljs.inherit(hljs.APOS_STRING_MODE, {
-                        className: 'string',
-                        relevance: 0
-                    }),
-                    hljs.inherit(hljs.QUOTE_STRING_MODE, { illegal: null }),
+                    hljs.APOS_STRING_MODE,
                     {
-                        className: 'number',
+                        scope: 'number',
                         begin:
-                            '\\b(0[xX][a-fA-F0-9_]+[Lln]?|'
-                            + '0[oO][0-7_]+[Lln]?|'
-                            + '0[bB][01_]+[Lln]?|'
-                            + '[0-9][0-9_]*([Lln]|(\\.[0-9_]*)?([eE][-+]?[0-9_]+)?)?)',
-                        relevance: 0
+                            '\\b[0-9]+(|\\.[0-9]*)',
                     },
                     {
-                        begin: /->/ // relevance booster
-                    }
+                        scope: 'number',
+                        begin:
+                            '\\|[0-9]{4}-[0-9]{2}-[0-9]{2}\\|',
+                    },
+                    {
+                        /* operators */
+                        scope: 'operator',
+                        begin: '(\\+|\\-|\\*|\\/|\\<|\\>|\\=|\\%)'
+
+                    },
+                    {
+                        /* punctuation */
+                        scope: 'punctuation',
+                        begin: '(\\(|\\)|\\[|\\]|\\{|\\}|\\:|\\.)'
+                    },
                 ]
             };
         }

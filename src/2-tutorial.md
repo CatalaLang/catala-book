@@ -12,52 +12,148 @@ copy-pasting the relevant section. This tutorial itself is written as a Catala
 program, whose source code is [available
 online](https://github.com/CatalaLang/catala-book/blob/main/src/2-tutorial.md).
 
-## Literate programming
+## Mixing law and code
 
-To begin writing a Catala program, you must start from the text of the
-legislative source that will justify the code that you will write. Concretely,
-that means copy-pasting the text of the law into a Catala source file and
-formatting it according so that Catala can understand it. Catala source files
-have the ".catala_en" extension. If you were to write a Catala program for a
-French law, you would use the ".catala_fr" extension; for Polish law,
-"catala_pl", etc.
+Catala is a language designed around the concept of *literate programming*, that
+is the mixing between the computer code and its specification in a single
+document. Hence, a Catala source code file looks like a regular Markdown
+document, with the specification written down and styled as Markdown text,
+with the Catala code only present in well-bounded Catala code blocks introduced
+by `` ```catala ``.
 
-You can write any kind of plain text in Catala, and it will be printed as is
-in PDF or HTML output. You can split your text into short lines of less than
-80 characters, terminal-style, and those will appear as a single paragraph
-in the output. If you want to create a new paragraph, you have to leave a blank
-line in the source. The syntax for non-code text in a Catala program follows
-a subset of Markdown that supports titles and Catala block codes.
+Before writing any Catala code, we must then introduce the specification of the
+code for this tutorial. This specification will be based on a fictional Tax Code
+defining a simple income tax. But in general, anything can be used as a
+specification for a Catala program: laws, executive orders, court cases
+motivations, legal doctrine, internal instructions, technical specifications,
+etc. These sources can also be mixed to form a complete Catala program that
+relies on multiple sources of specification. Concretely, just copy-paste the
+text of the specification and format it in Markdown syntax inside a Catala
+source code file.
 
-Catala allows you to declare section or subsection headers as it is done
-here, with the "#" symbol. You can define heading of lower
-importance by adding increasing numbers of "#" after the title of the heading.
-Generally, the literate programming syntax of Catala follows the syntax of
-Markdown (though it does not have all of its features).
+Without further ado, let us introduce the first bit of specification for
+our fictional income tax, Article 1 of the CTTC (Catala Tutorial Tax Code):
 
-In the rest of this tutorial, we will analyze a fictional example that
-defines an income tax. This income tax is defined through several articles
-of law, each of them introduced by a header. Here is the first one:
+> #### Article 1
+>
+> The income tax for an individual is defined as a fixed percentage of the
+> individual's income over a year.
 
-### Article 1 of Your Own Tax Code (YOTC)
+The spirit of writing code in Catala is to stick to the specification at all
+times in order to put the code snippets where they belong. Hence, we will
+introduce below the Catala code snippets that translate Article 1, which
+should be put just below Article 1 in the Catala source code file.
 
-The income tax for an individual is defined as a fixed percentage of the
-individual's income over a year.
+These code
+snippets should describe the program that computes the income tax, and contain
+the rule defining it as a multiplication of the income as rate. It is time
+to dive into Catala as a programming language.
+
 
 ```catala
 # We will soon learn what to write here in order to translate the meaning
-# of the article into Catala code.
+# of Article 1 into Catala code.
 
 # To create a block of Catala code in your file, bound it with Markdown-style
-# "```catala" and "```" delimiters.
-
-declaration structure Thing:
-  data foo content integer
+# "```catala" and "```" delimiters. You can write comments in Catala code block
+# by prefixing lines with "#"
 ```
 
-To translate that fictional income tax definition into a Catala program,
-we will intertwine short snippets of code between the sentences of
-the legislative text. Each snippet of code should be as short as possible and
-as close as possible to the actual sentence that justifies the code. This style
-is called literate programming, a programming paradigm invented by the famous
-computer scientist Donald Knuth in the 70s.
+## Setting up data structures
+
+
+The content of article 1 uses a lot of implicit context: there exists an
+individual with an income, as well as an income tax that the individual has
+to pay each year. Even if this implicit context is not verbatim in the law,
+we have to explicit it for programming purposes. Concretely, we need a
+"metadata" section that defines the shape and types of the data used
+inside the law.
+
+Let's start our metadata section by declaring the type information for the
+individual, the taxpayer that will be the subject of the tax computation.
+This individual has an income and a number of children, both pieces of
+information which will be needed for tax purposes :
+
+```catala
+declaration structure Individual:
+  # The name of the structure "Individual", must start with an
+  # uppercase letter: this is the CamelCase convention.
+  data income content money
+  # In this line, "income" is the name of the structure field and
+  # "money" is the type of what is stored in that field.
+  # Available types include: integer, decimal, money, date, duration,
+  # and any other structure or enumeration that you declare.
+  data number_of_children content integer
+  # "income" and "number_of_children" start by a lowercase letter,
+  # they follow the snake_case convention.
+```
+
+This structure contains two data fields, "income" and "number_of_children".
+Structures are useful to group together data that goes together. Usually, you
+get one structure per concrete object on which the law applies (like the
+individual). It is up to you to decide how to group the data together,
+but you should aim to optimize code readability.
+
+Sometimes, the law gives an enumeration of different situations. These
+enumerations are modeled in Catala using an enumeration type, like:
+
+```catala
+declaration enumeration TaxCredit:
+# The name "TaxCredit" is also written in CamelCase.
+-- NoTaxCredit
+# This line says that "TaxCredit" can be a "NoTaxCredit" situation.
+-- ChildrenTaxCredit content integer
+# This line says that alternatively, "TaxCredit" can be a
+# "ChildrenTaxCredit" situation. This situation carries a content
+# of type integer corresponding to the number of children concerned
+# by the tax credit. This means that if you're in the "ChildrenTaxCredit"
+# situation, you will also have access to this number of children.
+```
+
+In computer science terms, such an enumeration is called a "sum type" or simply
+an enum. The combination of structures and enumerations allow the Catala
+programmer to declare all possible shapes of data, as they are equivalent to
+the powerful notion of "algebraic data types".
+
+## Scopes as basic computation blocks
+
+We've defined and typed the data that the program will manipulate. Now we have
+to define the logical context in which this data will evolve. This is done in
+Catala using "scopes". Scopes are close to functions in terms of traditional
+programming. Scopes also have to be declared in metadata, so here we go:
+
+```catala
+declaration scope IncomeTaxComputation:
+  # Scope names use CamelCase.
+  input individual content Individual
+  # This line declares a scope variable of the scope, which is akin to
+  # a function parameter in computer science term. This is the piece of
+  # data on which the scope will operate.
+  internal fixed_percentage content decimal
+  output income_tax content money
+```
+
+The scope is the basic abstraction unit in Catala programs, and the declaration
+of the scope is akin to a function signature: it contains a list of all the
+arguments along with their types. But in Catala, scopes' variables stand
+for three things: input arguments, local variables and outputs. The difference
+between these three categories can be specified by the different input/output
+attributes preceding the variable names. "input" means that the variable has to
+be defined only when the scope IncomeTaxComputation is called. "internal" means
+that the variable cannot be seen from outside the scope: it is neither an input
+nor an output of the scope. "output" means that a caller scope can retrieve the
+computed value of the variable. Note that a variable can also be simultaneously
+an input and an output of the scope, in that case it should be annotated with
+"input output".
+
+## Defining variables and formulas
+
+We now have everything to annotate the contents of article 1, which is copied
+over below.
+
+
+```catala
+scope IncomeTaxComputation:
+  definition income_tax equals
+    individual.income * fixed_percentage
+```
