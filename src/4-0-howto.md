@@ -1,5 +1,7 @@
 # FAQ: How to code the law?
 
+## Booleans and conditions
+
 ## Money and rounding
 
 In catala, monetary values are represented as an integer number of cents.

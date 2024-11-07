@@ -3863,7 +3863,7 @@ if (typeof exports === 'object' && typeof module !== 'undefined') { module.expor
                         begin: '\\b[A-Z]\\w*',
                     },
                     { /* struct field ' */
-                        scope: 'variable',
+                        scope: 'title.function',
                         begin: '\\.[a-z_]\\w*',
                     },
                     hljs.APOS_STRING_MODE,
