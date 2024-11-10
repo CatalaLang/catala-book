@@ -324,8 +324,8 @@ we will now imagine an alternative tax system with two progressive brackets.
 This new example will illustrate how to write more complex Catala programs
 by composing abstractions together.
 
-First, let us start with the data structure and scope for our new two-brackets
-tax computation.
+First, let us start with the data structure and new scope for our new
+two-brackets tax computation.
 
 ```catala
 # This structure describes the parameters of a tax computation formula that
@@ -391,79 +391,177 @@ code. For instance, it is more compact to translate a table of values in a
 specification with `if ... then ... else ...` statements than conditional
 definitions, so it may be better to proceed that way.
 
-## Scope inclusion
+Now that we've defined our helper new scope for computing a two-brackets tax, we
+want to use it in our main tax computation scope. As mentioned before, Catala's
+scope can also be thought of as functions. And sometimes, the specification 
+does implicity translates into a function call, like the article below.
 
-Now that we've defined our helper scope for computing a two-brackets tax, we
-want to use it in our main tax computation scope. As mentioned before,
-Catala's scope can also be thought of as big functions. And these big functions
-can call each other, which is what we'll see in the below article.
+> #### Article 5
+> 
+> For individuals in charge of zero children, the income
+> tax of Article 1 is defined as a two-brackets computation with rates 20% and 
+> 40%, with an income breakpoint of $100,000. 
 
-### Article 5
+To translate Article 5 into Catala code, we need the scope `IncomeTaxComputation`
+to call the scope `TwoBracketsTaxComputation`. One way to write that is to 
+declare `TwoBracketsTaxComputation` as a static sub-scope of `IncomeTaxComputation`.
+This is done by updating the declaration of `IncomeTaxComputation` and 
+adding a line for the `TwoBracketsTaxComputation` sub-scope:
 
-For individuals whose income is greater than $100,000, the income
-tax of article 1 is 40% of the income above $100,000. Below $100,000, the
-income tax is 20% of the income.
-
-```catala-metadata
-declaration scope NewIncomeTaxComputation:
-  two_brackets scope TwoBracketsTaxComputation
-  # This line says that we add the item two_brackets to the context.
+```catala
+declaration scope IncomeTaxComputation:
+  # This line says that we add the "two_brackets" as a scope variable.
   # However, the "scope" keyword tells that this item is not a piece of data
   # but rather a subscope that we can use to compute things.
+  two_brackets scope TwoBracketsTaxComputation
   input individual content Individual
   output income_tax content money
 ```
 
-```catala
-scope NewIncomeTaxComputation :
-  # Since the subscope "two_brackets" is like a big function we can call,
-  # we need to define its arguments. This is done below:
-  definition two_brackets.brackets equals TwoBrackets {
-    -- breakpoint: $100,000
-    -- rate1: 20%
-    -- rate2: 40%
-  }
-  # By defining the input variable "brackets" of the subscope "two_brackets",
-  # we have changed how the subscope will execute. The subscope will execute
-  # with all the values defined by the caller, then compute the value
-  # of its other variables.
+`two_brackets` is thus the name of the sub-scope call and we can provide its
+arguments to code up the two-brackets computation parameters set by Article 5:
 
-  definition income_tax equals two_brackets.tax_formula of individual.income
-  # After the subscope has executed, you can retrieve results from it. Here,
-  # we retrieve the result of variable "tax_formula" of computed by the
-  # subscope "two_brackets". It's up yo you to choose what is an input and
-  # an output of your subscope; if you make an inconsistent choice, the
-  # Catala compiler will warn you.
+> ```catala
+> scope IncomeTaxComputation :
+>   # Since the subscope "two_brackets" is like a function we can call,
+>   # we need to define its arguments. This is done below with the only 
+>   # parameter "brackets" of sub-scope call "two_brackets" :
+>   definition two_brackets.brackets equals TwoBrackets {
+>     -- breakpoint: $100,000
+>     -- rate1: 20%
+>     -- rate2: 40%
+>   }
+>```
+
+The sub-scope call `two_brackets` now has data flowing in to
+`TwoBracketsTaxComputation`, letting it compute its output `tax_formula`,
+which is the function that we will use to compute the income tax in 
+the case of Article 5, that is when the individual has no children. As for 
+Article 3, we will use an exceptional conditional definition for `income_tax`, 
+that makes use of `two_brackets.tax_formula`:
+
+> ```catala
+> scope IncomeTaxComputation:
+>   # The syntax of calling a function "f" with argument "x" is "f of x".
+>   exception definition income_tax under condition 
+>     individual.number_of_children = 0
+>   consequence equals two_brackets.tax_formula of individual.income
+> ```
+
+The snippet of code below exceptionally calls the function
+`two_brackets.tax_formula` when the individual has no children; but
+`two_brackets.tax_formula` is itself the output of the scope
+`TwoBracketsTaxComputation` called as a sub-scope within `IncomeTaxComputation`.
+This pattern of scopes returning functions adheres to the spirit of functional
+programming, where functions are passed around as values. We encourage you to
+use this pattern for encoding complex specifications, as it is quite expressive,
+and does not make use of shared mutable state in memory (which does not exist in
+Catala anyway).
+
+## Complex exceptions patterns
+
+With our last code snippet, note that we introduced our third conditional
+definition for `income_tax`: there is one base case, and two exceptions (one if
+there is more than two children, another if there is zero children). So far,
+the two exceptions have been simply declared with the `exception` keyword. That 
+keyword alone suffices because there is only one base case that the `exception` 
+is refering to. However, sometimes the specification implicitly sets up 
+more complex exception patterns: 
+
+> #### Article 6
+> 
+> Individuals earning less than $10,000 are exempted of the income tax mentioned
+> at article 1.
+
+At a first glance, this Article 6 merely defines another exceptional conditional
+definition for variable `income_tax` of scope `IncomeTaxComputation`. But this
+third exception is likely to conflict with the first one when the individual
+earns less than $10,000, and has zero children! If such a conflict between
+exceptions were to happen, the Catala program would crash with an error message
+similar to the one we already saw when programming Article 3:
+
+```text
+┌─[ERROR]─
+│
+│  During evaluation: conflict between multiple valid consequences for assigning the same variable.
+│
+├─➤ tutorial_en.catala_en
+│     │
+│     │   consequence equals two_brackets.tax_formula of individual.income
+│     │                      ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+├─ Article 5
+│
+├─➤ tutorial_en.catala_en
+│     │
+│     │   consequence equals $0
+│     │                      ‾‾
+└─ Article 6
 ```
 
-Now that we've successfully defined our income tax computation, the legislator
-inevitably comes to disturb our beautiful and regular formulas to add a special
-case! The article below is a really common pattern in statutes, and let's
-see how Catala handles it.
+In this situation, we need to prioritize the exceptions. This prioritization
+requires legal expertise and research, as it is not always obvious which
+exception should prevail in any given situation. Hence, Catala error messages
+indicating a conflict during evaluation are an invitation to call the lawyer in
+your team and have them interpret the specification, rather than fixing the
+conflict yourself.
 
-### Article 6
+Here, because Article 6 follows Article 5, and because it is more favorable to
+the taxpayer to pay $0 in tax rather than the result of the two-brackets
+computation, we can make the legal decision to prioritize the exception of
+Article 6 over the exception of Article 5. Now, let us see how to write that
+with Catala. Because Article 1 is the base case for the exception of Article 5,
+and Article 5 is the base case for the exception of Article 6, we need to give 
+the definitions of `income_tax` at Articles 1 and 5 labels so that the 
+`exception` keywords in Article 5 and 6 can refer to those labels:
 
-Individuals earning less than $10,000 are exempted of the income tax mentioned
-at article 1.
+> #### Article 1
+>
+> The income tax for an individual is defined as a fixed percentage of the
+> individual's income over a year.
+>
+> ```catala
+> scope IncomeTaxComputation:
+>   label article_1 definition income_tax equals
+>     individual.income * fixed_percentage
+> ```
+> #### Article 5
+> 
+> For individuals in charge of zero children, the income
+> tax of Article 1 is defined as a two-brackets computation with rates 20% and 
+> 40%, with an income breakpoint of $100,000. 
+>
+> ```catala
+> scope IncomeTaxComputation:
+>   label article_5 exception article_1 
+>   definition income_tax under condition 
+>     individual.number_of_children = 0
+>   consequence equals two_brackets.tax_formula of individual.income
+> ```
+>
+> #### Article 6
+> 
+> Individuals earning less than $10,000 are exempted of the income tax mentioned
+> at article 1.
+>
+> ```catala
+> scope IncomeTaxComputation:
+>   exception article_5 definition income_tax under condition
+>     individual.income <= $10,000
+>   consequence equals $0
+> ```
 
-```catala
-scope NewIncomeTaxComputation:
-  # Here, we simply define a new conditional definition for "income tax"
-  # that handles the special case.
-  definition income_tax under condition
-    individual.income <= $10,000
-  consequence equals $0
-  # What, you think something might be wrong with this? Hmmm... We'll see
-  # later!
-```
+At runtime, here is how Catala will determine which of the three definitions 
+to pick for `income_tax`: first, it will try the most exceptional 
+exception (Article 6), and test whether the income is below $10,000;
+if not, then it will default to the exception level below (Article 5), 
+and test whether there are no children; if not, it will default to the 
+base case (Article 1). 
 
-That's it! We've defined a two-brackets tax computation with a special case
-simply by annotating legislative article by snippets of Catala code.
-However, attentive readers may have caught something weird in the Catala
-translation of articles 5 and 6. What happens when the income of the individual
-is lesser than $10,000? Right now, the two definitions at articles 5 and 6
-for income_tax apply, and they're in conflict.
+This scenario defines an "exception chain", but it can get more complex than 
+that. Actually, Catala lets you define "exception trees" as big as you want,
+simply by providing `label` and `exception` tags that refer to each other 
+for your conditional definitions. This expressive power will help you tame 
+the complexity of legal specifications and keep your Catala code readable 
+and maintainable.
 
-This is a flaw in the Catala translation, but the language can help you
-find this sort of errors via simple testing or
-even formal verification. Let's start with the testing.
+## Conclusion and next steps
