@@ -57,7 +57,7 @@ The VSCode extension requires the Catala's Language Server Protocol to be instal
 This can be done by running:
 
 ```bash
-$ opam pin add catala git+https://github.com/CatalaLang/catala-lsp -y
+$ opam pin add catala-lsp git+https://github.com/CatalaLang/catala-language-server -y
 ```
 
 ### Getting the VSCode extension
