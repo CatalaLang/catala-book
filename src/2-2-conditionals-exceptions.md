@@ -7,7 +7,7 @@ involving exceptions, and be able to structure groups of variable definitions
 according to their exceptional status and relative priority.
 
 ~~~~~~admonish info collapsible=true title="Recap of the previous section"
-This section of the tutorial builds up on the [previous one](2-1-basic-blocks.md),
+This section of the tutorial builds up on the [previous one](./2-1-basic-blocks.md),
 and will reuse the same running example, but all the Catala code necessary
 to execute the example is included below for reference.
 
@@ -41,6 +41,23 @@ The fixed percentage mentioned at article 1 is equal to 20 %.
 ```catala
 scope IncomeTaxComputation:
   definition tax_rate equals 20 %
+```
+
+## Test
+
+```catala
+declaration scope Test:
+  output computation content IncomeTaxComputation
+
+scope Test:
+  definition computation equals
+    output of IncomeTaxComputation with {
+      -- individual:
+        Individual {
+          -- income: $20,000
+          -- number_of_children: 0
+        }
+    }
 ```
 ~~~
 ~~~~~~
@@ -497,7 +514,7 @@ The fixed percentage mentioned at article 1 is equal to 20 %.
 ```catala
 scope IncomeTaxComputation:
   label article_2 definition tax_rate under condition
-    curent_date < |2000-01-01|
+    current_date < |2000-01-01|
   consequence equals 20 %
 ```
 
@@ -510,7 +527,7 @@ scope IncomeTaxComputation:
   # Simply use the same label "article_2" as the previous definition to group
   # them together
   label article_2 definition tax_rate under condition
-    curent_date >= |2000-01-01|
+    current_date >= |2000-01-01|
   consequence equals 21 %
 ```
 ~~~

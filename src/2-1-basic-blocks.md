@@ -339,6 +339,89 @@ Catala also has built-in `date` and `duration` types with the common associated
 operations (adding a duration to a date, substracting two dates to get a
 duration, etc.). For a deeper look at date computations (which are [very tricky](https://link.springer.com/chapter/10.1007/978-3-031-57267-8_16)!), look at the [language reference](./5-catala.md).
 
+
+## Testing the code
+
+Now that we have implemented a few articles in Catala, it is time to test
+our code to check that it behaves correctly. We encourage you to test your
+code a lot, as early as possible, and check the test result in a continuous
+integration system to prevent regressions.
+
+The testing of Catala code is done with the interpreter inside the compiler,
+accessible with the `interpret` command and the `--scope` option that specifies
+the scope to be interpreted?
+
+
+~~~admonish failure title="Why can't I test `IncomeTaxComputation` directly?" collapsible=true
+The reflex at this point is to execute the following command:
+```text
+$ catala interpret tutorial.catala_en --scope=IncomeTaxComputation
+┌[ERROR]─
+│
+│  This scope needs input arguments to be executed. But the Catala built-in interpreter does not have a way to retrieve input values from the command line, so it cannot execute this scope.
+│  Please create another scope that provides the input arguments to this one and execute it instead.
+│
+├─➤ tutorial.catala_en
+│   │
+│   │   input individual content Individual
+│   │         ‾‾‾‾‾‾‾‾‾‾
+└─
+```
+
+As the error message says, trying to interpret directly `IncomeTaxComputation` is like
+trying to compute the taxes of somebody without knowing the income of the person!
+To be executed, the scope needs to be called with concrete values for the income
+and the number of children of the individual. Otherwise, Catala will complain
+that `input` variables of the scope are missing for the interpretation.
+~~~
+
+The pattern for testing make use of concepts that will be seen
+[later](./2-3-list-modular.md) in the tutorial, so it is okay to take part of
+the following as some mysterious syntax that performs what we want. Basically,
+we will be creating for our test case a new test that will pass specific
+arguments to `IncomeTaxComputation` which is being tested:
+
+~~~admonish note title="Defining a test"
+```catala
+declaration scope Test:
+  # The following line is mysterious for now
+  output computation content IncomeTaxComputation
+
+scope Test:
+  definition computation equals
+    # The following line is mysterious for now
+    output of IncomeTaxComputation with {
+      # Below, we pass the input variables for "IncomeTaxComputation"
+      -- individual:
+        # "individual" has a structure type, so we need to build the
+        # structure "Individual" with the following syntax
+        Individual {
+          # "income" and "number_of_children" are the fields of the structure;
+          # we give them the values we want for our test
+          -- income: $20,000
+          -- number_of_children: 0
+        }
+    }
+```
+~~~
+
+This test can now be executed through the Catala interpreter:
+
+```text
+$ catala interpret tutorial.catala_en --scope=Test
+┌─[RESULT]─
+│ computation = IncomeTaxComputation { -- income_tax: $4,000.00 }
+└─
+```
+
+We can now check that `$4,000 = $20,000 * 20%`; the result is correct.
+
+~~~admonish tip title="Test, test, test!"
+Use this test to regularly play with the code during the tutorial and inspect
+its results under various input scenarios. This will help you understand
+the behavior of Catala programs, and spot errors in your code 😀
+~~~
+
 ## Checkpoint
 
 This concludes the first section of the tutorial. By setting up data structures
