@@ -6,42 +6,44 @@ By the end of the section, you should understand the behavior of computations
 involving exceptions, and be able to structure groups of variable definitions
 according to their exceptional status and relative priority.
 
-~~~admonish info collapsible=true title="Recap of the previous section"
+~~~~~~admonish info collapsible=true title="Recap of the previous section"
 This section of the tutorial builds up on the [previous one](2-1-basic-blocks.md),
 and will reuse the same running example, but all the Catala code necessary
 to execute the example is included below for reference.
 
- ```catala
+~~~
+```catala
 declaration structure Individual:
   data income content money
   data number_of_children content integer
 
- declaration scope IncomeTaxComputation:
+declaration scope IncomeTaxComputation:
    input individual content Individual
-   internal fixed_percentage content decimal
+   internal tax_rate content decimal
    output income_tax content money
- ```
+```
 
- #### Article 1
+## Article 1
 
- The income tax for an individual is defined as a fixed percentage of the
- individual's income over a year.
+The income tax for an individual is defined as a fixed percentage of the
+individual's income over a year.
 
- ```catala
- scope IncomeTaxComputation:
-   definition income_tax equals
-     individual.income * fixed_percentage
- ```
+```catala
+scope IncomeTaxComputation:
+  definition income_tax equals
+    individual.income * tax_rate
+```
 
- #### Article 2
+## Article 2
 
- The fixed percentage mentioned at article 1 is equal to 20 %.
+The fixed percentage mentioned at article 1 is equal to 20 %.
 
- ```catala
- scope IncomeTaxComputation:
-   definition fixed_percentage equals 20 %
- ```
+```catala
+scope IncomeTaxComputation:
+  definition tax_rate equals 20 %
+```
 ~~~
+~~~~~~
 
 ## Conditional definitions and exceptions
 
@@ -59,20 +61,21 @@ percentage mentioned at article 1 is equal to 15 %.
 This article actually gives another definition for the fixed percentage, which
 was already defined in article 2. However, article 3 defines the percentage
 conditionally to the individual having more than 2 children. How to redefine
-`fixed_percentage`? Catala allows you precisely to redefine a variable under a
-condition with the `under condition ... consequence` syntax:
+`tax_rate`? Catala allows you precisely to redefine a variable under a
+condition with the `under condition ... consequence` syntax between the name
+of the variable being defined and the `equals` keyword:
 
 ~~~admonish note title="Defining a variable conditionally"
 ```catala
 scope IncomeTaxComputation:
-  definition fixed_percentage under condition
+  definition tax_rate under condition
     individual.number_of_children >= 2
   consequence equals 15 %
 ```
 ~~~
 
 What does this mean? If the individual has more than two children, then
-`fixed_percentage` will be `15 %`. Conditional definitions let you define
+`tax_rate` will be `15 %`. Conditional definitions let you define
 your variables piecewise, one case at a time; the Catala compiler stitches
 everything together for execution. More precisely, at runtime, we look at
 the conditions of all piecewise definitions for a same variable, and pick
@@ -90,7 +93,7 @@ execution and return an error message like the one below:
 │
 ├─➤ tutorial_en.catala_en
 │     │
-│     │   definition fixed_percentage equals 20 %
+│     │   definition tax_rate equals 20 %
 │     │                                      ‾‾‾‾
 ├─ Article 2
 │
@@ -104,7 +107,7 @@ execution and return an error message like the one below:
 
 If the specification is correctly drafted, then these error situations should
 not happen, as one and only one conditional definition should be valid at all
-times. Here, however, our definition of `fixed_percentage` conflicts with the
+times. Here, however, our definition of `tax_rate` conflicts with the
 more general definition that we gave above. To correctly model situations like
 this, Catala allows us to define precedence of one conditional definitions
 over another. It is as simple as adding `exception` before the definition.
@@ -118,7 +121,7 @@ percentage mentioned at article 1 is equal to 15 %.
 ~~~admonish note title="Defining an exception for a variable"
 ```catala
 scope IncomeTaxComputation:
-  exception definition fixed_percentage under condition
+  exception definition tax_rate under condition
     individual.number_of_children >= 2
   consequence equals 15 %
 ```
@@ -176,7 +179,7 @@ at article 1.
 
 ```catala
 scope IncomeTaxComputation:
-  exception definition fixed_percentage under condition
+  exception definition tax_rate under condition
     individual.income <= $10,000
   consequence equals 0 %
 ```
@@ -240,7 +243,9 @@ The fixed percentage mentioned at article 1 is equal to 20 %.
 
 ```catala
 scope IncomeTaxComputation:
-  label article_2 definition fixed_percentage equals 20 %
+  # The keyword "label" introduces the name of the label itself, here
+  # "article_2".
+  label article_2 definition tax_rate equals 20 %
 ```
 
 #### Article 3
@@ -250,7 +255,11 @@ percentage mentioned at article 1 is equal to 15 %.
 
 ```catala
 scope IncomeTaxComputation:
-  label article_3 exception article_2 definition fixed_percentage under condition
+  # This definition is preceded by two indications:
+  # * it has its own label, "article_3";
+  # * this definition is an exception to the definition labeled "article_2".
+  label article_3 exception article_2
+  definition tax_rate under condition
     individual.number_of_children >= 2
   consequence equals 15 %
 ```
@@ -262,7 +271,8 @@ at article 1.
 
 ```catala
 scope IncomeTaxComputation:
-  label article_4 exception article_3 definition tax_rate under condition
+  label article_4 exception article_3
+  definition tax_rate under condition
     individual.income <= $10,000
   consequence equals 0 %
 ```
@@ -275,7 +285,7 @@ when multiple definitions apply, pick the one with the highest priority in the
 chain. But sometimes, it's not possible to arrange exceptions in a chain,
 since legal interpretation leads to different *branches* of exceptions.
 
-## Trees of exceptions
+## Branches of exceptions
 
 It may be difficult to see why some legal situations may lead to different
 branches of exceptions. Let us provide an example with a new article of the CTTC:
@@ -286,7 +296,8 @@ Individuals earning more than $100,000 are subjects to a tax rate of
 
 ```catala
 scope IncomeTaxComputation:
-  label article_5 exception article_3 definition fixed_percentage under condition
+  label article_5 exception article_3
+  definition tax_rate under condition
     individual.income > $100,000
   consequence equals 30 %
 ```
@@ -296,107 +307,216 @@ Now, article 3 has two exceptions : article 4, and article 5. These two exceptio
 * **Article 4**: income less than $10,000 ;
 * **Article 5**: income more than $100,000.
 
-
-## Grouping definitions together
-
-<!--
-So far, the exceptional definition has been simply declared with the `exception`
-keyword. That keyword alone suffices because there is only one base case that
-the `exception` is refering to. However, sometimes the specification implicitly
-sets up more complex exception patterns:
-
-> #### Article 6
->
-> Individuals earning less than $10,000 are exempted of the income tax mentioned
-> at article 1.
-
-At a first glance, this Article 6 merely defines another exceptional conditional
-definition for variable `income_tax` of scope `IncomeTaxComputation`. But this
-third exception is likely to conflict with the first one when the individual
-earns less than $10,000, and has zero children! If such a conflict between
-exceptions were to happen, the Catala program would crash with an error message
-similar to the one we already saw when programming Article 3:
+~~~admonish tip title="Displaying the exception branches" collapsible=true
+As the codebase grows, it becomes more and more difficult to visualized all
+the conditional definitions of a variable as well as the prioritization between
+them. To help, the Catala compiler can display the exception branches with
+the following command:
 
 ```text
-┌─[ERROR]─
+$ catala exceptions tutorial.catala_en --scope=IncomeTaxComputation --variable=tax_rate
+┌[RESULT]─
+│ Printing the tree of exceptions for the definitions of variable "tax_rate" of scope "IncomeTaxComputation".
+└─
+┌─[RESULT]─
+│ Definitions with label "article_2":
 │
-│  During evaluation: conflict between multiple valid consequences for assigning the same variable.
+├─➤ tutorial.catala_en
+│    │
+│    │   label article_2 definition tax_rate equals 20 %
+│    │   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+└─ Title
+   └─ Article 2
+┌─[RESULT]─
+│ Definitions with label "article_3":
 │
-├─➤ tutorial_en.catala_en
-│     │
-│     │   consequence equals two_brackets.tax_formula of individual.income
-│     │                      ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-├─ Article 5
+├─➤ tutorial.catala_en
+│    │
+│    │   label article_3 exception article_2 definition tax_rate under condition
+│    │   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+└─ Title
+   └─ Article 3
+┌─[RESULT]─
+│ Definitions with label "article_4":
 │
-├─➤ tutorial_en.catala_en
-│     │
-│     │   consequence equals $0
-│     │                      ‾‾
-└─ Article 6
+├─➤ tutorial.catala_en
+│    │
+│    │   label article_4 exception article_3 definition tax_rate under condition
+│    │   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+└─ Title
+   └─ Article 4
+┌─[RESULT]─
+│ Definitions with label "article_5":
+│
+├─➤ tutorial.catala_en
+│    │
+│    │   label article_5 exception article_3 definition tax_rate under condition
+│    │   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+└─ Title
+   └─ Article 5
+┌─[RESULT]─
+│ The exception tree structure is as follows:
+│
+│ "article_2"───"article_3"──┬──"article_5"
+│                            │
+│                            └──"article_4"
+└─
+```
+~~~
+
+Theoretically, since the exceptions of article 4 and article 5 are not
+prioritized with each other, they could both apply at the same time and
+conflict. However, since the income cannot be both less than $10,000 and greater
+than $100,000, the conflict cannot happen in practice. Hence, it is not
+necessary to prioritize the two exceptions, since they live in mutually
+exclusive conditional branches. It is then possible to extend these branches
+separately, for instance with a new article of the CTTC:
+
+~~~admonish quote title="Article 6"
+In the overseas territories, the tax rate for individuals earning
+more than $100,000 specified at article 5 is reduced to 25 %.
+~~~
+
+This article introduces a new bit of information about the tax computation:
+are we in an overseas territory or not? We can model it with a new input to the
+scope `IncomeTaxComputation`, leading to a revised scope declaration:
+
+~~~admonish quote title="Revised scope declaration"
+```catala
+declaration scope IncomeTaxComputation:
+   input individual content Individual
+   input overseas_territories content boolean
+   internal tax_rate content decimal
+   output income_tax content money
+```
+~~~
+
+With this new input variable, the code for article 6 is as follows:
+
+```catala
+scope IncomeTaxComputation:
+  label article_6 exception article_5
+  definition tax_rate under condition
+    individual.income > $100,000 and overseas_territories
+  consequence equals 25 %
 ```
 
-In this situation, we need to prioritize the exceptions. This prioritization
-requires legal expertise and research, as it is not always obvious which
-exception should prevail in any given situation. Hence, Catala error messages
-indicating a conflict during evaluation are an invitation to call the lawyer in
-your team and have them interpret the specification, rather than fixing the
-conflict yourself.
+~~~admonish danger title="Exceptions do not inherit conditionals from their base case"
+Note that in the condition for defining `tax_rate` in article 6, we
+have repeated the condition `individual.income > $100,000` in conjunction
+with the new clause `overseas_territories`. In our fictional CTTC, the text
+of article 6 is gently worded and explicitly reminds us that this exception
+to article 5 only applies in the situations that also trigger article 5 (where
+the income is greater than $100,000).
 
-Here, because Article 6 follows Article 5, and because it is more favorable to
-the taxpayer to pay $0 in tax rather than the result of the two-brackets
-computation, we can make the legal decision to prioritize the exception of
-Article 6 over the exception of Article 5. Now, let us see how to write that
-with Catala. Because Article 1 is the base case for the exception of Article 5,
-and Article 5 is the base case for the exception of Article 6, we need to give
-the definitions of `income_tax` at Articles 1 and 5 labels so that the
-`exception` keywords in Article 5 and 6 can refer to those labels:
+However, the legal text can sometimes omit this key information, or make it
+implicit, creating a danger of putting the wrong conditional in the Catala
+code in presence of exception branches. Suppose we had ommitted the income
+condition in the code for article 6:
 
-> #### Article 1
->
-> The income tax for an individual is defined as a fixed percentage of the
-> individual's income over a year.
->
-> ```catala
-> scope IncomeTaxComputation:
->   label article_1 definition income_tax equals
->     individual.income * fixed_percentage
-> ```
-> #### Article 5
->
-> For individuals in charge of zero children, the income
-> tax of Article 1 is defined as a two-brackets computation with rates 20% and
-> 40%, with an income breakpoint of $100,000.
->
-> ```catala
-> scope IncomeTaxComputation:
->   label article_5 exception article_1
->   definition income_tax under condition
->     individual.number_of_children = 0
->   consequence equals two_brackets.tax_formula of individual.income
-> ```
->
-> #### Article 6
->
-> Individuals earning less than $10,000 are exempted of the income tax mentioned
-> at article 1.
->
-> ```catala
-> scope IncomeTaxComputation:
->   exception article_5 definition income_tax under condition
->     individual.income <= $10,000
->   consequence equals $0
-> ```
+```catala
+scope IncomeTaxComputation:
+  label article_6 exception article_5
+  definition tax_rate under condition
+    overseas_territories
+  consequence equals 25 %
+```
 
-At runtime, here is how Catala will determine which of the three definitions
-to pick for `income_tax`: first, it will try the most exceptional
-exception (Article 6), and test whether the income is below $10,000;
-if not, then it will default to the exception level below (Article 5),
-and test whether there are no children; if not, it will default to the
-base case (Article 1).
+With this code, the article 6 definition would have applied in overseas
+territories for all individuals, including those earning less than $100,000!
+Indeed, exceptional definitions in Catala do not inherit the conditions of
+their base case: the condition of article 6 does not inherit the condition
+of article 5, we need to repeat it in article 6 if we want to have the correct
+activation pattern.
+~~~
 
-This scenario defines an "exception chain", but it can get more complex than
-that. Actually, Catala lets you define "exception trees" as big as you want,
-simply by providing `label` and `exception` tags that refer to each other
-for your conditional definitions. This expressive power will help you tame
-the complexity of legal specifications and keep your Catala code readable
-and maintainable. -->
+Finally, we can recap the collection of exception branches as a tree of
+exceptions for our example:
+
+```text
+"article_2"───"article_3"──┬──"article_5"───"article_6"
+                           │
+                           └──"article_4"
+```
+
+
+## Grouping conditional definitions together for exceptions
+
+So far, we have seen how to define exception chains and mutually exclusive
+exception branches. But there is a very common pattern that introduces
+yet another exceptional shenanigan. Suppose than in the year 2000, a big tax
+reform changes the base taxation rate of article 2 with a slight increase:
+
+~~~admonish quote title="Article 2 (new version after 2000)"
+The fixed percentage mentioned at article 1 is equal to 21 % %.
+~~~
+
+Now, there are several strategies to deal with legal updates in Catala, that
+are summed up in the [how to section of this book](./4-1-design.md). But here,
+we'll suppose that we want both versions of the law (before and after 2000)
+to coexist in the same Catala program. This choice leads us to introduce the
+current date as a new input of the scope `IncomeTaxComputation`:
+
+~~~admonish quote title="Revised scope declaration"
+```catala
+declaration scope IncomeTaxComputation:
+   input current_date content date
+   input individual content Individual
+   input overseas_territories content boolean
+   internal tax_rate content decimal
+   output income_tax content money
+```
+~~~
+
+This `current_date` variable will allow us to introduce mutually exclusive
+conditional definitions for the two different verions of article 2, each one
+activating only before of after the year 2000. Note that is the two definitions
+of article 2 were not mutually exclusive, they could conflict with each other,
+forcing you to prioritize between them and change the shape of the overall
+exception tree by introducing another layer of exception. However, we want in
+this cas those two base definitions of article 2 to collectively be the base
+case for all subsequent exceptions in the exception tree of `tax_rate`! In a
+nutshell, we want the following exception tree:
+
+```text
+"article_2" (before 2000)┬───"article_3"──┬──"article_5"───"article_6"
+"article_2" (after 2000) ┘                │
+                                          └──"article_4"
+```
+
+Catala is able to represent this exception tree, by grouping together
+the two conditional definitions to article 2. Indeed, since article 3
+is an exception to the label `article_2`, it suffices to give the same label
+`article_2` to the two conditional definitions of the two versions of `article_2`:
+
+~~~admonish note title="Grouping mutually exclusive conditional definitions"
+#### Article 2 (new version before 2000)
+
+The fixed percentage mentioned at article 1 is equal to 20 %.
+
+```catala
+scope IncomeTaxComputation:
+  label article_2 definition tax_rate under condition
+    curent_date < |2000-01-01|
+  consequence equals 20 %
+```
+
+#### Article 2 (new version after 2000)
+
+The fixed percentage mentioned at article 1 is equal to 21 % %.
+
+```catala
+scope IncomeTaxComputation:
+  # Simply use the same label "article_2" as the previous definition to group
+  # them together
+  label article_2 definition tax_rate under condition
+    curent_date >= |2000-01-01|
+  consequence equals 21 %
+```
+~~~
+
+By using the definition grouping mechanism along with exception branches,
+Catala is able to express a wide range of legal text logic, and helps keeping
+the code alongside its specification.
+
+## Checkpoint

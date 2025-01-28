@@ -155,7 +155,7 @@ declaration scope IncomeTaxComputation:
   # This line declares an input variable of the scope, which is akin to
   # a function parameter in computer science term. This is the piece of
   # data on which the scope will operate.
-  internal fixed_percentage content decimal
+  internal tax_rate content decimal
   output income_tax content money
 ```
 ~~~
@@ -190,17 +190,17 @@ scope `IncomeTaxComputation`, which translates to the following Catala code:
 ~~~
 
 ~~~admonish note title="Defining a variable"
- ```catala
- scope IncomeTaxComputation:
-   definition income_tax equals
-     individual.income * fixed_percentage
- ```
+```catala
+scope IncomeTaxComputation:
+  definition income_tax equals
+    individual.income * tax_rate
+```
 ~~~
 
 Let us unpack the code above. Each `definition` of a variable  (here,
 `income_tax`) is attached to a scope that declares it (here,
 `IncomeTaxComputation`). After `equals`, we have the actual expression for the
-variable : `individual.income * fixed_percentage`. The syntax for formulas uses
+variable : `individual.income * tax_rate`. The syntax for formulas uses
 the classic arithmetic operators. Here, `*` means multiplying an amount of
 `money` by a `decimal`, returning a new amount of `money`. The exact behavior of
 each operator depends on the types of values it is applied on. For instance,
@@ -235,12 +235,12 @@ variant payloads.
 ~~~
 
 Now, back to our scope `IncomeTaxComputation`. at this point we're still missing
-the definition of `fixed_percentage`. This is a common pattern when coding the
+the definition of `tax_rate`. This is a common pattern when coding the
 law: the definitions for various variables are scattered in different articles.
 Fortunately, the Catala compiler automatically collects all the definitions for
 each scope and puts them in the right order. Here, even if we define
-`fixed_percentage` after `income_tax` in our source code, the Catala compiler
-will switch the order of the definitions internally because `fixed_percentage`
+`tax_rate` after `income_tax` in our source code, the Catala compiler
+will switch the order of the definitions internally because `tax_rate`
 is used in the definition of `income_tax`. More generally, the order of toplevel
 definitions and declarations in Catala source code files does not matter, and
 you can refactor code around freely without having to care about dependency
@@ -250,14 +250,14 @@ In this tutorial, we'll suppose that our fictional CTTC specification defines
 the percentage in the next article. The Catala code below should not surprise
 you at this point.
 
-~~~admonish quote title="Article2"
- The fixed percentage mentioned at article 1 is equal to 20 %.
+~~~admonish quote title="Article 2"
+The fixed percentage mentioned at article 1 is equal to 20 %.
 
- ```catala
- scope IncomeTaxComputation:
-   # Writing 20% is just an alternative for the decimal "0.20".
-   definition fixed_percentage equals 20 %
- ```
+```catala
+scope IncomeTaxComputation:
+  # Writing 20% is just an alternative for the decimal "0.20".
+  definition tax_rate equals 20 %
+```
 ~~~
 
 ## Common values and computations in Catala
@@ -334,6 +334,10 @@ To fix this error, you need to use explicit casting, for instance by replacing
 `1` by `decimal of 1`. Refer to the [language reference](./5-catala.md) for all
 possible casting, operations and their associated semantics.
 ~~~
+
+Catala also has built-in `date` and `duration` types with the common associated
+operations (adding a duration to a date, substracting two dates to get a
+duration, etc.). For a deeper look at date computations (which are [very tricky](https://link.springer.com/chapter/10.1007/978-3-031-57267-8_16)!), look at the [language reference](./5-catala.md).
 
 ## Checkpoint
 
