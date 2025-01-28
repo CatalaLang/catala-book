@@ -429,3 +429,13 @@ like `structure` and `enumeration`, representing the types of `scope`
 variables, and `definition` of formulas for these variables, you should now be able to
 code in Catala the equivalent of single-function programs that perform common
 arithmetic operations and define local variables.
+
+
+~~~~~~admonish info collapsible=true title="Recap of the current section"
+For reference, here is the final version of the Catala code consolidated at
+the end of this section of the tutorial.
+
+~~~
+{{#include ../examples/tutorial_end_2_1.catala_en}}
+~~~
+~~~~~~

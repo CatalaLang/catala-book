@@ -12,53 +12,7 @@ and will reuse the same running example, but all the Catala code necessary
 to execute the example is included below for reference.
 
 ~~~
-```catala
-declaration structure Individual:
-  data income content money
-  data number_of_children content integer
-
-declaration scope IncomeTaxComputation:
-   input individual content Individual
-   internal tax_rate content decimal
-   output income_tax content money
-```
-
-## Article 1
-
-The income tax for an individual is defined as a fixed percentage of the
-individual's income over a year.
-
-```catala
-scope IncomeTaxComputation:
-  definition income_tax equals
-    individual.income * tax_rate
-```
-
-## Article 2
-
-The fixed percentage mentioned at article 1 is equal to 20 %.
-
-```catala
-scope IncomeTaxComputation:
-  definition tax_rate equals 20 %
-```
-
-## Test
-
-```catala
-declaration scope Test:
-  output computation content IncomeTaxComputation
-
-scope Test:
-  definition computation equals
-    output of IncomeTaxComputation with {
-      -- individual:
-        Individual {
-          -- income: $20,000
-          -- number_of_children: 0
-        }
-    }
-```
+{{#include ../examples/tutorial_end_2_1.catala_en}}
 ~~~
 ~~~~~~
 
@@ -507,7 +461,7 @@ is an exception to the label `article_2`, it suffices to give the same label
 `article_2` to the two conditional definitions of the two versions of `article_2`:
 
 ~~~admonish note title="Grouping mutually exclusive conditional definitions"
-#### Article 2 (new version before 2000)
+#### Article 2 (old version before 2000)
 
 The fixed percentage mentioned at article 1 is equal to 20 %.
 
@@ -544,3 +498,12 @@ multiple conditions apply, one can prioritize the conditional definitions using
 the `exception` and `label` keywords to form exception trees able to capture the
 complex logic behind the legal texts while conserving the same structure as
 them.
+
+~~~~~~admonish info collapsible=true title="Recap of the current section"
+For reference, here is the final version of the Catala code consolidated at
+the end of this section of the tutorial.
+
+~~~
+{{#include ../examples/tutorial_end_2_2.catala_en}}
+~~~
+~~~~~~
