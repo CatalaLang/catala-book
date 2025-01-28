@@ -1,9 +1,50 @@
 # Conditional definitions and exceptions
 
+In this section, the tutorial introduces the killer feature of Catala
+when it comes to coding the law: exceptions in the definitions of variables.
+By the end of the section, you should understand the behavior of computations
+involving exceptions, and be able to structure groups of variable definitions
+according to their exceptional status and relative priority.
+
+This section of the tutorial builds up on the [previous one](2-1-basic-blocks.md),
+and will reuse the same running example, but all the Catala code necessary
+to run the example is included below for reference.
+
+> ```catala
+>declaration structure Individual:
+>  data income content money
+>  data number_of_children content integer
+>
+> declaration scope IncomeTaxComputation:
+>   input individual content Individual
+>   internal fixed_percentage content decimal
+>   output income_tax content money
+> ```
+>
+> #### Article 1
+>
+> The income tax for an individual is defined as a fixed percentage of the
+> individual's income over a year.
+>
+> ```catala
+> scope IncomeTaxComputation:
+>   definition income_tax equals
+>     individual.income * fixed_percentage
+> ```
+>
+> #### Article 2
+>
+> The fixed percentage mentioned at article 1 is equal to 20 %.
+>
+> ```catala
+> scope IncomeTaxComputation:
+>   definition fixed_percentage equals 20 %
+> ```
+
 ## Conditional definitions and exceptions
 
-So far so good, but specifications coming from legal text do not always
-neatly combine articles dans variable definitions. Sometimes, and this
+Specifications coming from legal text do not always
+neatly divide up each variable definition into its own article. Sometimes, and this
 is a very common pattern, a later article redefines a variable already
 defined previously, but with a twist in a certain exceptional situation.
 For instance, Article 3 of CTTC:

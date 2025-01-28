@@ -1,9 +1,7 @@
 # Basic blocks of a Catala program
 
 In this section, the tutorial introduces the basic blocks of a Catala program :
-the difference between law and code, data structures,
-
-scopes, variables and
+the difference between law and code, data structures, scopes, variables and
 formulas. By the end of the section, you should be able to write a simple Catala
 program equivalent to a single function with local variables whose definitions
 can refer to one another.
@@ -205,16 +203,38 @@ about rounding in Catala). About `individual.income`, we see that the `.` notati
 lets us access the `income` field of `individual`, which is actually a structure
 of type `Individual`.
 
-However, at this point we're still missing the definition of `fixed_percentage`.
-This is a common pattern when coding the law: the definitions for various
-variables are scattered in different articles. Fortunately, the Catala compiler
-automatically collects all the definitions for each scope and puts them
-in the right order. Here, even if we define `fixed_percentage` after
-`income_tax` in our source code, the Catala compiler will switch the order
-of the definitions internally because `fixed_percentage` is used in the
-definition of `income_tax`. More generally, the order of toplevel definitions
-and declarations in Catala source code files does not matter, and you can
-refactor code around freely without having to care about dependency order.
+Similarly to struct field access, Catala lets you inspect the contents of
+a enumeration value with pattern matching, as it is usual in functional programming
+language. Concretely, if `tax_credit` is a variable whose type is `TaxCredit` as
+declared above, then you can define the amount of a tax credit that depends
+on a number of eligible children with the following pattern matching:
+
+```catala
+match tax_credit with pattern
+-- NoTaxCredit: $0
+-- ChildrenTaxCredit of number_of_eligible_children:
+  $10,000 * number_of_eligible_children
+```
+
+In the branch `-- ChildrenTaxCredit of number_of_eligible_children:`, you know
+that `tax_credit` is in the variant `ChildrenTaxCredit`, and
+`number_of_eligible_children` lets you bind the `integer` payload of the
+variant. Like in a regular functional programming language, you can give any
+name you want to `number_of_eligible_children`, which is useful if you're
+nesting pattern matching and want to differentiate the contents of two different
+variant payloads.
+
+Now, back to our scope `IncomeTaxComputation`. at this point we're still missing
+the definition of `fixed_percentage`. This is a common pattern when coding the
+law: the definitions for various variables are scattered in different articles.
+Fortunately, the Catala compiler automatically collects all the definitions for
+each scope and puts them in the right order. Here, even if we define
+`fixed_percentage` after `income_tax` in our source code, the Catala compiler
+will switch the order of the definitions internally because `fixed_percentage`
+is used in the definition of `income_tax`. More generally, the order of toplevel
+definitions and declarations in Catala source code files does not matter, and
+you can refactor code around freely without having to care about dependency
+order.
 
 In this tutorial, we'll suppose that our fictional CTTC specification defines
 the percentage in the next article. The Catala code below should not surprise

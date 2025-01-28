@@ -3837,8 +3837,8 @@ if (typeof exports === 'object' && typeof module !== 'undefined') { module.expor
                 case_insensitive: false,
                 aliases: ['catala'],
                 keywords: {
-                    keyword: ['match', 'with pattern', 'but replace', 'we have',
-                        'let', 'in', 'such that', 'exists', 'among', 'for all',
+                    keyword: ['match', 'with', 'pattern', 'but', 'replace', 'we', 'have',
+                        'let', 'in', 'such', 'that', 'exists', 'among', 'for', 'all',
                         'of', 'if', 'then', 'else', 'initial',
                         'scope', 'depends on', 'result', 'declaration', 'includes',
                         'content', 'optional', 'structure', 'enumeration',
@@ -3846,10 +3846,10 @@ if (typeof exports === 'object' && typeof module !== 'undefined') { module.expor
                         'under condition', 'condition', 'data', 'consequence',
                         'fulfilled', 'equals', 'assertion', 'definition', 'state',
                         'label', 'exception', 'anything', 'list empty',
-                        'is maximum', 'is minimum', 'minimum of', 'maximum of',
+                        'is maximum', 'is minimum', 'minimum', 'maximum',
                         'combine', 'initially'],
                     built_in:
-                        ['list of', 'decimal', 'money', 'integer', 'date', 'duration'],
+                        ['list', 'decimal', 'money', 'integer', 'date', 'duration'],
                     operator: ['not', 'or', 'xor', 'and', 'year', 'month', 'day'],
                     literal: ['true', 'false'],
                 },

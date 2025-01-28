@@ -5,6 +5,5 @@ multilingual = false
 src = "src"
 title = "The Catala domain-specific programming language"
 
-[preprocessor.curly-quotes]
-
 [output.html]
+smart-punctuation = true
