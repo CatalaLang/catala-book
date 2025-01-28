@@ -35,10 +35,10 @@ text and formatting it in Markdown syntax inside the source code file.
 Without further ado, let us introduce the first bit of specification for
 our fictional income tax, Article 1 of the CTTC (Catala Tutorial Tax Code):
 
-> #### Article 1
->
-> The income tax for an individual is defined as a fixed percentage of the
-> individual's income over a year.
+```admonish quote title="Article 1"
+The income tax for an individual is defined as a fixed percentage of the
+individual's income over a year.
+```
 
 The spirit of writing code in Catala is to stick to the specification at all
 times in order to put the code snippets where they belong. Hence, we will
@@ -77,6 +77,7 @@ for the individual, the taxpayer that will be the subject of the tax
 computation. This individual has an income and a number of children, both pieces
 of information which will be needed for tax purposes :
 
+~~~admonish quote title="Declaring a structure"
 ```catala
 # The name of the structure, "Individual", must start with an
 # uppercase letter: this is the CamelCase convention.
@@ -90,6 +91,7 @@ declaration structure Individual:
   # letter, they follow the snake_case convention.
   data number_of_children content integer
 ```
+~~~
 
 This structure contains two data fields, `income` and `number_of_children`.
 Structures are useful to group together data that goes together. Usually, you
@@ -97,6 +99,7 @@ get one structure per concrete object on which the law applies (like the
 individual). It is up to you to decide how to group the data together, but we
 advise you to aim at optimizing code readability.
 
+~~~admonish tip title="Declaring an enumeration"
 Sometimes, the law gives an enumeration of different situations. These
 enumerations are modeled in Catala using an enumeration type, like:
 
@@ -117,6 +120,7 @@ In computer science terms, such an enumeration is called a "sum type" or simply
 an enum. The combination of structures and enumerations allow the Catala
 programmer to declare all possible shapes of data, as they are equivalent to
 the powerful notion of [algebraic data types](https://en.wikipedia.org/wiki/Algebraic_data_type).
+~~~
 
 Notice that these data structures that we have declared cannot always be
 attached naturally to a particular piece of the specification text. So, where to
@@ -141,6 +145,7 @@ Catala is called a *scope*. A scope is comprised of :
 
 For instance, Article 1 declares a scope for computing the income tax:
 
+~~~admonish quote title="Declaring a scope"
 ```catala
 declaration scope IncomeTaxComputation:
   # Scope names use the CamelCase naming convention, like names of structs
@@ -153,6 +158,7 @@ declaration scope IncomeTaxComputation:
   internal fixed_percentage content decimal
   output income_tax content money
 ```
+~~~
 
 The scope is the basic abstraction unit in Catala programs, and scopes
 can be composed. Since a function can call other functions, scopes can also
@@ -176,18 +182,18 @@ rules and finally code up Article 1!
 ## Defining variables and formulas
 
 Article 1 actually gives the formula to define the `income_tax` variable of
-scope `IncomeTaxComputation`.
+scope `IncomeTaxComputation`, which translates to the following Catala code:
 
-> #### Article 1
->
-> The income tax for an individual is defined as a fixed percentage of the
-> individual's income over a year.
->
-> ```catala
-> scope IncomeTaxComputation:
->   definition income_tax equals
->     individual.income * fixed_percentage
-> ```
+~~~admonish quote title="Article 1"
+ The income tax for an individual is defined as a fixed percentage of the
+ individual's income over a year.
+
+ ```catala
+ scope IncomeTaxComputation:
+   definition income_tax equals
+     individual.income * fixed_percentage
+ ```
+~~~
 
 Let us unpack the code above. Each `definition` of a variable  (here,
 `income_tax`) is attached to a scope that declares it (here,
@@ -203,6 +209,7 @@ about rounding in Catala). About `individual.income`, we see that the `.` notati
 lets us access the `income` field of `individual`, which is actually a structure
 of type `Individual`.
 
+~~~admonish tip title="Using enumerations"
 Similarly to struct field access, Catala lets you inspect the contents of
 a enumeration value with pattern matching, as it is usual in functional programming
 language. Concretely, if `tax_credit` is a variable whose type is `TaxCredit` as
@@ -223,6 +230,7 @@ variant. Like in a regular functional programming language, you can give any
 name you want to `number_of_eligible_children`, which is useful if you're
 nesting pattern matching and want to differentiate the contents of two different
 variant payloads.
+~~~
 
 Now, back to our scope `IncomeTaxComputation`. at this point we're still missing
 the definition of `fixed_percentage`. This is a common pattern when coding the
@@ -240,15 +248,15 @@ In this tutorial, we'll suppose that our fictional CTTC specification defines
 the percentage in the next article. The Catala code below should not surprise
 you at this point.
 
-> #### Article 2
->
-> The fixed percentage mentioned at article 1 is equal to 20 %.
->
-> ```catala
-> scope IncomeTaxComputation:
->   # Writing 20% is just an alternative for the decimal "0.20".
->   definition fixed_percentage equals 20 %
-> ```
+~~~admonish quote title="Article2"
+ The fixed percentage mentioned at article 1 is equal to 20 %.
+
+ ```catala
+ scope IncomeTaxComputation:
+   # Writing 20% is just an alternative for the decimal "0.20".
+   definition fixed_percentage equals 20 %
+ ```
+~~~
 
 ## Common values and computations in Catala
 
@@ -278,19 +286,21 @@ These choices has several consequences:
 * `money` multiplied (or divided) by `decimal` rounds the result to the nearest cent ;
 * `money` divided by `money` gives a `decimal` (that is not rounded whatsoever).
 
-Concretely, this gives:
 
+~~~admonish example title="Types, values and operations"
+Concretely, this gives:
 ```catala
 10 / 3 = 3.333333333...
 $10 / 3.0 = $3.33
 $20 / 3.0 = $6.67
 $10 / $3 = 3.33333333...
 ```
+~~~
 
 The Catala compiler will guide you into using the correct operations explicitly,
-by reporting compiler errors when that is not the case. For instance, when
-trying to add an `integer` and a `decimal`:
+by reporting compiler errors when that is not the case.
 
+~~~admonish bug title="Adding an `integer` and a `decimal`"
 ```text
 ┌─[ERROR]─
 │
@@ -318,6 +328,7 @@ trying to add an `integer` and a `decimal`:
 To fix this error, you need to use explicit casting, for instance by replacing
 `1` by `decimal of 1`. Refer to the [language reference](./5-catala.md) for all
 possible casting, operations and their associated semantics.
+~~~
 
 ## Checkpoint
 
