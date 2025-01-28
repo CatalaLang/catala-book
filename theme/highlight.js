@@ -3843,7 +3843,7 @@ if (typeof exports === 'object' && typeof module !== 'undefined') { module.expor
                         'scope', 'depends on', 'result', 'declaration', 'includes',
                         'content', 'optional', 'structure', 'enumeration',
                         'context', 'input', 'output', 'internal', 'rule',
-                        'under condition', 'condition', 'data', 'consequence',
+                        'under', 'condition', 'data', 'consequence',
                         'fulfilled', 'equals', 'assertion', 'definition', 'state',
                         'label', 'exception', 'anything', 'list empty',
                         'is maximum', 'is minimum', 'minimum', 'maximum',

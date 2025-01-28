@@ -77,7 +77,7 @@ for the individual, the taxpayer that will be the subject of the tax
 computation. This individual has an income and a number of children, both pieces
 of information which will be needed for tax purposes :
 
-~~~admonish quote title="Declaring a structure"
+~~~admonish note title="Declaring a structure"
 ```catala
 # The name of the structure, "Individual", must start with an
 # uppercase letter: this is the CamelCase convention.
@@ -145,7 +145,7 @@ Catala is called a *scope*. A scope is comprised of :
 
 For instance, Article 1 declares a scope for computing the income tax:
 
-~~~admonish quote title="Declaring a scope"
+~~~admonish note title="Declaring a scope"
 ```catala
 declaration scope IncomeTaxComputation:
   # Scope names use the CamelCase naming convention, like names of structs
@@ -187,7 +187,9 @@ scope `IncomeTaxComputation`, which translates to the following Catala code:
 ~~~admonish quote title="Article 1"
  The income tax for an individual is defined as a fixed percentage of the
  individual's income over a year.
+~~~
 
+~~~admonish note title="Defining a variable"
  ```catala
  scope IncomeTaxComputation:
    definition income_tax equals
@@ -300,7 +302,10 @@ $10 / $3 = 3.33333333...
 The Catala compiler will guide you into using the correct operations explicitly,
 by reporting compiler errors when that is not the case.
 
-~~~admonish bug title="Adding an `integer` and a `decimal`"
+~~~admonish bug title="Resolving typing errors on operations"
+For instance, typing to add an `integer` and a `decimal` gives the
+following error message from the Catala compiler:
+
 ```text
 ┌─[ERROR]─
 │
