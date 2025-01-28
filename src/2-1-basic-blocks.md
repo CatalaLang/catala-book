@@ -147,14 +147,14 @@ For instance, Article 1 declares a scope for computing the income tax:
 
 ~~~admonish note title="Declaring a scope"
 ```catala
+# Scope names use the CamelCase naming convention, like names of structs
+# or enums Scope variables, on the other hand, use the snake_case naming
+# convention, like struct fields.
 declaration scope IncomeTaxComputation:
-  # Scope names use the CamelCase naming convention, like names of structs
-  # or enums Scope variables, on the other hand, use the snake_case naming
-  # convention, like struct fields.
-  input individual content Individual
-  # This line declares an input variable of the scope, which is akin to
+  # The following line declares an input variable of the scope, which is akin to
   # a function parameter in computer science term. This is the piece of
   # data on which the scope will operate.
+  input individual content Individual
   internal tax_rate content decimal
   output income_tax content money
 ```
