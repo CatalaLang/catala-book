@@ -10,7 +10,7 @@
 - [Tutorial : computing your taxes](./2-0-tutorial.md)
     - [Basic blocks of a Catala program](2-1-basic-blocks.md)
     - [Conditional definitions and exceptions](2-2-conditionals-exceptions.md)
-    - [Going modular](2-3-modular.md)
+    - [Going modular with lists](2-3-list-modular.md)
 - [Setting up a Catala project](./3-project.md)
 - [FAQ: How to code the law?](./4-0-howto.md)
     - [Usual design patterns](./4-1-design.md)

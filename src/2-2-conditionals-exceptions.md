@@ -520,3 +520,10 @@ Catala is able to express a wide range of legal text logic, and helps keeping
 the code alongside its specification.
 
 ## Checkpoint
+
+This concludes the second section of the tutorial. In Catala, variables can be
+defined piece-wise, each piece of definition being activate by a condition. When
+multiple conditions apply, one can prioritize the conditional definitions using
+the `exception` and `label` keywords to form exception trees able to capture the
+complex logic behind the legal texts while conserving the same structure as
+them.
