@@ -7,3 +7,11 @@ title = "The Catala domain-specific programming language"
 
 [output.html]
 smart-punctuation = true
+additional-css = ["./mdbook-admonish.css"]
+
+[preprocessor]
+
+[preprocessor.admonish]
+command = "mdbook-admonish"
+assets_version = "3.0.2" # do not edit: managed by `mdbook-admonish install`
+
