@@ -118,7 +118,9 @@ declaration scope HouseholdTaxIndividualComputation:
   input individual content Individual
   input overseas_territories content boolean
   input current_date content date
-  internal deduction content money
+
+  income_tax_computation scope IncomeTaxComputation
+
   output household_tax content money
     state base
     state deduction
@@ -153,19 +155,17 @@ share of household tax owed by this individual.
 
 ```catala
 scope HouseholdTaxIndividualComputation:
-  definition deduction equals
-    (
-      output of IncomeTaxComputation with {
-        -- individual: individual
-        -- overseas_territories: overseas_territories
-        -- current_date: current_date
-      }
-    ).income_tax
+  definition income_tax_computation.individual equals
+    individual
+  definition income_tax_computation.overseas_territories equals
+    overseas_territories
+  definition income_tax_computation.current_date equals
+    current_date
 
   definition household_tax
     state deduction
   equals
-    household_tax - deduction
+    household_tax - income_tax_computation.income_tax
 ```
 
 ## Test

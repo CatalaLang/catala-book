@@ -404,12 +404,19 @@ activation pattern.
 Finally, we can recap the collection of exception branches as a tree of
 exceptions for our example:
 
-```text
-"article_2"───"article_3"──┬──"article_5"───"article_6"
-                           │
-                           └──"article_4"
-```
 
+```mermaid
+graph LR;
+A2["`article_2`"]
+A3["`article_3`"]
+A4["`article_4`"]
+A5["`article_5`"]
+A6["`article_6`"]
+A2-->A3
+A3-->A4
+A3-->A5
+A5-->A6
+```
 
 ## Grouping conditional definitions together for exceptions
 
@@ -449,10 +456,19 @@ this cas those two base definitions of article 2 to collectively be the base
 case for all subsequent exceptions in the exception tree of `tax_rate`! In a
 nutshell, we want the following exception tree:
 
-```text
-"article_2" (before 2000)┬───"article_3"──┬──"article_5"───"article_6"
-"article_2" (after 2000) ┘                │
-                                          └──"article_4"
+```mermaid
+graph LR;
+A2["`article_2 (before 2000)`"]
+A2bis["`article_2 (after 2000)`"]
+A3["`article_3`"]
+A4["`article_4`"]
+A5["`article_5`"]
+A6["`article_6`"]
+A2bis-->A3
+A2-->A3
+A3-->A4
+A3-->A5
+A5-->A6
 ```
 
 Catala is able to represent this exception tree, by grouping together

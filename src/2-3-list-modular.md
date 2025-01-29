@@ -224,8 +224,50 @@ Hence, we will drop the function variable `share_household_tax` presented above,
 and instead opt for creating a brand new scope for computing the share of household
 tax owed by an individual, `HouseholdTaxIndividualComputation`.
 
-## Linking scopes together
+## The missing scope : household tax computation for the individual
 
+The new scope, `HouseholdTaxIndividualComputation`, will have as input one
+individual and return as a result the amount of household tax held. However,
+because of article 8, the scope will also need to compute the amount of income
+tax owed by the individual, to deduct it from the household tax. The call
+graph between scope will then be the following:
+
+```mermaid
+%%{init: {"flowchart": {"htmlLabels": true}} }%%
+graph TD
+    A["`HouseholdTaxComputation`"]
+    B["`HouseholdTaxInvidualComputation`"]
+    C["`IncomeTaxComputation`"]
+    A-- calls multiple times -->B
+    B-- calls one time -->C
+```
+
+
+Hence, we will also need as input of `HouseholdTaxIndividualComputation` the
+inputs necessary for the `IncomeTaxComputation` scope of the [previous section
+of the tutorial](./2-2-conditionals-exceptions.md): `overseas_territory` and
+`current_date`.
+
+~~~admonish quote title="New scope declarations"
+```catala
+declaration scope HouseholdTaxComputation:
+  input individuals content list of Individual
+  input overseas_territories content boolean
+  input current_date content date
+
+  output household_tax content money
+
+declaration scope HouseholdTaxIndividualComputation:
+  input individual content Individual
+  input overseas_territories content boolean
+  input current_date content date
+  internal deduction content money
+  output household_tax content money
+```
+~~~
+
+
+## Linking scopes together through list mapping
 
 [^note]:The syntax for all list
 operations can be found in [the syntax sheat cheet](https://catalalang.github.io/catala/syntax.pdf)
