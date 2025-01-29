@@ -109,22 +109,63 @@ and half the amount per children.
 ```catala
 declaration scope HouseholdTaxComputation:
   input individuals content list of Individual
+  input overseas_territories content boolean
+  input current_date content date
+
   output household_tax content money
+
+declaration scope HouseholdTaxIndividualComputation:
+  input individual content Individual
+  input overseas_territories content boolean
+  input current_date content date
+  internal deduction content money
+  output household_tax content money
+    state base
+    state deduction
 ```
 
 ```catala
+scope HouseholdTaxIndividualComputation:
+  definition household_tax
+    state base
+  equals
+    $1000 * (1.0 + decimal of individual.number_of_children / 2.0)
+
 scope HouseholdTaxComputation:
   definition household_tax equals
-    let number_of_individuals equals number of individuals in
-    let number_of_children equals
-      sum integer
-        of individual.number_of_children for individual among individuals
-    in
-    $1000
-    * (
-      decimal of (number_of_children)
-      + decimal of (number_of_children) / 2.0
+    sum money
+      of (
+      (
+        output of HouseholdTaxIndividualComputation with {
+          -- individual: individual
+          -- overseas_territories: overseas_territories
+          -- current_date: current_date
+        }
+      ).household_tax
     )
+      for individual among individuals
+```
+
+### Article 8
+
+The amount of income tax paid by each individual can be deducted from the
+share of household tax owed by this individual.
+
+```catala
+scope HouseholdTaxIndividualComputation:
+  definition deduction equals
+    (
+      output of IncomeTaxComputation with {
+        -- individual: individual
+        -- overseas_territories: overseas_territories
+        -- current_date: current_date
+      }
+    ).income_tax
+
+  definition household_tax
+    state deduction
+  equals
+    household_tax - deduction
 ```
 
 ## Test

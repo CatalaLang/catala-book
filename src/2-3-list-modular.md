@@ -82,4 +82,103 @@ x + 2
 ```
 ~~~
 
-For the first step,
+For step 1, we simply need to get the lenght of the list `individuals`, which
+can be done through the syntax `number of individuals`[^note]. For step 2, we
+need to aggregate the number of children for all individuals, which can be done
+through the syntax `sum integer of individual.number_of_children for individual
+among individuals`. Notice the type indication (`integer`) for the `sum`, which
+indicates that if the list of individuals is empty, then the integer `0` should
+be returned. Finally, we can piece steps 1 and 2 for the step 3 which computes
+the amount of tax:
+
+~~~admonish note title="List lenght and aggregation"
+```catala
+scope HouseholdTaxComputation:
+  definition household_tax equals
+    let number_of_individuals equals number of individuals in
+    let number_of_children equals
+      sum integer
+        of individual.number_of_children for individual among individuals
+    in
+    $1000
+    * (
+      # "number_of_individuals" is an integer, but money can only be multiplied
+      # by decimals: we need to explicitly cast before using the value
+      decimal of number_of_individuals
+      + decimal of number_of_children / 2.0
+    )
+```
+~~~
+
+This implementation of article 7 is fairly direct and concise. It does the job,
+but notice a subtle shift between the text of article 7 and its Catala
+implementation: rather than aggregating separately the contribution of each
+individual and their children to the household tax, we count all individuals
+on one side, and all children on the other side. Addition is commutative
+and associative so this shift yields the same result. However, not following
+the spirit of the law in the implementation might not be future-proof, as we'll
+see just below...
+
+## Creating scopes for each relevant computation level and connecting them together
+
+Translating legal texts into executable code is often an emotional rollercoaster,
+as new requirements in later articles may completely break the invariants and
+structure of the implementation you used in earlier articles. Today, the
+Catala Tutorial Tax Code (CTTC) will be harsh on us, with the following
+fateful article:
+
+~~~admonish quote title="Article 8"
+The amount of income tax paid by each individual can be deducted from the
+share of household tax owed by this individual.
+~~~
+
+Quickly, we realize that to be able to deduct correctly the income tax
+for each individual, we need to first compute its individual share of the
+household tax, which we have not done in the implementation of article  7.
+Refactoring is needed!
+
+~~~admonish question title="Is it OK to refactor earlier code when coding a new article?"
+Yes it is!
+
+Theoretically, as Catala lets you structure the code by matching the
+structure of the legal text, adding new articles should not require changes
+in earlier blocks of code. This is the case for instance when a new article
+defines an exception to the base case of a variable, as we've experimented in
+the [second section of the tutorial](./2-2-conditionals-exceptions.md).
+
+But adding exceptions is not the only things new articles can introduce.
+In this case, we see that article 8 makes explicit a computation step
+that was implicit or hidden in article 7 (namely, the computation of the
+share of household tax for each individual). Making this computation step explicit
+implies giving it a first-class status with a Catala concept (a variable,
+a scope, etc.), which may not have been the case in the Catala code written before.
+Hence, it is normal to refactor earlier code to code up the new article 8.
+
+However, the goal of the refactoring is always to match up as precisely as
+possible the computation steps and the articles they are based on.
+~~~
+
+Now, there are several strategies to implement article 8, but not all are
+legally correct. One strategy could be to compute the total amount of income tax
+owed by all the individuals in the household, and substract that total amount of
+income tax from the the totam amount of household tax to perform the deduction.
+However, this strategy is incorrect, because the household tax deduction for one
+individual is implicitly capped by the amount of household tax due for this
+individual! This capping introduces a non-linearity in the formula that prevents
+rearranging the additions and substractions while keeping the same results in
+all configurations.
+
+So, we are stuck with explicitly decomposing the household tax computation
+into two steps: first, computing the share of household tax owed by each
+individual, and then aggregating the result of the first step for all individuals
+of the household. Naturally, the existing scope `HouseholdTaxComputation` is where
+the second step will happen. But where to put the first step?
+
+As Catala is a functional programming language, we could define an internal
+variable of the scope `HouseholdTaxComputation` that acts as a function to associate
+to each individual the share of household tax owed:
+
+
+[^note]:The syntax for all list
+operations can be found in [the syntax sheat cheet](https://catalalang.github.io/catala/syntax.pdf)
+or in the [language reference](./5-catala.md).
