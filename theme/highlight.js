@@ -3840,7 +3840,7 @@ if (typeof exports === 'object' && typeof module !== 'undefined') { module.expor
                     keyword: ['match', 'with', 'pattern', 'but', 'replace', 'we', 'have',
                         'let', 'in', 'such', 'that', 'exists', 'among', 'for', 'all',
                         'of', 'if', 'then', 'else', 'initial',
-                        'scope', 'depends on', 'result', 'declaration', 'includes',
+                        'scope', 'depends', 'on', 'result', 'declaration', 'includes',
                         'content', 'optional', 'structure', 'enumeration',
                         'context', 'input', 'output', 'internal', 'rule',
                         'under', 'condition', 'data', 'consequence',

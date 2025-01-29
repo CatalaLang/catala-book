@@ -22,7 +22,7 @@ Specifications coming from legal text do not always
 neatly divide up each variable definition into its own article. Sometimes, and this
 is a very common pattern, a later article redefines a variable already
 defined previously, but with a twist in a certain exceptional situation.
-For instance, Article 3 of CTTC:
+For instance, article 3 of CTTC:
 
 ~~~admonish quote title="Article 3"
 If the individual is in charge of 2 or more children, then the fixed
@@ -82,7 +82,7 @@ times. Here, however, our definition of `tax_rate` conflicts with the
 more general definition that we gave above. To correctly model situations like
 this, Catala allows us to define precedence of one conditional definitions
 over another. It is as simple as adding `exception` before the definition.
-For instance, here is a more correct version of the code for Article 3:
+For instance, here is a more correct version of the code for article 3:
 
 ~~~admonish quote title="Article 3"
 If the individual is in charge of 2 or more children, then the fixed
@@ -98,8 +98,8 @@ scope IncomeTaxComputation:
 ```
 ~~~
 
-With `exception`, the conditional definition at Article 3 will be picked over
-the base case at Article 1 when the individual has two children or more. This
+With `exception`, the conditional definition at article 3 will be picked over
+the base case at article 1 when the individual has two children or more. This
 `exception` mechanism is modeled on the logic of legal drafting: it is the key
 mechanism that lets us split our variables definition to match the structure of
 the specification. Without `exception`, it is not possible to use the literate
@@ -129,8 +129,8 @@ As described above, putting `exception` in a Catala program alters the behavior
 of the program, by providing a priority between conditional definitions of a
 variable that Catala can use at execution time when hesitating between multiple
 definitions that apply at the same time. So far, we have seen a very simple
-situation with one base definition (in Article 2) and a single exception (in
-Article 3). But the `exception` mechanism can be much broader and help set
+situation with one base definition (in article 2) and a single exception (in
+article 3). But the `exception` mechanism can be much broader and help set
 different priority lines among dozens of different conditional definitions for a
 same variable. Let us explore this mechanism on a more complex example.
 
@@ -203,7 +203,7 @@ the taxpayer to pay $0 in tax rather than 15 % of their income, we can make the
 legal decision to prioritize the exception of article 4 over the exception of
 article 3. Now, let us see how to write that with Catala. Because article 2 is
 the base case for the exception of article 3, and article 3 is the base case for
-the exception of Article 4, we need to give the definitions of `tax_rate` at
+the exception of article 4, we need to give the definitions of `tax_rate` at
 articles 2 and 3 an explicit `label` so that the `exception` keywords in article
 3 and 4 can refer to those labels:
 

@@ -33,7 +33,7 @@ of specification into the Catala program amounts to copy-pasting the
 text and formatting it in Markdown syntax inside the source code file.
 
 Without further ado, let us introduce the first bit of specification for
-our fictional income tax, Article 1 of the CTTC (Catala Tutorial Tax Code):
+our fictional income tax, article 1 of the CTTC (Catala Tutorial Tax Code):
 
 ```admonish quote title="Article 1"
 The income tax for an individual is defined as a fixed percentage of the
@@ -42,8 +42,8 @@ individual's income over a year.
 
 The spirit of writing code in Catala is to stick to the specification at all
 times in order to put the code snippets where they belong. Hence, we will
-introduce below the Catala code snippets that translate Article 1, which
-should be put just below Article 1 in the Catala source code file.
+introduce below the Catala code snippets that translate article 1, which
+should be put just below article 1 in the Catala source code file.
 
 These code
 snippets should describe the program that computes the income tax, and contain
@@ -53,7 +53,7 @@ to dive into Catala as a programming language.
 
 ```catala
 # We will soon learn what to write here in order to translate the meaning
-# of Article 1 into Catala code.
+# of article 1 into Catala code.
 
 # To create a block of Catala code in your file, bound it with Markdown-style
 # "```catala" and "```" delimiters. You can write comments in Catala code blocks
@@ -63,7 +63,7 @@ to dive into Catala as a programming language.
 ## Setting up data structures
 
 
-The content of Article 1 assumes a lot of implicit context: there exists an
+The content of article 1 assumes a lot of implicit context: there exists an
 individual with an income, as well as an income tax that the individual has
 to pay each year. Even if this implicit context is not verbatim in the law,
 we have to explicit it in the computer code, in the form of data structures
@@ -143,7 +143,7 @@ Catala is called a *scope*. A scope is comprised of :
 * internal variables (similar to local variables),
 * output variables (that together form the return type of the function).
 
-For instance, Article 1 declares a scope for computing the income tax:
+For instance, article 1 declares a scope for computing the income tax:
 
 ~~~admonish note title="Declaring a scope"
 ```catala
@@ -176,7 +176,7 @@ Note that a variable can also be simultaneously an input and an output of the
 scope, in that case it should be annotated with `input output`.
 
 Once the scope has been declared, we can use it to define our computation
-rules and finally code up Article 1!
+rules and finally code up article 1!
 
 
 ## Defining variables and formulas
