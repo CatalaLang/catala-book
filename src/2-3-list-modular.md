@@ -119,7 +119,7 @@ and associative so this shift yields the same result. However, not following
 the spirit of the law in the implementation might not be future-proof, as we'll
 see just below...
 
-## Creating scopes for each relevant computation level and connecting them together
+## Refactoring to account for evolving requirements
 
 Translating legal texts into executable code is often an emotional rollercoaster,
 as new requirements in later articles may completely break the invariants and
@@ -176,7 +176,55 @@ the second step will happen. But where to put the first step?
 
 As Catala is a functional programming language, we could define an internal
 variable of the scope `HouseholdTaxComputation` that acts as a function to associate
-to each individual the share of household tax owed:
+to each individual the share of household tax owed.
+
+~~~admonish note title="Declaring, defining and using a variable that is a function"
+The scope declaration could be modified like this:
+```catala
+declaration scope HouseholdTaxComputation:
+  input individuals content list of Individual
+
+  internal share_household_tax content money
+    # The following line introduces a parameter to the variable, turning
+    # it into a function. "individual" is set as the name of the parameter,
+    # a name that is then enforced everywhere in the function definitions.
+    # Indeed, lawyers reading Catala code have trouble with function parameters
+    # changing names throughout the code.
+    depends on individual content Individual
+  output household_tax content money
+```
+
+Then, the definition of `household_tax` could be done as follows next to article 7:
+
+```catala
+scope HouseholdTaxComputation:
+  # The definition refers to the function parameter with "of individual"
+  definition share_household_tax of individual equals
+     1000$ * (1.0 + decimal of individual.number_of_children / 2.0)
+
+  # To aggregate the shares, we call the function "share_household_tax"
+  # on all the individuals of the input.
+  definition household_tax equals
+    sum money share_household_tax of individual
+      for individual among individuals
+```
+~~~
+
+This refactoring works for making explicit the computation step of the
+individual share of household tax in article 7, but it is not the most
+future-proof strategy. Indeed, as it already happened for article 8, subsequent
+articles are likely to introduce refinements and exceptions for this share of
+household tax. It is possible to have conditional definitions and exceptions for
+variables that are functions, but it is preferable to use a fully-fledged scopes
+instead. The scope is more readable by lawyers and has better convenient
+features to add input and output parameters, define exceptions for its local
+variables, etc.
+
+Hence, we will drop the function variable `share_household_tax` presented above,
+and instead opt for creating a brand new scope for computing the share of household
+tax owed by an individual, `HouseholdTaxIndividualComputation`.
+
+## Linking scopes together
 
 
 [^note]:The syntax for all list
