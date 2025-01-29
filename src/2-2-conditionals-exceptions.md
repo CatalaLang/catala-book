@@ -382,7 +382,7 @@ the income is greater than $100,000).
 
 However, the legal text can sometimes omit this key information, or make it
 implicit, creating a danger of putting the wrong conditional in the Catala
-code in presence of exception branches. Suppose we had ommitted the income
+code in presence of exception branches. Suppose we had omitted the income
 condition in the code for article 6:
 
 ```catala
@@ -419,7 +419,7 @@ yet another exceptional shenanigan. Suppose than in the year 2000, a big tax
 reform changes the base taxation rate of article 2 with a slight increase:
 
 ~~~admonish quote title="Article 2 (new version after 2000)"
-The fixed percentage mentioned at article 1 is equal to 21 % %.
+The fixed percentage mentioned at article 1 is equal to 21 %.
 ~~~
 
 Now, there are several strategies to deal with legal updates in Catala, that
@@ -493,11 +493,10 @@ the code alongside its specification.
 ## Checkpoint
 
 This concludes the second section of the tutorial. In Catala, variables can be
-defined piece-wise, each piece of definition being activate by a condition. When
+defined piece-wise, each piece of definition being activated by a condition. When
 multiple conditions apply, one can prioritize the conditional definitions using
 the `exception` and `label` keywords to form exception trees able to capture the
-complex logic behind the legal texts while conserving the same structure as
-them.
+complex logic behind the legal texts while matching their structure.
 
 ~~~~~~admonish info collapsible=true title="Recap of the current section"
 For reference, here is the final version of the Catala code consolidated at
