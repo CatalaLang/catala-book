@@ -91,7 +91,7 @@ indicates that if the list of individuals is empty, then the integer `0` should
 be returned. Finally, we can piece steps 1 and 2 for the step 3 which computes
 the amount of tax:
 
-~~~admonish note title="List lenght and aggregation"
+~~~admonish note title="Computing the lenght of a list and aggregating amounts"
 ```catala
 scope HouseholdTaxComputation:
   definition household_tax equals
@@ -230,7 +230,7 @@ The new scope, `HouseholdTaxIndividualComputation`, will have as input one
 individual and return as a result the amount of household tax held. However,
 because of article 8, the scope will also need to compute the amount of income
 tax owed by the individual, to deduct it from the household tax. The call
-graph between scope will then be the following:
+graph between scopes will then be the following:
 
 ```mermaid
 %%{init: {"flowchart": {"htmlLabels": true}} }%%
@@ -246,28 +246,191 @@ graph TD
 Hence, we will also need as input of `HouseholdTaxIndividualComputation` the
 inputs necessary for the `IncomeTaxComputation` scope of the [previous section
 of the tutorial](./2-2-conditionals-exceptions.md): `overseas_territory` and
-`current_date`.
+`current_date` This gives the following scope declaration:
 
-~~~admonish quote title="New scope declarations"
+~~~admonish quote title="Initial declaration of `HouseholdTaxIndividualComputation`"
 ```catala
-declaration scope HouseholdTaxComputation:
-  input individuals content list of Individual
-  input overseas_territories content boolean
-  input current_date content date
-
-  output household_tax content money
-
 declaration scope HouseholdTaxIndividualComputation:
   input individual content Individual
   input overseas_territories content boolean
   input current_date content date
-  internal deduction content money
+
   output household_tax content money
 ```
 ~~~
 
+Now, we know that we'll need to call `IncomeTaxComputation` exactly one time to
+compute the deduction for `household_tax`. There is a bespoke method designed
+for lawyer-readbility to do exactly that in Catala!
+
+~~~admonish note title="Declaring a static sub-scope call and defining the sub-scope call's inputs"
+```catala
+# The single, static sub-scope call to "IncomeTaxComputation" has to be
+# declared in "HouseholdTaxIndividualComputation", so we repeat the
+# scope declaration here with a new line.
+declaration scope HouseholdTaxIndividualComputation:
+  input individual content Individual
+  input overseas_territories content boolean
+  input current_date content date
+
+  # The following line declares a static, single call to the sub-scope
+  # "IncomeTaxComputation" with the name "income_tax_computation".
+  income_tax_computation scope IncomeTaxComputation
+
+  output household_tax content money
+
+scope HouseholdTaxIndividualComputation:
+  # Inside a "scope" block, we have to define the arguments to the sub-scope
+  # call "income_tax_computation": "individual", "overseas_territories" and
+  # "overseas_territories".
+  definition income_tax_computation.individual equals
+    individual
+  # The "individual" given as an argument to "income_tax_computation",
+  # which is the call to "IncomeTaxComputation", is the same "individual"
+  # that is the input to "HouseholdTaxIndividualComputation".
+  definition income_tax_computation.overseas_territories equals
+    overseas_territories
+  # These lines can appear totological but they are essential for plugging
+  # scopes to sub-scopes in an non-ambiguous way. It is implicit that we evaluate
+  # the income tax for deduction at the same date as we evaluate the amount of
+  # household tax, but this line makes it explicit. Sometimes, you might want
+  # to call the income tax computation at an earlier date (like "current_date
+  # - 5 year") because of a legal requirement, and this is where you specify
+  # this!
+  definition income_tax_computation.current_date equals
+    current_date
+```
+
+That's it, the sub-scope call has been completely set up! The result
+is now accessible at `income_tax_computation.income_tax`, since
+"income_tax" is the output variable of the sub-scope `IncomeTaxComputation`.
+~~~
+
+At this point, it would be easy to define `household_tax` in a single sweep
+inside `HouseholdTaxIndividualComputation`:
+
+```catala
+scope HouseholdTaxIndividualComputation:
+  definition household_tax equals
+    let tax equals
+      1000$ * (1.0 + decimal of individual.number_of_children / 2.0)
+    in
+    let deduction equals income_tax_computation.income_tax in
+    # Don't forget to cap the deduction!
+    if deduction > tax then $0 else tax - deduction
+```
+
+However, doing so merge together the specifications of article 7 and article 8,
+which goes against the spirit of Catala to split the code in the same structure
+as the legal tex. So, instead of using two local variables inside the definition
+of `household_tax`, we want to split the formula into two distinct `definition`.
+Intuitively, this imply creating two scope variables in
+`HouseholdTaxIndividualComputation`, `household_tax_base` (for article 7) and
+`household_tax_with_deduction` (article 8). But really, this amounts to giving
+two consecutive states for the variable `household_tax`, and lawyers understand
+the code better this way! So Catala has a feature to let you exactly that:
+
+~~~admonish note title="Defining multiple states for the same variable"
+```catala
+declaration scope HouseholdTaxIndividualComputation:
+  input individual content Individual
+  input overseas_territories content boolean
+  input current_date content date
+
+  income_tax_computation scope IncomeTaxComputation
+
+  output household_tax content money
+    # The different states for variable "household_tax" are declared here,
+    # in the exact order in which you expect them to be computed!
+    state base
+    state with_deduction
+```
+
+With our two states `base` and `with_deduction`, we can code up articles 7 and
+8:
+
+#### Article 7
+
+When several individuals live together, they are collectively subject to
+the household tax. The household tax owed is $1000 per individual of the household,
+and half the amount per children.
+
+```catala
+scope HouseholdTaxIndividualComputation:
+  definition household_tax state base equals
+    $1000 * (1.0 + decimal of individual.number_of_children / 2.0)
+```
+
+#### Article 8
+
+The amount of income tax paid by each individual can be deducted from the
+share of household tax owed by this individual.
+
+```catala
+scope HouseholdTaxIndividualComputation:
+  definition household_tax state with_deduction equals
+    # Below, "household_tax" refers to the value of "household_tax" computed
+    # in the previous state, so here the state "base" which immediately precedes
+    # the state "with_deduction" in the declaration.
+    if income_tax_computation.income_tax > household_tax then $0
+    else
+      household_tax - income_tax_computation.income_tax
+    # It is also possible to refer to variable states explicitely with the
+    # syntax "household_tax state base".
+```
+
+Elsewhere in `HouseholdTaxIndividualComputation`, using `household_tax` will
+implicitly refer to the last state of the variable (so here `with_deduction`),
+matching the usual implicit convention in legal texts.
+~~~
+
+This completes our implementation of `HouseholdTaxIndividualComputation`! Its
+output variable `household_tax` now contains the share of household tax owed by
+each individual of the household, with the correct income tax deduction.
+We can now use it in the computation of the global household tax in
+`HouseholdTaxComputation`.
 
 ## Linking scopes together through list mapping
+
+We can now finish coding up article 7 by adding together each share of the
+household tax owzed by all the individuals of the household. We will do
+that through list aggregation, as previously, but the elements of the list to
+aggregate are now the result of calling `HouseholdTaxIndividualComputation`
+on each individual. Previously, we have showed how to call a sub-scope
+statically and exactly one time. But here, this is not what we want: we want
+to call the sub-scope as many times as there are individuals in the household.
+We then have to use a different method for calling the sub-scope:
+
+~~~admonish note title="Calling a sub-scope dynamically"
+With all our refactorings, the declaration of the scope `HouseholdTaxComputation`
+can be simplified (we don't need the function variable `share_household_tax`
+anymore):
+
+```catala
+declaration scope HouseholdTaxComputation:
+  input individuals content list of Individual
+  output household_tax content money
+```
+
+Then, the definition of `household_tax` could be re-written as follows next
+to article 7:
+
+```catala
+scope HouseholdTaxComputation:
+  definition household_tax equals
+    sum money
+      of (
+      (
+        output of HouseholdTaxIndividualComputation with {
+          -- individual: individual
+          -- overseas_territories: overseas_territories
+          -- current_date: current_date
+        }
+      ).household_tax
+    )
+      for individual among individuals
+```
+~~~
 
 [^note]:The syntax for all list
 operations can be found in [the syntax sheat cheet](https://catalalang.github.io/catala/syntax.pdf)

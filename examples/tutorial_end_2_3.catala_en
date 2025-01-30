@@ -123,7 +123,7 @@ declaration scope HouseholdTaxIndividualComputation:
 
   output household_tax content money
     state base
-    state deduction
+    state with_deduction
 ```
 
 ```catala
@@ -163,9 +163,11 @@ scope HouseholdTaxIndividualComputation:
     current_date
 
   definition household_tax
-    state deduction
+    state with_deduction
   equals
-    household_tax - income_tax_computation.income_tax
+    if income_tax_computation.income_tax > household_tax then $0
+    else
+      household_tax - income_tax_computation.income_tax
 ```
 
 ## Test
