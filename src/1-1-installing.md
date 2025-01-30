@@ -35,7 +35,8 @@ $ bash -c "sh <(curl -fsSL https://opam.ocaml.org/install.sh)"
 
 Then, initialize `opam`:
 ```bash
-$ opam init --bare
+$ opam init -c 5.0.0
+$ eval $(opam env)
 ```
 
 ### Getting Catala
@@ -43,7 +44,7 @@ $ opam init --bare
 Run the following command to install the latest Catala version via `opam`:
 
 ```bash
-$ opam pin add catala git+https://github.com/CatalaLang/catala -y
+$ opam pin catala.dev git+https://github.com/CatalaLang/catala -y
 ```
 
 Once this finishes, the Catala compiler (and its build system) should
@@ -57,7 +58,7 @@ The VSCode extension requires the Catala's Language Server Protocol to be instal
 This can be done by running:
 
 ```bash
-$ opam pin add catala-lsp git+https://github.com/CatalaLang/catala-language-server -y
+$ opam pin catala-lsp.dev git+https://github.com/CatalaLang/catala-language-server -y
 ```
 
 ### Getting the VSCode extension
@@ -77,7 +78,7 @@ installed, you will need to load a WSL VSCode window by pressing F1
 
 Run the following command:
 ```bash
-$ opam pin add catala git+https://github.com/CatalaLang/catala-format -y
+$ opam pin catala-format.dev git+https://github.com/CatalaLang/catala-format -y
 ```
 
 _Note_: this installation will take some time as it requires a Rust
@@ -105,7 +106,7 @@ instructions: https://opam.ocaml.org/doc/Install.html
 
 Then, initialize `opam`:
 ```bash
-$ opam init --bare
+$ opam init -c 5.0.0
 ```
 
 ### Getting Catala
@@ -115,7 +116,7 @@ Windows. However, the Catala's lsp server bundles a subset of Catala
 which is fine. This may be installed the same way as Linux/WSL2:
 
 ```bash
-$ opam pin add catala git+https://github.com/CatalaLang/catala-lsp -y
+$ opam pin git+https://github.com/CatalaLang/catala-lsp -y
 ```
 
 ### Setting up the Catala LSP server
