@@ -112,7 +112,15 @@ declaration scope HouseholdTaxComputation:
   input overseas_territories content boolean
   input current_date content date
 
+  internal shares_of_household_tax
+    content list of HouseholdTaxIndividualComputation
+  internal total_deduction content money
+    state base
+    state capped
+
   output household_tax content money
+    state base
+    state deduction
 
 declaration scope HouseholdTaxIndividualComputation:
   input individual content Individual
@@ -122,33 +130,34 @@ declaration scope HouseholdTaxIndividualComputation:
   income_tax_computation scope IncomeTaxComputation
 
   output household_tax content money
-    state base
-    state with_deduction
+  output deduction content money
 ```
 
 ```catala
 scope HouseholdTaxIndividualComputation:
+  definition household_tax equals
+    $10000 * (1.0 + decimal of individual.number_of_children / 2.0)
+
+scope HouseholdTaxComputation:
+  definition shares_of_household_tax equals
+    (
+      output of HouseholdTaxIndividualComputation with {
+        -- individual: individual
+        -- overseas_territories: overseas_territories
+        -- current_date: current_date
+      }
+    )
+      for individual among individuals
+
   definition household_tax
     state base
   equals
-    $1000 * (1.0 + decimal of individual.number_of_children / 2.0)
-
-scope HouseholdTaxComputation:
-  definition household_tax equals
     sum money
-      of (
-      (
-        output of HouseholdTaxIndividualComputation with {
-          -- individual: individual
-          -- overseas_territories: overseas_territories
-          -- current_date: current_date
-        }
-      ).household_tax
-    )
-      for individual among individuals
+      of share_of_household_tax.household_tax
+      for share_of_household_tax among shares_of_household_tax
 ```
 
-### Article 8
+## Article 8
 
 The amount of income tax paid by each individual can be deducted from the
 share of household tax owed by this individual.
@@ -162,12 +171,36 @@ scope HouseholdTaxIndividualComputation:
   definition income_tax_computation.current_date equals
     current_date
 
-  definition household_tax
-    state with_deduction
-  equals
-    if income_tax_computation.income_tax > household_tax then $0
+  definition deduction equals
+    if income_tax_computation.income_tax > household_tax then household_tax
     else
-      household_tax - income_tax_computation.income_tax
+      income_tax_computation.income_tax
+
+scope HouseholdTaxComputation:
+  definition total_deduction
+    state base
+  equals
+    sum money
+      of share_of_household_tax.deduction
+      for share_of_household_tax among shares_of_household_tax
+
+  definition household_tax
+    state deduction
+  equals
+    if total_deduction > household_tax then $0
+    else household_tax - total_deduction
+```
+
+## Article 9
+
+The deduction granted at article 8 is capped at $8,500 for the whole household.
+
+```catala
+scope HouseholdTaxComputation:
+  definition total_deduction
+    state capped
+  equals
+    if total_deduction > $8,500 then $8,500 else total_deduction
 ```
 
 ## Test
@@ -184,6 +217,25 @@ scope Test:
           -- income: $20,000
           -- number_of_children: 0
         }
+      -- overseas_territories: false
+      -- current_date: |1999-01-01|
+    }
+
+declaration scope TestHousehold:
+  output computation content HouseholdTaxComputation
+
+scope TestHousehold:
+  definition computation equals
+    output of HouseholdTaxComputation with {
+      -- individuals:
+        [ Individual {
+            -- income: $15,000
+            -- number_of_children: 0
+          } ;
+          Individual {
+            -- income: $80,000
+            -- number_of_children: 2
+          } ]
       -- overseas_territories: false
       -- current_date: |1999-01-01|
     }
