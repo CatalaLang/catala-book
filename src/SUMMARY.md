@@ -13,8 +13,8 @@
     - [Going modular with lists](2-3-list-modular.md)
 - [Setting up a Catala project](./3-project.md)
 - [FAQ: How to code the law?](./4-0-howto.md)
-    - [Usual design patterns](./4-1-design.md)
-    - [Collaborating with lawyers](./4-2-collaborating.md)
+    - [General questions](./4-1-general.md)
+    - [Catala-specific questions](./4-2-catala-specific.md)
 
 # Reference guide
 

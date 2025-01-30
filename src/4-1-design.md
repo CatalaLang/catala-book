@@ -1,1 +1,0 @@
-# Usual design patterns

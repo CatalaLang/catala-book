@@ -206,7 +206,7 @@ the classic arithmetic operators. Here, `*` means multiplying an amount of
 each operator depends on the types of values it is applied on. For instance,
 here, because a value of the `money` type is always an integer number of cents,
 `*` rounds the result of the multiplication to the nearest cent to provide the
-final value of type `money` (see [the FAQ](./4-1-design.md) for more information
+final value of type `money` (see [the FAQ](./4-2-catala-specific.md) for more information
 about rounding in Catala). About `individual.income`, we see that the `.` notation
 lets us access the `income` field of `individual`, which is actually a structure
 of type `Individual`.

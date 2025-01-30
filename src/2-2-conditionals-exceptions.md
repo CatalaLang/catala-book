@@ -441,7 +441,7 @@ The fixed percentage mentioned at article 1 is equal to 21 %.
 ~~~
 
 Now, there are several strategies to deal with legal updates in Catala, that
-are summed up in the [how to section of this book](./4-1-design.md). But here,
+are summed up in the [how to section of this book](./4-2-catala-specific.md). But here,
 we'll suppose that we want both versions of the law (before and after 2000)
 to coexist in the same Catala program. This choice leads us to introduce the
 current date as a new input of the scope `IncomeTaxComputation`:
