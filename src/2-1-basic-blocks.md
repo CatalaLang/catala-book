@@ -420,6 +420,16 @@ We can now check that `$4,000 = $20,000 * 20%`; the result is correct.
 Use this test to regularly play with the code during the tutorial and inspect
 its results under various input scenarios. This will help you understand
 the behavior of Catala programs, and spot errors in your code 😀
+
+You can also check that there is no syntax or typing error in your code,
+without testing it, with the following command:
+
+```text
+$ catala typecheck tutorial.catala_en
+┌─[RESULT]─
+│ Typechecking successful!
+└─
+```
 ~~~
 
 ## Checkpoint

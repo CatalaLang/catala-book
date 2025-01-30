@@ -253,7 +253,18 @@ Thanks to labels, we can define *chains* of exceptions, where each definition is
 the exception to the previous one, and the base case for the next one. This
 pattern is the most usual in legal texts, and its behavior is straightfoward:
 when multiple definitions apply, pick the one with the highest priority in the
-chain. But sometimes, it's not possible to arrange exceptions in a chain,
+chain. Here's a representation of the exception chain in our example so far:
+
+```mermaid
+graph LR;
+A2["`article_2`"]
+A3["`article_3`"]
+A4["`article_4`"]
+A2-->A3
+A3-->A4
+```
+
+But sometimes, it's not possible to arrange exceptions in a chain,
 since legal interpretation leads to different *branches* of exceptions.
 
 ## Branches of exceptions
@@ -458,14 +469,17 @@ nutshell, we want the following exception tree:
 
 ```mermaid
 graph LR;
+subgraph article_2
+direction TB
 A2["`article_2 (before 2000)`"]
 A2bis["`article_2 (after 2000)`"]
+end
 A3["`article_3`"]
 A4["`article_4`"]
 A5["`article_5`"]
 A6["`article_6`"]
-A2bis-->A3
-A2-->A3
+A2~~~A2bis
+article_2-->A3
 A3-->A4
 A3-->A5
 A5-->A6
