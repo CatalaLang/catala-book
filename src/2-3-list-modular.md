@@ -208,7 +208,7 @@ Then, the definition of `household_tax` could be done as follows next to article
 scope HouseholdTaxComputation:
   # The definition refers to the function parameter with "of individual"
   definition share_household_tax of individual equals
-     1000$ * (1.0 + decimal of individual.number_of_children / 2.0)
+     $10,000 * (1.0 + decimal of individual.number_of_children / 2.0)
 
   # To aggregate the shares, we call the function "share_household_tax"
   # on all the individuals of the input.
@@ -321,18 +321,18 @@ inside `HouseholdTaxIndividualComputation`:
 scope HouseholdTaxIndividualComputation:
   definition household_tax equals
     let tax equals
-      1000$ * (1.0 + decimal of individual.number_of_children / 2.0)
+      $10,000 * (1.0 + decimal of individual.number_of_children / 2.0)
     in
     let deduction equals income_tax_computation.income_tax in
     # Don't forget to cap the deduction!
     if deduction > tax then $0 else tax - deduction
 ```
 
-However, doing so merge together the specifications of article 7 and article 8,
+However, doing so merges together the specifications of article 7 and article 8,
 which goes against the spirit of Catala to split the code in the same structure
-as the legal tex. So, instead of using two local variables inside the definition
+as the legal text. So, instead of using two local variables inside the definition
 of `household_tax`, we want to split the formula into two distinct `definition`.
-Intuitively, this imply creating two scope variables in
+Intuitively, this implies creating two scope variables in
 `HouseholdTaxIndividualComputation`, `household_tax_base` (for article 7) and
 `household_tax_with_deduction` (article 8). But really, this amounts to giving
 two consecutive states for the variable `household_tax`, and lawyers understand
@@ -495,14 +495,14 @@ declaration scope HouseholdTaxIndividualComputation:
 #### Article 7
 
 When several individuals live together, they are collectively subject to
-the household tax. The household tax owed is $1000 per individual of the household,
+the household tax. The household tax owed is $10,000 per individual of the household,
 and half the amount per children.
 
 
 ```catala
 scope HouseholdTaxIndividualComputation:
   definition household_tax equals
-    $10000 * (1.0 + decimal of individual.number_of_children / 2.0)
+    $10,000 * (1.0 + decimal of individual.number_of_children / 2.0)
 
 scope HouseholdTaxComputation:
   definition shares_of_household_tax equals
