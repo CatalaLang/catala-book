@@ -5,7 +5,9 @@
 # User guide
 
 - [Getting started](./1-0-getting_started.md)
-    - [Installing Catala on your machine](./1-1-installing.md)
+    - [Installing Catala on your machine](./1-1-0-installing.md)
+        - [Linux/Mac/WSL](./1-1-1-linux-mac-wsl.md)
+        - [Windows](./1-1-2-windows.md)
     - [Creating your first Catala program](./1-2-first.md)
 - [Tutorial : computing your taxes](./2-0-tutorial.md)
     - [Basic blocks of a Catala program](2-1-basic-blocks.md)
@@ -23,5 +25,5 @@
 # Reference guide
 
 - [The Catala language](./5-catala.md)
-- [The `clerk` build system](./6-clerk.md)
-- [The `catala` compiler](./7-compiler.md)
+- [The `catala` compiler](./6-compiler.md)
+- [The `clerk` build system](./7-clerk.md)

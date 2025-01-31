@@ -1,7 +1,10 @@
 # Introduction
 
 Welcome to the *Catala domain-specific programming language*, an introductory
-book about Catala. The Catala domain-specific language lets you annotate a legal
+book about Catala!
+
+~~~admonish abstract title="TL;DR"
+The Catala domain-specific language lets you annotate a legal
 specification with executable and deployable code in an efficient,
 high-assurance fashion. Automating the enforcement of a law or regulation
 through the use of a computer program is not neutral for the Rule of Law as well
@@ -13,11 +16,14 @@ modular abstractions inspired by functional programming. But most importantly,
 it enables real collaboration between lawyers and computer scientists by
 allowing the practice of *pair programming* through *literate programming* for
 writing and updating the programs and their legal specifications.
+~~~
 
 ## Who Catala is for
 
+~~~admonish warning title="Catala is not a general-purpose programming language"
 Catala is a domain-specific programming language, hence its use is targeted to a
 specific class of users and organizations.
+~~~
 
 ### Multi-disciplinary teams
 
@@ -117,16 +123,19 @@ it, although parts of it will not be relevant to you. You might checkout instead
 introductory articles that set up the context around computer code, translating
 law to computer code and introduce the specificities of Catala:
 
->  * James Grimmelmann. 2023. "[The Structure and Legal Interpretation of
->  Computer Programs](https://journalcrcl.org/crcl/article/view/19/13)". *Journal
->  of Cross-Disciplinary Research in Computational Law* 1 (3).
-> * Liane Huttner, Denis Merigoux. 2022. "[Catala: Moving Towards the Future of
-> Legal Expert Systems](https://inria.hal.science/hal-02936606v3/document)".
-> *Artificial Intelligence and Law*.
-> * Sarah B. Lawsky. 2022. "[Coding the Code: Catala and Computationally
->   Accessible Tax
->   Law](https://papers.ssrn.com/sol3/Delivery.cfm/SSRN_ID4291177_code337501.pdf?abstractid=4291177&mirid=1)". 75 *SMU
->   Law Review* 535.
+
+~~~admonish examples title="Lawyer-friendly publications about Catala and coding the law"
+* James Grimmelmann. 2023. "[The Structure and Legal Interpretation of
+ Computer Programs](https://journalcrcl.org/crcl/article/view/19/13)". *Journal
+ of Cross-Disciplinary Research in Computational Law* 1 (3).
+* Liane Huttner, Denis Merigoux. 2022. "[Catala: Moving Towards the Future of
+Legal Expert Systems](https://inria.hal.science/hal-02936606v3/document)".
+*Artificial Intelligence and Law*.
+* Sarah B. Lawsky. 2022. "[Coding the Code: Catala and Computationally
+  Accessible Tax
+  Law](https://papers.ssrn.com/sol3/Delivery.cfm/SSRN_ID4291177_code337501.pdf?abstractid=4291177&mirid=1)". 75 *SMU
+  Law Review* 535.
+~~~
 
 ## How to use this book
 
@@ -150,11 +159,12 @@ available in the Catala language, while [Chapter 6](./6-clerk.md) and [Chapter
 7](./7-compiler.md) focus on the command line interfaces and features of the two
 binaries that you will be working with: `clerk` and `catala`.
 
-## Source code
 
+~~~admonish  note title="Source code"
 The source files from which this book is generated can be found on
 [GitHub](https://github.com/CatalaLang/catala-book). While the contents of this
 book are expected to correspond to the latest version of Catala, some
 inconsistencies might appear. If you spot one, or have comments or suggestions
 about the book, please [file an
 issue](https://github.com/CatalaLang/catala-book/issues)!
+~~~

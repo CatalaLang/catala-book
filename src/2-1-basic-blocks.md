@@ -6,6 +6,15 @@ formulas. By the end of the section, you should be able to write a simple Catala
 program equivalent to a single function with local variables whose definitions
 can refer to one another.
 
+~~~admonish info title="Tutorial cheat code"
+A recap of the tutorial section with the full code that is expected to be
+in your `tutorial.catala_en` companion file is attached at the end of this page.
+
+Pease refer to it if you feel lost during the reading and want to have a
+vibes check of whether you are on track to complete your `tutorial.catala_en`
+file.
+~~~
+
 ## Mixing law and code
 
 Catala is a language designed around the concept of *literate programming*, that
@@ -40,6 +49,19 @@ The income tax for an individual is defined as a fixed percentage of the
 individual's income over a year.
 ```
 
+~~~admonish note title="Formatting legal text in Catala"
+Catala uses Markdown-like formatting for the legal text in the `.catala_en`
+files. So, to copy the text of the article into your `tutorial.catala_en`
+file, mark up the article header with `##` and put the text below, as such:
+
+```markdown
+## Article 1
+
+The income tax for an individual is defined as a fixed percentage of the
+individual's income over a year.
+```
+~~~
+
 The spirit of writing code in Catala is to stick to the specification at all
 times in order to put the code snippets where they belong. Hence, we will
 introduce below the Catala code snippets that translate article 1, which
@@ -58,6 +80,12 @@ to dive into Catala as a programming language.
 # To create a block of Catala code in your file, bound it with Markdown-style
 # "```catala" and "```" delimiters. You can write comments in Catala code blocks
 # by prefixing lines with "#"
+
+# In the rest of the tutorial, when presenting Catala code snippets, it is
+# assumed implicitly that you should copy-paste them into your
+# tutorial.catala_en file inside a Catala code block enclosed between
+# "```catala" and "```" delimiters, and placed near the article of law that
+# it implements.
 ```
 
 ## Setting up data structures
@@ -79,6 +107,10 @@ of information which will be needed for tax purposes :
 
 ~~~admonish note title="Declaring a structure"
 ```catala
+# Data structure declarations and generally any declaration in Catala often
+# does not match any specific article of law. Hence, you can put all the
+# declarations at the top of your tutorial.catala_en file, before article 1.
+
 # The name of the structure, "Individual", must start with an
 # uppercase letter: this is the CamelCase convention.
 declaration structure Individual:
