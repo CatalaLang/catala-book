@@ -66,7 +66,7 @@ $ opam upgrade catala
 ```
 
 This method also works for the other `opam` packages presented below:
-just replace `upgrade catala| by `upgrade catala-lsp`, etc.
+just replace `upgrade catala` by `upgrade catala-lsp`, etc.
 ~~~
 
 ## Getting the LSP server (needed by the VSCode extension)
