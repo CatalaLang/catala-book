@@ -10,7 +10,7 @@ can refer to one another.
 A recap of the tutorial section with the full code that is expected to be
 in your `tutorial.catala_en` companion file is attached at the end of this page.
 
-Pease refer to it if you feel lost during the reading and want to have a
+Please refer to it if you feel lost during the reading and want to have a
 vibes check of whether you are on track to complete your `tutorial.catala_en`
 file.
 ~~~

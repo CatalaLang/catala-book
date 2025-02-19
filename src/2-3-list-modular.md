@@ -91,7 +91,7 @@ x + 2
 ```
 ~~~
 
-For step 1, we simply need to get the lenght of the list `individuals`, which
+For step 1, we simply need to get the length of the list `individuals`, which
 can be done through the syntax `number of individuals` (the syntax for all list
 operations can be found in [the syntax sheat cheet](https://catalalang.github.io/catala/syntax.pdf)
 or in the [language reference](./5-catala.md)). For step 2, we
@@ -102,7 +102,7 @@ indicates that if the list of individuals is empty, then the integer `0` should
 be returned. Finally, we can piece steps 1 and 2 for the step 3 which computes
 the amount of tax:
 
-~~~admonish note title="Computing the lenght of a list and aggregating amounts"
+~~~admonish note title="Computing the length of a list and aggregating amounts"
 ```catala
 scope HouseholdTaxComputation:
   definition household_tax equals
