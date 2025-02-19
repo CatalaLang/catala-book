@@ -1,0 +1,127 @@
+<!-- template file for 2-1-1-exercise.md -->
+# Catala Book: Exercise 2-1-1
+
+```catala
+declaration structure Individual:
+  data date_of_birth content date
+  data date_of_death content DateOfDeath
+
+declaration enumeration DateOfDeath:
+  -- Deceased content date
+  -- StillAlive
+```
+
+# Question 1
+
+Based on the `test_person1` declaration, declare a `test_person2` born
+on the 21st of December 1977 that is still alive.
+
+```catala
+# Declaration and definition of a constant value named test_person1
+declaration test_person1 content Individual equals
+  Individual {
+    -- date_of_birth : |1981-10-05|
+      # Date format is |YYYY-MM-DD|
+    -- date_of_death : Deceased content |2012-05-12|
+  }
+
+declaration test_person2 content Individual equals
+  test_person1 # <= Remove this line and replace it with your answer
+```
+
+```catala
+declaration scope KillPerson:
+  input fateful_date content date
+  input victim content Individual
+  output killed_individual content Individual
+```
+
+# Question 2
+
+Given the `KillPerson` scope declaration, define a `KillPerson` scope
+output variable `killed_individual` that uses the `fateful_date` and
+`victim` input variables to create a new Individual that is a copy of
+the `victim` input but with its `date_of_death` updated. For the sake
+of simplicity, we will not check whether or not we kill an already
+deceased individual.
+
+You can test your solution by invoking the TestKillPerson Catala
+scope: `catala interpret exercise-2-1-1.catala_en --scope TestKillPerson`.
+
+```catala
+declaration scope TestKillPerson:
+  output computation content KillPerson
+
+scope TestKillPerson:
+  definition computation equals
+    output of KillPerson with {
+      -- fateful_date : |2025-01-20|
+      -- victim : test_person2
+    }
+
+# Define your KillPerson scope here
+
+# scope KillPerson:
+#   ...
+```
+
+```catala
+declaration structure Couple:
+  data household_yearly_income content money
+  data person_1 content Individual
+  data person_2 content Individual
+
+# Define your test_couple definition here
+
+# declaration test_couple content Couple equals
+#   ...
+```
+
+```catala
+declaration scope TaxComputation:
+  input processing_date content date
+  input couple content Couple
+
+  internal person1_dead_before_processing_date content boolean
+  internal person2_dead_before_processing_date content boolean
+
+  output tax_amount content money
+
+scope TaxComputation:
+  definition tax_amount equals
+    if person1_dead_before_processing_date
+      or person2_dead_before_processing_date then
+     $0
+   else
+     couple.household_yearly_income * 15%
+```
+
+## Question 4
+
+Define another `TaxComputation` scope definition that defines both
+internal boolean variables `person1_dead_before_processing_date` and
+`person2_dead_before_processing_date`.
+
+```catala
+# Define your new TaxComputation scope here
+
+# scope TaxComputation:
+#   ...
+```
+
+## Question 5
+
+Lastly, we need to define a test for our computation. Based on the
+previously defined tests, write a definition of the
+`TestTaxComputation` test scope. Then, tweak the given test values to
+make sure your implementation is correct.
+
+```catala
+declaration scope TestTaxComputation:
+  output test_tax_computation content TaxComputation
+
+# Define your TestTaxComputation scope here
+
+# scope TestTaxComputation:
+#   ...
+```

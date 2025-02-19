@@ -11,7 +11,7 @@
     - [Creating your first Catala program](./1-2-first.md)
 - [Tutorial : computing your taxes](./2-0-tutorial.md)
     - [Basic blocks of a Catala program](2-1-basic-blocks.md)
-      - [Exercise](2-1-1-exercise.md)
+      - [Hands-on exercise](2-1-1-exercise.md)
     - [Conditional definitions and exceptions](2-2-conditionals-exceptions.md)
       - [Exercise](2-2-1-exercise.md)
     - [Going modular with lists](2-3-list-modular.md)
