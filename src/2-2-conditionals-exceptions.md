@@ -65,7 +65,7 @@ execution and return an error message like the one below:
 ├─➤ tutorial_en.catala_en
 │     │
 │     │   definition tax_rate equals 20 %
-│     │                                      ‾‾‾‾
+│     │                              ‾‾‾‾
 ├─ Article 2
 │
 ├─➤ tutorial_en.catala_en

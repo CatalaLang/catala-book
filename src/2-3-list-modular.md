@@ -1,5 +1,8 @@
 # Going modular with lists
 
+TODO general: with each concept, give an example of program execution with
+sample inputs.
+
 In this section, the tutorial tackles a common pattern that significantly
 increases the complexity of a codebase: the need to deal with lists and rules
 applying to each element of the list. Here, Catala reuses all the common tricks
@@ -166,6 +169,9 @@ However, the goal of the refactoring is always to match up as precisely as
 possible the computation steps and the articles they are based on.
 ~~~
 
+TODO: move up the next two paragraphs and illustrate the non-linearity with
+an example.
+
 Now, there are several strategies to implement article 8, but not all are
 legally correct. One strategy could be to compute the total amount of income tax
 owed by all the individuals in the household, and substract that total amount of
@@ -181,6 +187,9 @@ into two steps: first, computing the share of household tax owed by each
 individual, and then aggregating the result of the first step for all individuals
 of the household. Naturally, the existing scope `HouseholdTaxComputation` is where
 the second step will happen. But where to put the first step?
+
+TODO: stop talking about functions in the tutorial. So remove this alternative
+coding style.
 
 As Catala is a functional programming language, we could define an internal
 variable of the scope `HouseholdTaxComputation` that acts as a function to associate
@@ -298,7 +307,7 @@ scope HouseholdTaxIndividualComputation:
   # that is the input to "HouseholdTaxIndividualComputation".
   definition income_tax_computation.overseas_territories equals
     overseas_territories
-  # These lines can appear totological but they are essential for plugging
+  # These lines can appear tautological but they are essential for plugging
   # scopes to sub-scopes in an non-ambiguous way. It is implicit that we evaluate
   # the income tax for deduction at the same date as we evaluate the amount of
   # household tax, but this line makes it explicit. Sometimes, you might want
@@ -327,6 +336,9 @@ scope HouseholdTaxIndividualComputation:
     # Don't forget to cap the deduction!
     if deduction > tax then $0 else tax - deduction
 ```
+
+TODO: here cut and end the section. Start the following on a new section. Give
+better title to both sections.
 
 However, doing so merges together the specifications of article 7 and article 8,
 which goes against the spirit of Catala to split the code in the same structure
@@ -401,7 +413,7 @@ We can now use it in the computation of the global household tax in
 ## Linking scopes together through list mapping
 
 We can now finish coding up article 7 by adding together each share of the
-household tax owzed by all the individuals of the household. We will do
+household tax owned by all the individuals of the household. We will do
 that through list aggregation, as previously, but the elements of the list to
 aggregate are now the result of calling `HouseholdTaxIndividualComputation`
 on each individual. Previously, we have showed how to call a sub-scope
@@ -570,6 +582,9 @@ scope HouseholdTaxComputation:
 ~~~
 
 ## Testing and debugging the computation
+
+TODO: duplicate or triplicate this section throughout the list tutorial
+with new examples.
 
 We have written quite complex code in this tutorial section, it is high
 time to test and debug it. Similarly to the test presented in the

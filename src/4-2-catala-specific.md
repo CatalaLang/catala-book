@@ -2,6 +2,18 @@
 
 ## Booleans and conditions
 
+## Casting values
+
+Talk about creating duration values from literals. You cannot cast integers to months!
+
+## Why is there no string type?
+
+## Context scope variables
+
+## Updating a struct with a new value in a field
+
+## Date and rounding
+
 ## Money and rounding
 
 In catala, monetary values are represented as an integer number of cents.
@@ -72,3 +84,5 @@ scope Rounding:
 ```
 
 Besides being more readable, this has the benefit of making it more obvious that any computation that requires keeping a fractional number of cents should be performed on decimals, and converted to a monetary amount at the end.
+
+## Why special integers and decimals instead of machine integers and floats
