@@ -107,7 +107,7 @@ requests, or develop plugins and tooling around it.
 
 ## Who this book is for
 
-This books is primarily geared towards programmers that want to learn Catala,
+This book is primarily geared towards programmers that want to learn Catala,
 set up a project using it to translate some legal text into executable code, and
 be guided through the process. The book assume basic knowledge of functional
 programming idioms, and generally software engineering experience with another
