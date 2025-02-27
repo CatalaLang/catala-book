@@ -8,3 +8,8 @@ questions unanswered, and we have you covered. This chapter tries to answer to
 all the common questions users have about turning law into code [in
 general](./4-1-general.md), and [Catala in
 particular](./4-2-catala-specific.md).
+
+~~~admonish danger title="Work in progress"
+This section of the Catala book has not yet been written, stay tuned for
+future updates!
+~~~

@@ -352,7 +352,7 @@ definition individual_age equals
   -- StillAlive: current_date - individual.date_of_birth
   -- Deceased of deceased_date: deceased_date - individual.date_of_birth
 ```
-N.b., all the different branches of a _pattern-matching_ must contain same
+*Nota bene*: all the different branches of a _pattern-matching_ must contain same
 data type expressions.
 ~~~
 

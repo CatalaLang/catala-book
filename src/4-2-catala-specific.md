@@ -1,5 +1,10 @@
 # Catala-specific questions
 
+~~~admonish danger title="Work in progress"
+This section of the Catala book has not yet been ully written, stay tuned for
+future updates!
+~~~
+
 ## Booleans and conditions
 
 ## Casting values

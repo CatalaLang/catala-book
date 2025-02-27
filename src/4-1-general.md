@@ -1,5 +1,10 @@
 # General questions
 
+~~~admonish danger title="Work in progress"
+This section of the Catala book has not yet been written, stay tuned for
+future updates!
+~~~
+
 ## What is pair programming for coding the law?
 
 ## What is literate programming for coding the law?
