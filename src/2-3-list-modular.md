@@ -1,19 +1,17 @@
 # Going modular with lists
 
-TODO general: with each concept, give an example of program execution with
-sample inputs.
-
 In this section, the tutorial tackles a common pattern that significantly
 increases the complexity of a codebase: the need to deal with lists and rules
 applying to each element of the list. Here, Catala reuses all the common tricks
 and patterns from functional programming to elegantly structure the code while
 performing expressive operations on lists.
 
-This section of the tutorial is quite challenging and involves some complexity
-in the example. This complexity is necessary to illustrate how the features
-of Catala scale to real-world legal texts that involve complex features. We
-encourage the reader to persevere in their study of this section, and to
-ask any question on the [online Catala community chat](https://zulip.catala-lang.org).
+The last two section of the tutorial are quite challenging and involves some
+complexity in the example. This complexity is necessary to illustrate how the
+features of Catala scale to real-world legal texts that involve complex
+features. We encourage the reader to persevere in their study of these sections,
+and to ask any question on the [online Catala community
+chat](https://zulip.catala-lang.org).
 
 ~~~~~~admonish info collapsible=true title="Recap of the previous section"
 This section of the tutorial builds up on the [previous one](./2-2-conditionals-exceptions.md),
@@ -129,6 +127,44 @@ on one side, and all children on the other side. Addition is commutative
 and associative so this shift yields the same result. However, not following
 the spirit of the law in the implementation might not be future-proof, as we'll
 see just below...
+
+
+~~~admonish example title="Testing the household tax"
+To test what happens when the rule for article 7 is at play,
+you can test the program with a household:
+
+```catala
+declaration scope TestHousehold:
+  output computation content HouseholdTaxComputation
+
+scope TestHousehold:
+  definition computation equals
+    output of HouseholdTaxComputation with {
+      -- individuals:
+        # The scope expects a list of individuals. In Catala, a list is built
+        # with the syntax "[<element 1>; <element 2>; ...]".
+        [ Individual {
+            -- income: $15,000
+            -- number_of_children: 0
+          } ;
+          Individual {
+            -- income: $80,000
+            -- number_of_children: 2
+          } ]
+    }
+```
+
+The result of the execution is then:
+
+```test
+$ catala interpret tutorial.catala_en --scope=TestHousehold
+┌─[RESULT]─
+│ computation = HouseholdTaxComputation { -- household_tax: $30,000.00 }
+└─
+```
+
+We have two individuals and two children so 2 x $10,000 + 2 x $5,000 = $30,000.
+~~~
 
 ## Refactoring to account for evolving requirements
 
