@@ -2,7 +2,7 @@
 
 ~~~admonish warning title="Disclaimer"
 Currently, Catala is only available through source
-building. We plan to package Catala as binaries in the future, which will greatly
+building. We plan to package Catala in binary format in the future, which will greatly
 ease the installation process.
 ~~~
 

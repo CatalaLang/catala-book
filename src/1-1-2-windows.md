@@ -55,7 +55,7 @@ something else such as "4.14.2", double-check the directory location).
 ## Getting the VSCode extension
 
 Install VSCode and open it. Browse the extension marketplace and
-install the `Catala` extension.
+install the [`Catala` extension](https://marketplace.visualstudio.com/items?itemName=catalalang.catala).
 
 ## Getting the Catala code formatter
 

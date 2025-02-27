@@ -81,7 +81,7 @@ $ opam pin catala-lsp.dev git+https://github.com/CatalaLang/catala-language-serv
 ## Getting the VSCode extension
 
 Install VSCode and open it. Browse the extension marketplace and
-install the `Catala` extension.
+install the [`Catala` extension](https://marketplace.visualstudio.com/items?itemName=catalalang.catala).
 
 ~~~admonish info title="For WSL2 installations" collapsible=true
 VSCode needs to reach the installed WSL

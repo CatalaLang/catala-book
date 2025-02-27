@@ -1,4 +1,4 @@
-# Hands-on exercise
+# Hands-on exercise: "Nothing is certain except death and taxes"
 
 In this section, we present a practical exercise aiming to familiarize
 the writing of Catala programs and understanding its basic concepts.
@@ -137,7 +137,8 @@ declaration scope TestTaxComputation:
 ```
 </pre>
 ~~~
-________________
+
+***
 
 
 ~~~admonish tip title="Catala syntax cheat-sheet"
@@ -198,10 +199,11 @@ declaration test_person2 content Individual equals
 ```
 ~~~
 
-________________
+***
 
-We now want a way to update the status of a person from alive to dead
-TODO: Blabla
+We now want a way to update the status of a person from alive to dead. We do
+it through a dedicated `KillPerson` scope whose declaration is:
+
 
 ```catala
 declaration scope KillPerson:
@@ -247,7 +249,7 @@ scope KillPerson:
     }
 ```
 
-________________
+***
 
 You can also use the `replace` syntax to modify specific fields of a
 structure. It allows you to only modify specific fields which can be
@@ -291,7 +293,7 @@ declaration test_couple content Couple equals
 ```
 ~~~
 
-________________
+***
 
 Let's now consider a tax computation law article with a very simple
 definition:

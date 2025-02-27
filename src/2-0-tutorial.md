@@ -36,6 +36,10 @@ file and fill it by copy-pasting the code snippets presented. Through this
 companion file, you will be able to see first-hand how the Catala typechecker
 and interpreter behaves on the different examples, and even make your own
 experiences by tweaking the code yourself.
+
+Moreover, after each section, some hands on exercises will allow you to put
+to test what you have learnt. We encourage you to complete these exercises
+before moving on to the next section.
 ~~~
 
 You should be all set to begin now. Godspeed!
