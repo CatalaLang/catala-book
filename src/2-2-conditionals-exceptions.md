@@ -52,12 +52,32 @@ everything together for execution. More precisely, at runtime, we look at
 the conditions of all piecewise definitions for a same variable, and pick
 the one that is valid.
 
+
+~~~admonish example title="Testing the program with three children"
+To test what happens when the rules for articles 2 and 3 are at play,
+you can test the program when there are three children, by tweaking the
+`Test` scope as follows:
+
+```catala
+scope Test:
+  definition computation equals
+    output of IncomeTaxComputation with {
+      -- individual:
+        Individual {
+          -- income: $20,000
+          -- number_of_children: 3
+        }
+    }
+```
+~~~
+
 ~~~admonish warning title="Conflict between definitions"
-But what happens if no conditional definition is valid at runtime? Or multiple
-valid definitions at the same time? In these cases, Catala will abort
+During the above test, two definitions for `tax_rate` are valid at the
+same time. What happens then? In these cases, Catala will abort
 execution and return an error message like the one below:
 
 ```text
+$ catala interpret tutorial.catala_en --scope=Test
 ┌─[ERROR]─
 │
 │  During evaluation: conflict between multiple valid consequences for assigning the same variable.
@@ -159,10 +179,30 @@ scope IncomeTaxComputation:
 But then, what happens when testing the code with an individual that earns
 less than $10,000 and has more than 2 children?
 
+
+~~~admonish example title="Testing the program with three children and low income"
+To test what happens when the rules for articles 3 and 4 are at play,
+you can test the program when there are three children, and an income
+lower than $10,000 by tweaking the `Test` scope as follows:
+
+```catala
+scope Test:
+  definition computation equals
+    output of IncomeTaxComputation with {
+      -- individual:
+        Individual {
+          -- income: $5,000
+          -- number_of_children: 3
+        }
+    }
+```
+~~~
+
 ~~~admonish bug title="Conflicting definitions"
 The program execution yields the following error at runtime:
 
 ```text
+$ catala interpret tutorial.catala_en --scope=Test
 ┌─[ERROR]─
 │
 │  During evaluation: conflict between multiple valid consequences for assigning the same variable.
@@ -351,7 +391,39 @@ prioritized with each other, they could both apply at the same time and
 conflict. However, since the income cannot be both less than $10,000 and greater
 than $100,000, the conflict cannot happen in practice. Hence, it is not
 necessary to prioritize the two exceptions, since they live in mutually
-exclusive conditional branches. It is then possible to extend these branches
+exclusive conditional branches.
+
+~~~admonish example title="Testing the program with high income"
+To test what happens when the rule for article 5 is at play,
+you can test the program when there are 3 children, and an income
+greater than $100,000 by tweaking the `Test` scope as follows:
+
+```catala
+scope Test:
+  definition computation equals
+    output of IncomeTaxComputation with {
+      -- individual:
+        Individual {
+          -- income: $200,000
+          -- number_of_children: 3
+        }
+    }
+```
+
+The result of the execution is then:
+
+```test
+$ catala interpret tutorial.catala_en --scope=Test
+┌─[RESULT]─
+│ computation = IncomeTaxComputation { -- income_tax: $60,000.00 }
+└─
+```
+
+The 30% rate is respected, since $200,000 x 30% = $60,000.
+~~~
+
+
+It is then possible to extend these branches
 separately, for instance with a new article of the CTTC:
 
 ~~~admonish quote title="Article 6"
