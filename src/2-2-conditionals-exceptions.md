@@ -53,7 +53,7 @@ the conditions of all piecewise definitions for a same variable, and pick
 the one that is valid.
 
 
-~~~admonish example title="Testing the program with three children"
+~~~admonish success title="Testing the program with three children"
 To test what happens when the rules for articles 2 and 3 are at play,
 you can test the program when there are three children, by tweaking the
 `Test` scope as follows:
@@ -180,7 +180,7 @@ But then, what happens when testing the code with an individual that earns
 less than $10,000 and has more than 2 children?
 
 
-~~~admonish example title="Testing the program with three children and low income"
+~~~admonish success title="Testing the program with three children and low income"
 To test what happens when the rules for articles 3 and 4 are at play,
 you can test the program when there are three children, and an income
 lower than $10,000 by tweaking the `Test` scope as follows:
@@ -393,7 +393,7 @@ than $100,000, the conflict cannot happen in practice. Hence, it is not
 necessary to prioritize the two exceptions, since they live in mutually
 exclusive conditional branches.
 
-~~~admonish example title="Testing the program with high income"
+~~~admonish success title="Testing the program with high income"
 To test what happens when the rule for article 5 is at play,
 you can test the program when there are 3 children, and an income
 greater than $100,000 by tweaking the `Test` scope as follows:
