@@ -103,7 +103,7 @@ scope IncomeTaxComputation:
 ## Article 7
 
 When several individuals live together, they are collectively subject to
-the household tax. The household tax owed is $1000 per individual of the household,
+the household tax. The household tax owed is $10000 per individual of the household,
 and half the amount per children.
 
 ```catala
