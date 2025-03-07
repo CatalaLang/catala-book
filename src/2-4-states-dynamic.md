@@ -574,7 +574,7 @@ and the wonderful world of safely and faithfully automating legal provisions.
 
 We encourage you to read the next chapters of this book to continue learning how
 to use Catala, as the tutorial is not set in [a real-world software development
-projet setup](./3-project), and misses a [lot of tips](./4-0-howto.md) about
+projet setup](./3-project.md), and misses a [lot of tips](./4-0-howto.md) about
 coding in Catala but also interacting with lawyers.
 
 ~~~~~~admonish info collapsible=true title="Recap of the current section"

@@ -145,7 +145,7 @@ reference guide is the go-to stop for checking items about the Catala language
 and tooling as you're using it, whether you are a new or experienced user.
 
 The user guide starts with [Chapter 1](./1-0-getting_started.md) and the Catala
-equivalent of "*Hello, world!*" program. [Chapter 2](./2-tutorial.md) explains
+equivalent of "*Hello, world!*" program. [Chapter 2](./2-0-tutorial.md) explains
 the core concepts of Catala with a hands-on tutorial centered on the automation
 of a basic, fictional tax system. Moving onto serious business, [Chapter
 3](./3-project.md) dives into the setting up of a real-world Catala project with
@@ -155,8 +155,8 @@ learning by answering to (almost) all the questions that you'll normally stumble
 upon while coding the law with Catala.
 
 In the reference guide, [Chapter 5](./5-catala.md) details all the features
-available in the Catala language, while [Chapter 6](./6-clerk.md) and [Chapter
-7](./7-compiler.md) focus on the command line interfaces and features of the two
+available in the Catala language, while [Chapter 7](./7-clerk.md) and [Chapter
+6](./6-compiler.md) focus on the command line interfaces and features of the two
 binaries that you will be working with: `clerk` and `catala`.
 
 

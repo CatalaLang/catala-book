@@ -6,7 +6,7 @@ using the language, and get out an executable program that compute your taxes!
 
 This tutorial does not cover the installation of Catala. For more information
 about this, please refer to the [installation
-section](./1-1-getting_started.md). If you want follow this tutorial locally,
+section](./1-0-getting_started.md). If you want follow this tutorial locally,
 read the [section about creating your first program](./1-2-first.md) and simply
 copy-paste the code snippets of the tutorial into your Catala program file.
 
