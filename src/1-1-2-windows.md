@@ -34,7 +34,7 @@ Windows. However, the Catala's lsp server bundles a subset of Catala
 which is fine. This may be installed with the following command
 
 ```bash
-$ opam pin git+https://github.com/CatalaLang/catala-lsp -y
+$ opam pin catala-lsp git+https://github.com/CatalaLang/catala-language-server -y
 ```
 
 ## Setting up the Catala LSP server
