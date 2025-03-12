@@ -42,7 +42,7 @@ $ Invoke-Expression "& { $(Invoke-RestMethod https://opam.ocaml.org/install.ps1)
 ```
 ~~~admonish bug title="Alternative `opam` installation methods"
 If an unexpected error occurs, try another `opam` installation method as
-listed on the (OCaml on Windows)[https://ocaml.org/docs/ocaml-on-windows] official webpage.
+listed on the [OCaml on Windows](https://ocaml.org/docs/ocaml-on-windows) official webpage.
 ~~~
 
 Then, initialize `opam`:
