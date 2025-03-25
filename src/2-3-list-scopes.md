@@ -1,4 +1,4 @@
-# Going modular with lists
+# Lists and scopes
 
 In this section, the tutorial tackles a common pattern that significantly
 increases the complexity of a codebase: the need to deal with lists and rules
@@ -346,7 +346,63 @@ scope HouseholdTaxIndividualComputation:
     if deduction > tax then $0 else tax - deduction
 ```
 
+~~~admonish success title="Testing the individual household tax"
+To test what happens when the rule for articles 7 and 8 are at play
+you can test the program with an individual:
+
+```catala
+declaration scope TestIndividualHousehold:
+  output computation content HouseholdTaxIndividualComputation
+
+scope TestIndividualHousehold:
+  definition computation equals
+    output of HouseholdTaxIndividualComputation with {
+      -- individual:
+        Individual {
+          -- income: $15,000
+          -- number_of_children: 0
+        }
+      -- current_date: |1999-01-01|
+      -- overseas_territories: false
+    }
+```
+
+The result of the execution is then:
+
+```test
+$ catala interpret tutorial.catala_en --scope=TestIndividualHousehold
+┌─[RESULT]─
+│ computation = HouseholdTaxIndividualComputation { -- household_tax: $7,000.00 }
+└─
+```
+
+The household tax owed by one individual with no children is $10,000, but
+we must deduct their income tax. With an income of $15,000, before 2000 and
+not in an overseas territory, the income tax rate is 20% according to Article 2,
+hence $3,000 of income tax. Therefore, the correct household tax owed with
+deduction is $7,000.
+~~~
+
 ## Conclusion
+
+In this section of the tutorial, we have seen that in Catala, lists of items
+are represented as values with their own type like `list of money` or
+`list of Individual`. You can manipulate the list values with list operators
+like lenght count, aggregation, but also map, filter, map, etc. Please refer
+to the [language reference](./5-catala.md) for information about all the
+list operators available in Catala. Furthermore, we have also seen in this
+section of the tutorial that rather than programming all the rules for dealing
+with items in lists inside the list operators, it is preferable to create
+a new scope to write all the rules that apply to the items in the list. This has
+allowed us to see how scopes can call each other and allow for a modular
+codebase that can be refactored to account for evolving legal requirements.
+
+However, right now our implementation of articles 7 and 8 is not complete, as
+we're missing the step where `HouseholdTaxComputation` calls
+`HouseholdTaxInvidualComputation` on each individual in the household to
+complete the household tax computation with the correct deduction. This will be
+the topic of the [next and final section of the
+tutorial](./2-4-states-dynamic.md).
 
 ~~~~~~admonish info collapsible=true title="Recap of the current section"
 For reference, here is the final version of the Catala code consolidated at

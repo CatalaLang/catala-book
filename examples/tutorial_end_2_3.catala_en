@@ -123,9 +123,10 @@ declaration scope HouseholdTaxIndividualComputation:
 ```
 
 ```catala
-scope HouseholdTaxIndividualComputation:
-  definition household_tax equals
-    $10000 * (1.0 + decimal of individual.number_of_children / 2.0)
+# scope HouseholdTaxIndividualComputation:
+#   # This definition is disabled because of the new one in Article 8.
+#   definition household_tax equals
+#     $10000 * (1.0 + decimal of individual.number_of_children / 2.0)
 
 # The definition of household tax for the whole household below is wrong and
 # will be refactored in the next section.
@@ -199,5 +200,20 @@ scope TestHousehold:
             -- income: $80,000
             -- number_of_children: 2
           } ]
+    }
+
+declaration scope TestIndividualHousehold:
+  output computation content HouseholdTaxIndividualComputation
+
+scope TestIndividualHousehold:
+  definition computation equals
+    output of HouseholdTaxIndividualComputation with {
+      -- individual:
+        Individual {
+          -- income: $15,000
+          -- number_of_children: 0
+        }
+      -- current_date: |1999-01-01|
+      -- overseas_territories: false
     }
 ```

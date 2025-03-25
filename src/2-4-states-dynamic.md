@@ -1,5 +1,43 @@
 # Variable states and dynamic scope calls
 
+## Introduction
+
+In this section, the tutorial picks up where the previous section left,
+that is to say implementing the computation of the household tax for
+one individual. Now, we still have to aggregate the computations
+for individuals at the household level to generate the whole household tax.
+
+Doing this aggregation will require calling the scope `HouseholdTaxInvidualComputation`
+multiple times for a list aggregation inside `HouseholdTaxComputation`. We
+will cover this topic, but first we have to wrap up unfinished business
+from the last section of the tutorial!
+
+~~~~~~admonish info collapsible=true title="Recap of the previous section"
+This section of the tutorial builds up on the [previous one](./2-3-list-scopes.md),
+and will reuse the same running example, but all the Catala code necessary
+to execute the example is included below for reference.
+
+~~~
+{{#include ../examples/tutorial_end_2_3.catala_en}}
+~~~
+~~~~~~
+
+## Variable states
+
+Recall that we have defined `household_tax` in a single sweep
+inside `HouseholdTaxIndividualComputation`:
+
+```catala
+scope HouseholdTaxIndividualComputation:
+  definition household_tax equals
+    let tax equals
+      $10,000 * (1.0 + decimal of individual.number_of_children / 2.0)
+    in
+    let deduction equals income_tax_computation.income_tax in
+    # Don't forget to cap the deduction!
+    if deduction > tax then $0 else tax - deduction
+```
+
 However, doing so merges together the specifications of article 7 and article 8,
 which goes against the spirit of Catala to split the code in the same structure
 as the legal text. So, instead of using two local variables inside the definition
@@ -126,125 +164,9 @@ scope HouseholdTaxComputation:
 
 That's it! We've finished implementing article 7 and article 8 in a clean,
 extensible, future-proof fashion using a series of scopes that call
-each other. As an exercise, you can try implementing a new article that
-complexifies even more the computation:
-
-~~~admonish quote title="Article 9"
-The deduction granted at article 8 is capped at $8,500 for the whole household.
-~~~
-
-~~~admonish example title="Implementation solution for articles 7, 8 and 9" collapsible=true
-```catala
-declaration scope HouseholdTaxComputation:
-  input individuals content list of Individual
-  input overseas_territories content boolean
-  input current_date content date
-
-  internal shares_of_household_tax
-    # It is possible to store the structure resulting from a scope call
-    # (with all its output variable) into a single type. The name of this
-    # structure type is the name of the scope, hence the line below.
-    content list of HouseholdTaxIndividualComputation
-  internal total_deduction content money
-    state base
-    state capped
-
-  output household_tax content money
-    state base
-    state deduction
-
-declaration scope HouseholdTaxIndividualComputation:
-  input individual content Individual
-  input overseas_territories content boolean
-  input current_date content date
-
-  income_tax_computation scope IncomeTaxComputation
-
-  output household_tax content money
-  output deduction content money
-```
-
-#### Article 7
-
-When several individuals live together, they are collectively subject to
-the household tax. The household tax owed is $10,000 per individual of the household,
-and half the amount per children.
-
-
-```catala
-scope HouseholdTaxIndividualComputation:
-  definition household_tax equals
-    $10,000 * (1.0 + decimal of individual.number_of_children / 2.0)
-
-scope HouseholdTaxComputation:
-  definition shares_of_household_tax equals
-    (
-      output of HouseholdTaxIndividualComputation with {
-        -- individual: individual
-        -- overseas_territories: overseas_territories
-        -- current_date: current_date
-      }
-    )
-      for individual among individuals
-
-  definition household_tax
-    state base
-  equals
-    sum money
-      of share_of_household_tax.household_tax
-      for share_of_household_tax among shares_of_household_tax
-```
-
-#### Article 8
-
-The amount of income tax paid by each individual can be deducted from the
-share of household tax owed by this individual.
-
-```catala
-scope HouseholdTaxIndividualComputation:
-  definition income_tax_computation.individual equals
-    individual
-  definition income_tax_computation.overseas_territories equals
-    overseas_territories
-  definition income_tax_computation.current_date equals
-    current_date
-
-  definition deduction equals
-    if income_tax_computation.income_tax > household_tax then household_tax
-    else income_tax_computation.income_tax
-
-scope HouseholdTaxComputation:
-  definition total_deduction
-    state base
-  equals
-    sum money
-      of share_of_household_tax.deduction
-      for share_of_household_tax among shares_of_household_tax
-
-  definition household_tax
-    state deduction
-  equals
-    if total_deduction > household_tax then $0
-    else household_tax - total_deduction
-```
-
-#### Article 9
-
-The deduction granted at article 8 is capped at $8,500 for the whole household.
-
-```catala
-scope HouseholdTaxComputation:
-  definition total_deduction
-    state capped
-  equals
-    if total_deduction > $8,500 then $8,500 else total_deduction
-```
-~~~
+each other.
 
 ## Testing and debugging the computation
-
-TODO: duplicate or triplicate this section throughout the list tutorial
-with new examples.
 
 We have written quite complex code in this tutorial section, it is high
 time to test and debug it. Similarly to the test presented in the
@@ -556,9 +478,9 @@ Catala programs at scale.
 
 ## Conclusion
 
-Congratulations for finishing the Catala tutorial! This section has not
+Congratulations for finishing the Catala tutorial! The last two sections have not
 presented features that are unique to Catala, unlike the exceptions from [the
-previous section](./2-2-conditionals-exceptions.md). Rather, in Catala we use
+second section](./2-2-conditionals-exceptions.md). Rather, in Catala we use
 the classic software engineering techniques from functional programming to split
 the code into multiple functions that call each other at the right level of
 abstraction, with the goal to keep the code close where it is specified in the
