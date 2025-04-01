@@ -30,7 +30,7 @@ $ bash -c "sh <(curl -fsSL https://opam.ocaml.org/install.sh)"
 
 At this point, `opam` should be initialized on your machine. But it is not over,
 as `opam` needs to create a *switch* with a specific version of OCaml, where
-all the packages that we'll install later will be compiler and store. To
+all the packages that we'll install later will be compiled and stored. To
 initialize `opam` and create this first switch, enter the following:
 
 ```bash
@@ -49,7 +49,7 @@ OCaml versions `4.14.X` and `5.0.X`.
 Run the following command to install the latest Catala version via `opam`:
 
 ```bash
-$ opam pin catala.dev git+https://github.com/CatalaLang/catala -y
+$ opam pin catala.dev git+https://github.com/CatalaLang/catala
 ```
 
 Once this finishes, the Catala compiler (and its build system) should
@@ -95,7 +95,7 @@ installed, you will need to load a WSL VSCode window by pressing F1
 ## Getting the Catala code formatter
 
 Run the following command:
-```bash
+```shell
 $ opam pin catala-format.dev git+https://github.com/CatalaLang/catala-format
 ```
 
