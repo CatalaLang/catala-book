@@ -5,6 +5,15 @@ This section of the Catala book has not yet been written, stay tuned for
 future updates!
 ~~~
 
+## Literals
+
+## External modules
+
+## Context variables
+
+## Updating structures
+
+## Global constant and functions declarations
 
 ## Attributes and extensions
 

@@ -5,7 +5,7 @@ for creating HTML books from Markdown files.
 
 The dependencies for building the book can be installed through `cargo` with:
 
-    cargo install mdbook mdbook-admonish mdbook-mermaid
+    cargo install mdbook mdbook-admonish mdbook-mermaid mdbook-toc
 
 The book can be previewed locally
 in a Web browser using the following command:

@@ -19,3 +19,6 @@ assets_version = "3.0.2" # do not edit: managed by `mdbook-admonish install`
 [preprocessor.mermaid]
 command = "mdbook-mermaid"
 
+[preprocessor.toc]
+command = "mdbook-toc"
+renderer = ["html"]
