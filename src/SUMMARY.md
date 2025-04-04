@@ -13,11 +13,11 @@
     - [Basic blocks of a Catala program](2-1-basic-blocks.md)
       - [Hands-on exercise](2-1-1-exercise.md)
     - [Conditional definitions and exceptions](2-2-conditionals-exceptions.md)
-      - [Hands-on exercise](2-2-1-exercise.md)
+      <!-- - [Hands-on exercise](2-2-1-exercise.md) -->
     - [Lists and scopes](2-3-list-scopes.md)
-      - [Hands-on exercise](2-3-1-exercise.md)
+      <!-- - [Hands-on exercise](2-3-1-exercise.md) -->
     - [Variable states and dynamic scope calls](2-4-states-dynamic.md)
-      - [Hands-on exercise](2-4-1-exercise.md)
+      <!-- - [Hands-on exercise](2-4-1-exercise.md) -->
 - [Setting up a Catala project](./3-project.md)
     - [Directory structure and configuration](./3-1-directory-config.md)
     - [Test and continuous integration workflow](./3-2-test-ci.md)
@@ -30,5 +30,12 @@
 # Reference guide
 
 - [The Catala language](./5-catala.md)
+    - [Literate programming](./5-1-literate-programming.md)
+    - [Types](./5-2-types.md)
+    - [Scopes and toplevel declarations](./5-3-scopes-toplevel.md)
+    - [Definitions and exceptions](./5-4-definitions-exceptions.md)
+    - [Expressions](./5-5-expressions.md)
+    - [Modules](./5-6-modules.md)
+    - [Extra features](./5-7-extra-features.md)
 - [The `catala` compiler](./6-compiler.md)
 - [The `clerk` build system](./7-clerk.md)

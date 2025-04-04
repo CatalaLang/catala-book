@@ -155,8 +155,8 @@ learning by answering to (almost) all the questions that you'll normally stumble
 upon while coding the law with Catala.
 
 In the reference guide, [Chapter 5](./5-catala.md) details all the features
-available in the Catala language, while [Chapter 7](./7-clerk.md) and [Chapter
-6](./6-compiler.md) focus on the command line interfaces and features of the two
+available in the Catala language, while [Chapter 6](./6-compiler.md) and [Chapter
+7](./7-clerk.md) focus on the command line interfaces and features of the two
 binaries that you will be working with: `clerk` and `catala`.
 
 

@@ -1,10 +1,5 @@
 # Catala-specific questions
 
-~~~admonish danger title="Work in progress"
-This section of the Catala book has not yet been ully written, stay tuned for
-future updates!
-~~~
-
 ## List of questions
 
 <!-- toc -->
@@ -97,7 +92,7 @@ will yield a type error like the following:
 ```
 
 This error can be fixed by tweaking `2.0` to `integer of 2.0`. See the
-[Literals](./5-catala.md#literals) section of the language reference for more
+"Literals" section of the [language reference](./5-catala.md) for more
 details about how to create literals with the correct type.
 
 ## Why is there a distinct money type?
@@ -140,11 +135,11 @@ multiple, round the amount and divide it by the same amount. For instance,
 half a unit before performing the computation and rounding. For instance, to
 round down to a cent the result of a multiplication between a `money` value and
 a decimal, you have to cast to `decimal`, subtract half a cent, and round back
-to the nearest cent by casting again to `money`: `money of ((decimal of $149.26) * 0.5% - 0.005) = $0.74`
-and not `0.75$`. This is a bit of a mouthful, but can
+to the nearest cent by casting again to `money`: `money of ((decimal of $149.26)
+* 0.5% - 0.005) = $0.74` and not `0.75$`. This is a bit of a mouthful, but can
 be adapted to any desired rounding rule. Encapsulate these computation tidbits
-inside a [global function](./5-catala.md#global-constant-and-functions-declarations)
-to reuse them across your codebase.
+inside a global function to reuse them across your codebase. See the [language
+reference for more details](./5-catala.md).
 
 
 This technique can also be reused for `decimal` values that require rounding up
@@ -222,7 +217,8 @@ strings as a first-class value type in Catala to be solved.
 Second, the preferred way of performing low-level, computation-intensive
 operations not described by legal text but used in a Catala program is to simply
 to them outside of Catala and provide their output as inputs of a Catala scope,
-or define an [external module](./5-catala.md#external-modules).
+or define an external module. See the [language reference for more
+details](./5-catala.md).
 
 Third, including string manipulations in the Catala runtime will heavily
 increase the size and complexity of the runtime, as it will probably require a
@@ -246,11 +242,47 @@ computation rules inside `IncomeTaxComputation`.
 This pattern amounts to declaring an exception to a variable of
 `IncomeTaxComputation`, from the outside of `IncomeTaxComputation`. Turns out
 there is a specific Catala feature to handle this case, extending the
-`exception`s in a principled way across scopes : [context
-variables](./5-catala.md#context-variables).
+`exception`s in a principled way across scopes : context variables. See the
+[language reference for more details](./5-catala.md).
 
 ## Do I have to repeat every field in a struct when I want to only change one of them?
 
-No! See [updating structs](./5-catala.md#updating-structures).
+No! See "Updating structs" in the [language reference for more
+details](./5-catala.md).
 
-## Which programming language can Catala target?
+## How are dates and durations handled?
+
+What is the result of `Jan 31st + 1 month`? Is it Feb 28th, Feb 29th or March 1st?
+This question reveals the subtle tricks behind date computations in the Gregorian
+calendar. The variable number of days in a month and leap years cause ambiguities
+in many date computations specified in the law. The way these ambiguities
+are resolved influences the outcome of administrative automated decisions, which
+is why we have been very cautious in Catala about this topic. Our motivations
+and design choices are outlined in a [scientific article](https://hal.science/hal-04536403);
+in summary we had to implement a [custom date computation library](https://github.com/CatalaLang/dates-calc)
+that lets the user choose how to round ambiguous dates computations.
+
+Otherwise, dates in Catala are standard dates in the Gregorian calendar, precise
+to the day (and not more). Durations are a combination of a number of days,
+months and/or years. See the [language reference](./5-catala.md) for more
+details.
+
+
+## Which programming languages can Catala target?
+
+The Catala compiler natively targets :
+* C (standard C89);
+* Python;
+* Java;
+* OCaml;
+
+From the OCaml backend, Javascript can be targeted through
+[`js_of_ocaml`](https://ocsigen.org/js_of_ocaml/latest/manual/overview).
+
+The [runtimes for these
+backends](https://github.com/CatalaLang/catala/tree/master/runtimes) have two
+dependencies outside the standard library of the target programming languages:
+[GMP](https://gmplib.org/) for multi-precision arithmetic and our [custom date
+computation library](https://github.com/CatalaLang/dates-calc).
+
+

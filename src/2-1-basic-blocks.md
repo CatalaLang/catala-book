@@ -408,7 +408,7 @@ that `input` variables of the scope are missing for the interpretation.
 ~~~
 
 The pattern for testing make use of concepts that will be seen
-[later](./2-3-list-modular.md) in the tutorial, so it is okay to take part of
+[later](./2-4-states-dynamic.md) in the tutorial, so it is okay to take part of
 the following as some mysterious syntax that performs what we want. Basically,
 we will be creating for our test case a new test that will pass specific
 arguments to `IncomeTaxComputation` which is being tested:

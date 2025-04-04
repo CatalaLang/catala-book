@@ -25,8 +25,10 @@ language:
   with simple data flow;
 * the [second section](./2-2-conditionals-exceptions.md) is about what makes Catala
   unique: its first-class handling of conditional definitions and exceptions;
-* the [third section](./2-3-list-modular.md) is about scaling up the codebase with
-  multiple functions and lists of items.
+* the [third section](./2-3-list-scopes.md) is about scaling up the codebase with
+  lists of items and multiple scopes ;
+* the [fourth section](./2-4-states-dynamic.md) finishes with variable states and
+  calling scopes dynamically.
 
 ~~~admonish note title="Practising the tutorial"
 This tutorial is designed to be an interactive experience. While reading the

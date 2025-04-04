@@ -1,50 +1,28 @@
 # The Catala language
 
-~~~admonish danger title="Work in progress"
-This section of the Catala book has not yet been written, stay tuned for
-future updates!
+Welcome to the reference of the Catala language! The goal of this chapter is to
+convey itemized explanations of each feature of the language, with examples and
+tips.
+
+
+In this reference, a language feature is often akin to a syntax element as
+presented in the [syntax cheat
+sheet](https://assets.catala-lang.org/syntax.pdf). But unlike the syntax cheat
+sheet, this reference contextualises the features, motivates the design choices
+and give examples of uses.
+
+However, unlike the
+[Catala tutorial](./2-0-tutorial.md), this reference guide is not meant to teach
+you Catala, as language features are presented in a taxonomic order, and
+each feature explanation does not always build upon the explanation of features
+presented earlier.
+
+Rather, the goal of the reference is to offer a place for you to learn about a
+specific Catala feature when you encounter or need it, after a first learning
+phase of Catala through the tutorial.
+
+~~~admonish tip
+If you have a question but don't know to
+which language feature it corresponds, check out the
+Catala-specific [FAQ](./4-2-catala-specific.md).
 ~~~
-
-## Literals
-
-## External modules
-
-## Context variables
-
-## Updating structures
-
-## Global constant and functions declarations
-
-## Attributes and extensions
-
-The language can be extended with attributes, enabling a variety of extensions.
-An attribute is of the form `#[key.of.extension]` or `#[key.of.extension = VALUE]`,
-where `VALUE` can be of the form `"STRING"`, or an expression in catala syntax.
-An attribute is always bound to the element directly following it: an extension
-could for example make use of them to retrieve labels to the input fields of a
-scope in order to generate a web form:
-
-```catala
-declaration scope SomeComputation:
-  #[form.label = "Enter the number of children satisfying the condition XXX"]
-  input children_of_age content integer
-```
-
-### Built-in attributes
-
-Some attributes affect the Catala compiler itself with built-in support.
-
-#### Debug print
-
-By adding `#[debug.print]` in front of an expression in a Catala program, the
-value of that expression will be printed upon computation by the interpreter,
-when run with the `--debug` option. It is otherwise ignored by the other
-backends.
-
-It is also possible to print the value along with a specific tag using
-`#[debug.print = "some debug tag"]`.
-
-Note that, in some cases, due to how the compiler works, debug prints could
-appear duplicated or not at all, especially if optimisations are enabled (with
-the `-O` flag). If that happens, try to move the attribute to the root of the
-definition.
