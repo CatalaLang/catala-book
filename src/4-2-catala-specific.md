@@ -1,8 +1,7 @@
 # Catala-specific questions
 
-## List of questions
-
-<!-- toc -->
+<div id="tock" data-block_title="List of questions"></div>
+<div id="tocw"></div>
 
 ## When to choose `condition`, `rule` *vs* booleans?
 

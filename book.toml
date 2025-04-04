@@ -14,7 +14,7 @@ additional-js = ["mermaid.min.js", "mermaid-init.js"]
 
 [preprocessor.admonish]
 command = "mdbook-admonish"
-assets_version = "3.0.2" # do not edit: managed by `mdbook-admonish install`
+assets_version = "3.0.2"    # do not edit: managed by `mdbook-admonish install`
 
 [preprocessor.mermaid]
 command = "mdbook-mermaid"
@@ -22,3 +22,12 @@ command = "mdbook-mermaid"
 [preprocessor.toc]
 command = "mdbook-toc"
 renderer = ["html"]
+
+[output.linkcheck]
+
+[preprocessor.tocjs]
+save_dir = "lib"
+theme_dir = "theme"
+block_marker_id = "tock"
+wing_marker_id = "tocw"
+base_url = "/"

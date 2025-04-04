@@ -1,5 +1,10 @@
 # Extra features
 
+
+<div id="tock" data-block_title="Features"></div>
+<div id="tocw"></div>
+
+
 ## Attributes and extensions
 
 The language can be extended with attributes, enabling a variety of extensions.
