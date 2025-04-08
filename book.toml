@@ -9,6 +9,7 @@ title = "The Catala domain-specific programming language"
 smart-punctuation = true
 additional-css = ["./mdbook-admonish.css"]
 additional-js = ["mermaid.min.js", "mermaid-init.js"]
+edit-url-template = "https://github.com/CatalaLang/catala-book/edit/main/{path}"
 
 [preprocessor]
 
