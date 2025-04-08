@@ -23,6 +23,7 @@
     - [Test and continuous integration workflow](./3-2-test-ci.md)
     - [Compilation and deployment](./3-3-compilation-deployment.md)
     - [External modules and compiler plugins](./3-4-external-plugins.md)
+    - [Agile development with lawyers and programmers](./3-5-lawyers-agile.md)
 - [FAQ: How to code the law?](./4-0-howto.md)
     - [General questions](./4-1-general.md)
     - [Catala-specific questions](./4-2-catala-specific.md)
