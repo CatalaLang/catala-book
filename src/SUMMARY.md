@@ -38,5 +38,4 @@
     - [Expressions](./5-5-expressions.md)
     - [Modules](./5-6-modules.md)
     - [Extra features](./5-7-extra-features.md)
-- [The `catala` compiler](./6-compiler.md)
-- [The `clerk` build system](./7-clerk.md)
+- [The `clerk` build system](./6-clerk.md)
