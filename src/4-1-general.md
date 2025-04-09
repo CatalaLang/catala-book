@@ -7,6 +7,8 @@ Law](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4291177), 75 SMU L.
 Rev. 535 (2022).
 ~~~
 
+<div id="tock" data-block_title="List of questions"></div>
+<div id="tocw"></div>
 
 ## What is pair programming for coding the law?
 
@@ -51,7 +53,7 @@ a pragmatic question. That Catala can be compiled to other languages, such as
 Python, demonstrates that one could code the law and accurately capture its
 meaning, in some sense, in many different languages. But Catala has several
 advantages for coding law, especially law that is organized as general rules
-followed by exceptions, as many laws are. 
+followed by exceptions, as many laws are.
 
 First, a program in Catala mimics the structure of legal thinking by listing the
 relevant parties, structures, and variables first. Items are named before they
@@ -98,7 +100,7 @@ But at least when it comes to formalizing law with Catala, not every law is
 *usefully* formalized. Laws where the effort of formalization pays off
 conconcretely tend to be rule-heavy, complex laws, perhaps involving many
 numerical computations, and, to really take advantage of all that Catala has to
-offer, structured as general rules followed by exceptions. 
+offer, structured as general rules followed by exceptions.
 
 Formalizing law also has impact on how it is enforced, and on the Rule of Law at
 large. See the output of the [COHUBICOL](https://www.cohubicol.com/) research
