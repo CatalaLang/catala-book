@@ -1,5 +1,7 @@
 # Basic blocks of a Catala program
 
+<div id="tocw"></div>
+
 In this section, the tutorial introduces the basic blocks of a Catala program :
 the difference between law and code, data structures, scopes, variables and
 formulas. By the end of the section, you should be able to write a simple Catala

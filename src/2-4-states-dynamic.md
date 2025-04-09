@@ -1,5 +1,7 @@
 # Variable states and dynamic scope calls
 
+<div id="tocw"></div>
+
 ## Introduction
 
 In this section, the tutorial picks up where the previous section left,

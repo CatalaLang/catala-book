@@ -11,8 +11,12 @@ future updates!
 ~~~
 
 
-## Literals
+## Pattern matching
 
 ## Date computations
 
 ## Updating structures
+
+## Operators
+
+### Rounding

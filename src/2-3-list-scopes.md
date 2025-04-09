@@ -1,5 +1,7 @@
 # Lists and scopes
 
+<div id="tocw"></div>
+
 In this section, the tutorial tackles a common pattern that significantly
 increases the complexity of a codebase: the need to deal with lists and rules
 applying to each element of the list. Here, we learn how to perform operations

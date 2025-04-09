@@ -108,6 +108,12 @@ closing Catala code blocks is very strict and should be strictly enforce.
   in between.
 ~~~
 
+## Comments inside Catala code blocks
+
+Inside Catala code block, you can comment your code by prefixing lines with
+`#`. Comments will be ignored by the compiler at runtime but weaved into
+the documentation like legal specifications in free text mode.
+
 ## Textual inclusion
 
 While a Catala [module](./5-6-modules.md) should be contained in one file,

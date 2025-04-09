@@ -1,5 +1,7 @@
 # Conditional definitions and exceptions
 
+<div id="tocw"></div>
+
 In this section, the tutorial introduces the killer feature of Catala
 when it comes to coding the law: exceptions in the definitions of variables.
 By the end of the section, you should understand the behavior of computations
