@@ -269,17 +269,20 @@ declaration enumeration NoTaxCredit:
 
 The type of each case of the enumeration is mandatory and introduced by
 `content`. It is possible to nest enumerations (declaring the type of a field of
-a enumeration as another enumeration or structure), but not recursively.
+an enumeration as another enumeration or structure), but not recursively.
 
 Enumeration values are built with the following syntax:
 
 ```catala
+# First case
 NoTaxCredit
+# Second case
 TaxCreditForIndividual content (Individual {
     -- birth_date: |1930-09-11|
     -- income: $100,000
     -- number_of_children: 2
 })
+# Third case
 TaxCreditAfterDate content |2000-01-01|
 ```
 
@@ -316,7 +319,8 @@ You can build list values using the following syntax:
 | `content of <var> among <list> such that <expr1> is minimum [or if list empty then <expr2>]` | type of elements | Returns the arg-minimum element of the list (or an optional default) |
 | `combine acc initially <expr1> with <expr2> for <var> among <list>` | type of elements | [Folds](https://en.wikipedia.org/wiki/Fold_(higher-order_function)) `<list>`, starting with `<expr1>` and accumulating with `<expr2>` |
 
-Note that these operations supports multiple lists being iterated upon, like `(x + y) for (x, y) among (lst1, lst2)`.
+Note that these operations support multiple lists being iterated upon, like
+`(x + y) for (x, y) among (lst1, lst2)`, as long as they have the same length.
 
 ## Tuples
 
@@ -330,13 +334,13 @@ You can build tuple values with the following syntax:
 ```catala
 (|2024-04-01|, $30, 1%) # This values has type (date, money, decimal)
 ```
-You can acess the `n`-th element of a tuple, starting at `0`, with the syntax `<tuple>.n`.
+You can acess the `n`-th element of a tuple, starting at `1`, with the syntax `<tuple>.n`.
 
 
 ## Functions
 
 Function types represent function values, *i.e* values that require being called
-with some arguments to yield a result. Functions are first-class value because
+with some arguments to yield a result. Functions are first-class values because
 Catala is a [functional programming
 language](https://en.wikipedia.org/wiki/Functional_programming).
 
