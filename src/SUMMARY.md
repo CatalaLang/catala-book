@@ -32,7 +32,7 @@
 
 - [The Catala language](./5-catala.md)
     - [Literate programming](./5-1-literate-programming.md)
-    - [Types and values](./5-2-types.md)
+    - [Types, values and operations](./5-2-types.md)
     - [Scopes and toplevel declarations](./5-3-scopes-toplevel.md)
     - [Definitions and exceptions](./5-4-definitions-exceptions.md)
     - [Expressions](./5-5-expressions.md)

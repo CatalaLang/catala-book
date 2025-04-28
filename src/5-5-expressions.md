@@ -13,10 +13,6 @@ future updates!
 
 ## Pattern matching
 
-## Date computations
 
 ## Updating structures
 
-## Operators
-
-### Rounding
