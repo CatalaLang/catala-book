@@ -4,8 +4,8 @@
 <div id="tock" data-block_title="Features"></div>
 <div id="tocw"></div>
 
-~~~admonish info
-Catala is a strongly-typed language: each value manipulated by the programs have
+~~~admonish info title="Catala is a strongly-typed language"
+Each value manipulated by the Catala programs have
 a well-defined type that is either built-in or declared by the user. This
 section of the language reference summarizes all the different kind of types,
 how to declare them and how to build values of this type.

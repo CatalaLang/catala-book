@@ -3849,7 +3849,7 @@ if (typeof exports === 'object' && typeof module !== 'undefined') { module.expor
                         'is maximum', 'is minimum', 'minimum', 'maximum',
                         'combine', 'initially'],
                     built_in:
-                        ['list', 'decimal', 'money', 'integer', 'date', 'duration'],
+                        ['list', 'decimal', 'money', 'integer', 'date', 'duration', "boolean"],
                     operator: ['not', 'or', 'xor', 'and', 'year', 'month', 'day'],
                     literal: ['true', 'false'],
                 },

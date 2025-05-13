@@ -1,4 +1,4 @@
-# Literate programming
+# Literate programming and basic syntax
 
 
 <div id="tock" data-block_title="Features"></div>
@@ -10,7 +10,9 @@ Specifically, Catala's Markdown syntax is aligned on the [Pandoc](https://pandoc
 markdown syntax.
 ~~~
 
-## Weaving and tangling
+## Literate programming
+
+### Weaving and tangling
 
 [Literate programming](https://en.wikipedia.org/wiki/Literate_programming)
 mixes the source code and its documentation in the same document. A Catala
@@ -26,7 +28,7 @@ comprehensive document about the program and its specification. The Catala
 compiler and build system also lets you do that, see the [build system reference](./6-clerk.md)
 for more information. This is called _weaving_.
 
-## Free text and paragraphs
+### Free text and paragraphs
 
 If you simply put some text in your Catala source code file, it will be
 interpreted as free text and ignored as source Catala code. This free text mode
@@ -45,7 +47,7 @@ This sentence will be rendered on the same line as the one before.
 This sentence begins a new paragraph after a line jump.
 ~~~
 
-## Headers
+### Headers
 
 A Markdown document is organized thanks to a hierarchy of headers, each
 introduced by `#`. The more `#` a header has, the more deep it is into
@@ -77,12 +79,14 @@ Indeed, the Catala compiler will keep track of these headers to enrich the
 source code positions used in error messages, debugging and explanations
 interfaces.
 
-## Other Markdown features
+### Other Markdown features
 
 For styling (bold, italics), tables, links, etc., you can use all the Markdown
 features supported by [Pandoc](https://pandoc.org/MANUAL.html#pandocs-markdown).
 
-## Catala code blocks
+## Basic syntax principles
+
+### Catala code blocks
 
 All the Catala source code must be contained inside a Catala code block.
 A Catala code block looks like this inside your source file:
@@ -108,13 +112,101 @@ closing Catala code blocks is very strict and should be strictly enforce.
   in between.
 ~~~
 
-## Comments inside Catala code blocks
+### Comments inside Catala code blocks
 
 Inside Catala code block, you can comment your code by prefixing lines with
 `#`. Comments will be ignored by the compiler at runtime but weaved into
 the documentation like legal specifications in free text mode.
 
-## Textual inclusion
+### Reserved keywords
+
+Certain words are reserved in Catala for keywords and thus cannot be
+used a variable names. If you try, you will get a confusing syntax error
+because Catala will believe that you tried to use the keyword instead of the
+variable name.
+
+The reserved keywords in Catala are :
+
+
+* `scope`
+* `consequence`
+* `data`
+* `depends on`
+* `declaration`
+* `context`
+* `decreasing`
+* `increasing`
+* `of`
+* `list of`
+* `contains`
+* `enumeration`
+* `integer`
+* `money`
+* `text`
+* `decimal`
+* `date`
+* `duration`
+* `boolean`
+* `sum`
+* `fulfilled`
+* `definition`
+* `state`
+* `label`
+* `exception`
+* `equals`
+* `match`
+* `anything`
+* `with pattern`
+* `under condition`
+* `if`
+* `then`
+* `else`
+* `condition`
+* `content`
+* `structure`
+* `assertion`
+* `with`
+* `for`
+* `all`
+* `we have`
+* `rule`
+* `let`
+* `exists`
+* `in`
+* `among`
+* `combine`
+* `map each`
+* `to`
+* `such`
+* `that`
+* `and`
+* `or`
+* `xor`
+* `not`
+* `maximum`
+* `minimum`
+* `is`
+* `or if list empty`
+* `but replace`
+* `initially`
+* `number`
+* `year`
+* `month`
+* `day`
+* `true`
+* `false`
+* `input`
+* `output`
+* `internal`
+* `round`
+* `get_day`
+* `get_month`
+* `get_year`
+* `first_day_of_month`
+* `last_day_of_month`
+
+
+### Textual inclusion
 
 While a Catala [module](./5-6-modules.md) should be contained in one file,
 sometimes legal specifications are very large and it is impossible to

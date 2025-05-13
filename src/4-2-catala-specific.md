@@ -285,3 +285,10 @@ dependencies outside the standard library of the target programming languages:
 computation library](https://github.com/CatalaLang/dates-calc).
 
 
+## Why scope declarations cannot be split like scope definitions ?
+
+~~~admonish danger title="Work in progress"
+This section of the Catala book has not yet been written, stay tuned for
+future updates!
+~~~
+
