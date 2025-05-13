@@ -302,25 +302,25 @@ You can build list values using the following syntax:
 
 ### List operations
 
-| Syntax                                             | Type of result   | Semantic                                                          |
-|----------------------------------------------------|------------------|------------------------------------------------------------------ |
-| `<list> contains <element>`                        | boolean          | `true` if `<list>` contains `<element>`, false otherwise          |
-| `number of <list>`                                 | integer          | Length of the list                                                |
-| `exists <var> among <list> such that <expr>`       | boolean          | `true` if at least one element of `list` satisfies `<expr>`       |
-| `for all <var> among <list> we have <expr>`        | boolean          | `true` if all elements of `list` satisfy `<expr>`                 |
-| `<expr> for <var> among <list>`                    | list             | Element-wise mapping, creating a new list with `<expr>`           |
-| `list of <var> among <list> such that <expr>`      | list             | Creates a new list with only the elements satisfying `<expr>`     |
-| `<expr1> for <var> among <list> such that <expr2>` | list             | Combines the filter and map (see two last operations)             |
+| Syntax                                                       | Type of result   | Semantic                                                          |
+|--------------------------------------------------------------|------------------|------------------------------------------------------------------ |
+| `<list> contains <element>`                                  | boolean          | `true` if `<list>` contains `<element>`, false otherwise          |
+| `number of <list>`                                           | integer          | Length of the list                                                |
+| `exists <var> among <list> such that <expr>`                 | boolean          | `true` if at least one element of `list` satisfies `<expr>`       |
+| `for all <var> among <list> we have <expr>`                  | boolean          | `true` if all elements of `list` satisfy `<expr>`                 |
+| `map each <var> among <list> to <expr>`                      | list             | Element-wise mapping, creating a new list with `<expr>`           |
+| `list of <var> among <list> such that <expr>`                | list             | Creates a new list with only the elements satisfying `<expr>`     |
+| `map each <var> among <list> such that <expr1>` to <expr2>`  | list             | Combines the filter and map (see two last operations)             |
 | `<list1> ++ <list2>`                               | list             | Concatenate two lists                                             |
 | `sum <type> of <list>`                             | `<type>`         | Aggregates the contents (`money`, `integer`, `decimal`) of a list |
 | `maximum of <list> [or if list empty then <expr>]` | type of elements | Returns the maximum element of the list (or an optional default)  |
 | `minimum of <list> [or if list empty then <expr>]` | type of elements | Returns the minimum element of the list (or an optional default)  |
 | `content of <var> among <list> such that <expr1> is maximum [or if list empty then <expr2>]` | type of elements | Returns the arg-maximum element of the list (or an optional default) |
 | `content of <var> among <list> such that <expr1> is minimum [or if list empty then <expr2>]` | type of elements | Returns the arg-minimum element of the list (or an optional default) |
-| `combine acc initially <expr1> with <expr2> for <var> among <list>` | type of elements | [Folds](https://en.wikipedia.org/wiki/Fold_(higher-order_function)) `<list>`, starting with `<expr1>` and accumulating with `<expr2>` |
+| `combine all <var> among <list> in <acc> initially <expr1> with <expr2>` | type of elements | [Folds](https://en.wikipedia.org/wiki/Fold_(higher-order_function)) `<list>`, starting with `<expr1>` and accumulating with `<expr2>` |
 
 Note that these operations support multiple lists being iterated upon, like
-`(x + y) for (x, y) among (lst1, lst2)`, as long as they have the same length.
+`map each (x, y) among (lst1, lst2) to x + y`, as long as they have the same length.
 
 ## Tuples
 
@@ -359,5 +359,3 @@ integer` can be the type of a tax-computing function.
 However, unlike most programming language, it is not possible to directly build
 a function as a value; functions are created and passed around with other
 language mechanisms.
-
-

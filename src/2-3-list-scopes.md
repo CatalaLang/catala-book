@@ -96,8 +96,8 @@ can be done through the syntax `number of individuals` (the syntax for all list
 operations can be found in [the syntax sheat cheet](https://catalalang.github.io/catala/syntax.pdf)
 or in the [language reference](./5-catala.md)). For step 2, we
 need to aggregate the number of children for all individuals, which can be done
-through the syntax `sum integer of individual.number_of_children for individual
-among individuals`. Notice the type indication (`integer`) for the `sum`, which
+through the syntax `sum integer of map each individual
+among individuals to individual.number_of_children`. Notice the type indication (`integer`) for the `sum`, which
 indicates that if the list of individuals is empty, then the integer `0` should
 be returned. Finally, we can piece steps 1 and 2 for the step 3 which computes
 the amount of tax:
@@ -108,8 +108,8 @@ scope HouseholdTaxComputation:
   definition household_tax equals
     let number_of_individuals equals number of individuals in
     let number_of_children equals
-      sum integer
-        of individual.number_of_children for individual among individuals
+      sum integer of
+        map each individual among individuals to individual.number_of_children
     in
     $10,000
     * (

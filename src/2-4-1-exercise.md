@@ -57,21 +57,20 @@ scope HouseholdTaxIndividualComputation:
 
 scope HouseholdTaxComputation:
   definition shares_of_household_tax equals
-    (
+    map each individual among individuals to
       output of HouseholdTaxIndividualComputation with {
         -- individual: individual
         -- overseas_territories: overseas_territories
         -- current_date: current_date
       }
-    )
-      for individual among individuals
+
 
   definition household_tax
     state base
   equals
-    sum money
-      of share_of_household_tax.household_tax
-      for share_of_household_tax among shares_of_household_tax
+    sum money of
+      map each share_of_household_tax among shares_of_household_tax
+      to share_of_household_tax.household_tax
 ```
 
 #### Article 8
@@ -96,9 +95,9 @@ scope HouseholdTaxComputation:
   definition total_deduction
     state base
   equals
-    sum money
-      of share_of_household_tax.deduction
-      for share_of_household_tax among shares_of_household_tax
+    sum money of
+      map each share_of_household_tax among shares_of_household_tax to
+        share_of_household_tax.deduction
 
   definition household_tax
     state deduction
