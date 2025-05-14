@@ -138,9 +138,8 @@ to article 7:
 ```catala
 scope HouseholdTaxComputation:
   definition household_tax equals
-    sum money
-      of (
-      (
+    sum money of
+      map each individual among individuals (
         # Below is the syntax for calling the sub-scope
         # "HouseholdTaxIndividualComputation" dynamically, on the spot.
         # after "with" is the list of inputs of the scope.
@@ -153,14 +152,12 @@ scope HouseholdTaxComputation:
           -- overseas_territories: overseas_territories
           -- current_date: current_date
         }
-      # The construction "output of <X> with { ... }" returns a structure
-      # containing all the output variables of scope <X>. Hence, we access
-      # output variable "household_tax" of scope
-      # "HouseholdTaxIndividualComputation" with the field access syntax
-      # ".household_tax".
-      ).household_tax
-    )
-      for individual among individuals
+        # The construction "output of <X> with { ... }" returns a structure
+        # containing all the output variables of scope <X>. Hence, we access
+        # output variable "household_tax" of scope
+        # "HouseholdTaxIndividualComputation" with the field access syntax
+        # ".household_tax".
+        ).household_tax
 ```
 ~~~
 
