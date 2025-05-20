@@ -13,6 +13,7 @@ future updates!
 
 ## Pattern matching
 
+## Direct scope call
 
 ## Updating structures
 

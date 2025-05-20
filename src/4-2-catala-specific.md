@@ -242,7 +242,7 @@ This pattern amounts to declaring an exception to a variable of
 `IncomeTaxComputation`, from the outside of `IncomeTaxComputation`. Turns out
 there is a specific Catala feature to handle this case, extending the
 `exception`s in a principled way across scopes : context variables. See the
-[language reference for more details](./5-catala.md).
+[language reference for more details](./5-3-scopes-toplevel.md#context-variables).
 
 ## Do I have to repeat every field in a struct when I want to only change one of them?
 

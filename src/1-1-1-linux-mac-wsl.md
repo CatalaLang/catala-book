@@ -40,8 +40,13 @@ $ eval $(opam env)
 
 ~~~admonish question title="What if I already have `opam`?"
 Then you can keep your current switch for installing Catala, or create a
-new, specific one with `opam switch create`. Catala normally supports
-OCaml versions `4.14.X` and `5.0.X`.
+new, specific one with
+
+```
+$ opam switch create 4.14.2
+```
+
+Catala normally supports OCaml versions `4.14.X` and `5.0.X`.
 ~~~
 
 ## Getting Catala
