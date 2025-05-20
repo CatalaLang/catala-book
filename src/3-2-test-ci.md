@@ -5,7 +5,7 @@
 Catala supports two distinct flavors of tests, tailored for different purposes:
 
 - **Test scopes** should be the main way to write tests that validate
-  expectations on a given computation. This is the natural way to automatise the
+  expectations on a given computation. This is the natural way to automate the
   `catala interpret --scope=TestXxx` commands we have been running so far.
 - **Cli tests** provide a way to run custom catala commands and check their
   output. They make the computation output visible, and are sometimes useful for
