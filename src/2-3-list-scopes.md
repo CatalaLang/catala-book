@@ -202,7 +202,7 @@ pays $64,000 of income tax.
 
 On the other hand, the household tax due by this household is
 $10,000 + $10,000 = $20,000. How to apply article 8 in this situation?
-Naïvely substracting the total income tax ($64,000) from the total household
+Naively substracting the total income tax ($64,000) from the total household
 tax ($20,000) yields a revised household tax of $0, but this is not the legal
 amount. Indeed, the deduction can only occur at the individual level.
 
