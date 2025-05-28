@@ -6,7 +6,7 @@ Catala supports two distinct flavors of tests, tailored for different purposes:
 
 - **Test scopes** should be the main way to write tests that validate
   expectations on a given computation. This is the natural way to automate the
-  `catala interpret --scope=TestXxx` commands we have been running so far.
+  `catala interpret --scope=TestSomething` commands we have been running so far.
 - **Cli tests** provide a way to run custom catala commands and check their
   output. They make the computation output visible, and are sometimes useful for
   more specific needs, like ensuring the correct error is triggered in a given
@@ -19,8 +19,9 @@ files, will process both kinds of tests and print a report.
 
 #### Declaration
 
-A **test scope** is a scope that is marked with the "test" attribute: simply
-write `#[test]` just before its `declaration` keyword.
+A **test scope** is a scope that is marked with the "test"
+[attribute](5-7-extra-features.html#attributes-and-extensions): simply write
+`#[test]` just before its `declaration` keyword.
 
 ```catala
 #[test]
@@ -28,11 +29,10 @@ declaration scope TestMoneyRounding:
   output result content money
 ```
 
-There are two requirements for a test scope:
-- The scope must be public (declared in a `` ```catala-metadata`` section) so
-  that it can be run and checked in real conditions
-- It must not require any input: only `internal`, `output` and `context`
-  variables are allowed
+Test scopes have one important requirement: they must not require any input.
+Only `internal`, `output` and `context` variables are allowed. Additionally,
+test scopes are implicitely made public even if declared outside of a
+`` ```catala-metadata `` section, in order to be able to run them.
 
 #### Definition
 

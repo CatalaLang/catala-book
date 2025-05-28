@@ -7,12 +7,16 @@
 
 ## Attributes and extensions
 
-The language can be extended with attributes, enabling a variety of extensions.
-An attribute is of the form `#[key.of.extension]` or `#[key.of.extension = VALUE]`,
-where `VALUE` can be of the form `"STRING"`, or an expression in catala syntax.
-An attribute is always bound to the element directly following it: an extension
-could for example make use of them to retrieve labels to the input fields of a
-scope in order to generate a web form:
+We have already been confronted with attributes in [3.2](3-2-test-ci.html): the
+`#[test]` annotation was indeed just a particular case of attribute. Attributes
+are in fact more general than that, enabling a variety of extensions to the
+language. Catala plugins can leverage them for custom uses.
+
+An attribute is of the form `#[key.of.extension]` or
+`#[key.of.extension = VALUE]`, where `VALUE` can be of the form `"STRING"`, or
+an expression in catala syntax. An attribute is always bound to the element
+directly following it: an extension could for example make use of them to
+retrieve labels to the input fields of a scope in order to generate a web form:
 
 ```catala
 declaration scope SomeComputation:
@@ -23,6 +27,11 @@ declaration scope SomeComputation:
 ### Built-in attributes
 
 Some attributes affect the Catala compiler itself with built-in support.
+
+### Test scopes
+
+See [3.2](3-2-test-ci.html#declaration). The `#[test]` attribute doesn't accept any
+arguments, and is only allowed on scope declarations.
 
 ### Debug print
 
