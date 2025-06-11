@@ -19,6 +19,21 @@ A scope is a function whose prototype (*i.e.* signature) is explicitly declared,
 and whose body can be scattered in little pieces across the literate programming
 codebase.
 
+You need to declare (`declaration scope Foo ...`) one time at one place in the
+code; then you can use this scope (`scope Foo`) to add [variable
+definitions](./5-4-definitions-exceptions.md) multiple times and anywhere else
+in your codebase.
+
+The following reference sections tell you how to write the scope declaration. As
+a spoiler, here is a complete example for a minimal scope named `Min` with two
+variables, `a` and `b`:
+
+```catala
+declaration scope Min:
+  input a content integer
+  output b content decimal
+```
+
 ~~~admonish warning title="This section only cover scope declarations"
 For information about the scope body, including definitions of scope
 variables, check out the reference sections about [definition and exceptions](./5-4-definitions-exceptions.md)
@@ -27,9 +42,10 @@ or [expressions](./5-5-expressions.md).
 
 ### Scope name
 
-Scope names begin by a capital letter and follow the CamlCase convention. A
-scope declaration is a toplevel item inside a Catala code block. For instance,
-you want to name your scope `Foo`, then its declaration begins by:
+Scope declarations begin by the declaration of the scope name. Scope names begin
+by a capital letter and follow the CamlCase convention. A scope declaration is a
+toplevel item inside a Catala code block. For instance, you want to name your
+scope `Foo`, then its declaration begins by:
 
 ```catala
 declaration scope Foo:
@@ -44,8 +60,8 @@ These two items are described below.
 
 ### Scope variable declarations
 
-Scope variables are akin to local variables in a function. Their declaration
-features:
+After the scope name come the scope variables in the scope declaration. Scope
+variables are akin to local variables in a function. Their declaration features:
 * their input/output status;
 * their name;
 * their type;
@@ -71,10 +87,11 @@ declaration scope Foo:
     state before
     state after
   input output buzz content decimal
+    depends on arg content date
 ~~~
 ```
 
-Explanations for input/output status and variable states follow below.
+Explanations for input/output status, variable types and variable states follow below.
 
 #### Input/output qualifiers
 
@@ -125,6 +142,12 @@ scope call's result. That is, such a variable would be both `input` and
 `output`, which is why the syntax for this is `input output`. In this case,
 the variable cannot be defined inside the scope (as it is an input). This also
 works when swapping `input` by `context`.
+
+#### Variable types and functions
+
+The type of the variable following the `content` keyword can be any type
+identifier described in the [type reference](./5-2-types.md), including
+[function types](./5-2-types.md#functions).
 
 #### Variable state declarations
 
@@ -216,13 +239,16 @@ that the output structure of the call to `Bar` will be present as field
 As with structures and enumerations, it is not possible for these scope calls
 to be recursive.
 
-## Global constant and functions declarations
+## Global constant and functions declarations and definitions
 
 While scopes are the workhorse of Catala implementations, there are sometimes
 small things that need not be inside a fully-fledged scope. For instance,
 declaring small utility functions like `excess_of` that computes the excess of the
 first argument compared to the second, or declaring a constant for the number of
 seconds in a day.
+
+For these, Catala allow for the declaration of global constants and functions,
+that are not tied to a particular scope.
 
 ~~~admonish danger title="Not using scopes means missing out on the core of Catala"
 Since scopes are akin to functions, it is possible to use regular function
@@ -241,4 +267,37 @@ takes up more than a few lines of code, it should be turned into a scope!
 
 ### Constants
 
+To declare and define globally a constant `foo` of type `<type>` (any item in
+the [type reference](./5-2-types.md)) with value `<expr>` (any
+[expression](./5-5-expressions.md) of type `<type>`), use the following syntax:
+
+```catala
+declaration foo content <type> equals <expr>
+```
+
+For instance:
+
+```catala
+declaration foo content boolean equals true
+declaration bar content integer equals 4643 * 876 - 524
+```
+
 ### Functions
+
+If the type of the constant you declare and define is a [function type](./5-2-types.md),
+then the constant becomes a global function for free. For instance:
+
+```catala
+declaration foo content is_round content boolean
+  depends on x content decimal
+  equals
+    round of x = x
+
+declaration bar content excess_of content money
+  depends on arg content money,
+  depends on threshold content money
+  equals
+    if arg >= threshold
+    then arg - threshold
+    else $0
+```
