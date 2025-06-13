@@ -139,16 +139,7 @@ There are three rounding modes in Catala, whose description is below:
 | Rounding down     | Last day of previous month    | `Jan 31st + 1 month = Feb 28/29th` (depending on leap year) |
 
 By default, Catala is in the "No rounding" mode. To set the rounding mode to either up or down, for all the date operations
-inside a whole scope, use this syntax:
-
-```catala
-# Let us suppose you want to set the rounding more for date operations
-# inside scope Foo declared elsewhere
-scope Foo:
-  date round decreasing # rounding down
-  # or
-  date round increasing # rounding up
-```
+inside a whole scope, see the [relevant reference section](./5-4-definitions-exceptions.md#date-rounding-mode).
 
 Lastly, if the duration to add is comprised of multiple units (like `2 month + 21 day`), then Catala will start by adding
 the component with the largest unit (here, `month`), then the component with the smallest unit (here, `day`).

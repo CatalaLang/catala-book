@@ -149,6 +149,21 @@ The type of the variable following the `content` keyword can be any type
 identifier described in the [type reference](./5-2-types.md), including
 [function types](./5-2-types.md#functions).
 
+#### `condition` scope variables
+
+A special syntax exists for the specific case of a boolean scope
+variable whose default value is `false`. This case maps directly to a legal
+condition, so we name it `condition` in Catala. The syntax for declaring a
+`condition` scope variable (here named `bar`, with an `internal` qualifier) is:
+
+```catala
+declaration scope Foo:
+  internal bar condition
+```
+
+`condition` variables also have a special syntax for definitions
+(see the [relevant reference section](./5-4-definitions-exceptions.md#scope-variables-that-are-condition)).
+
 #### Variable state declarations
 
 As mentioned in the [tutorial](./2-4-states-dynamic.md#variable-states),
