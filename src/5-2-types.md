@@ -325,7 +325,7 @@ You can build tuple values with the following syntax:
 ```catala
 (|2024-04-01|, $30, 1%) # This values has type (date, money, decimal)
 ```
-You can acess the `n`-th element of a tuple, starting at `1`, with the syntax `<tuple>.n`.
+You can access the `n`-th element of a tuple, starting at `1`, with the syntax `<tuple>.n`.
 
 
 ## Functions

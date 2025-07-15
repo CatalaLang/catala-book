@@ -5,10 +5,9 @@
 <div id="tocw"></div>
 
 
-Expressions in Catala represent the meat of computation rules, that appear in
-[scope variable
-definitions](./5-4-definitions-exceptions.md#definitions-and-exceptions) or in
-[global constant definitions](./5-3-scopes-toplevel.md#constants).
+Expressions in Catala represent the meat of computation rules, that appear in [scope variable
+definitions](./5-4-definitions-exceptions.md#definitions-and-exceptions) or in [global constant
+definitions](./5-3-scopes-toplevel.md#constants).
 
 ~~~admonish tip title="Quick reference of the expressions' BNF grammar" collapsible=true
 The Backus-Naur Form ([BNF](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form)) grammar
@@ -44,25 +43,222 @@ If you're familiar with this format, you can read it below:
 
 ## References to other variables
 
-~~~admonish info title="Accessing a particular state of a scope variable"
+Inside an expression, you can refer to the name of other variables of the same
+scope, or to [toplevel constants and functions](./5-3-scopes-toplevel.md#global-constant-and-functions-declarations-and-definitions).
 
+~~~admonish info title="Accessing a particular state of a scope variable"
+Some scope variables can have [multiple states](./5-4-definitions-exceptions.md#scope-variables-with-multiple-states).
+Suppose we have scope variable `foo` has states `bar` and `baz` in this order.
+You can either refer to `foo`, `foo state bar` or `foo state baz`, but the ability
+or meaning of these reference depend on the context according to the following
+rules.
+
+* Inside the expression of `definition foo state bar`, you cannot refer to `foo`, nor `foo state bar`
+  neither `foo state baz`, since `bar` is the first state and `foo` is being defined for the first state.
+* Inside the expression of `definition foo state baz`, you can refer to `foo` and it will
+  actually refer to the previously defined state for `foo`, here `bar`. So `foo`
+  and `foo state bar` are equivalent in this context, and you cannot refer to
+  `foo state baz` since it is being defined.
+* Outside the definitions of `foo`, you can refer to `foo state bar` and
+  `foo state baz`. It you refer simply to `foo`, it will default to the last
+  state, here `baz`.
+* If `foo` in an `input` variable of the scope, then its first state cannot
+  be defined and will be valued by the argument of the scope when it is being
+  called.
 ~~~
 
+To reference a variable from another [module](./5-6-modules.md), use the syntax
+`<name of module>.<name of variable>`.
 
 ## Values and operations
 
-## Accessing items from other modules
+All the [values and operations](./5-2-types.md) previously presented are
+fully-fledged expressions.
+
+## Parenthesis
+
+You can use parenthesis `(...)` around any part or sub-part of an expression
+to make sure that the compiler will understand correctly what you are typing.
 
 ## Local variables and let-bindings
 
-## Structure field access and tuple element access
+Inside a complex `definition` of a scope variable, it is often useful to give a name to an
+intermediate quantity to promote its reuse, or simply to make the [code more
+readable](https://www.amazon.fr/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882). While it
+is always possible to introduce a new [scope
+variable](./5-3-scopes-toplevel.md#scope-variable-declarations) to that effect, you can also use a
+lighter local variable that only affects the current expression. The syntax for these is `let foo
+equals ... in ...`. For instance :
 
-## Updating structures
-
+```catala
+scope Bar:
+  definition baz equals
+    let foo equals [4; 6; 5; 1] in
+    sum integer of foo - maximum of foo
+```
 ## Conditionals
+
+You are encouraged to use [exceptions to scope variable
+definitions](./5-4-definitions-exceptions.md#exceptions-and-priorities) to encode the base
+case/exception logic of legal texts. Only exceptions and conditional definitions of scope variables
+allow you to split your Catala code into [small
+chunks](./5-1-literate-programming.md#literate-programming), each attached to the piece of legal
+text it encodes.
+
+However, sometimes, it makes just sense to use a regular old conditional inside an expression to
+distinguish between two cases. In that case, use the traditional `if ... then ... else ...`. Note
+that you have to include the `else` everytime since this conditional is an expression always
+yielding a value and not a statement that conditionally updates some memory cell.
+
+## Structures
+
+As explained [previously](./5-2-types.md#structures), structure values are built with the following
+syntax:
+
+```catala
+Individual {
+    -- birth_date: |1930-09-11|
+    -- income: $100,000
+    -- number_of_children: 2
+}
+```
+To access the field of a structure, simply use the syntax <struct value>.<field name>, like
+`individual.income`.
+
+~~~admonish tip title="Updating structures concisely"
+Suppose you have a value `foo` containing a big structure `Bar` with a dozen fields,
+including `baz`. You want to obtain a new structure value similar to `foo`
+but with a different value for bar. You could write:
+
+```catala
+Bar {
+  -- baz: 42
+  -- fizz: foo.fizz
+  -- ...
+}
+```
+
+But this is very tedious as you have to copy over all the fields. Instead, you can
+write:
+
+```catala
+foo but replace { -- baz: 42 }
+```
+~~~
+
+## Enumerations
+
+As explained [previously](./5-2-types.md#enumerations), the type of each case of the enumeration is
+mandatory and introduced by `content`. It is possible to nest enumerations (declaring the type of a
+field of an enumeration as another enumeration or structure), but not recursively.
+
+Enumeration values are built with the following syntax:
+
+```catala
+# First case
+NoTaxCredit
+# Second case
+TaxCreditForIndividual content (Individual {
+    -- birth_date: |1930-09-11|
+    -- income: $100,000
+    -- number_of_children: 2
+})
+# Third case
+TaxCreditAfterDate content |2000-01-01|
+```
 
 ## Pattern matching
 
-## Direct scope call
+Pattern matching is a popular programming language feature that comes from functional programming,
+introduced in the mainstream by [Rust](https://doc.rust-lang.org/book/ch19-00-patterns.html), but
+followed by other languages like
+[Java](https://docs.oracle.com/en/java/javase/17/language/pattern-matching.html) or
+[Python](https://peps.python.org/pep-0636/). In Catala, pattern matching works
+on enumeration values whose type has been [declared by the user](./5-2-types.md#enumerations).
+Suppose you have declared the type
+
+```catala
+declaration enumeration NoTaxCredit:
+  -- NoTaxCredit
+  -- TaxCreditForIndividual content Individual
+  -- TaxCreditAfterDate content date
+```
+
+and you have a value `foo` of type `NoTaxCredit`. `foo` is either an instance
+of `NoTaxCredit`, or `TaxCreditForIndividual`, or `TaxCreditAfterDate`. If
+you want to use `foo`, you have to provide instructions for what to do in each of
+the three cases, since you don't know in advance which one it will be. This
+is the purpose of pattern matching; in each of the case, provide an
+expression yielding what should be the result in this case. These case-expressions
+can also use the contents stored inside the case of the enumerations, making
+pattern matching a powerful an intuitive way to "inspect" nested content.
+For instance, here is the pattern matching syntax to compute the tax credit
+in our example:
+
+```catala
+match foo with
+-- NoTaxCredit: $0
+-- TaxCreditForIndividual of individual: individual.income * 10%
+-- TaxCreditAfterDate of date: if today >= date then $1000 else $0
+```
+
+In `TaxCreditForIndividual of individual`, while `TaxCreditForIndividual` is
+the name of the enumeration case being inspected, `individual` is a user-chosen
+variable name standing for the content of this enumeration case. In other words:
+you can choose your own name for the variable in the syntax at this location!
+
+Importantly, pattern matching also helps you avoid forgetting cases to handle.
+Indeed, if you declare a case in the type but forget it in the pattern matching,
+you will get a compiler error.
+
+~~~admonish tip title="Match all case in pattern matching"
+```catala
+Often, the result of the pattern matching should be the same in a lot of cases,
+leading you to repeat the same result expression for each enumeration case.
+For conciseness and precision, you can use the `anything` catch-all case as
+the last case of your pattern matching. For instance, here this computes whether
+we should apply a tax credit or not:
+
+match foo with
+-- NoTaxCredit: true
+-- anything: false
+```
+~~~
+
+## Tuples
+
+As explained [previously](./5-2-types.md#tuples), you can build tuple values with the following
+syntax:
+
+```catala
+(|2024-04-01|, $30, 1%) # This values has type (date, money, decimal)
+```
+
+You can also access the `n`-th element of a tuple, starting at `1`, with the syntax `<tuple>.n`.
+
+## Lists
+
+~~~admonish danger title="Work in progress"
+This section of the Catala book has not yet been written, stay tuned for
+future updates!
+~~~
+
+
+## Function calls
+
+
+~~~admonish danger title="Work in progress"
+This section of the Catala book has not yet been written, stay tuned for
+future updates!
+~~~
+
+
+## Direct scope calls
+
+
+~~~admonish danger title="Work in progress"
+This section of the Catala book has not yet been written, stay tuned for
+future updates!
+~~~
 
 

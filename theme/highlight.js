@@ -3847,7 +3847,7 @@ if (typeof exports === 'object' && typeof module !== 'undefined') { module.expor
                         'fulfilled', 'equals', 'assertion', 'definition', 'state',
                         'label', 'exception', 'anything', 'list empty',
                         'is maximum', 'is minimum', 'minimum', 'maximum',
-                        'combine', 'initially'],
+                        'combine', 'initially', 'sum'],
                     built_in:
                         ['list', 'decimal', 'money', 'integer', 'date', 'duration', "boolean"],
                     operator: ['not', 'or', 'xor', 'and', 'year', 'month', 'day'],
