@@ -319,6 +319,31 @@ is all you need! In particular, you can stack exceptions by defining chains
 and branches of `exception` relationship, etc. This is covered extensively
 in the [relevant section of the tutorial](./2-2-conditionals-exceptions.md).
 
+## Sub-scope calling
+
+Once you have [declared a sub-scope](./5-3-scopes-toplevel.md#sub-scopes-declarations),
+you will need to define its arguments by defining the input variables of the
+sub-scope in the scope. For instance, if scope `Foo` has sub-scope `bar` calling
+scope `Bar` that has input variables `fizz` and `buzz`, you will need to define
+`bar.fizz` and `bar.fuzz` with this syntax:
+
+```catala
+scope Foo:
+  definition bar.fizz equals ...
+
+  definition bar.fuzz equals ...
+```
+
+Of course, you can use exceptions and conditional definitions for these
+sub-scope input variable definitions.
+
+Once you have defined all the [input variables](./5-3-scopes-toplevel.md#input-variables) of the scope
+(as well as some [context variables](./5-3-scopes-toplevel.md#context-variables) if need be),
+you can simply refer to the sub-scope's [output variables](./5-3-scopes-toplevel.md#output-variables)
+in later expressions. For instance, if `Bar` has output variable `fizzbuzz`, then
+you can refer to `bar.fizzbuzz` as the result of `fizzbuzz` when calling `Bar`
+with arguments `bar.fizz` and `bar.fuzz`.
+
 ## Assertions
 
 Assertions in Catala are [expressions](./5-5-expressions.md) attached to scopes

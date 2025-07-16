@@ -238,27 +238,53 @@ You can also access the `n`-th element of a tuple, starting at `1`, with the syn
 
 ## Lists
 
-~~~admonish danger title="Work in progress"
-This section of the Catala book has not yet been written, stay tuned for
-future updates!
-~~~
 
+You can build list values using the following syntax:
+
+```catala
+[1; 6; -4; 846645; 0]
+```
+
+All the operations available for lists are [available on the relevant reference
+page](./5-2-types.md#list-operations).
 
 ## Function calls
 
+To call function `foo` with arguments `1`, `baz` and `true`, the syntax is:
 
-~~~admonish danger title="Work in progress"
-This section of the Catala book has not yet been written, stay tuned for
-future updates!
-~~~
+```catala
+foo of 1, baz, true
+```
 
+The functions that you can call are either user-defined [toplevel functions](./5-3-scopes-toplevel.md#functions),
+or builtin operators like [`get_day`](./5-2-types.md#date-operations). To call
+a scope like a function, see just below.
 
 ## Direct scope calls
 
+We advocate using [sub-scope
+declarations](./5-3-scopes-toplevel.md#sub-scopes-declarations) and [sub-scope
+calling](./5-4-definitions-exceptions.md#sub-scope-calling) when possible (with
+a single, static sub-scope call), because it enables using conditional
+definitions and exceptions on the arguments of the sub-scope. However, sometimes
+a scope has to be called dynamically under certain conditions or inside a loop,
+which makes impossible to use the former mechanism. In these situations, you can
+use direct scope calls which are the equivalent of direct function calls, but
+for scopes, as an expression. For instance, suppose you are inside an expression
+and want to call scope `Foo` with arguments `bar` and `baz`; the syntax is:
 
-~~~admonish danger title="Work in progress"
-This section of the Catala book has not yet been written, stay tuned for
-future updates!
-~~~
+```catala
+result of Foo with {
+  -- bar: 0
+  -- baz: true
+}
+```
+
+Note that the value returned by the above is the [scope output
+structure](./5-3-scopes-toplevel.md#scope-output-structure) of `Foo`, containing
+one field per output variable. You can store this output value in a [local
+variable](./5-5-expressions.md#local-variables-and-let-bindings) and then
+[access its fields](./5-5-expressions.md#structures) to retrive the values
+for each output variable.
 
 

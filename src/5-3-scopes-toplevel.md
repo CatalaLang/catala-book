@@ -218,7 +218,7 @@ declaration structure Foo:
 This implicit output structure declaration is useful to carry around the
 result of a scope call in another variable and re-use them later in the code.
 
-### Sub-scopes
+### Sub-scopes declarations
 
 Scopes are functions, and as such they can be called like functions. Calling
 a scope can be done inside any [expression](./5-5-expressions.md#direct-scope-call)
@@ -253,6 +253,9 @@ that the output structure of the call to `Bar` will be present as field
 
 As with structures and enumerations, it is not possible for these scope calls
 to be recursive.
+
+See [subscope calling](./5-4-definitions-exceptions.md#sub-scope-calling) for
+how to supply arguments to the sub-scope call and retrieve outputs.
 
 ## Global constant and functions declarations and definitions
 
