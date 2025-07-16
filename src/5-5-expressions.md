@@ -284,7 +284,7 @@ Note that the value returned by the above is the [scope output
 structure](./5-3-scopes-toplevel.md#scope-output-structure) of `Foo`, containing
 one field per output variable. You can store this output value in a [local
 variable](./5-5-expressions.md#local-variables-and-let-bindings) and then
-[access its fields](./5-5-expressions.md#structures) to retrive the values
+[access its fields](./5-5-expressions.md#structures) to retrieve the values
 for each output variable.
 
 

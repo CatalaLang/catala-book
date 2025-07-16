@@ -38,3 +38,10 @@ Note that, in some cases, due to how the compiler works, debug prints could
 appear duplicated or not at all, especially if optimisations are enabled (with
 the `-O` flag). If that happens, try to move the attribute to the root of the
 definition.
+
+## Implementing external modules
+
+~~~admonish danger title="Work in progress"
+This section of the Catala book has not yet been written, stay tuned for
+future updates!
+~~~
