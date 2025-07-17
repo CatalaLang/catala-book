@@ -365,3 +365,28 @@ integer` can be the type of a tax-computing function.
 However, unlike most programming language, it is not possible to directly build
 a function as a value; functions are created and passed around with other
 language mechanisms.
+
+### Advanced: type wildcards
+
+It may sometimes happen that a function is able to manipulate values _without
+knowing their type_. This is only possible when the function doesn't need to
+look into the value but only manipulates it from the outside: imagine a
+function that would check if a list is empty, for example. It is convenient to
+be able to write this function once for lists of elements of any type: the
+`anything` keyword can be used for this purpose. For example
+
+```catala
+declaration is_empty content boolean
+  depends on argument content list of anything
+  equals (number of argument = 0)
+```
+
+Sometimes, we want a wildcard to appear several times in a type: for a function
+that reverses the elements of a list, for example, it's useful to know that the
+type of the elements was preserved. The wildcards can be _named_ for this
+purpose, using `anything of type <wildcard name>`. For example:
+
+```catala
+declaration reverse content list of anything of type element_type
+  depends on argument content list of anything of type element_type
+```
