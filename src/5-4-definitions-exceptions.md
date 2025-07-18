@@ -117,6 +117,29 @@ Follow the [relevant tutorial section](./2-2-conditionals-exceptions.md) for
 more information about how to use conditional definitions for encoding legal
 provisions.
 
+~~~admonish tip title="Repeating the same condition over multiple definitions"
+Sometimes, the same condition will apply to several definitions grouped in the 
+same `scope` block. This often comes from a temporal condition over which 
+the definitions apply, like:
+
+```catala
+scope Foo:
+  definition bar under condition current_date >= |2025-01-01| consequence equals ...
+
+  definition baz under condition current_date >= |2025-01-01| consequence equals ...
+```
+
+To avoid duplicating `current_date >= |2025-01-01|`, you can put the 
+condition directly to the scope block with:
+
+```catala
+scope Foo under condition current_date >= |2025-01-01|:
+  definition bar equals ...
+
+  definition baz equals ...
+```
+~~~
+
 ## Exceptions and priorities
 
 When there are multiple conditional or non-conditional definitions for a given
@@ -307,7 +330,7 @@ scope Foo:
 ```
 
 ~~~admonish tip title="Could we drop some labels here?"
-No here the situation is already complex enough to create ambiguity as
+No; here the situation is already complex enough to create ambiguity as
 to what the exceptional rules are an exception of.
 ~~~
 

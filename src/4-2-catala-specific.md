@@ -91,7 +91,7 @@ will yield a type error like the following:
 ```
 
 This error can be fixed by tweaking `2.0` to `integer of 2.0`. See the
-"Literals" section of the [language reference](./5-catala.md) for more
+relevant section of the [language reference](./5-2-types.md#base-types) for more
 details about how to create literals with the correct type.
 
 ## Why is there a distinct money type?
@@ -138,7 +138,7 @@ to the nearest cent by casting again to `money`: `money of ((decimal of $149.26)
 * 0.5% - 0.005) = $0.74` and not `0.75$`. This is a bit of a mouthful, but can
 be adapted to any desired rounding rule. Encapsulate these computation tidbits
 inside a global function to reuse them across your codebase. See the [language
-reference for more details](./5-catala.md).
+reference for more details](./5-2-types.md#money-operations).
 
 
 This technique can also be reused for `decimal` values that require rounding up
@@ -217,7 +217,7 @@ Second, the preferred way of performing low-level, computation-intensive
 operations not described by legal text but used in a Catala program is to simply
 to them outside of Catala and provide their output as inputs of a Catala scope,
 or define an external module. See the [language reference for more
-details](./5-catala.md).
+details](./5-6-modules.md#declaring-external-modules).
 
 Third, including string manipulations in the Catala runtime will heavily
 increase the size and complexity of the runtime, as it will probably require a
@@ -247,7 +247,7 @@ there is a specific Catala feature to handle this case, extending the
 ## Do I have to repeat every field in a struct when I want to only change one of them?
 
 No! See "Updating structs" in the [language reference for more
-details](./5-catala.md).
+details](./5-5-expressions.md#structures).
 
 ## How are dates and durations handled?
 
@@ -263,7 +263,7 @@ that lets the user choose how to round ambiguous dates computations.
 
 Otherwise, dates in Catala are standard dates in the Gregorian calendar, precise
 to the day (and not more). Durations are a combination of a number of days,
-months and/or years. See the [language reference](./5-catala.md) for more
+months and/or years. See the [language reference](./5-2-types.md#dates) for more
 details.
 
 
