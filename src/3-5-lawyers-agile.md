@@ -78,12 +78,27 @@ and field studies corroborating the findings in the following publications:
 * Denis Merigoux, Marie Alauzen, Justine Banuls, Louis Gesbert, Émile Rolley. *De la transparence à l’explicabilité automatisée des algorithmes : comprendre les obstacles informatiques, juridiques et organisationnels*. RR-9535, INRIA Paris. 2024, pp.68. [⟨hal-04391612⟩](https://inria.hal.science/hal-04391612)
 ~~~
 
-## What should you pick as the starter text for the literate programming?
+## Whhy you should pick the legal texts for the literate programming in Catala
+
+As explained above, usually the programmers only refer to the specifications
+when writing their code, and not from the legal texts from which the
+specifications have been derived from. Hence, it would make sense on a first
+glance to simply use the specifications as the starting point of the literate
+programming. While it is technically possible, the Catala team would not
+recommend it as this prevents the rewriting effort to Catala from reconstructing
+the *chain of justifications of the micro-choices from the legal text to the
+executable code*.
+
+Indeed, the whole point of [literate
+programming](https://en.wikipedia.org/wiki/Literate_programming) is to merge in
+a *single document* both the code and the explanation about why the code works
+in that way.
 
 ~~~admonish danger title="Work in progress"
 This section of the Catala book has not yet been written, stay tuned for
 future updates!
 ~~~
+
 
 ~~~admonish tip title="Documenting internal micro-choices in the code"
 
