@@ -310,8 +310,23 @@ You can build list values using the following syntax:
 | `content of <var> among <list> such that <expr1> is minimum [or if list empty then <expr2>]` | type of elements | Returns the arg-minimum element of the list (or an optional default) |
 | `combine all <var> among <list> in <acc> initially <expr1> with <expr2>` | type of elements | [Folds](https://en.wikipedia.org/wiki/Fold_(higher-order_function)) `<list>`, starting with `<expr1>` and accumulating with `<expr2>` |
 
-Note that these operations support multiple lists being iterated upon, like
-`map each (x, y) among (lst1, lst2) to x + y`, as long as they have the same length.
+~~~admonish tip title="Iterating on multiple lists at the same time"
+These list operations mirror the contents of a [basic list libary for a functional
+programming language](https://ocaml.org/manual/latest/api/List.html). But in
+such a list library, a key feature is the ability to iterate on two or more
+lists at the same time to combine them element-wise. In Catala, this can be
+done simply by writing a [tuple](./5-5-expressions.md#tuples) of lists intead
+of one `<list>` inside the operations; then you have a tuple of `<var>` instead
+of one to match the elements of each list in the tuple of lists. For instance,
+
+```catala
+map each (x, y) among (lst1, lst2) to x + y
+```
+
+This also works with `exists,`, `for all`, `list of`, `combine`, etc.
+Note that if `lst1` and `lst2` don't have the same lenght, the Catala program
+will halt with a runtime error.
+~~~
 
 ## Tuples
 

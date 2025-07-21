@@ -96,6 +96,22 @@ scope Bar:
     let foo equals [4; 6; 5; 1] in
     sum integer of foo - maximum of foo
 ```
+
+~~~admonish info title="Tuples and local let-bindings"
+If you have a value `x` of type `(integer, boolean)`, you can use
+`x.0` and `x.1` to access the two components of the tuple. But you can also
+bind the two components to two new variables `y` and `z` with:
+
+```catala
+let (y, z) = x in
+if z then y else 0
+```
+
+This syntax mirrors the more general use of patterns in let-bindings in functional programming
+languages like OCaml and Haskell. However, for the moment, only tuples can be
+destructured like that.
+~~~
+
 ## Conditionals
 
 You are encouraged to use [exceptions to scope variable
@@ -223,6 +239,49 @@ match foo with
 -- NoTaxCredit: true
 -- anything: false
 ```
+~~~
+
+~~~admonish info title="Testing for a specific case"
+You can create a boolean test for a specific case of an enum value with
+pattern matching:
+
+```catala
+match foo with
+-- TaxCreditForIndividual of individual: true
+-- anything: false
+```
+
+However, writing this full pattern matching for a simple boolean test
+of a specific case is cumbersome. Catala offers a [sugar](https://en.wikipedia.org/wiki/Syntactic_sugar)
+to make things more concise; the code below is exactly equivalent to the code
+above.
+
+```catala
+foo with TaxCreditForIndividual
+```
+
+Now suppose you want to test whether `foo` is `TaxCreditForIndividual`
+and that the `individual`'s income is greater than $10,000. You could write:
+
+```catala
+match foo with
+-- TaxCreditForIndividual of individual: individual.income >= $10,000
+-- anything: false
+```
+
+But instead you can also write the more concise:
+
+```catala
+foo with TaxCreditForIndividual of individual and individual.income >= $10,000
+```
+~~~
+
+~~~admonish question title="Is Catala's pattern matching as powerful as OCaml or Haskell's?" collapsible=true
+No, currently Catala's pattern matching is bare-bones and allows only to
+match the outer-most enumeration type of the value. The Catala team has
+[plans](https://github.com/CatalaLang/catala/issues/199)
+to gradually implement more advanced pattern matching features, but they
+have not yet been implemented.
 ~~~
 
 ## Tuples
