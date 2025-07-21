@@ -1,10 +1,16 @@
 # Agile development with lawyers and programmers
 
-At this point, you have set up the technical project environment and are ready
-to start developping in Catala. But before translating your first legal text
-into code, you should also set up a proper organisation and methodology to make
-sure that your translation efforts are as productive as possible, and lead to
-the code with the least amount of bugs on the first try.
+At this point of the walkthrough, you should have set up the technical project
+environment and are ready to start developping in Catala. But even if it's not
+the case, and before starting to translate your first legal text into code, you
+should also set up a proper organisation and methodology to make sure that your
+translation efforts are as productive as possible, and lead to the code with the
+least amount of bugs on the first try. This section provides advice and
+justifications for some of the most important project decisions that you will
+have to have to make. Furthermore, it gives practical indications for how to
+adapt the [agile methodology](https://agilemanifesto.org/) of programming to the
+task of translating law into code, which requires a safety-first culture and
+organizational environment.
 
 ## Why you should avoid writing intermediate specification documents
 
@@ -13,18 +19,18 @@ based on legal specifications is to produce various textual documents serving as
 "specifications" that sit between the source legal texts and the executable code
 automating the decisions.
 
-~~~admonish example title="A typical V-shaped process to translate law to code"
-Imagine you are in a government agency tasked with distributing a benefit. 
-The legal base for the benefit is written in a law; this law is interpreted 
+~~~admonish danger title="A typical V-shaped process to translate law to code"
+Imagine you are in a government agency tasked with distributing a benefit.
+The legal base for the benefit is written in a law; this law is interpreted
 by the ministry whichs takes out a decree (or executive order), further
-outlining the computation rules for the benefit. Inside your agency, the 
+outlining the computation rules for the benefit. Inside your agency, the
 legal department usually takes the law and the decree, and writes official
-instructions summarizing how the agency interprets the law and the decree. 
-Then, these instructions are sent to the operations department that writes 
+instructions summarizing how the agency interprets the law and the decree.
+Then, these instructions are sent to the operations department that writes
 a set of specifications detailing all the computation rules of the benefit
-for automating the computation. Finally, the IT department takes the 
-specifications and writes the executable code, or delegates the programming 
-to a contractor. All in all, here are the 
+for automating the computation. Finally, the IT department takes the
+specifications and writes the executable code, or delegates the programming
+to a contractor. All in all, here are the
 different documents co-existing in the process:
 1. the law (enacted by Parliament);
 2. the decree (enacted by the ministry);
@@ -48,8 +54,8 @@ documents they just sent over. These phone calls lead to a lot of
 decision-making that often leaves no written trace. Accumulated over time, this
 work methodology leads to specifications whose rules cannot be traced back to a
 legal basis in the law and decree, and who risk diverging or even contradicting
-the instructions of your own agency's legal department. This harms internal 
-efficiency and makes it impossible to satisfy the legal framework for automated 
+the instructions of your own agency's legal department. This harms internal
+efficiency and makes it impossible to satisfy the legal framework for automated
 decision-making that imposes strict transparency norms.
 
 More globally, the complexity of the processes required to translate legal
@@ -69,16 +75,16 @@ of this page will explain more concretely how to achieve this.
 
 
 ~~~admonish info title="Further reading" collapsible=true
-The description above is a summary of a line of socio-technical research 
-led by the Catala team. You can find extensive writeups with legal analysis 
+The description above is a summary of a line of socio-technical research
+led by the Catala team. You can find extensive writeups with legal analysis
 and field studies corroborating the findings in the following publications:
 
 * Liane Huttner, Denis Merigoux. *Catala: Moving Towards the Future of Legal Expert Systems*. Artificial Intelligence and Law, 2022, ⟨10.1007/s10506-022-09328-5⟩. [⟨hal-02936606⟩](https://inria.hal.science/hal-02936606/).
-* Denis Merigoux, Marie Alauzen, Lilya Slimani. *Rules, Computation and Politics. Scrutinizing Unnoticed Programming Choices in French Housing Benefits*. Journal of Cross-disciplinary Research in Computational Law, 2023, 2 (1), pp.23. [⟨hal-03712130v3⟩](https://inria.hal.science/hal-03712130) 
+* Denis Merigoux, Marie Alauzen, Lilya Slimani. *Rules, Computation and Politics. Scrutinizing Unnoticed Programming Choices in French Housing Benefits*. Journal of Cross-disciplinary Research in Computational Law, 2023, 2 (1), pp.23. [⟨hal-03712130v3⟩](https://inria.hal.science/hal-03712130)
 * Denis Merigoux, Marie Alauzen, Justine Banuls, Louis Gesbert, Émile Rolley. *De la transparence à l’explicabilité automatisée des algorithmes : comprendre les obstacles informatiques, juridiques et organisationnels*. RR-9535, INRIA Paris. 2024, pp.68. [⟨hal-04391612⟩](https://inria.hal.science/hal-04391612)
 ~~~
 
-## Whhy you should pick the legal texts for the literate programming in Catala
+## Why you should pick the legal texts for the literate programming in Catala
 
 As explained above, usually the programmers only refer to the specifications
 when writing their code, and not from the legal texts from which the
@@ -92,27 +98,183 @@ executable code*.
 Indeed, the whole point of [literate
 programming](https://en.wikipedia.org/wiki/Literate_programming) is to merge in
 a *single document* both the code and the explanation about why the code works
-in that way.
+in that way. Applied to Catala, literate programming means that the explanation
+of why the code works that way should contain the legal basis for its behavior,
+hence the legal texts.
 
-~~~admonish danger title="Work in progress"
-This section of the Catala book has not yet been written, stay tuned for
-future updates!
-~~~
+Furthermore, using the legal texts in the literate programming instead of the
+specifications speeds up code maintenance significantly. Indeed, whenever there
+is an update in the legal texts, it suffices to propagate the update to the copy
+of the legal text in the Catala file (a process that can be automated), and then
+updating (manually) the snippets of code that lie just below the updated legal
+texts. The knowledge of which piece of code corresponds to which part of the
+legal text is *explicit*, making it more robust to personnel change or loss of
+institutional memory. Compare that with the traditional process of updating the
+specification, and then updating the code: the specification writer and the code
+writer (usually two different persons) have to remember which part of the
+document they write correspond to the updated parts of the document they
+receive.
 
+**Overall, using the legal texts for the Catala literate programming ensures the
+consistency of the documentation for the interpretative choices, as well as the
+robustness and efficiency of the future updates to the code.**
 
-~~~admonish tip title="Documenting internal micro-choices in the code"
+~~~~~~admonish success title="Documenting internal micro-choices in the code"
+Once you have chosen to start with the legal texts as the basis for your literate
+programming in Catala, one issue quickly arises: where to put all the information
+that documents the disambiguation of the legal texts into the executable code?
 
-~~~
+This information is usually partly stored in the official instructions published
+by your agency, or scattered across internal memos and emails sent along
+hierarchical chains. Theses instructions, memos and email often paraphrase the
+legal texts, while adding an extra bit of information that contains the disambiguation
+you are looking for.
+
+One solution could be to copy-paste the text of the instructions, memos and
+emails and put them next to the legal text in the Catala source file. But doing that
+will quickly clutter your codebase and force you into an akward choice: where to put
+the snippets of Catala code? Under the piece of legal text or under the piece
+of memos that paraphrases the legal text? There is no good answer to that;
+furthermore, copy-pasting the instructions and memos systematically in your
+codebase amounts to doing the literate programming with the specifications
+instead of the legal texts, which we showed is not desirable.
+
+Instead, the Catala team advises you to **not** copy-paste the text of instructions,
+memos and emails inside your literate programming codebase alongside the legal
+texts, but rather to **reference** them inside code comments. Indeed, code comments
+are precisely here to document choices in the code, making them the perfect
+placed to insert justifications for legal texts disambiguation referencing
+instructions, memos or emails. For instance, here is what a typical Catala
+source code file could look like for a ficticious legal example involving
+some income deduction computation:
+
+---
+
+#### Article 364
+
+The income deduction mentioned at article 234 is capped at $10,000.
+
+```catala
+scope GrossToNetIncomeIndividual:
+  # A literal reading of article 364 would entail putting $10,000 here. But
+  # actually, agency instruction N°1045-58 published on 28/04/2023 specifies
+  # that the cap is estimated at the household and not the individual level.
+  # To reconcile with the individual view of article 364, the cap here should
+  # be a pro-rata of the household cap with respect to the income of each
+  # individual. We assume that this pro-rata is supplied as the input variable
+  # "pro_rata_deduction_cap" of scope "GrossToNetIncomeIndividual".
+  definition income_deduction state capping equals
+    pro_rata_deduction_cap
+
+# Now we have to compute "pro_rata_deduction_cap" of scope
+# "GrossToNetIncomeIndividual", at the household level. But actually, an internal
+# memo sent by the legal department to the IT department on 05/09/2023 further
+# specifies that the household-level cap should only be pro-rated if the sum
+# of the incomes of the individuals in the household is greater than the cap.
+# Otherwise, each individual should see as its individual cap the cap of the
+# whole household. This is equivalent because if the sum of the incomes is below
+# the cap, then the capping operation will not yield any effect.
+scope GrossToNetIncomeHousehold:
+  ...
+```
+
+---
+
+As you can see, on top of the legal text, the amount of comments inside the
+Catala code can be consequent. The more the legal text is concise and ambiguous,
+the more code comments and references to agency documentation will be needed
+to explain how it was disambiguated! These code comments should be very carefully
+written with context, specific information and references so that they are
+sufficient for a newcomer on the project to reconstruct the argument explaining
+why the code looks the way it does. Writing good comments takes time initially
+but keeping such a practice consistent will save you headaches in the future
+and ensure long-term maintainability of the codebase.
+~~~~~~
 
 ## Recruiting a team mixing programming and domain knowledge
 
-~~~admonish danger title="Work in progress"
-This section of the Catala book has not yet been written, stay tuned for
-future updates!
+~~~admonish info title="Writing Catala code actually mostly involves finding out what the law means"
+During its experimentations and research efforts, the Catala team noticed
+that the vast majority of the time (70% to 90%) spent on the projects to
+translate law into Catala code was spent not writing code, but **figuring
+out what the law meant and how to interpret it correctly with respect
+to agency guidelines**.
+
+This means that the bottleneck for project progress is not the coding speed
+but rather the speed at which the team is collectively able to find out what
+the law means and how to interpret it. And software engineers do not have
+the best skill set for this task.
+
+If you want to read more about lawyer-programmer interaction in the production
+of software automating the law, please refer to:
+* Nel Escher, Jeffrey Bilik, Nikola Banovic, and Ben Green. 2024. *Code-ifying the Law: How Disciplinary Divides Afflict the Development of Legal Software*. Proc. ACM Hum.-Comput. Interact. 8, CSCW2, Article 398 (November 2024), 37 pages. [https://doi.org/10.1145/3686937](https://dl.acm.org/doi/10.1145/3686937)
+~~~
+
+For this reason, the Catala team advises to have an **equally balanced mix**
+between people who can write good code (usually software engineers) and people
+who can figure out what the law means and interpret it (usually lawyers but not
+always, as we will see) inside your multi-disciplinary team. This equal mix
+entails that you can organize the team into pairs of people: one lawyer and one
+programmer. You can scale up the development effort by increasing the number of
+pairs in your team that can be assigned to independent parts of the computation.
+
+We will see below how the programmers and lawyers spend their time during a
+typical week. But first, let us talk about what kind of "lawyers" we are talking
+about in our multi-disciplinary teams. The word "lawyers" usually refers to
+attorneys, meaning people defending individuals and company in court during a
+lawsuit. But administrative agencies employ very few of this kind of lawyers,
+and those people are only devoted to handling the lawsuits in which the agency
+is involved. Instead, administrative agencies usually employ a fair amount of
+people formally trained in Law at universities in their central legal
+department, tasked with identifying and monitoring all the legal texts that the
+agency should comply with. These "lawyers" then usually write the official
+instructions of the agency that paraphrase the legal text, while taking past
+court cases decisions and the official doctrine of the agency into account. This
+corresponds to step 3. of the V-shaped process described earlier in this page.
+
+Then, step 4. of the process still involves further interpretations of the law.
+But this time, it is often done by people that do not have a formal university
+training in law, and that do not call themselves "lawyers". However, these people
+have a extensive and specialized knowledge of the legal content at hand, based
+on decaded of prior experience in their positions, or as field case workers
+inside the agency. Sometimes, these people have never seen the legal texts for
+the benefit or tax in which they are specialized, they have ever only read the
+official instructions of the agency written by the in-house legal department.
+The Catala team call these people the "domain experts", and they are as crucial
+as the "lawyers" to ensure that the chain between the legal basis and the
+executable code is fully justified in a Catala source code file.
+
+Hence, the Catala team recommends to include a mix of "domain experts"
+and legal-department-type "lawyers" inside your team along with the software
+engineers. It is the combination of the legal theory point of view with the
+experience of the practice of this law in the agency that is key to achieve
+the consistency of the software written in Catala with both the existing systems
+it is meant to replace and the official legal doctrine of the agency it is supposed
+to comply with.
+
+~~~admonish question title="The legal/domain experts are unavailable, how do I do?"
+Because employee turnover is high in organizations, especiall at demanding
+positions, is is often difficult to find experts with sufficient experience
+with the law at hand inside the agency, and more often than not those people
+are already overburdened with maintaining the current IT projects of
+the agency without time to invest in a Catala modernization effort.
+
+Hence, it will be difficult to staff your team with an all-star roster of
+legal/domain experts. The Catala team advises that you see this as an opportunity
+to recruit and train new legal/domain experts that will develop new expertise
+as the project using Catala is going along. Indeed, the Catala team empirically
+witnessed during early experiments using freshly graduated lawyers that the task
+of producing Catala implementation of a piece of law is a very efficient way
+for lawyers to quickly specialize and master this piece of law.
+
+However, this training process is only efficient if the lawyer in training
+has access (one hour every week or two weeks for instance) to a really experienced
+domain expert that can clear out of memory all the remaining questions that the
+training lawyer could not figure by themselves.
 ~~~
 
 
-## Pair programming sessions and homework
+## Weekly schedule: pair programming sessions and homework
 
 ~~~admonish danger title="Work in progress"
 This section of the Catala book has not yet been written, stay tuned for

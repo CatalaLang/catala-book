@@ -18,7 +18,7 @@ which is why all the examples below will show the feature inside a `scope Foo`
 block that is assumed to have already been declared elsewhere.
 ~~~
 
-The full syntax of what we will be covering in this section is :
+The full syntax of what will be covered in this section is :
 
 ```catala
 scope <scope_name>:
@@ -118,8 +118,8 @@ more information about how to use conditional definitions for encoding legal
 provisions.
 
 ~~~admonish tip title="Repeating the same condition over multiple definitions"
-Sometimes, the same condition will apply to several definitions grouped in the 
-same `scope` block. This often comes from a temporal condition over which 
+Sometimes, the same condition will apply to several definitions grouped in the
+same `scope` block. This often comes from a temporal condition over which
 the definitions apply, like:
 
 ```catala
@@ -129,7 +129,7 @@ scope Foo:
   definition baz under condition current_date >= |2025-01-01| consequence equals ...
 ```
 
-To avoid duplicating `current_date >= |2025-01-01|`, you can put the 
+To avoid duplicating `current_date >= |2025-01-01|`, you can put the
 condition directly to the scope block with:
 
 ```catala
@@ -176,7 +176,7 @@ scope Foo:
   consequence equals 0
 ```
 
-~~~admonish tip title="Do we have to give a label to each definition all the time?"
+~~~admonish tip title="Do I have to give a label to each definition all the time?"
 In this setting with only one base case definition and one exceptional definition,
 there is only one choice as to what the `exception` is referring to (the other
 definition). In those cases where it is unambiguous what you are defining
@@ -202,7 +202,7 @@ to give labels to definitions, especially with complex exception structures.
 ### Declaring multiple definitions as one exception to a single definition
 
 In the previous example, `bar` was set exceptionnally to `0` if `fizz = 0`. What
-if we want to expand that behavior with two more exceptional definitions that
+if you want to expand that behavior with two more exceptional definitions that
 set `bar` to `1` and `-1` respectively when `fizz > 0` and `fizz < 0`? These
 three exceptional definitions cannot conflict with each other because `fizz` is
 either positive, negative or 0. So, these three exceptional definitions behave
@@ -245,7 +245,7 @@ scope Foo:
   consequence equals -1
 ```
 
-~~~admonish tip title="Could we drop some labels here?"
+~~~admonish tip title="Could I drop some labels here?"
 The two labels `base_case` and `fizz_exn` above make very clear what is
 happening, at the expense of being a bit verbose. In this example, since
 there is only one definition in the base case, it is unambiguous to what
@@ -329,7 +329,7 @@ scope Foo:
   consequence equals -1
 ```
 
-~~~admonish tip title="Could we drop some labels here?"
+~~~admonish tip title="Could I drop some labels here?"
 No; here the situation is already complex enough to create ambiguity as
 to what the exceptional rules are an exception of.
 ~~~

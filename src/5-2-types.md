@@ -323,7 +323,7 @@ of one to match the elements of each list in the tuple of lists. For instance,
 map each (x, y) among (lst1, lst2) to x + y
 ```
 
-This also works with `exists,`, `for all`, `list of`, `combine`, etc.
+This also works with `exists`, `for all`, `list of`, `combine`, etc.
 Note that if `lst1` and `lst2` don't have the same lenght, the Catala program
 will halt with a runtime error.
 ~~~

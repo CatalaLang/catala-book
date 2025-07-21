@@ -4,8 +4,8 @@ Now that you have installed the Catala tooling, you can test its correct
 execution with the equivalent of a `Hello, world!` program.
 
 Catala programs are just text files that can be handled by any text editor/IDE.
-Hence, to kickstart your Catala development, we recommend you open your favorite
-text editor.
+Hence, to kickstart your Catala development, the Catala teams recommends you
+open your favorite text editor.
 
 ~~~admonish info title="Text editor/IDE support"
 The Catala maintenance team currently only provides full support for the

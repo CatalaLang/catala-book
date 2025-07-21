@@ -124,7 +124,7 @@ introductory articles that set up the context around computer code, translating
 law to computer code and introduce the specificities of Catala:
 
 
-~~~admonish examples title="Lawyer-friendly publications about Catala and coding the law"
+~~~admonish example title="Lawyer-friendly publications about Catala and coding the law" collapsible=true
 * James Grimmelmann. 2023. "[The Structure and Legal Interpretation of
  Computer Programs](https://journalcrcl.org/crcl/article/view/19/13)". *Journal
  of Cross-Disciplinary Research in Computational Law* 1 (3).
