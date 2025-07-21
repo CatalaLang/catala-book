@@ -1,5 +1,9 @@
 # Windows
 
+<div id="tock" data-block_title="Summary"></div>
+<div id="tocw"></div>
+
+
 ~~~admonish danger
 The Windows installation is currently experimental, as the [Windows support
 for the OCaml software toolchain](https://ocaml.org/docs/ocaml-on-windows) dates

@@ -1,5 +1,8 @@
 # Installing Catala on your machine
 
+<div id="tock" data-block_title="Summary"></div>
+<div id="tocw"></div>
+
 ~~~admonish warning title="Disclaimer"
 Currently, Catala is only available through source
 building. The Catala team plans to package Catala in binary format in the future,

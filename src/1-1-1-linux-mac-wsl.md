@@ -1,5 +1,8 @@
 # Linux/Mac/WSL
 
+<div id="tock" data-block_title="Summary"></div>
+<div id="tocw"></div>
+
 Unless noted otherwise, the installation of the Catala tooling happens
 on a regular command-line terminal.
 

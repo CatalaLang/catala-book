@@ -1,5 +1,8 @@
 # Agile development with lawyers and programmers
 
+<div id="tock" data-block_title="Summary"></div>
+<div id="tocw"></div>
+
 At this point of the walkthrough, you should have set up the technical project
 environment and are ready to start developping in Catala. But even if it's not
 the case, and before starting to translate your first legal text into code, you

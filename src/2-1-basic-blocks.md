@@ -1,5 +1,6 @@
 # Basic blocks of a Catala program
 
+<div id="tock" data-block_title="Summary"></div>
 <div id="tocw"></div>
 
 In this section, the tutorial introduces the basic blocks of a Catala program :

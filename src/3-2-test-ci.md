@@ -1,5 +1,8 @@
 # Test and continuous integration workflow
 
+<div id="tock" data-block_title="Summary"></div>
+<div id="tocw"></div>
+
 ## Testing Catala programs
 
 Catala supports two distinct flavors of tests, tailored for different purposes:

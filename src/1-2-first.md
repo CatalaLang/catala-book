@@ -1,5 +1,8 @@
 # Creating your first Catala program
 
+<div id="tock" data-block_title="Summary"></div>
+<div id="tocw"></div>
+
 Now that you have installed the Catala tooling, you can test its correct
 execution with the equivalent of a `Hello, world!` program.
 
