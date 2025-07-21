@@ -279,10 +279,94 @@ training lawyer could not figure by themselves.
 
 ## Weekly schedule: pair programming sessions and homework
 
-~~~admonish danger title="Work in progress"
-This section of the Catala book has not yet been written, stay tuned for
-future updates!
+Once you have assembled your team according to the principles laid out above,
+you will need to set up tasks for each of your lawyer-programmer pairs. Globally,
+you know that you will reimplement a certain tax or benefit computation, but
+how to divvy up the work into tasks and distributing them to the pairs?
+
+~~~admonish note title="Working in the order of the law or in the order of the computation?"
+There are two strategies for dividing up the implementation work into chunks.
+
+The first one that would correspond the most to the literate programming methodology
+is to first gather up all the legal texts and references to instructions and
+internal memos, lay them all out in Catala text files structured by legal
+source, and then proceed to implement each piece of law in the order in which
+it is written in the legal source. The Catala teams has already tried out this
+strategy. Its main advantage is that is leads to being very exhaustive with
+respect to the code, and following the path of the legal text helps understanding
+it more quickly (if it is well-written !). However, this strategy does not ensure
+that parts of the computation will be incrementally ready to test and deploy
+in a continous manner during the project, and it leads to a lot of refactoring
+to take into account new legal provisions as they appear in the text.
+
+Overall, the Catala team would only recommend this first strategy if the benefit
+or tax at hand *has never been automated before in the agency* and/or if the internal
+level of expertise about it is low. In all other cases, the Catala team recommends
+following second strategy.
+
+The second strategy is to divvy up the computation of the tax or social
+benefit using an already known division plan that matches the functional division
+of the computational contents. For instance, you already know that the benefit is
+divided between eligibility and computation of the amount, the the eligibility
+computation is divided between income conditions and other conditions, etc.
+From this known division plan, you can already write in your prologue Catala
+file initial declarations for data structures, scopes and modules of your
+upcoming implementation. Then, you can incrementally implement each module or
+scope by pulling out all the legal sources as you need them to justify the
+current computation, and copy-pasting them in the Catala source file on demand.
+In the end, the source files should still be organized roughly by legal source
+like in the first method, but the paths to fill out the files will be completely
+different.
 ~~~
+
+For each chunk of work (whether it is implementing a certain section of a statute
+or a certain scope pre-determined to be important in the computation), the work
+should follow an iterative loop made of the following steps:
+
+1. Identify the legal sources and agency instructions and memo justifying the
+  chunk of computation;
+2. Copy-paste them into a Catala source code file and scaffold the data
+  structure and scope declarations;
+3. Work you way linearly through the legal sources, making sure you put the
+  Catala code as close as possible to the legal source that justify it;
+4. During the implementation work, code refactoring duties and legal research
+  questions will inevitably arise;
+5. Deal with them by iterating back to the previous steps of this loop;
+6. You are finished when no more new refactoring duties or legal research
+  questions arise!
+
+While following the previous loops, both the programmer and the lawyer in the
+pair will be occupied full-time during a typical week. The organization of the
+week for both should be centered around a weekly 2-to-3-hour long pair
+programming session, with the following pattern:
+* before the pair programming sesstion, the lawyer should send to the
+  programmer the lists of legal texts to take into account for the current
+  chunk of work;
+* based on this the programmer should write an initial scaffolding of data structure
+  and scope declarations to be used during the pair programming session;
+* the lawyer should also preventively research relevant court cases and agency
+  doctrine document before the pair programming session;
+* a agenda is commonly set by the lawyer and the programmer for the upcoming
+  pair programming session, prioritizing the tasks at hand;
+* during the pair programming session, the lawyer and programmer should discuss
+  the text of law and try to sketch or implement fully snippets of Catala
+  code (usually [scope variable definitions](./5-4-definitions-exceptions.md#definitions-and-exceptions));
+* they should also duly note any refactoring duty or legal research questions
+  that arise during the session as to-do tasks;
+* these to-do tasks should occupy both the lawyer and the programmer after
+  the pair programming session and before the next one;
+* additionally, the lawyer should asynchronously prepare test cases that that
+  the programmer (or the lawyer) can implement and add to the test base for
+  continuous integration;
+* when finished, the chunk of work is materialized as a merge-request proposal
+  complete with implementation and tests, to be reviewed both legally and
+  computationally by another lawyer-programmer pair.
+
+If all of this does not fill the working week, the programmer can work additionally
+on deployment-related programming tasks of the project while the lawyer can
+work on writing internal memos documenting the progress of the project and
+how the decisions they made while programming conform to the doctrine of the
+agency.
 
 ## Tracking progress and planning the work
 
