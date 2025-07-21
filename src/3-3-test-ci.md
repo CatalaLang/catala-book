@@ -176,7 +176,7 @@ terminated with an error, the last line will show the error code.
     └─
     ```
 
-When running `clerk test`, the specified command is run on the file (truncated
+When running `clerk test`, the specified command is run on the file or directory (truncated
 to that point). If the output exactly matches what is in the file, the tests
 passes. Otherwise, it fails, and the precise differences are shown side-by-side.
 
