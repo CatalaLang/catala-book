@@ -89,7 +89,7 @@ refer to sub-directories or the parent directory (`../`).
 
 ## Public interface and visibility
 
-We believe that programmers should control precisely which interface they
+The Catala team believes that programmers should control precisely which interface they
 make publicly available for their modules. Indeed, not exposing internal
 functions is the key the preserve the ability to refactor the code later
 without breaking the endpoints used by the clients of the module.

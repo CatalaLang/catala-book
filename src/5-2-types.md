@@ -78,8 +78,8 @@ and you can use the `%` notation if this makes your code easier to read.
 ### Money
 
 The type `money` represents an amount of money, positive or negative, in a
-currency unit (in the English version of Catala, we use the `$` currency
-symbol), with a precision down to the cent and not below. Money values are
+currency unit (in the English version of Catala, the `$` currency
+symbol is used), with a precision down to the cent and not below. Money values are
 noted like decimal values with maximum two fractional digits and the currency
 symbol, like `$12.36` or `-$871,84.1`.
 
@@ -92,7 +92,7 @@ symbol, like `$12.36` or `-$871,84.1`.
 | `-`        | money                  | money                   | money          | Money substraction      |
 | `-`        | money                  |                         | money          | Money negation          |
 | `/`        | money                  | money                   | decimal        | Rational division       |
-| `round of` | money                  |                         | money          | Round to nearest cent   |
+| `round of` | money                  |                         | money          | Round to nearest unit   |
 
 
 ### Dates
@@ -106,15 +106,15 @@ enclosed by vertical bars, like `|1930-09-11|` or `|2012-02-03|`.
 #### Semantic of date addition
 
 ~~~admonish info title="Date addition is ambiguous and poorly defined in other languages"
-During the design of Catala, we noticed that the question
+During the design of Catala, the Catala team noticed that the question
 "*What is Jan 31st + 1 month?*" had no consensual answer in Computer Science.
 
 * In Java, it will be Feb 28/29th depending on the leap year.
 * In Python, it is impossible to add months with the standard library.
 * In `coreutils`, it gives March 3rd (!).
 
-Given how important date computations are in legal implementations, we decided
-to sort this mess out and described our results in a research paper:
+Given how important date computations are in legal implementations, the Catala
+team decided to sort this mess out and described our results in a research paper:
 
 [Monat, R., Fromherz, A., Merigoux, D. (2024). Formalizing Date Arithmetic and Statically Detecting Ambiguities for the Law. In: Weirich, S. (eds) Programming Languages and Systems. ESOP 2024. Lecture Notes in Computer Science, vol 14577. Springer, Cham. https://doi.org/10.1007/978-3-031-57267-8_16](https://rmonat.fr/data/pubs/2024/2024-04-08_esop_dates.pdf)
 ~~~
@@ -184,7 +184,7 @@ in days.
 
 ## Casting base number types
 
-Casting between base type is explicit; the syntax is `<name of desired type> of <argument>`.
+Casting between base types is explicit; the syntax is `<name of desired type> of <argument>`.
 
 | Type of argument | Type of result | Semantic                   |
 |------------------|----------------|----------------------------|

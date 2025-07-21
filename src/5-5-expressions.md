@@ -48,7 +48,7 @@ scope, or to [toplevel constants and functions](./5-3-scopes-toplevel.md#global-
 
 ~~~admonish info title="Accessing a particular state of a scope variable"
 Some scope variables can have [multiple states](./5-4-definitions-exceptions.md#scope-variables-with-multiple-states).
-Suppose we have scope variable `foo` has states `bar` and `baz` in this order.
+Suppose you have scope variable `foo` has states `bar` and `baz` in this order.
 You can either refer to `foo`, `foo state bar` or `foo state baz`, but the ability
 or meaning of these reference depend on the context according to the following
 rules.
@@ -212,13 +212,13 @@ Indeed, if you declare a case in the type but forget it in the pattern matching,
 you will get a compiler error.
 
 ~~~admonish tip title="Match all case in pattern matching"
-```catala
 Often, the result of the pattern matching should be the same in a lot of cases,
 leading you to repeat the same result expression for each enumeration case.
 For conciseness and precision, you can use the `anything` catch-all case as
 the last case of your pattern matching. For instance, here this computes whether
-we should apply a tax credit or not:
+you should apply a tax credit or not:
 
+```catala
 match foo with
 -- NoTaxCredit: true
 -- anything: false
@@ -262,7 +262,7 @@ a scope like a function, see just below.
 
 ## Direct scope calls
 
-We advocate using [sub-scope
+The Catala team advocates using [sub-scope
 declarations](./5-3-scopes-toplevel.md#sub-scopes-declarations) and [sub-scope
 calling](./5-4-definitions-exceptions.md#sub-scope-calling) when possible (with
 a single, static sub-scope call), because it enables using conditional

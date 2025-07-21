@@ -207,11 +207,11 @@ In absence of such a legal text, the decision was made to not include strings,
 for several reasons.
 
 First, the common operations present in legal texts that can be done with
-strings, can also be done better with other Catala features. For instance,
-it is better to represent tags and codes with `enumeration`s that can contain
-payload and have a built-in exhaustiveness check in pattern matching. We thus
-advise to really think your problem through and see whether it really requires
-strings as a first-class value type in Catala to be solved.
+strings, can also be done better with other Catala features. For instance, it is
+better to represent tags and codes with `enumeration`s that can contain payload
+and have a built-in exhaustiveness check in pattern matching. The Catala team
+thus advises you to really think your problem through and see whether it really
+requires strings as a first-class value type in Catala to be solved.
 
 Second, the preferred way of performing low-level, computation-intensive
 operations not described by legal text but used in a Catala program is to simply
@@ -251,15 +251,16 @@ details](./5-5-expressions.md#structures).
 
 ## How are dates and durations handled?
 
-What is the result of `Jan 31st + 1 month`? Is it Feb 28th, Feb 29th or March 1st?
-This question reveals the subtle tricks behind date computations in the Gregorian
-calendar. The variable number of days in a month and leap years cause ambiguities
-in many date computations specified in the law. The way these ambiguities
-are resolved influences the outcome of administrative automated decisions, which
-is why we have been very cautious in Catala about this topic. Our motivations
-and design choices are outlined in a [scientific article](https://hal.science/hal-04536403);
-in summary we had to implement a [custom date computation library](https://github.com/CatalaLang/dates-calc)
-that lets the user choose how to round ambiguous dates computations.
+What is the result of `Jan 31st + 1 month`? Is it Feb 28th, Feb 29th or March
+1st? This question reveals the subtle tricks behind date computations in the
+Gregorian calendar. The variable number of days in a month and leap years cause
+ambiguities in many date computations specified in the law. The way these
+ambiguities are resolved influences the outcome of administrative automated
+decisions, which is why the Catala team has been very cautious about this topic.
+The motivations and design choices are outlined in a [scientific
+article](https://hal.science/hal-04536403); in summary a [custom date
+computation library](https://github.com/CatalaLang/dates-calc) that lets the
+user choose how to round ambiguous dates computations had to be implemented.
 
 Otherwise, dates in Catala are standard dates in the Gregorian calendar, precise
 to the day (and not more). Durations are a combination of a number of days,

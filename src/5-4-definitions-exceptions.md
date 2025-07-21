@@ -15,7 +15,7 @@ variables scattered across the literate programming codebase (introduced by
 ~~~admonish info title="Everything happens inside a scope"
 Scope variable definitions and assertions only make sense inside a given scope,
 which is why all the examples below will show the feature inside a `scope Foo`
-block that we assume has been already declared elsewhere.
+block that is assumed to have already been declared elsewhere.
 ~~~
 
 The full syntax of what we will be covering in this section is :

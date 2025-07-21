@@ -7,8 +7,8 @@
 
 ~~~admonish info title="Catala code goes inside scopes"
 Since Catala in a functional language, toplevel declarations in Catala
-behave like functions. While Catala has true toplevel functions, we advice
-to limit their use in practice and use scopes instead, as only scopes benefit
+behave like functions. While Catala has true toplevel functions, the Catala
+team advises to limit their use in practice and use scopes instead, as only scopes benefit
 from the [exceptions](./5-4-definitions-exceptions.md) mechanism that is
 the killer feature of Catala.
 ~~~
@@ -130,18 +130,18 @@ definition of `bar` inside `Foo`.
 
 ~~~admonish question title="Why context variables ?"
 This curious behavior for `context` variable is motivated by use cases where
-we want to create an exception for a scope variable from *outside* the scope.
+one wants to create an exception for a scope variable from *outside* the scope.
 See the Catala [FAQ](./4-2-catala-specific.md#how-do-i-add-an-exception-from-outside-a-scope)
 for more explanations.
 ~~~
 
 ##### Input and output variables
 
-Sometimes, we want a scope's input to be copied and transmitted as part of the
+Sometimes, one wants a scope's input to be copied and transmitted as part of the
 scope call's result. That is, such a variable would be both `input` and
-`output`, which is why the syntax for this is `input output`. In this case,
-the variable cannot be defined inside the scope (as it is an input). This also
-works when swapping `input` by `context`.
+`output`, which is why the syntax for this is `input output`. In this case, the
+variable cannot be defined inside the scope (as it is an input). This also works
+when swapping `input` by `context`.
 
 #### Variable types and functions
 
@@ -153,7 +153,7 @@ identifier described in the [type reference](./5-2-types.md), including
 
 A special syntax exists for the specific case of a boolean scope
 variable whose default value is `false`. This case maps directly to a legal
-condition, so we name it `condition` in Catala. The syntax for declaring a
+condition, so it is named `condition` in Catala. The syntax for declaring a
 `condition` scope variable (here named `bar`, with an `internal` qualifier) is:
 
 ```catala
@@ -183,7 +183,7 @@ internal foo content integer
 ```
 
 The order of the `state` clauses in the declaration determines the computation
-order between states for the variable. We can write `foo state a` for the value of
+order between states for the variable. You can write `foo state a` for the value of
 variable `foo` during state `a`. With this order between `a`, `b` and `c`, `foo
 state b` can depend on `foo state a` and `foo state c` can depend on `foo state
 b`, but not the converse.
@@ -224,9 +224,9 @@ Scopes are functions, and as such they can be called like functions. Calling
 a scope can be done inside any [expression](./5-5-expressions.md#direct-scope-call)
 by simply providing the input variables as arguments.
 
-But sometimes, we know that we will always call perform a single, static *sub-scope*
-call from a calling scope. For this situation, Catala has a special declarative
-syntax making it easier for lawyers to understand what is going on.
+But sometimes, one knows that they will always call perform a single, static
+*sub-scope* call from a calling scope. For this situation, Catala has a special
+declarative syntax making it easier for lawyers to understand what is going on.
 
 Sub-scopes are declared in the scope declaration like scope variables.
 For instance, is inside scope `Foo` you will call scope `Bar` exactly one time,
