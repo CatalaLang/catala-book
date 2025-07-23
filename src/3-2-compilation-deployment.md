@@ -74,6 +74,8 @@ If we now inspect these directories, we will find both directories
 that contains all compiled code for all the declared backends ready to
 be exported as libraries.
 
+<!-- TODO: package into static libraries and document it -->
+
 ```
 _targets/
 ├───us-tax-code/

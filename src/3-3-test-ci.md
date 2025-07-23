@@ -192,3 +192,16 @@ There are two additional big differences with the "test scopes" approach:
 `clerk test --reset` can also be used to initialise a new test, from a
 `` ```catala-test-cli`` section that only provides the command without expected
 output.
+
+## Continuous integration workflow
+
+~~~admonish danger title="Work in progress"
+This section of the Catala book has not yet been written, stay tuned for
+future updates!
+~~~
+
+<!-- TODO:
+  - (prerequisite) have some dev docker images
+  - give a yaml file example (mention clerk ci)
+  - generate Catala target's archives artifact (requires standalone archives)
+-->
