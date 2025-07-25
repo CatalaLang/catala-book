@@ -311,7 +311,7 @@ You can build list values using the following syntax:
 | `combine all <var> among <list> in <acc> initially <expr1> with <expr2>` | type of elements | [Folds](https://en.wikipedia.org/wiki/Fold_(higher-order_function)) `<list>`, starting with `<expr1>` and accumulating with `<expr2>` |
 
 ~~~admonish tip title="Iterating on multiple lists at the same time"
-These list operations mirror the contents of a [basic list libary for a functional
+These list operations mirror the contents of a [basic list library for a functional
 programming language](https://ocaml.org/manual/latest/api/List.html). But in
 such a list library, a key feature is the ability to iterate on two or more
 lists at the same time to combine them element-wise. In Catala, this can be
@@ -342,6 +342,25 @@ You can build tuple values with the following syntax:
 ```
 You can access the `n`-th element of a tuple, starting at `1`, with the syntax `<tuple>.n`.
 
+## Optional types
+
+The type `optional of <type 1>` can be used to hold a value of `<type 1>` that
+could be absent. It is in essence equivalent to the enumeration:
+
+```catala
+declaration enumeration Optional_of_type1:
+  -- Absent
+  -- Present content <type 1>
+```
+
+but it doesn't need to be declared for each type that it is used with. Like an
+enumeration, values of type `optional` can be created using
+`Present content <expr>`, and used in the forms `match <expr> with pattern` and
+`<expr> with pattern <constr>`, e.g.
+
+```catala
+if argument with pattern Present of x and x > 3 then ...
+```
 
 ## Functions
 
