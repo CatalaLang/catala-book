@@ -304,10 +304,10 @@ You can build list values using the following syntax:
 | `map each <var> among <list> such that <expr1>` to <expr2>`  | list             | Combines the filter and map (see two last operations)             |
 | `<list1> ++ <list2>`                               | list             | Concatenate two lists                                             |
 | `sum <type> of <list>`                             | `<type>`         | Aggregates the contents (`money`, `integer`, `decimal`) of a list |
-| `maximum of <list> [or if list empty then <expr>]` | type of elements | Returns the maximum element of the list (or an optional default)  |
-| `minimum of <list> [or if list empty then <expr>]` | type of elements | Returns the minimum element of the list (or an optional default)  |
-| `content of <var> among <list> such that <expr1> is maximum [or if list empty then <expr2>]` | type of elements | Returns the arg-maximum element of the list (or an optional default) |
-| `content of <var> among <list> such that <expr1> is minimum [or if list empty then <expr2>]` | type of elements | Returns the arg-minimum element of the list (or an optional default) |
+| `maximum of <list> (or if list empty then <expr>)` | type of elements | Returns the maximum element of the list (or an optional default)  |
+| `minimum of <list> (or if list empty then <expr>)` | type of elements | Returns the minimum element of the list (or an optional default)  |
+| `content of <var> among <list> such that <expr1> is maximum (or if list empty then <expr2>)` | type of elements | Returns the arg-maximum element of the list (or an optional default) |
+| `content of <var> among <list> such that <expr1> is minimum (or if list empty then <expr2>)` | type of elements | Returns the arg-minimum element of the list (or an optional default) |
 | `combine all <var> among <list> in <acc> initially <expr1> with <expr2>` | type of elements | [Folds](https://en.wikipedia.org/wiki/Fold_(higher-order_function)) `<list>`, starting with `<expr1>` and accumulating with `<expr2>` |
 
 ~~~admonish tip title="Iterating on multiple lists at the same time"

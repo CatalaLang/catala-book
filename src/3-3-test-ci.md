@@ -176,7 +176,7 @@ terminated with an error, the last line will show the error code.
     └─
     ```
 
-When running `clerk test`, the specified command is run on the file (truncated
+When running `clerk test`, the specified command is run on the file or directory (truncated
 to that point). If the output exactly matches what is in the file, the tests
 passes. Otherwise, it fails, and the precise differences are shown side-by-side.
 
@@ -192,3 +192,16 @@ There are two additional big differences with the "test scopes" approach:
 `clerk test --reset` can also be used to initialise a new test, from a
 `` ```catala-test-cli`` section that only provides the command without expected
 output.
+
+## Continuous integration workflow
+
+~~~admonish danger title="Work in progress"
+This section of the Catala book has not yet been written, stay tuned for
+future updates!
+~~~
+
+<!-- TODO:
+  - (prerequisite) have some dev docker images
+  - give a yaml file example (mention clerk ci)
+  - generate Catala target's archives artifact (requires standalone archives)
+-->
