@@ -352,7 +352,7 @@ for each output variable.
 When some cases are not expected to happen in the normal execution flow of a
 program, they can be marked as `impossible`. This makes the intent of the
 programmer clear, and removes the need to write a place-holder value. If, during
-execution, `impossible` is reached, the program with abort with a fatal error.
+execution, `impossible` is reached, the program will abort with a fatal error.
 
 It is advised to always accompany `impossible` with a comment justifying why the
 case is deemed impossible.

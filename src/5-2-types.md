@@ -342,24 +342,25 @@ You can build tuple values with the following syntax:
 ```
 You can access the `n`-th element of a tuple, starting at `1`, with the syntax `<tuple>.n`.
 
-## Optional types
+## Optional values
 
-The type `optional of <type 1>` can be used to hold a value of `<type 1>` that
-could be absent. It is in essence equivalent to the enumeration:
+The type `optional of <type>` can be used to hold a value of `<type>` that could
+be absent. For instance, `optional of integer` equivalent to the enumeration:
 
 ```catala
-declaration enumeration Optional_of_type1:
+declaration enumeration OptionalInteger:
   -- Absent
-  -- Present content <type 1>
+  -- Present content integer
 ```
 
-but it doesn't need to be declared for each type that it is used with. Like an
-enumeration, values of type `optional` can be created using
-`Present content <expr>`, and used in the forms `match <expr> with pattern` and
-`<expr> with pattern <constr>`, e.g.
+But the advantage of `optional of integer` over such an `OptionalInteger` is
+that doesn't need to be declared for each type that it is used with. Like an
+enumeration, values of type `optional` can be created using `Present content
+<expr>`, and used in the forms `match <expr> with pattern` and `<expr> with
+pattern <constr>`, e.g.
 
 ```catala
-if argument with pattern Present of x and x > 3 then ...
+if foo with pattern Present of bar and bar > 3 then ...
 ```
 
 ## Functions
