@@ -365,3 +365,62 @@ integer` can be the type of a tax-computing function.
 However, unlike most programming language, it is not possible to directly build
 a function as a value; functions are created and passed around with other
 language mechanisms.
+
+### Polymorphic functions
+
+A key feature of a programming language is its ability to avoid code
+duplication; the programmer should reuse as much code as possible through
+abstractions, such as functions and modules. Moreover, a standard feature of
+modern software engineering is
+[polymorphism](https://en.wikipedia.org/wiki/Polymorphism_(computer_science)),
+*i.e.* writing pieces of code that can operate on multiple types of values at
+once, saving the programmer the necessity to duplicate the same code multiple
+times depending on the type of the arguments.
+
+
+~~~admonish question title="What does polymorphism mean in different programming languages?"
+Polymorphism can be implemented in several ways depending on the programming
+language. Java has abstract classes and interfaces, C++ has templates, Python
+and Javascript have dynamic method resolution. Catala, being a statically
+typed functional programming language, has a way of doing polymorphism that
+is inspired by basic mechanisms present in OCaml.
+~~~
+
+Concretely, when defining a function in Catala, you can give the `anything` type
+to an argument or the return type. This means that when you call the function,
+you can call it with an argument that has any of the possible types. We can call
+such an argument "generic", or say it has a "wildcard" type. For instance, it is
+convenient to be able to write the `is_empty` function once for lists of
+elements of any type:
+
+```catala
+declaration is_empty content boolean
+  depends on argument content list of anything
+  equals (number of argument = 0)
+```
+
+While generic arguments are powerful, they also have the downside that
+you cannot really "do" anything with a value that has `anything` type since
+you don't know what type it has. In particular, it is impossible to use
+the operators like `+`, `*`, `-`, `/`, `<=`, etc. since these operators only
+work for the basic types (`integer`, `decimal`, etc.) and not all the other
+types that can be defined by the user (structures, enumerations, etc.).
+
+Sometimes, there are multiple generic arguments or return types in the same
+function but you want them to *share the same generic type*. For instance, if a
+function reverses the elements of a list, the type of the list elements will be
+the same in and out the function. The `anything` types can be _named_ for this
+purpose, using `anything of type <name>`. For example:
+
+```catala
+declaration reverse content list of anything of type element_type
+  depends on argument content list of anything of type element_type
+```
+
+If you don't name the `anything` type explicitly, it will be assumed that
+each `anything` is a fresh, independent `anything` from the other `anythings`.
+This may lead to complex error messages from the compiler, so remember to give
+the same name to `anything` types that you know have to be linked together.
+
+Polymorphic function signatures can be really useful when defining interfaces to
+[externally-implemented modules](./5-6-modules.md#declaring-external-modules).
