@@ -347,3 +347,27 @@ variable](./5-5-expressions.md#local-variables-and-let-bindings) and then
 for each output variable.
 
 
+## "Impossible" cases
+
+When some cases are not expected to happen in the normal execution flow of a
+program, they can be marked as `impossible`. This makes the intent of the
+programmer clear, and removes the need to write a place-holder value. If, during
+execution, `impossible` is reached, the program with abort with a fatal error.
+
+It is advised to always accompany `impossible` with a comment justifying why the
+case is deemed impossible.
+
+`impossible` has type `anything`, so that it can be used in place of any value.
+For example:
+
+```catala
+match foo with pattern
+-- TaxCreditForIndividual of individual : individual.birth_date
+-- anything :
+   impossible # We know that foo is not in any other form at this point because...
+```
+
+Be careful that any value that is not guarded by conditions may be computed,
+even if not directly needed to compute the result (in other words, Catala is not
+a _lazy_ language). Therefore, `impossible` is not fit to initialise fields of
+structures, for example, even if those fields are never used.
