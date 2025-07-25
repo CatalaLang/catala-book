@@ -212,7 +212,7 @@ For instance, here is the pattern matching syntax to compute the tax credit
 in our example:
 
 ```catala
-match foo with
+match foo with pattern
 -- NoTaxCredit: $0
 -- TaxCreditForIndividual of individual: individual.income * 10%
 -- TaxCreditAfterDate of date: if today >= date then $1000 else $0
@@ -235,7 +235,7 @@ the last case of your pattern matching. For instance, here this computes whether
 you should apply a tax credit or not:
 
 ```catala
-match foo with
+match foo with pattern
 -- NoTaxCredit: true
 -- anything: false
 ```
@@ -246,7 +246,7 @@ You can create a boolean test for a specific case of an enum value with
 pattern matching:
 
 ```catala
-match foo with
+match foo with pattern
 -- TaxCreditForIndividual of individual: true
 -- anything: false
 ```
@@ -257,14 +257,14 @@ to make things more concise; the code below is exactly equivalent to the code
 above.
 
 ```catala
-foo with TaxCreditForIndividual
+foo with pattern TaxCreditForIndividual
 ```
 
 Now suppose you want to test whether `foo` is `TaxCreditForIndividual`
 and that the `individual`'s income is greater than $10,000. You could write:
 
 ```catala
-match foo with
+match foo with pattern
 -- TaxCreditForIndividual of individual: individual.income >= $10,000
 -- anything: false
 ```
@@ -272,7 +272,7 @@ match foo with
 But instead you can also write the more concise:
 
 ```catala
-foo with TaxCreditForIndividual of individual and individual.income >= $10,000
+foo with pattern TaxCreditForIndividual of individual and individual.income >= $10,000
 ```
 ~~~
 
