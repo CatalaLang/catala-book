@@ -73,7 +73,7 @@ find its marks and know what to do. You need to guide it with a declarative
 configuration file, `clerk.toml`.
 
 
-### The `clerk.toml` configuration file
+## The `clerk.toml` configuration file
 
 This file is used to configure how and what the `clerk` tool is
 supposed to build and run. This configuration file should be written

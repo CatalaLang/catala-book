@@ -146,7 +146,7 @@ data structures into the data structures expected by the generated files, and
 back.
 ~~~
 
-### Calling the generated functions in the target programming languages
+## Calling the generated functions in the target programming languages
 
 Let's illustrate with an example. Consider this very simple Catala program:
 
