@@ -1,24 +1,27 @@
 # Project building and deployment
 
-In the previous section, we defined a directory containing a Catala
-project with a `clerk.toml` configuration file that contained two main
-targets (`us-tax-code` and `housing-benefits`) that we aim to build
-and export them as libraries in different languages.
+<div id="tock" data-block_title="Summary"></div>
+<div id="tocw"></div>
+
+In the previous section, we defined a directory containing a Catala project with
+a `clerk.toml` configuration file that contained two main targets (`us-tax-code`
+and `housing-benefits`) that we aim to build and export them as source libraries
+in different languages.
 
 ~~~~~~admonish info collapsible=true title="Recap from previous section: `clerk.toml` configuration file and project hierarchy"
 `clerk.toml` configuration file of our mock project
 ```toml
-# Clerk configuration file for 'my-project'
-
 [project]
-include_dirs = [ "src/common",              # Configures which directories to include
-                 "src/tax_code",            # when looking for dependencies
-                 "src/housing_benefits" ]   # and test dependencies.
+include_dirs = [ "src/common",              # Which directories to include
+                 "src/tax_code",            # when looking for Catala modules
+                 "src/housing_benefits" ]   # and dependencies.
 build_dir    = "_build"    # Defines where to output the generated compiled files.
 target_dir   = "_target"   # Defines where to output the targets final files.
 
+# Each [[target]] section describes a build target for the project
+
 [[target]]
-name     = "us-tax-code"                          # Target's specific name
+name     = "us-tax-code"                          # The name of the target
 modules  = [ "Section_121", "Section_132", ... ]  # Modules components
 tests    = [ "tests/test_income_tax.catala_en" ]  # Related test(s)
 backends = [ "c", "java" ]                        # Output language backends
@@ -29,7 +32,7 @@ modules  = [ "Section_8, ... ]
 tests    = [ "tests/test_housing_benefits.catala_en" ]
 backends = [ "ocaml", "c", "java" ]
 ```
-Project hierarchy of our mock project:
+Project file hierarchy:
 ```
 my-project/
 │   clerk.toml
@@ -57,12 +60,21 @@ my-project/
 
 ## Building the project
 
-Now that we have everything setup, we can build our project. In order
-to do that, we can use the `clerk`'s build command:
+Now that you have everything setup, you can build the project, which means
+compiling the Catala source code files into the different target programming
+languages. That is the job of the `clerk build` command:
+
+~~~admonish question title="Where to run `clerk`?"
+The Catala team advises you to always run `clerk` from the root directory
+of your project.
+
+You can refer to subdirectories in your `clerk` commands but beware of referring
+to sibling directories (`../bar`) which can cause path resolution failures in
+the Catala tooling.
+~~~
 
 ```bash
 $ clerk build
-...
 ┌─[RESULT]─
 │ Build successful. The targets can be found in the following files:
 │     [us-tax-code] → _targets/us-tax-code
@@ -70,9 +82,9 @@ $ clerk build
 └─
 ```
 
-If we now inspect these directories, we will find both directories
-that contains all compiled code for all the declared backends ready to
-be exported as libraries.
+The output of the command shows you where to find the results. Each `[[target]]`
+section yields a subdirectory in the `_targets/` directory, which the compilation
+artifacts inside. In our example, it could look like this:
 
 <!-- TODO: package into static libraries and document it -->
 
@@ -93,66 +105,63 @@ _targets/
 │   │   ...
 ```
 
-If we now want to test our project, we can use the `clerk test`
-command which will scan all of our project and detect every test:
+## Deploying the generated code
 
-```bash
-$ clerk test
-┏━━━━━━━━━━━━  ALL TESTS PASSED  ━━━━━━━━━━━━━┓
-┃                                             ┃
-┃             FAILED     PASSED      TOTAL    ┃
-┃   files          0          2          2    ┃
-┃   tests          0         17         17    ┃
-┃                                             ┃
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-```
+Now that everything is properly built in the different backends, it is time to
+integrate them! The purpose of Catala is to provide ready-to-use source
+libraries in a target programming language; Catala does not make a whole
+user-facing app for you. Hence, you usually take what Catala builds an integrate
+it in another existing project.
 
-If we wish to only run a target's specific test, we can do that by
-invoking `clerk test <target-name>` -- the same goes for `clerk build
-<target-name>`.
+From this point on, the deployment requires some manual labor as it depends on
+the specifics of your use cases. Basically, it is up to you to copy the
+artifacts in `_targets` to your other project, compile them and link them to
+your existing codebase.
 
-~~~~~~admonish info title="Backend testing"
-It is also possible to run tests in a backend-specific language. For
-instance, `clerk test us-tax-code --backend c` will run the target's
-testsuite translated in C in order to check for eventual inconsistencies.
-~~~~~~
+For instance, if you want to integrate the Catala program as part of a Java
+application, you will have to copy over the generated Java source files from the
+`_target/<target_name>/java/` directory to a sub-directory of your Java project,
+and update your `pom.xml` Maven configuration accordingly so that Maven can
+build the source files generated by Catala.
 
-## Project deployement
+~~~admonish danger title="Can I tweak the generated files to fit my workflow?"
+The Catala team does not recommend tweaking the files generated by the Catala
+compiler for two reasons:
+1. every time you will update the source Catala files, the compiler will
+  re-generate a new file ijn your target programming language that you will have
+  to re-tweak by hand;
+2. even if you automate the tweaking, every tweaking of the generated file
+  might introduce a difference in behavior with how the original source Catala
+  file behaves with the Catala interpreter.
 
-Now that everything is properly built in the different backends, it is
-time to integrate them in an existing project. From this point on, it
-requires some manuel labor as it depends on your use-case. For
-instance, if you want to integrate the Catala program as part of a
-Java application, one way of doing this is to copy over the generated
-Java source files from the `_target/<target_name>/java/` directory to
-a sub-directory of your Java project.
+Indeed, the Catala compiler guarantees that the generated file in your target programming
+language will behaves exactly as the source Catala file run with the Catala
+interpreter. Any tweak to the generated file might break that guarantee, which
+is why you should not tweak the generated files.
 
-~~~admonish warning title="Work in progress"
-It is not recommended to manually edit the generated files. Instead,
-it is best to modify the Catala code whenever possible.
+To fit the generated files to your workflow, we recommend instead that you build
+"glue" code in your target programming language on top of the generated files.
+This "glue" code is likely to contain some utilities to convert your existing
+data structures into the data structures expected by the generated files, and
+back.
 ~~~
 
-### Catala runtime
-
-For every backend, there exists a dedicated version of the Catala
-runtime. This component is necessary for the compilation and execution
-of the generated Catala programs. Runtimes will describe Catala types
-and data-structures, specific errors as well as an API to manipulate
-them from the targeted languages.
+### Calling the generated functions in the target programming languages
 
 Let's illustrate with an example. Consider this very simple Catala program:
+
+~~~catala
+> Module SimpleTax
+
 ```catala
-    > Module SimpleTax
+declaration scope IncomeTaxComputation:
+  input income content money
+  output income_tax content money
 
-    ```catala
-    declaration scope IncomeTaxComputation:
-      input income content money
-      output income_tax content money
-
-    scope IncomeTaxComputation:
-      definition income_tax equals income * 10%
-    ```
+scope IncomeTaxComputation:
+  definition income_tax equals income * 10%
 ```
+~~~
 
 With its Java-compiled version:
 
@@ -210,7 +219,18 @@ If you inspect the generated file, you will notice that the Catala
 scopes will be translated as a Java class (and as functions in C or
 Python). Scope computations are done in the class constructor. Hence,
 to execute the scope, we need to instantiate this class and retrieve
-the result. Here is a simple Java program that executes our scope:
+the result.
+
+Moreover, for every backend, there exists a dedicated version of the Catala
+runtime. This component is necessary for the compilation and execution of the
+generated Catala programs. Runtimes will describe Catala types and
+data-structures, specific errors as well as an API to manipulate them from the
+targeted languages. The files for the runtime should be included in the
+`_targets/<target-name>`; you can also copy them over to your project and
+reference their types and functions from your app.
+
+Putting this all together, here is for instance a simple Java program that
+executes our scope:
 
 ```java
 import catala.runtime.CatalaMoney;
@@ -228,7 +248,7 @@ class Main {
 As mentioned, Catala runtimes offer an API to build the
 catala-specific values, e.g., the `CatalaMoney.ofCents` java static
 method that build a `CatalaMoney` value equivalent to a money-type
-value.
+value. Only sky is the limit afterwards as to what you can build!
 
 In this section, we have seen how to build a project, export it and
 integrate it in an existing application. In the following section, we

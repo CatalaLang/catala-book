@@ -106,6 +106,16 @@ the same Catala program.
 ~~~
 
 
+If we wish to only run a target's specific test, we can do that by
+invoking `clerk test <target-name>` -- the same goes for `clerk build
+<target-name>`.
+
+~~~~~~admonish info title="Backend testing"
+It is also possible to run tests in a backend-specific language. For
+instance, `clerk test us-tax-code --backend c` will run the target's
+testsuite translated in C in order to check for eventual inconsistencies.
+~~~~~~
+
 ### Command-line interface (CLI) tests
 
 This second flavor of tests provides a means to validate the output of a given

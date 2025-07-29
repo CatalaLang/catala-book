@@ -1,4 +1,4 @@
-# Setting up a Catala project
+# Walkthrough: setting up a Catala project
 
 While the [Catala tutorial](./2-0-tutorial.md) introduces you to programming in
 Catala and the specificities of mirroring legal requirements in your code, it
@@ -6,9 +6,9 @@ lacks all the aspects of an IT project beyond just writing the code.
 
 Specifically, the Catala team encourages Catala developers to use modern
 software engineering standards with respect to project organization and
-management. This section, "Setting up a Catala project", acts as a walkthrough
-guide that shows primarily how the Catala build system, `clerk`, facilitates
-the workflow of structuring, testing and deploying an IT project using Catala.
+management. This section acts as a walkthrough guide that shows primarily how
+the Catala build system, `clerk`, facilitates the workflow of structuring,
+testing and deploying an IT project using Catala.
 
 ~~~admonish info title="Prerequisite for this walktrough"
 This walkthrough will assume the reader works on an Unix-like system and

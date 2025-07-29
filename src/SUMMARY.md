@@ -18,7 +18,7 @@
       <!-- - [Hands-on exercise](2-3-1-exercise.md) -->
     - [Variable states and dynamic scope calls](2-4-states-dynamic.md)
       <!-- - [Hands-on exercise](2-4-1-exercise.md) -->
-- [Setting up a Catala project](./3-project.md)
+- [Walkthrough: setting up a Catala project](./3-project.md)
     - [Directory structure and configuration](./3-1-directory-config.md)
     - [Project building and deployment](./3-2-compilation-deployment.md)
     - [Test and continuous integration workflow](./3-3-test-ci.md)
@@ -39,3 +39,6 @@
     - [Modules](./5-6-modules.md)
     - [Extra features](./5-7-extra-features.md)
 - [The `clerk` build system](./6-clerk.md)
+    - [Project configuration file](./6-1-clerk-toml.md)
+    - [Commands and workflow](./6-2-commands-workflow.md)
+    - [Compiler plugins](./6-3-compiler-plugins.md)
