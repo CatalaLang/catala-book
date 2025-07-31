@@ -15,7 +15,7 @@ A Catala source file can be turned into a module by inserting at the top a
 module declaration. For instance, if the file is named `foo.catala_en`,
 the module declaration is simply:
 
-```text
+```catala
 > Module Foo
 ```
 
@@ -35,7 +35,7 @@ Modules can "use" other modules to import their public types, scopes and
 constants. If you want to use module `Bar` inside module `Foo`, the top of
 `foo.catala_en` should look like:
 
-```text
+```catala
 > Module Foo
 
 > Using Bar
@@ -45,7 +45,7 @@ You can then refer to types, scopes and constants like of `Bar` like `Fizz` with
 `Bar.Fizz` inside `Foo`. If you don't want to type in `Bar.` each time, you can
 give `Bar` an alias inside `Foo` with:
 
-```text
+```catala
 > Module Foo
 
 > Using Bar as B
@@ -70,7 +70,7 @@ files `benefit_law.catala_en`, `benefit_regulation.catala_en`, and `benefit_inst
 Then, the contents of `benefit.catala_en` should look like this to include
 all the other files:
 
-```text
+```catala
 > Module Benefit
 
 > Include: benefit_law.catala_en
@@ -111,7 +111,7 @@ unimplementable logic. This is the purpose of external module. An external
 module in Catala is a Catala source code file containing a module with the
 `external` annotation, like this:
 
-~~~text
+~~~catala
 > Module Foo external
 
 ```catala-metadata
