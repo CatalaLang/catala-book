@@ -215,7 +215,7 @@ requires strings as a first-class value type in Catala to be solved.
 
 Second, the preferred way of performing low-level, computation-intensive
 operations not described by legal text but used in a Catala program is to simply
-to them outside of Catala and provide their output as inputs of a Catala scope,
+do them outside of Catala and provide their output as inputs of a Catala scope,
 or define an external module. See the [language reference for more
 details](./5-6-modules.md#declaring-external-modules).
 

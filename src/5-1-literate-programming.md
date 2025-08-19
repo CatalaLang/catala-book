@@ -127,26 +127,19 @@ variable name.
 
 The reserved keywords in Catala are :
 
-
 * `scope`
 * `consequence`
 * `data`
 * `depends on`
 * `declaration`
 * `context`
-* `decreasing`
-* `increasing`
+* `down`
+* `up`
 * `of`
 * `list of`
 * `contains`
 * `enumeration`
-* `integer`
-* `money`
-* `text`
-* `decimal`
 * `date`
-* `duration`
-* `boolean`
 * `sum`
 * `fulfilled`
 * `definition`
@@ -199,11 +192,6 @@ The reserved keywords in Catala are :
 * `output`
 * `internal`
 * `round`
-* `get_day`
-* `get_month`
-* `get_year`
-* `first_day_of_month`
-* `last_day_of_month`
 
 
 ### Textual inclusion

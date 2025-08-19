@@ -39,6 +39,37 @@ appear duplicated or not at all, especially if optimisations are enabled (with
 the `-O` flag). If that happens, try to move the attribute to the root of the
 definition.
 
+### Implicit position arguments
+
+This attribute is advanced and specific to defining libraries, in particular
+with external modules. Some operations in Catala, like date addition and
+division, can trigger runtime errors. When that happens, the location where the
+error was triggered in the source code of the program is printed, so that it is
+possible to track the origin of the error — for example, the point where a
+division by zero was attempted.
+
+When such an operation is done within a library, though, the user is often less
+interested in the division that happened from within the library code than the
+location, in the program, where the library function was called. This is what
+this attribute addresses, by allowing a defined function to obtain the location
+from where it was called as a parameter.
+
+The attribute is put on the declaration of a function argument of type
+`code_location`, making it implicit:
+
+```catala
+declaration custom_division content decimal depends on
+    #[implicit_position_argument] pos content code_location,
+    numerator content decimal,
+    denominator content decimal
+  equals ...
+```
+
+The argument `pos` can be used normally in the body of the declaration, but is
+most likely useful to pass on to externally-implemented functions. When calling
+`custom_division`, only the `numerator` and `denominator` arguments should be
+provided.
+
 ## Implementing external modules
 
 External modules need to precisely match the interface expected by the Catala
