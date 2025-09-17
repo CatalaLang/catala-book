@@ -13,6 +13,8 @@ edit-url-template = "https://github.com/CatalaLang/catala-book/edit/main/{path}"
 
 [preprocessor]
 
+[preprocessor.cmdrun]
+
 [preprocessor.admonish]
 command = "mdbook-admonish"
 assets_version = "3.0.2"    # do not edit: managed by `mdbook-admonish install`
@@ -32,3 +34,4 @@ theme_dir = "theme"
 block_marker_id = "tock"
 wing_marker_id = "tocw"
 base_url = "/"
+
