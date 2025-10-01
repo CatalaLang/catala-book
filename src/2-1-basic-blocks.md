@@ -391,16 +391,16 @@ the scope to be interpreted?
 The reflex at this point is to execute the following command:
 ```text
 $ clerk run tutorial.catala_en --scope=IncomeTaxComputation
-┌[ERROR]─
+┌─[ERROR]─
 │
-│  This scope needs input arguments to be executed. But the Catala built-in interpreter does not have a way to retrieve input values from the command line, so it cannot execute this scope.
-│  Please create another scope that provides the input arguments to this one and execute it instead.
+│  Invalid scope for execution or testing: it defines input variables. If
+│  necessary, a wrapper scope with explicit inputs to this one can be defined.
 │
-├─➤ tutorial.catala_en
-│   │
-│   │   input individual content Individual
-│   │         ‾‾‾‾‾‾‾‾‾‾
-└─
+├─➤ tutorial.catala_en:41.9-41.19:
+│    │
+│ 41 │   input individual content Individual
+│    │         ‾‾‾‾‾‾‾‾‾‾
+└─ 
 ```
 
 As the error message says, trying to interpret directly `IncomeTaxComputation` is like
