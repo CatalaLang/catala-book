@@ -393,7 +393,7 @@ all the date operations inside a whole scope, use this syntax:
 # Let us suppose you want to set the rounding more for date operations
 # inside scope Foo declared elsewhere
 scope Foo:
-  date round decreasing # rounding down
+  date round down # rounding down
   # or
-  date round increasing # rounding up
+  date round up # rounding up
 ```
