@@ -390,7 +390,7 @@ the scope to be interpreted?
 ~~~admonish failure title="Why can't I test `IncomeTaxComputation` directly?" collapsible=true
 The reflex at this point is to execute the following command:
 ```text
-$ catala interpret tutorial.catala_en --scope=IncomeTaxComputation
+$ clerk run tutorial.catala_en --scope=IncomeTaxComputation
 ┌[ERROR]─
 │
 │  This scope needs input arguments to be executed. But the Catala built-in interpreter does not have a way to retrieve input values from the command line, so it cannot execute this scope.
@@ -443,7 +443,7 @@ scope Test:
 This test can now be executed through the Catala interpreter:
 
 ```text
-$ catala interpret tutorial.catala_en --scope=Test
+$ clerk run tutorial.catala_en --scope=Test
 ┌─[RESULT]─
 │ computation = IncomeTaxComputation { -- income_tax: $4,000.00 }
 └─

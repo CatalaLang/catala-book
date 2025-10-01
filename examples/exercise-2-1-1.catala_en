@@ -46,7 +46,7 @@ of simplicity, we will not check whether or not we kill an already
 deceased individual.
 
 You can test your solution by invoking the TestKillPerson Catala
-scope: `catala interpret exercise-2-1-1.catala_en --scope TestKillPerson`.
+scope: `clerk run exercise-2-1-1.catala_en --scope TestKillPerson`.
 
 ```catala
 declaration scope TestKillPerson:

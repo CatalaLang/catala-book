@@ -160,7 +160,7 @@ scope TestHousehold:
 The result of the execution is then:
 
 ```test
-$ catala interpret tutorial.catala_en --scope=TestHousehold
+$ clerk run tutorial.catala_en --scope=TestHousehold
 ┌─[RESULT]─
 │ computation = HouseholdTaxComputation { -- household_tax: $30,000.00 }
 └─
@@ -373,7 +373,7 @@ scope TestIndividualHousehold:
 The result of the execution is then:
 
 ```test
-$ catala interpret tutorial.catala_en --scope=TestIndividualHousehold
+$ clerk run tutorial.catala_en --scope=TestIndividualHousehold
 ┌─[RESULT]─
 │ computation = HouseholdTaxIndividualComputation { -- household_tax: $7,000.00 }
 └─

@@ -101,7 +101,7 @@ inside the `catala` compiler. This is done with the following command, indicatin
 that we want to run the `--scope` named `HelloWorld` inside the file `hello_world.catala_en`:
 
 ```text
-$ catala interpret hello_world.catala_en --scope=HelloWorld
+$ clerk run hello_world.catala_en --scope=HelloWorld
 ```
 
 The result of this command should be, [as it is

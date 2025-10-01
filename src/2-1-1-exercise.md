@@ -56,7 +56,7 @@ of simplicity, we will not check whether or not we kill an already
 deceased individual.
 
 You can test your solution by invoking the TestKillPerson Catala
-scope: `catala interpret exercise-2-1-1.catala_en --scope TestKillPerson`.
+scope: `clerk run exercise-2-1-1.catala_en --scope TestKillPerson`.
 
 ```catala
 declaration scope TestKillPerson:
@@ -224,7 +224,7 @@ deceased individual.
 You can test your solution using the following TestKillPerson
 scope by invoking this command in a console:
 ```bash
-catala interpret exercise-2-1-1.catala_en --scope TestKillPerson
+clerk run exercise-2-1-1.catala_en --scope TestKillPerson
 ```
 
 ```catala
@@ -385,7 +385,7 @@ declaration scope TestTaxComputation:
 
 Same as before, you can use a similar command to execute your test:
 ```bash
-catala interpret exercise-2-1-1.catala_en --scope TestTaxComputation
+clerk run exercise-2-1-1.catala_en --scope TestTaxComputation
 ```
 
 ~~~admonish example title="Solution to Question 5" collapsible=true
