@@ -245,7 +245,7 @@ scope KillPerson:
   definition killed_individual equals
     Individual {
       -- date_of_birth: victim.date_of_birth
-      -- date_of_death: Dead content kill_date
+      -- date_of_death: Deceased content fateful_date
     }
 ```
 
@@ -259,7 +259,7 @@ useful especially when a structure defines a lot of fields!
 ```catala
 scope KillPerson:
   definition killed_individual equals
-    victim but replace { -- date_of_death: Dead content kill_date }
+    victim but replace { -- date_of_death: Deceased content fateful_date }
 ```
 ~~~
 
