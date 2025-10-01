@@ -82,10 +82,10 @@ it later in the the [tutorial](./2-0-tutorial.md).
 
 Since Catala is a strongly typed language, you can *typecheck* your program
 without running it to see whether there are some syntax or typing errors. This
-is done through the `catala typecheck` command:
+is done through the `clerk typecheck` command:
 
 ```test
-$ catala typecheck hello_world.catala_en
+$ clerk typecheck hello_world.catala_en
 ```
 
 The result of this command should be:

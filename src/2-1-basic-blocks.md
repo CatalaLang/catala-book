@@ -460,7 +460,7 @@ You can also check that there is no syntax or typing error in your code,
 without testing it, with the following command:
 
 ```text
-$ catala typecheck tutorial.catala_en
+$ clerk typecheck tutorial.catala_en
 ┌─[RESULT]─
 │ Typechecking successful!
 └─
