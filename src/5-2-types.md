@@ -43,13 +43,14 @@ The type `integer` represents mathematical integers, like `564,614` or `-2`.
 Note that you can optionally use the number separator `,` to make large integers
 more readable.
 
-| Symbol | Type of first argument | Type of second argument | Type of result | Semantic               |
-|--------|------------------------|-------------------------|----------------|------------------------|
-| `+`    | integer                | integer                 | integer        | Integer addition       |
-| `-`    | integer                | integer                 | integer        | Integer substraction   |
-| `-`    | integer                |                         | integer        | Integer negation       |
-| `*`    | integer                | integer                 | integer        | Integer multiplication |
-| `/`    | integer                | integer                 | decimal        | Rational division      |
+| Symbol       | Type of first argument | Type of second argument | Type of result | Semantic                   |
+|--------------|------------------------|-------------------------|----------------|----------------------------|
+| `+`          | integer                | integer                 | integer        | Integer addition           |
+| `-`          | integer                | integer                 | integer        | Integer substraction       |
+| `-`          | integer                |                         | integer        | Integer negation           |
+| `*`          | integer                | integer                 | integer        | Integer multiplication     |
+| `/`          | integer                | integer                 | decimal        | Rational division          |
+| `integer of` | decimal, money         |                         | integer        | Casting (round to nearest) |
 
 ### Decimals
 
@@ -66,14 +67,15 @@ and you can use the `%` notation if this makes your code easier to read.
 
 #### Decimal operations
 
-| Symbol     | Type of first argument | Type of second argument | Type of result | Semantic                |
-|------------|------------------------|-------------------------|----------------|-------------------------|
-| `+`        | decimal                | decimal                 | decimal        | Rational addition       |
-| `-`        | decimal                | decimal                 | decimal        | Rational substraction   |
-| `-`        | decimal                |                         | decimal        | Rational negation       |
-| `*`        | decimal                | decimal                 | decimal        | Rational multiplication |
-| `/`        | decimal                | decimal                 | decimal        | Rational division       |
-| `round of` | decimal                |                         | decimal        | Round to nearest unit   |
+| Symbol       | Type of first argument | Type of second argument | Type of result | Semantic                |
+|--------------|------------------------|-------------------------|----------------|-------------------------|
+| `+`          | decimal                | decimal                 | decimal        | Rational addition       |
+| `-`          | decimal                | decimal                 | decimal        | Rational substraction   |
+| `-`          | decimal                |                         | decimal        | Rational negation       |
+| `*`          | decimal                | decimal                 | decimal        | Rational multiplication |
+| `/`          | decimal                | decimal                 | decimal        | Rational division       |
+| `round of`   | decimal                |                         | decimal        | Round to nearest unit   |
+| `decimal of` | integer, money         |                         | decimal        | Casting
 
 ### Money
 
@@ -86,14 +88,14 @@ symbol, like `$12.36` or `-$871,84.1`.
 
 #### Money operations
 
-| Symbol     | Type of first argument | Type of second argument | Type of result | Semantic                |
-|------------|------------------------|-------------------------|----------------|-------------------------|
-| `+`        | money                  | money                   | money          | Money addition          |
-| `-`        | money                  | money                   | money          | Money substraction      |
-| `-`        | money                  |                         | money          | Money negation          |
-| `/`        | money                  | money                   | decimal        | Rational division       |
-| `round of` | money                  |                         | money          | Round to nearest unit   |
-
+| Symbol     | Type of first argument | Type of second argument | Type of result | Semantic                        |
+|------------|------------------------|-------------------------|----------------|---------------------------------|
+| `+`        | money                  | money                   | money          | Money addition                  |
+| `-`        | money                  | money                   | money          | Money substraction              |
+| `-`        | money                  |                         | money          | Money negation                  |
+| `/`        | money                  | money                   | decimal        | Rational division               |
+| `round of` | money                  |                         | money          | Round to nearest unit           |
+| `money of` | integer, decimal       |                         | money          | Casting (round to nearest cent) |
 
 ### Dates
 
