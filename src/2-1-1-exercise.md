@@ -362,12 +362,12 @@ scope TaxComputation:
   definition person1_dead_before_processing_date equals
     match couple.person_1.date_of_death with pattern
     -- StillAlive: false
-    -- Deceased of d: d < processing_date
+    -- Deceased content d: d < processing_date
 
   definition person2_dead_before_processing_date equals
     # Another possible syntax for testing patterns
     couple.person_1.date_of_death with pattern
-      Deceased of d and d < processing_date
+      Deceased content d and d < processing_date
 ```
 ~~~
 
