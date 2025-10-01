@@ -134,7 +134,7 @@ rest is the expected output from the command ; additionally, if the command
 terminated with an error, the last line will show the error code.
 
     ```catala-test-cli
-    $ clerk run --scope=Test --trace
+    $ catala interpret --scope=Test --trace
     [LOG] ☛ Definition applied:
           ─➤ tutorial.catala_en:214.14-214.25:
               │
