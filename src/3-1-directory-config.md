@@ -51,7 +51,8 @@ project configuration file:
   components.
 - `tests/`: contains the dedicated tests of your Catala programs. In
   order not to bloat your logic with spurious tests, it is advised to
-  create specific, separate files containing your tests.
+  create specific, separate files containing your tests for each source
+  module.
 - `clerk.toml`: the configuration file of a `clerk` project.
 
 ~~~~~~admonish danger title="Declare your modules!"
