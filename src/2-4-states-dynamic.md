@@ -228,7 +228,7 @@ of `TestHousehold`:
 
 ~~~admonish abstract title="Trace of `TestHousehold`" collapsible=true
 ```text
-$ clerk run tutorial.catala_en --scope=TestHousehold --trace
+$ clerk run tutorial.catala_en --scope=TestHousehold -c--trace
 [LOG] ☛ Definition applied:
       ─➤ tutorial.catala_en
           │
