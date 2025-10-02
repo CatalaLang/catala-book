@@ -9,7 +9,7 @@ and `housing-benefits`) that we aim to build and export them as source libraries
 in different languages.
 
 ~~~~~~admonish info collapsible=true title="Recap from previous section: `clerk.toml` configuration file and project hierarchy"
-`clerk.toml` configuration file of our mock project
+Here is the `clerk.toml` configuration file of our mock project:
 ```toml
 [project]
 include_dirs = [ "src/common",              # Which directories to include

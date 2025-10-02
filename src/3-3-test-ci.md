@@ -10,8 +10,8 @@ and `housing-benefits`), that we learn to compile and deploy in C and Java. Now,
 let's make sure the deployed code is correct and practice some test-driven
 development!
 
-~~~~~~admonish info collapsible=true title="Recap from previous section: `clerk.toml` configuration file and project hierarchy"
-`clerk.toml` configuration file of our mock project
+~~~admonish info collapsible=true title="Recap from previous section: `clerk.toml` configuration file and project hierarchy"
+Here is the `clerk.toml` configuration file of our mock project:
 ```toml
 [project]
 include_dirs = [ "src/common",              # Which directories to include
@@ -57,7 +57,7 @@ my-project/
     │   test_income_tax.catala_en
     │   test_housing_benefits.catala_en
 ```
-~~~~~~
+~~~
 
 
 ## Setting up tests
@@ -97,7 +97,6 @@ for the scope `IncomeTaxComputation`. While there is no constrained format
 for tests in Catala, we recommend that you follow this pattern:
 
 ```catala
-
 # First, declare your test
 declaration scope TestIncomeTax1: # You can choose any name for your test
   computation content IncomeTaxComputation # Put here the scope you want to test
@@ -124,11 +123,56 @@ $ clerk run tests/tests_income_tax.catala_en --scope=TestIncomeTax1
 
 Now, this test should indicate what are the *expected* outputs, to be compared
 with the *computed* outputs. There are ways to do it with Catala, depending
-on the best fit for your use case.
+on the best fit for your use case. The starting point for both methods is
+exactly what we've described just above. Both methods are supported by the
+test system of Catala, accessible through the `clerk test` command.
 
 ### Assertion testing
 
+One way to check the computed result is to assert that it should be equal to
+an expected value, using Catala's [`assertion`s](./5-4-definitions-exceptions.md#assertions).
+To register an assertion test into `clerk test`, simply put the `#[test]` [attribute](./5-7-extra-features.md#attributes-and-extensions) to the test scope declaration. For instance, here
+is our test example set up as an assertion test:
+
+```catala
+#[test]
+declaration scope TestIncomeTax1:
+  computation content IncomeTaxComputation
+
+scope TestIncomeTax1:
+  definition computation equals
+    result of IncomeTaxComputation {
+      # The inputs of this test to IncomeTaxComputation are below :
+      -- income: $20,000
+      -- number_of_children: 2
+      -- filing: Joint content |1998-04-03|
+    }
+  assertion (computation.income_tax = $5,000)
+```
+
+Of course, the `assertion` can be as complex as you want. You can check
+the result exhaustively or partially, check whether some property depending
+on the input is satisfied, etc. At test time, `clerk test` will only check
+whether all the assertions that you defined hold.
+
+~~~admonish danger title="Don't forget the assertions!"
+Assertion-based testing needs assertions. If you just put `#[test]` without
+any assertions in your test, it will always succeed (since no assertions fail),
+which isn't probably what you want for a test.
+~~~
+
 ### Cram testing
+
+The second way to check the expected result of a computation is simply to
+check the textual output of running the command in the terminal. This is
+called [cram testing](https://bitheap.org/cram/).
+
+
+~~~catala
+
+~~~
+
+## Running the tests and getting reports
 
 ## Continuous integration workflow
 
