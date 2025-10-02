@@ -80,7 +80,7 @@ same time. What happens then? In these cases, Catala will abort
 execution and return an error message like the one below:
 
 ```text
-$ catala interpret tutorial.catala_en --scope=Test
+$ clerk run tutorial.catala_en --scope=Test
 ┌─[ERROR]─
 │
 │  During evaluation: conflict between multiple valid consequences for assigning the same variable.
@@ -205,7 +205,7 @@ scope Test:
 The program execution yields the following error at runtime:
 
 ```text
-$ catala interpret tutorial.catala_en --scope=Test
+$ clerk run tutorial.catala_en --scope=Test
 ┌─[ERROR]─
 │
 │  During evaluation: conflict between multiple valid consequences for assigning the same variable.
@@ -416,7 +416,7 @@ scope Test:
 The result of the execution is then:
 
 ```test
-$ catala interpret tutorial.catala_en --scope=Test
+$ clerk run tutorial.catala_en --scope=Test
 ┌─[RESULT]─
 │ computation = IncomeTaxComputation { -- income_tax: $60,000.00 }
 └─

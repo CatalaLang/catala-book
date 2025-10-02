@@ -196,7 +196,7 @@ scope TestHousehold:
 ```
 
 ```text
-catala interpret tutorial.catala_en --scope=TestHousehold
+clerk run tutorial.catala_en --scope=TestHousehold
 ┌─[RESULT]─
 │ computation = HouseholdTaxComputation { -- household_tax: $21,500.00 }
 └─
@@ -228,7 +228,7 @@ of `TestHousehold`:
 
 ~~~admonish abstract title="Trace of `TestHousehold`" collapsible=true
 ```text
-$ catala interpret tutorial.catala_en --scope=TestHousehold --trace
+$ clerk run tutorial.catala_en --scope=TestHousehold -c--trace
 [LOG] ☛ Definition applied:
       ─➤ tutorial.catala_en
           │

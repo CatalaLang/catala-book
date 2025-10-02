@@ -390,17 +390,17 @@ the scope to be interpreted?
 ~~~admonish failure title="Why can't I test `IncomeTaxComputation` directly?" collapsible=true
 The reflex at this point is to execute the following command:
 ```text
-$ catala interpret tutorial.catala_en --scope=IncomeTaxComputation
-┌[ERROR]─
+$ clerk run tutorial.catala_en --scope=IncomeTaxComputation
+┌─[ERROR]─
 │
-│  This scope needs input arguments to be executed. But the Catala built-in interpreter does not have a way to retrieve input values from the command line, so it cannot execute this scope.
-│  Please create another scope that provides the input arguments to this one and execute it instead.
+│  Invalid scope for execution or testing: it defines input variables. If
+│  necessary, a wrapper scope with explicit inputs to this one can be defined.
 │
-├─➤ tutorial.catala_en
-│   │
-│   │   input individual content Individual
-│   │         ‾‾‾‾‾‾‾‾‾‾
-└─
+├─➤ tutorial.catala_en:41.9-41.19:
+│    │
+│ 41 │   input individual content Individual
+│    │         ‾‾‾‾‾‾‾‾‾‾
+└─ 
 ```
 
 As the error message says, trying to interpret directly `IncomeTaxComputation` is like
@@ -443,7 +443,7 @@ scope Test:
 This test can now be executed through the Catala interpreter:
 
 ```text
-$ catala interpret tutorial.catala_en --scope=Test
+$ clerk run tutorial.catala_en --scope=Test
 ┌─[RESULT]─
 │ computation = IncomeTaxComputation { -- income_tax: $4,000.00 }
 └─
@@ -460,7 +460,7 @@ You can also check that there is no syntax or typing error in your code,
 without testing it, with the following command:
 
 ```text
-$ catala typecheck tutorial.catala_en
+$ clerk typecheck tutorial.catala_en
 ┌─[RESULT]─
 │ Typechecking successful!
 └─

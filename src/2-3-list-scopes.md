@@ -160,7 +160,7 @@ scope TestHousehold:
 The result of the execution is then:
 
 ```test
-$ catala interpret tutorial.catala_en --scope=TestHousehold
+$ clerk run tutorial.catala_en --scope=TestHousehold
 ┌─[RESULT]─
 │ computation = HouseholdTaxComputation { -- household_tax: $30,000.00 }
 └─
@@ -335,7 +335,7 @@ is now accessible at `income_tax_computation.income_tax`, since
 "income_tax" is the output variable of the sub-scope `IncomeTaxComputation`.
 ~~~
 
-At this point, it is be easy to define `household_tax` in a single sweep
+At this point, it is easy to define `household_tax` in a single sweep
 inside `HouseholdTaxIndividualComputation`:
 
 ```catala
@@ -373,7 +373,7 @@ scope TestIndividualHousehold:
 The result of the execution is then:
 
 ```test
-$ catala interpret tutorial.catala_en --scope=TestIndividualHousehold
+$ clerk run tutorial.catala_en --scope=TestIndividualHousehold
 ┌─[RESULT]─
 │ computation = HouseholdTaxIndividualComputation { -- household_tax: $7,000.00 }
 └─
