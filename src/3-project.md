@@ -29,12 +29,12 @@ as the work around it:
 * the [third section](./3-3-test-ci.md) is about setting up a modern software
   engineering stack around the codebase, complete with versionning, automated
   testing and continuous integration (CI);
-* the [fourth section](./3-4-external-plugins.md) is a step-by-step guide for
+<!-- * the [fourth section](./3-4-external-plugins.md) is a step-by-step guide for
   setting up an [externally implemented module](./5-6-modules.md#declaring-external-modules)
   and its external implementations in all the target backends, all of that
   integrated in the automated software engineering toolchain described in the
-  previous sections;
-* the [fifth and final section](./3-5-lawyers-agile.md) is mostly non-technical
+  previous sections; -->
+* the [fourth and final section](./3-5-lawyers-agile.md) is mostly non-technical
   and orthogonal to the previous sections, it is about the human organization
   of Catala projects involving lawyers and programmers, as well as the important
   foundational choices to be made at the start of the project.
