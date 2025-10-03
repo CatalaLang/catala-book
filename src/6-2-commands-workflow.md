@@ -60,7 +60,7 @@ Catala supports two distinct flavors of tests, tailored for different purposes:
 - **Scope tests** should be the main way to write tests that validate
   expected results on a given computation. This is the natural way to automate the
   `clerk run --scope=TestXxx` commands you use to run your tests manually.
-- **CLI tests** provide a way to run custom catala commands and check their
+- **Cram tests** provide a way to run custom catala commands and check their
   output on `stdout` and `stderr`. They are sometimes useful for more specific
   needs, like ensuring the correct error is triggered in a given situation.
 
@@ -117,9 +117,9 @@ scope Test_IncomeTaxComputation_1:
   assertion computation.income_tax = $4,000
 ```
 
-### Command-line interface (CLI) tests
+### Cram testing
 
-This second flavor of tests provides a means to validate the output of a given
+Cram testing (or CLI testing) provides a means to validate the output of a given
 Catala command, which may be useful in more specific integration scenarios. It
 is inspired by the [Cram](https://bitheap.org/cram/) test system, in that a
 single source file includes both the test command and its expected output.
@@ -131,38 +131,47 @@ exactly as intended. For this, a `` ```catala-test-cli`` section should be
 introduced in the source Catala file. The first line always starts with
 `$ catala `, followed by the Catala command to run on the current file ; the
 rest is the expected output from the command ; additionally, if the command
-terminated with an error, the last line will show the error code.
+terminated with an error, the last line will show the error code. 
 
-    ```catala-test-cli
-    $ catala interpret --scope=Test --trace
-    [LOG] ☛ Definition applied:
-          ─➤ tutorial.catala_en:214.14-214.25:
-              │
-          214 │   definition computation equals
-              │              ‾‾‾‾‾‾‾‾‾‾‾
-          Test
-    [LOG] →  IncomeTaxComputation.direct
-       ...
-    [LOG]   ≔  IncomeTaxComputation.direct.output: IncomeTaxComputation { -- income_tax: $4,000.00 }
-    [LOG] ←  IncomeTaxComputation.direct
-    [LOG] ≔  Test.computation: IncomeTaxComputation { -- income_tax: $4,000.00 }
-    ┌─[RESULT]─ Test ─
-    │ computation = IncomeTaxComputation { -- income_tax: $4,000.00 }
-    └─
-    ```
+~~~markdown
+```catala-test-cli
+$ catala interpret --scope=Test --trace
+[LOG] ☛ Definition applied:
+      ─➤ tutorial.catala_en:214.14-214.25:
+          │
+      214 │   definition computation equals
+          │              ‾‾‾‾‾‾‾‾‾‾‾
+      Test
+[LOG] →  IncomeTaxComputation.direct
+   ...
+[LOG]   ≔  IncomeTaxComputation.direct.output: IncomeTaxComputation { -- income_tax: $4,000.00 }
+[LOG] ←  IncomeTaxComputation.direct
+[LOG] ≔  Test.computation: IncomeTaxComputation { -- income_tax: $4,000.00 }
+┌─[RESULT]─ Test ─
+│ computation = IncomeTaxComputation { -- income_tax: $4,000.00 }
+└─
+```
+~~~
 
 When running `clerk test`, the specified command is run on the file or directory (truncated
 to that point). If the output exactly matches what is in the file, the tests
 passes. Otherwise, it fails, and the precise differences are shown side-by-side.
 
-Beware, CLI tests this cannot be used to test backend-generated code; so `clerk
-  test --backend=...` won't run CLI tests.
+Beware, cram tests this cannot be used to test backend-generated code; so `clerk
+  test --backend=...` won't run cram tests.
 
-~~~admonish tip title="Resetting the expected output of a CLI test"
-If a CLI test fail, but due to a legitimate difference (for example, a line
+~~~admonish example title="`test-scope`"
+Note that for these `` ```catala-test-cli``, `$catala test-scope Test` is a shorthand for 
+```
+$ catala interpret --scope=Test
+```
+~~~
+
+~~~admonish tip title="Resetting the expected output of a cram test"
+If a cram test fail, but due to a legitimate difference (for example, a line
 number change in the example above), it is possible to run
 `clerk test --reset` to automatically update the expected result. This will
-immediately make the CLI test pass, but versionning
+immediately make the cram test pass, but versionning
 systems and a standard code review will highlight the changes.
 
 `clerk test --reset` can also be used to initialise a new test, from a

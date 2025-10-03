@@ -171,24 +171,197 @@ the following :
 
 The second way to check the expected result of a computation is simply to
 check the textual output of running the command in the terminal. This is
-called [cram testing](https://bitheap.org/cram/).
+called [cram testing](https://bitheap.org/cram/). To enable cram testing 
+in Catala, you need to specify : 
+1. what is the command you want to test;
+2. what should be the expected terminal output.
+
+Cram tests are directly embedded in Catala source code files, under the form of
+a `` ```catala-test-cli `` Markdown code block. Inside, you specify which
+command to test after the prompt `$ catala ...`. For instance, the `test-scope
+TestIncomeTax1` command is equivalent to running `clerk run
+--scope=TestIncomeTax1`. Then, you provide the expected result as it is spit out
+by running the command on the terminal. 
+
+For instance, here is how to create a cram test from our `IncomeTaxComputation`
+example above:
+
+~~~markdown
+```catala
+declaration scope TestIncomeTax1:
+  computation content IncomeTaxComputation
+
+scope TestIncomeTax1:
+  definition computation equals
+    result of IncomeTaxComputation {
+      # The inputs of this test to IncomeTaxComputation are below :
+      -- income: $20,000
+      -- number_of_children: 2
+      -- filing: Joint content |1998-04-03|
+    }
+```
+
+```catala-test-cli
+$ catala test-scope TestIncomeTax1
+┌─[RESULT]─ Exemple1 ─
+│ computation = IncomeTaxComputation {
+│   -- income_tax: $5000,0
+│ }
+└─
+```
+~~~
+
+`clerk test` will pick up the `` ```catala-test-cli `` blocks, run the command
+inside, and compare the output with the expected output. 
+
+Remember that beyond `test-scope`, you can put any acceptable Catala 
+command on a cram test. See the [reference](./6-2-commands-workflow.md#clerk-test) 
+for more details.
 
 
-~~~catala
+~~~admonish info title="Use cram testing only when assertion-based testing is not enough"
+Checking the terminal output of a command instead of asserting values is brittle
+and can introduce a lot of noise when checking the test outputs. For instance,
+changing the name of a type can break the terminal output while having no 
+effect on an assertion in your test. 
 
+Hence, the Catala team recommends using assertion-based testing when possible,
+and only use cram testing for checking what the compiler outputs with specific 
+options and commands different from `clerk run`.
 ~~~
 
 ## Running the tests and getting reports
 
+Simple: just run `clerk test`! By default, it will scan you whole project looking
+for `#[test]` or `` ```catala-test-cli `` in your files, execute the test,
+check the expected output. If all is good, you will get in your terminal 
+a report like:
+
+```text
+┏━━━━━━━━━━━━━━━━━━━━━━━━━  ALL TESTS PASSED  ━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                                                                       ┃
+┃             FAILED     PASSED      TOTAL                              ┃
+┃   files          0         34         34                              ┃
+┃   tests          0        245        245                              ┃
+┃                                                                       ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+```
+
+Of course, the numbers depend on how many tests and test files there are in your 
+project (don't worry if they're lower for you). 
+
+If an assertion-base `#[test]` fails, you will get an extra report printing why
+the assertion has failed, with the exact command you can run to reproduce the
+failure:
+
+```text
+■ scope Test TestIncomeTax1
+  $ ../.opam/catala/bin/catala interpret -I tax_code --scope=TestIncomeTax1
+    tests/tests_income_tax.catala_en:34 Assertion failed: $5,0000 = $4,500
+```
+
+Failed cram tests will also yield a detailed report with a diff between the 
+expected and computed terminal output.
+
 ## Continuous integration workflow
 
-~~~admonish danger title="Work in progress"
-This section of the Catala book has not yet been written, stay tuned for
-future updates!
+Now that you learned to declare your tests, run them and read the reports, 
+you're good to go for the local test-driven development. But modern software
+engineering requires a third-party check of the tests before code is merged 
+into the main codebase. This is one of the purpose of continuous integration
+setups, and we'll discuss here how to set them up with Catala.
+
+### Docker images
+
+A continuous integration setup usually start by deploying a cloud-based
+virtual machine or container equipped with all the dependencies necessary 
+to build your code and run your tests. 
+
+~~~admonish info title="Catala CI images"
+To avoid you the hassle of manually installing Catala and configuring your
+virtual machine, the Catala team provides ready-to-use [Docker](https://www.docker.com/) images for 
+CI based on [Alpine Linux](https://www.alpinelinux.org/).
+
+You can browse them [here](https://gitlab.inria.fr/catala/ci-images/container_registry/4100)
+or pull them with:
+
+```text
+$ docker pull registry.gitlab.inria.fr/catala/ci-images:latest
+```
+
+Note that `latest-c` is a version of the CI image supplemented with the 
+dependencies necessary to compile and run C code; likewise for `latest-java`,
+`latest-python`. Choose the image that suits your needs, or build upon it in 
+your own Dockerfile.
 ~~~
 
-<!-- TODO:
-  - (prerequisite) have some dev docker images
-  - give a yaml file example (mention clerk ci)
-  - generate Catala target's archives artifact (requires standalone archives)
--->
+### Actions workflows
+
+Now, this step depends on what you use as a software development forge. Nowadays,
+all of them have some way of declaring workflows triggered at certain events
+(commits on a branch, on a PR, on a merge, etc). These workflows spin up runners
+that execute certain commands, typically to run the test or build an artifact.
+
+This walkthrough will not teach you how to write these workflow files, please
+refer to the documentation of your software forge. However, to give you a quick
+idea, here is an example workflow file using the Github format for our 
+example Catala project:
+
+```yaml
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ["*.*.*"]
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  tests:
+    name: Test suite and build
+    runs-on: self-hosted
+    container:
+      image: registry.gitlab.inria.fr/catala/ci-images:latest-c
+      options: --user root
+    steps:
+      - name: Fix home
+        # Workaround Github actions issue, see
+        # https://github.com/actions/runner/issues/863
+        run: sudo sh -c "echo HOME=/home/ocaml >> ${GITHUB_ENV}"
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run test suite with the Catala interpreter and backends
+        run: |
+          opam --cli=2.1 exec -- clerk ci 
+```
+
+The `opam --cli=2.1 exec` is important because `clerk` and `catala` are installed
+via opam and the OCaml software toolchain in the CI images.
+
+~~~admonish question title="What does `clerk ci` do?"
+Tailored for putting inside a CI run, `clerk ci` is simply a shorthand for :
+* `clerk test` on all your project;
+* `clerk build` for all the targets declared in your `clerk.toml`
+* `clerk test --backend=...` for all the backends declared in each one of 
+  your targets in `clerk.toml`.
+
+This makes sure everything builds, and all the test pass with the interpreter
+**and** inside the generated code in each backend. Difficult to get more assurance
+than that!
+~~~
+
+### Retrieving artifacts and deploying them
+
+Inside your CI workflow, after a `clerk ci` or `clerk build` run, you should
+find the generated source code for each backend of each target inside the 
+`_targets` folder (remember the [previous section of the walkthrough](./3-2-compilation-deployment.md)).
+From there, you can customize your workflow file to retrieve the artifact,
+package it how you like, transfer it to another repo, build a bigger application
+that integrates it, etc. 
+
+## Conclusion
+
+Thank you for following this walkthrough! We hope it puts you on the tracks 
+of a successful Catala project. Please read the [`clerk` reference](./6-clerk.md)
+for more information about what our build system can do to help you.
