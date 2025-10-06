@@ -1,5 +1,9 @@
 # Attributes
 
+<div id="tock" data-block_title="Features"></div>
+<div id="tocw"></div>
+
+
 The language can be extended with attributes, enabling a variety of extensions.
 An attribute is of the form `#[key.of.extension]` or `#[key.of.extension = VALUE]`,
 where `VALUE` can be of the form `"STRING"`, or an expression in Catala syntax.
