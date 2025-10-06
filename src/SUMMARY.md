@@ -23,6 +23,7 @@
     - [Project building and deployment](./3-2-compilation-deployment.md)
     - [Test and continuous integration workflow](./3-3-test-ci.md)
     - [Agile development with lawyers and programmers](./3-5-lawyers-agile.md)
+    <!-- - [External modules and compiler plugins](./3-4-external-plugins.md) -->
 - [FAQ: How to code the law?](./4-0-howto.md)
     - [General questions](./4-1-general.md)
     - [Catala-specific questions](./4-2-catala-specific.md)
@@ -37,7 +38,9 @@
     - [Expressions](./5-5-expressions.md)
     - [Modules](./5-6-modules.md)
     - [Extra features](./5-7-extra-features.md)
+      - [Attributes](./5-7-1-attributes.md)
+      - [External modules](./5-7-2-external-modules.md)
 - [The `clerk` build system](./6-clerk.md)
     - [Project configuration file](./6-1-clerk-toml.md)
     - [Commands and workflow](./6-2-commands-workflow.md)
-    - [Compiler plugins](./6-3-compiler-plugins.md)
+    <!-- - [Compiler plugins](./6-3-compiler-plugins.md) -->

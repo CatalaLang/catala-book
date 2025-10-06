@@ -131,7 +131,7 @@ test system of Catala, accessible through the `clerk test` command.
 
 One way to check the computed result is to assert that it should be equal to
 an expected value, using Catala's [`assertion`s](./5-4-definitions-exceptions.md#assertions).
-To register an assertion test into `clerk test`, simply put the `#[test]` [attribute](./5-7-extra-features.md#attributes-and-extensions) to the test scope declaration. For instance, here
+To register an assertion test into `clerk test`, simply put the `#[test]` [attribute](./5-7-1-attributes.md) to the test scope declaration. For instance, here
 is our test example set up as an assertion test:
 
 ```catala
