@@ -133,4 +133,4 @@ a public interface for the external module, that can be used by other modules.
 
 However, to make all this run in practice, you will still need to implement
 the external module in OCaml (for the interpreter) and in your target
-language. See the [relevant reference section](./5-7-extra-features.md#implementing-external-modules).
+language. See the [relevant reference section](./5-7-2-external-modules.md).

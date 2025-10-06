@@ -69,7 +69,7 @@ files, will process both kinds of tests and print a report.
 
 #### Scope tests
 
-A **test scope** is a scope that is marked with the "test" [attribute](./5-7-extra-features.md#attributes-and-extensionsq): simply
+A **test scope** is a scope that is marked with the "test" [attribute](./5-7-1-attributes.md): simply
 write `#[test]` just before its `declaration` keyword.
 
 ```catala

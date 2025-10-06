@@ -37,6 +37,8 @@
     - [Expressions](./5-5-expressions.md)
     - [Modules](./5-6-modules.md)
     - [Extra features](./5-7-extra-features.md)
+      - [Attributes](./5-7-1-attributes.md)
+      - [External modules](./5-7-2-external-modules.md)
 - [The `clerk` build system](./6-clerk.md)
     - [Project configuration file](./6-1-clerk-toml.md)
     - [Commands and workflow](./6-2-commands-workflow.md)
