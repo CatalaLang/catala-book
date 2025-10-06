@@ -99,38 +99,3 @@ inside `` ```catala `` blocks are private: they will not be accessible by other
 modules. To make a type, scope or constant declaration public and therefore
 accessible by other modules, you need to turn the containing `` ```catala ``
 block into a `` ```catala-metadata `` block. That's all!
-
-## Declaring external modules
-
-Some modules contain logic that cannot be implemented in Catala. This is OK,
-since Catala is a Domain-Specific Language (DSL) and not a general-purpose
-programming language. This means that the features of Catala are intentionally
-limited; for instance you cannot write recursive functions or [manipulate strings](./4-2-catala-specific.md#why-are-there-no-strings) in Catala. But sometimes, you need to call
-from a regular Catala module a function containing this piece of
-unimplementable logic. This is the purpose of external module. An external
-module in Catala is a Catala source code file containing a module with the
-`external` annotation, like this:
-
-~~~catala
-> Module Foo external
-
-```catala-metadata
-declaration structure Period:
-  data date_begin content date
-  data date_end content date
-
-declaration months_in_period content list of date
-  depends on period content Period
-```
-~~~
-
-This `external` module declares a type (`Period`), as well as a toplevel
-function (`months_in_period`), but the latter has no implementation! This is by
-design as external modules should not contain any Catala code, but merely type
-declarations, scope declarations and toplevel constants and function
-declarations. These declarations (inside `` ```catala-metadata `` blocks) expose
-a public interface for the external module, that can be used by other modules.
-
-However, to make all this run in practice, you will still need to implement
-the external module in OCaml (for the interpreter) and in your target
-language. See the [relevant reference section](./5-7-2-external-modules.md).

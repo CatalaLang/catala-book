@@ -1,4 +1,4 @@
-# Attributes and extensions
+# Attributes
 
 The language can be extended with attributes, enabling a variety of extensions.
 An attribute is of the form `#[key.of.extension]` or `#[key.of.extension = VALUE]`,
