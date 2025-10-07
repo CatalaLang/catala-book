@@ -42,8 +42,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-    image: "registry.gitlab.inria.fr/catala/ci-images:latest"
-    options: --user root  
+      image: "registry.gitlab.inria.fr/catala/ci-images:latest"
+      options: --user root
     env:
       MDBOOK_VERSION: 0.4.36
     steps:
