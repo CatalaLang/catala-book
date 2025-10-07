@@ -41,21 +41,28 @@ jobs:
   # Build job
   build:
     runs-on: ubuntu-latest
+    container:
+    image: "registry.gitlab.inria.fr/catala/ci-images:latest"
+    options: --user root  
     env:
       MDBOOK_VERSION: 0.4.36
     steps:
       - uses: actions/checkout@v4
       - name: Install mdBook
         run: |
-          curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf -y | sh
+          curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y
+          . "$HOME/.cargo/env"
           rustup update
-          cargo install mdbook-admonish mdbook-mermaid mdbook-toc mdbook-linkcheck mdbook-tocjs
+          cargo install mdbook-admonish mdbook-cmdrun mdbook-mermaid mdbook-toc mdbook-linkcheck mdbook-tocjs
           cargo install --version ${MDBOOK_VERSION} mdbook
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
       - name: Build with mdBook
-        run: mdbook build
+        run: |
+          . "$HOME/.cargo/env"
+          eval $(opam env)
+          mdbook build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
