@@ -214,7 +214,16 @@ where all build and test actions are often meant to be executed.
 
 ## `clerk run`
 
-Run the Catala interpreter.
+Runs the Catala interpreter on the given files, after
+building their dependencies. The scope to be executed can be specified
+using the `-s` option.
+
+As of writing, `clerk run` is restricted to scopes that do
+not require inputs, so it is used to run test scopes.
+
+### Example
+
+`$ clerk run tests/tests_allocations_familiales.catala_fr -s Test1`
 
 ### Help
 
