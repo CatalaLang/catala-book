@@ -42,12 +42,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: "registry.gitlab.inria.fr/catala/ci-images:latest"
-      options: --user root
+        image: "registry.gitlab.inria.fr/catala/ci-images:latest"
+        options: --user root
     env:
       MDBOOK_VERSION: 0.4.36
     steps:
       - uses: actions/checkout@v4
+      - name: Install build dependencies
+        run: apk add --no-cache perl
       - name: Install mdBook
         run: |
           curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y
@@ -62,6 +64,8 @@ jobs:
         run: |
           . "$HOME/.cargo/env"
           eval $(opam env)
+          echo "Testing catala:"
+          catala --version
           mdbook build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
