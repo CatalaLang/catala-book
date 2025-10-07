@@ -1,5 +1,8 @@
 # Project configuration file
 
+<div id="tock" data-block_title="Summary"></div>
+<div id="tocw"></div>
+
 This section fully describes the manifest format for project
 configuration files. The `clerk.toml` file contains metadata that
 describe how to build and package Catala programs in a project. It is
