@@ -58,7 +58,7 @@ project configuration file:
 ~~~~~~admonish danger title="Declare your modules!"
 Each source file in your Catala project is bound to be its own, separate
 logical module (except in cases of [textual inclusion](./5-1-literate-programming.md#textual-inclusion)).
-Catala modules are collections of scopes, toplevel constants and functions
+Catala modules are collections of scopes, top-level constants and functions
 that share the same namespace. Moreover, modules can be imported in other
 modules, allowing you to modularize your codebase and keep it clean and tidy.
 

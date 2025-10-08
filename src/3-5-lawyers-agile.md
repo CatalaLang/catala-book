@@ -257,7 +257,7 @@ to comply with.
 
 ~~~admonish question title="The legal/domain experts are unavailable, how do I do?"
 Because employee turnover is high in organizations, especially at demanding
-positions, is is often difficult to find experts with sufficient experience
+positions, it is often difficult to find experts with sufficient experience
 with the law at hand inside the agency, and more often than not those people
 are already overburdened with maintaining the current IT projects of
 the agency without time to invest in a Catala modernization effort.

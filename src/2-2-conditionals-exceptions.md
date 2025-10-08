@@ -132,7 +132,7 @@ programming languages. So, go ahead and use `exception` as much as possible,
 since it is a very idiomatic Catala concept.
 
 ~~~admonish question title="How are exceptions computed?"
-When defining exceptions in your Catala code, it is importand to understand
+When defining exceptions in your Catala code, it is important to understand
 precisely their underlying *semantics*, *i.e.* what will be the end result
 of the computation. The semantics of Catala are [formally defined](https://dl.acm.org/doi/10.1145/3473582)
 and based on [prioritized default logic](https://link.springer.com/content/pdf/10.1007/978-94-015-9383-0_3?pdf=chapter%20toc),
@@ -294,7 +294,7 @@ scope IncomeTaxComputation:
 
 Thanks to labels, we can define *chains* of exceptions, where each definition is
 the exception to the previous one, and the base case for the next one. This
-pattern is the most usual in legal texts, and its behavior is straightfoward:
+pattern is the most usual in legal texts, and its behavior is straightforward:
 when multiple definitions apply, pick the one with the highest priority in the
 chain. Here's a representation of the exception chain in our example so far:
 
@@ -534,11 +534,11 @@ declaration scope IncomeTaxComputation:
 
 This `current_date` variable will allow us to introduce mutually exclusive
 conditional definitions for the two different verions of article 2, each one
-activating only before of after the year 2000. Note that is the two definitions
+activating only before of after the year 2000. Note that if the two definitions
 of article 2 were not mutually exclusive, they could conflict with each other,
 forcing you to prioritize between them and change the shape of the overall
 exception tree by introducing another layer of exception. However, we want in
-this cas those two base definitions of article 2 to collectively be the base
+this case those two base definitions of article 2 to collectively be the base
 case for all subsequent exceptions in the exception tree of `tax_rate`! In a
 nutshell, we want the following exception tree:
 
