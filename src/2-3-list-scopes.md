@@ -250,7 +250,7 @@ computation step. The scope is readable by lawyers and has better convenient
 features to add input and output parameters, define exceptions for its local
 variables, etc.
 
-Hence, we will d  opt for creating a brand new scope for computing the share of
+Hence, we will opt for creating a brand new scope for computing the share of
 household tax owed by an individual, `HouseholdTaxIndividualComputation`.
 
 ## The missing scope : household tax computation for the individual

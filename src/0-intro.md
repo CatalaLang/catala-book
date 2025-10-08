@@ -8,7 +8,7 @@ The Catala domain-specific language lets you annotate a legal
 specification with executable and deployable code in an efficient,
 high-assurance fashion. Automating the enforcement of a law or regulation
 through the use of a computer program is not neutral for the Rule of Law as well
-as the rights of users. Please thread lightly when considering automating
+as the rights of users. Please tread lightly when considering automating
 anything else than tax or social benefits computation.
 
 Contrary to a rules engine, Catala is a fully-fledged programming language with
@@ -62,7 +62,7 @@ between an automated "simple path" and a non-automated handling of complex
 situation widens the digital divide, and increases confusion for users and case
 workers alike.
 
-Catala shines when the goal is to automate exhaustively and with high assurance
+Catala shines when the goal is to exhaustively automate with high assurance
 a given law or regulation, and to maintain this automation over time. The
 language and tooling will help you manage the growing complexity, maintenance
 over legal changes, corner cases and production-ready deployment inside a legacy
