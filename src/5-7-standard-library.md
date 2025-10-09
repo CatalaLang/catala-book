@@ -72,6 +72,15 @@ declaration floor content money depends on
 declaration positive content money depends on
   variable content money
 
+declaration truncate content money depends on
+  variable content money
+
+declaration round_by_excess content money depends on
+  variable content money
+
+declaration round_by_default content money depends on
+  variable content money
+
 ## Returns the positive amount that `variable` overflows from `reference`
 ## ($0 otherwise)
 declaration in_excess content money depends on
@@ -106,6 +115,15 @@ declaration floor content decimal
 
 ## Floors the value at $0
 declaration positive content decimal depends on
+  variable content decimal
+
+declaration truncate content decimal depends on
+  variable content decimal
+
+declaration round_by_excess content decimal depends on
+  variable content decimal
+
+declaration round_by_default content decimal depends on
   variable content decimal
 
 ## Returns the positive amount that `variable` overflows from `reference`
