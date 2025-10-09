@@ -52,6 +52,9 @@ more readable.
 | `/`          | integer                | integer                 | decimal        | Rational division          |
 | `integer of` | decimal, money         |                         | integer        | Casting (round to nearest) |
 
+See also the [`Integer` module of the standard library](./5-7-standard-library.md#module-integer) for
+more operations.
+
 ### Decimals
 
 The type `decimal` represents mathematical decimal numbers (or *rationals*),
@@ -77,6 +80,9 @@ and you can use the `%` notation if this makes your code easier to read.
 | `round of`   | decimal                |                         | decimal        | Round to nearest unit   |
 | `decimal of` | integer, money         |                         | decimal        | Casting
 
+See also the [`Decimal` module of the standard library](./5-7-standard-library.md#module-decimal) for
+more operations.
+
 ### Money
 
 The type `money` represents an amount of money, positive or negative, in a
@@ -96,6 +102,10 @@ symbol, like `$12.36` or `-$871,84.1`.
 | `/`        | money                  | money                   | decimal        | Rational division               |
 | `round of` | money                  |                         | money          | Round to nearest unit           |
 | `money of` | integer, decimal       |                         | money          | Casting (round to nearest cent) |
+
+See also the [`Money` module of the standard library](./5-7-standard-library.md#module-money) for
+more operations.
+
 
 ### Dates
 
@@ -157,6 +167,9 @@ the component with the largest unit (here, `month`), then the component with the
 | `get_year of`            | date                   |                         | integer        | Year number                   |
 | `first_day_of_month of`  | date                   |                         | date           | First day in the month        |
 | `last_day_of_month of`   | date                   |                         | date           | Last day in the month         |
+
+See also the [`Date` module of the standard library](./5-7-standard-library.md#module-date) for
+more operations.
 
 ### Durations
 
