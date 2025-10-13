@@ -1,6 +1,5 @@
 # Project building and deployment
 
-<div id="tock" data-block_title="Summary"></div>
 <div id="tocw"></div>
 
 In the previous section, we defined a directory containing a Catala project with

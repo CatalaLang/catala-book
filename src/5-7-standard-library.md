@@ -1,6 +1,5 @@
 # Standard library
 
-<div id="tock" data-block_title="Features"></div>
 <div id="tocw"></div>
 
 To avoid reinventing the wheel, Catala comes with a standard library containing

@@ -1,6 +1,5 @@
 # Catala-specific questions
 
-<div id="tock" data-block_title="List of questions"></div>
 <div id="tocw"></div>
 
 ## When to choose `condition`, `rule` *vs* booleans?
@@ -292,4 +291,3 @@ computation library](https://github.com/CatalaLang/dates-calc).
 This section of the Catala book has not yet been written, stay tuned for
 future updates!
 ~~~
-

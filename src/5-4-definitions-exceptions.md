@@ -1,9 +1,6 @@
 # Definitions and exceptions
 
-
-<div id="tock" data-block_title="Features"></div>
 <div id="tocw"></div>
-
 
 While the [previous reference section](./5-3-scopes-toplevel.md) covered the
 declaration of scopes (introduced by `declaration scope Foo`) that have to be done once

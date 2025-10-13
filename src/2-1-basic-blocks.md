@@ -1,6 +1,5 @@
 # Basic blocks of a Catala program
 
-<div id="tock" data-block_title="Summary"></div>
 <div id="tocw"></div>
 
 In this section, the tutorial introduces the basic blocks of a Catala program :
@@ -400,7 +399,7 @@ $ clerk run tutorial.catala_en --scope=IncomeTaxComputation
 │    │
 │ 41 │   input individual content Individual
 │    │         ‾‾‾‾‾‾‾‾‾‾
-└─ 
+└─
 ```
 
 As the error message says, trying to interpret directly `IncomeTaxComputation` is like

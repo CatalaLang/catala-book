@@ -1,7 +1,5 @@
 # Types, values and operations
 
-
-<div id="tock" data-block_title="Features"></div>
 <div id="tocw"></div>
 
 ~~~admonish info title="Catala is a strongly-typed language"

@@ -1,9 +1,6 @@
 # Scopes, functions and constants
 
-
-<div id="tock" data-block_title="Features"></div>
 <div id="tocw"></div>
-
 
 ~~~admonish info title="Catala code goes inside scopes"
 Since Catala in a functional language, toplevel declarations in Catala

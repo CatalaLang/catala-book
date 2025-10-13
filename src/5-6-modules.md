@@ -1,6 +1,5 @@
 # Modules
 
-<div id="tock" data-block_title="Features"></div>
 <div id="tocw"></div>
 
 After [scopes and toplevel declarations](./5-3-scopes-toplevel.md), modules are

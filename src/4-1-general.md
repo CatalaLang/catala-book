@@ -7,7 +7,6 @@ Law](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4291177), 75 SMU L.
 Rev. 535 (2022).
 ~~~
 
-<div id="tock" data-block_title="List of questions"></div>
 <div id="tocw"></div>
 
 ## What is pair programming for coding the law?

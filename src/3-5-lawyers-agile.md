@@ -1,6 +1,5 @@
 # Agile development with lawyers and programmers
 
-<div id="tock" data-block_title="Summary"></div>
 <div id="tocw"></div>
 
 At this point of the walkthrough, you should have set up the technical project

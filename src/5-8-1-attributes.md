@@ -1,6 +1,5 @@
 # Attributes
 
-<div id="tock" data-block_title="Features"></div>
 <div id="tocw"></div>
 
 

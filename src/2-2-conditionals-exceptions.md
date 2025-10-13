@@ -1,6 +1,5 @@
 # Conditional definitions and exceptions
 
-<div id="tock" data-block_title="Summary"></div>
 <div id="tocw"></div>
 
 In this section, the tutorial introduces the killer feature of Catala

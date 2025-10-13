@@ -1,6 +1,5 @@
 # Installing Catala on your machine
 
-<div id="tock" data-block_title="Summary"></div>
 <div id="tocw"></div>
 
 ~~~admonish warning title="Disclaimer"
@@ -46,4 +45,3 @@ During the installation steps several prompts might occur, choosing
 the default option (by pressing enter each time) or answering yes (by
 typing `y` then enter) is enough.
 ~~~
-

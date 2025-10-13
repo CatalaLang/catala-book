@@ -1,9 +1,6 @@
 # Expressions
 
-
-<div id="tock" data-block_title="Features"></div>
 <div id="tocw"></div>
-
 
 Expressions in Catala represent the meat of computation rules, that appear in [scope variable
 definitions](./5-4-definitions-exceptions.md#definitions-and-exceptions) or in [global constant

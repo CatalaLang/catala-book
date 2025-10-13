@@ -1,7 +1,5 @@
 # Literate programming and basic syntax
 
-
-<div id="tock" data-block_title="Features"></div>
 <div id="tocw"></div>
 
 ~~~admonish info title="Catala uses Pandoc's Markdown"

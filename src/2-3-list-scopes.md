@@ -1,6 +1,5 @@
 # Lists and scopes
 
-<div id="tock" data-block_title="Summary"></div>
 <div id="tocw"></div>
 
 In this section, the tutorial tackles a common pattern that significantly

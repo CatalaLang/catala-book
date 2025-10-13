@@ -1,6 +1,5 @@
 # External modules
 
-<div id="tock" data-block_title="Features"></div>
 <div id="tocw"></div>
 
 External modules are a way to integrate external logic into a Catala
