@@ -303,3 +303,55 @@ declaration split_by_year content list of Period depends on
 declaration to_tuple content (date, date) depends on
   p content Period
 ```
+
+## Module `List`
+
+```catala
+## Returns a list made of the consecutive integers from `begin` (inclusive)
+## to `end` (exclusive).
+## **Example**: `sequence of 3, 6` is the list `[3; 4; 5]`
+## **Edge-case**: if `end <= begin`, the returned list is empty
+declaration sequence
+  content list of integer
+  depends on begin content integer,
+             end content integer
+
+## if `index` is between `1` and `count of lst`, returns `Present` with the
+## element of the list at that index. Otherwise, returns `Absent`.
+## **Example**: `nth_element of [$101; $102; $103], 2` is `Present content $102`
+declaration nth_element
+  content optional of anything of type t
+  depends on lst content list of anything of type t,
+             index content integer
+
+## On a non-empty list, returns `Present` with content its first element
+## **Edge-case**: if the list is empty, returns `Absent`
+declaration first_element
+  content optional of anything of type t
+  depends on lst content list of anything of type t
+
+## On a non-empty list, returns `Present` with content its last element
+## **Edge-case**: if the list is empty, returns `Absent`
+declaration last_element
+  content optional of anything of type t
+  depends on lst content list of anything of type t
+
+## Removes the element at `index` (starting at 1) within list `lst`
+## **Edge-case**: if the index is invalid, the list is returned unchanged
+declaration remove_nth_element
+  content list of anything of type t
+  depends on lst content list of anything of type t,
+             index content integer
+
+## Returns the given list, without its first element
+## **Edge-case**: an empty list is returned unchanged
+declaration remove_first_element
+  content list of anything of type t
+  depends on lst content list of anything of type t
+
+## Returns the given list, without its last element
+## **Edge-case**: an empty list is returned unchanged
+declaration remove_last_element
+  content list of anything of type t
+  depends on lst content list of anything of type t
+```
