@@ -1,6 +1,6 @@
 # Project configuration file
 
-<div id="tock" data-block_title="Summary"></div>
+<!-- <div id="tock" data-block_title="Summary"></div> -->
 <div id="tocw"></div>
 
 This section fully describes the manifest format for project
@@ -14,21 +14,21 @@ An `clerk.toml` configuration example is available in [section
 
 ## Manifest format
 
-- `[project]` --- Table that defines the global project options.
-  - [`include_dirs`](#include_dirs) --- The sources location directories.
-  - [`build_dir`](#build_dir) --- The build artifact output directory.
-  - [`target_dir`](#target_dir) --- The targets output directory.
-  - [`default_targets`](#default_targets) --- The default targets to build.
-  - [`catala_opts`](#catala_opts) --- Catala options override.
-  - [`catala_exe`](#catala_exe) --- Catala binary path override.
-- `[[target]]` --- Multi-table that defines a project's target.
-  - [`name`](#name) --- Name of the target (*Required*).
-  - [`modules`](#modules) --- Modules linked to the target (*Required*).
-  - [`tests`](#tests) --- List of directories containing tests related to the target.
-  - [`backends`](#backends) --- List of backends that this target will build to.
-  - [`include_sources`](#include_sources) --- Flag to include source files in the compiled target.
-  - [`include_objects`](#include_objects) --- Flag to include object files in the compiled target.
-- [`[variables]`](#variables) --- Table to override compilation-related variables.
+- `[project]` -- Table that defines the global project options.
+  - [`include_dirs`](#include_dirs) -- The sources location directories.
+  - [`build_dir`](#build_dir) -- The build artifact output directory.
+  - [`target_dir`](#target_dir) -- The targets output directory.
+  - [`default_targets`](#default_targets) -- The default targets to build.
+  - [`catala_opts`](#catala_opts) -- Catala options override.
+  - [`catala_exe`](#catala_exe) -- Catala binary path override.
+- `[[target]]` -- Multi-table that defines a project's target.
+  - [`name`](#name) -- Name of the target (*Required*).
+  - [`modules`](#modules) -- Modules linked to the target (*Required*).
+  - [`tests`](#tests) -- List of directories containing tests related to the target.
+  - [`backends`](#backends) -- List of backends that this target will build to.
+  - [`include_sources`](#include_sources) -- Flag to include source files in the compiled target.
+  - [`include_objects`](#include_objects) -- Flag to include object files in the compiled target.
+- [`[variables]`](#variables) -- Table to override compilation-related variables.
 
 ### `[project]` options
 
