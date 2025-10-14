@@ -58,44 +58,56 @@ declaration positive content integer depends on
 ## Module `Money`
 
 ```catala
-declaration min content money depends on
+## Returns the smallest of the two arguments.
+declaration min content money depends on 
   m1 content money,
   m2 content money
 
-declaration max content money depends on
+## Returns the biggest of the two arguments.
+declaration max content money depends on 
   m1 content money,
   m2 content money
 
-declaration ceiling content money depends on
+## `ceiling of variable, max_value` puts an upper cap to `variable` and returns
+## a value that never exceeds `max_value`.
+declaration ceiling content money depends on 
   variable content money,
-  ceiling content money
+  max_value content money
 
-declaration floor content money depends on
+## `floor of variable, min_value` puts a lower cap to `variable` and returns
+## a value that is never inferior to `min_value`.
+declaration floor content money depends on 
   variable content money,
-  floor content money
+  min_value content money
 
-## Floors the value at $0
-declaration positive content money depends on
+## Returns the argument if it is positive, $0 otherwise.
+declaration positive content money depends on 
   variable content money
 
-declaration truncate content money depends on
+## Removes decimal digits from a money amount. For instance,
+## `truncate of $7.61 = $7.0` and `truncate of -$7.61 = -$7.0`.
+declaration truncate content money depends on 
   variable content money
 
-declaration round_by_excess content money depends on
+## Rounds a money amount to the next greater dollar. For instance,
+## `round_by_excess of $4.34 = $5` and `round_by_excess of -$4.34 = -$4.0`.
+declaration round_by_excess content money depends on 
   variable content money
 
-declaration round_by_default content money depends on
+## Rounds a money amount to the previous lesser dollar. For instance,
+## `round_by_excess of $3.78 = $3` and `round_by_excess of -$3.78 = -$4.0`.
+declaration round_by_default content money depends on 
   variable content money
 
 ## Returns the positive amount that `variable` overflows from `reference`
-## ($0 otherwise)
-declaration in_excess content money depends on
+## ($0 otherwise).
+declaration in_excess content money depends on 
   variable content money,
   reference content money
 
 ## Returns the positive amount that `variable` underflows from `reference`
-## ($0 otherwise)
-declaration in_default content money depends on
+## ($0 otherwise).
+declaration in_default content money depends on 
   variable content money,
   reference content money
 ```
