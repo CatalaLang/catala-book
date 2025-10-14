@@ -316,40 +316,40 @@ declaration structure Period:
   # The end date is excluded from the period
   data end content date
 
-## Ensures that the period is coherent (it begins before its end)
+## Ensures that the period is coherent (it begins before its end).
 declaration valid content boolean depends on
   p content Period
 
-## Duration of a given period, in days
+## Duration of a given period, in days.
 declaration duration content duration depends on
   p content Period
 
-## Two periods are adjacent if the second one starts when the first stops
+## Two periods are adjacent if the second one starts when the first stops.
 declaration are_adjacent content boolean depends on
   p1 content Period,
   p2 content Period
 
-## Returns the period that encompasses both p1 and p2
+## Returns the period that encompasses both `p1` and `p2`.
 declaration join content Period depends on
   p1 content Period,
   p2 content Period
 
-## Returns the period corresponding to the days that are both in `p1` and `p2`
+## Returns the period corresponding to the days that are both in `p1` and `p2`.
 declaration intersection content optional of Period depends on
   p1 content Period,
   p2 content Period
 
-## Returns `true` if the given date `d` belongs to the given period `p`
+## Returns `true` if the given date `d` belongs to the given period `p`.
 declaration contained content boolean depends on
   p content Period,
   d content date
 
-## Finds the first period in the given list `l` that contains the date `d`
+## Finds the first period in the given list `l` that contains the date `d`.
 declaration find_period content optional of Period depends on
   l content list of Period,
   d content date
 
-## Sorts the given periods by starting day
+## Sorts the given periods by starting day.
 declaration sort_by_date content list of (Period, anything of type t) depends on
   l content list of (Period, anything of type t)
 
@@ -363,9 +363,6 @@ declaration split_by_month content list of Period depends on
 ## years.
 declaration split_by_year content list of Period depends on
   starting_month content Date.Month,
-  p content Period
-
-declaration to_tuple content (date, date) depends on
   p content Period
 ```
 
