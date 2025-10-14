@@ -27,25 +27,31 @@ modules. To use a function of the standard library, simply type:
 ## Module `Integer`
 
 ```catala
-declaration min content integer depends on
+## Returns the smallest of the two arguments.
+declaration min content integer depends on 
   x content integer,
   y content integer
 
-declaration max content integer depends on
+## Returns the biggest of the two arguments.
+declaration max content integer depends on 
   x content integer,
   y content integer
 
-declaration ceiling content integer depends on
+## `ceiling of variable, max_value` puts an upper cap to `variable` and returns
+## a value that never exceeds `max_value`.
+declaration ceiling content integer depends on 
   variable content integer,
-  ceiling content integer
+  max_value content integer
 
-declaration floor content integer depends on
+## `floor of variable, min_value` puts a lower cap to `variable` and returns
+## a value that is never inferior to `min_value`.
+declaration floor content integer depends on 
   variable content integer,
-  floor content integer
+  min_value content integer
 
-## Floors the value at 0
-declaration positive content integer
-  depends on variable content integer
+## Returns the argument if it is positive, 0 otherwise.
+declaration positive content integer depends on 
+  variable content integer
 ```
 
 ## Module `Money`
