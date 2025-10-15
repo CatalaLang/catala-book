@@ -98,6 +98,15 @@ declaration round_by_excess content money depends on
 declaration round_by_default content money depends on 
   variable content money
 
+## Rounds a money amount to the specified [nth_decimal].
+## [nth_decimal] may be a negative value. For instance,
+## `round_to_decimal of $123.45, 1  = $123.5` and
+## `round_to_decimal of $123.45, -2 = $100`.
+declaration round_to_decimal
+  content money
+  depends on variable content money,
+    nth_decimal content integer
+
 ## Returns the positive amount that `variable` overflows from `reference`
 ## ($0 otherwise).
 declaration in_excess content money depends on 
@@ -154,6 +163,15 @@ declaration round_by_excess content decimal depends on
 ## `round_by_excess of 3.78 = 3` and `round_by_excess of -3.78 = -4.0`.
 declaration round_by_default content decimal depends on 
   variable content decimal
+
+## Rounds a number to the specified [nth_decimal].
+## [nth_decimal] may be a negative value. For instance,
+## `round_to_decimal of 123.4567,  3 = 123.457` and
+## `round_to_decimal of 123.4567, -2 = 100.0`.
+declaration round_to_decimal
+  content decimal
+  depends on variable content decimal,
+    nth_decimal content integer
 ```
 
 ## Module `Date`
