@@ -247,11 +247,11 @@ declaration structure MonthOfYear:
   data month_name content Month
 
 ## Returns the named month corresponding to the month number (starting from 1).
-## If the input is not between 1 and 12, crashes with `impossible`.
-declaration month_of_int content Month depends on 
+## If the input is not between 1 and 12, fails with an `impossible` error.
+declaration month_of_int content Month depends on
   i content integer
 
-## Transforms a `MontOfYear` into a `date` by choosing the first day of the
+## Transforms a `MonthOfYear` into a `date` by choosing the first day of the
 ## month.
 declaration month_of_year_to_first_day_of_month content date depends on 
   m content MonthOfYear
