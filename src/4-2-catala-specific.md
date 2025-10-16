@@ -287,7 +287,28 @@ computation library](https://github.com/CatalaLang/dates-calc).
 
 ## Why scope declarations cannot be split like scope definitions ?
 
-~~~admonish danger title="Work in progress"
-This section of the Catala book has not yet been written, stay tuned for
-future updates!
-~~~
+In Catala, there can be [multiple `definition`s for the same scope
+variable](./5-4-definitions-exceptions.md). This allows for splitting the code
+defining the value of a variable along the bits of specification scattered
+across the legal text. Following this logic, one might want to be able to split
+scope or data structure `declaration`s  across the codebase in the same way,
+thereby justifying the presence of each particular input or internal scope
+variable by a bit of legal text. Such a feature would be reminiscent of
+extensible types, a feature present in languages like
+[OCaml](https://ocaml.org/manual/extensiblevariants.html).
+
+However, the Catala team chose not to implement such a feature. Indeed,
+empirical experiments showed that contraty to `definition`s which should always
+be justified by the legal specification, the choice of how to arrange data
+structures and scope prototype is largely up to the programmer, and a lot of it
+is rather motivated by programming constraints than legal requirements. This is
+why the Catala team advises programmers to put all data structure and scope
+declarations inside a "prologue" section distinct from the legal sources, rather
+than scattering them across the codebase.
+
+Furthermore, having all data structure and scope declarations unified and at the
+same place is helpful during programming since the programmer always know where
+to look to find these declarations. Of course, advanced tooling in development
+environments propose the "Go to declaration" feature that could alleviate this
+problem, but this advanced tooling might not always be available to users
+outside the development team that still want to read and understand the program.

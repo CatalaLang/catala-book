@@ -360,7 +360,7 @@ benefit using an already known division plan that matches the functional divisio
 of the computational contents. For instance, you already know that the benefit is
 divided between eligibility and computation of the amount, the the eligibility
 computation is divided between income conditions and other conditions, etc.
-From this known division plan, you can already write in your prologue Catala
+From this known division plan, you can already write in your "prologue" Catala
 file initial declarations for data structures, scopes and modules of your
 upcoming implementation. Then, you can incrementally implement each module or
 scope by pulling out all the legal sources as you need them to justify the
