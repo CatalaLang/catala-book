@@ -334,6 +334,18 @@ declaration structure Period:
   # The end date is excluded from the period
   data end content date
 
+## Returns a period ranging over the given month of the given year.
+declaration of_month_and_year
+  content Period
+  depends on
+    pmonth content Date.Month,
+    pyear content integer
+
+## Returns a period ranging over the given year.
+declaration of_year
+  content Period
+  depends on pyear content integer
+
 ## Ensures that the period is coherent (it begins before its end).
 declaration valid content boolean depends on
   p content Period
