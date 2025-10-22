@@ -28,29 +28,29 @@ modules. To use a function of the standard library, simply type:
 
 ```catala
 ## Returns the smallest of the two arguments.
-declaration min content integer depends on 
+declaration min content integer depends on
   x content integer,
   y content integer
 
 ## Returns the biggest of the two arguments.
-declaration max content integer depends on 
+declaration max content integer depends on
   x content integer,
   y content integer
 
 ## `ceiling of variable, max_value` puts an upper cap to `variable` and returns
 ## a value that never exceeds `max_value`.
-declaration ceiling content integer depends on 
+declaration ceiling content integer depends on
   variable content integer,
   max_value content integer
 
 ## `floor of variable, min_value` puts a lower cap to `variable` and returns
 ## a value that is never inferior to `min_value`.
-declaration floor content integer depends on 
+declaration floor content integer depends on
   variable content integer,
   min_value content integer
 
 ## Returns the argument if it is positive, 0 otherwise.
-declaration positive content integer depends on 
+declaration positive content integer depends on
   variable content integer
 ```
 
@@ -58,44 +58,44 @@ declaration positive content integer depends on
 
 ```catala
 ## Returns the smallest of the two arguments.
-declaration min content money depends on 
+declaration min content money depends on
   m1 content money,
   m2 content money
 
 ## Returns the biggest of the two arguments.
-declaration max content money depends on 
+declaration max content money depends on
   m1 content money,
   m2 content money
 
 ## `ceiling of variable, max_value` puts an upper cap to `variable` and returns
 ## a value that never exceeds `max_value`.
-declaration ceiling content money depends on 
+declaration ceiling content money depends on
   variable content money,
   max_value content money
 
 ## `floor of variable, min_value` puts a lower cap to `variable` and returns
 ## a value that is never inferior to `min_value`.
-declaration floor content money depends on 
+declaration floor content money depends on
   variable content money,
   min_value content money
 
 ## Returns the argument if it is positive, $0 otherwise.
-declaration positive content money depends on 
+declaration positive content money depends on
   variable content money
 
 ## Removes decimal digits from a money amount. For instance,
 ## `truncate of $7.61 = $7.0` and `truncate of -$7.61 = -$7.0`.
-declaration truncate content money depends on 
+declaration truncate content money depends on
   variable content money
 
 ## Rounds a money amount to the next greater dollar. For instance,
 ## `round_by_excess of $4.34 = $5` and `round_by_excess of -$4.34 = -$4.0`.
-declaration round_by_excess content money depends on 
+declaration round_by_excess content money depends on
   variable content money
 
 ## Rounds a money amount to the previous lesser dollar. For instance,
 ## `round_by_excess of $3.78 = $3` and `round_by_excess of -$3.78 = -$4.0`.
-declaration round_by_default content money depends on 
+declaration round_by_default content money depends on
   variable content money
 
 ## Rounds a money amount to the specified [nth_decimal].
@@ -109,13 +109,13 @@ declaration round_to_decimal
 
 ## Returns the positive amount that `variable` overflows from `reference`
 ## ($0 otherwise).
-declaration in_excess content money depends on 
+declaration in_excess content money depends on
   variable content money,
   reference content money
 
 ## Returns the positive amount that `variable` underflows from `reference`
 ## ($0 otherwise).
-declaration in_default content money depends on 
+declaration in_default content money depends on
   variable content money,
   reference content money
 ```
@@ -124,44 +124,44 @@ declaration in_default content money depends on
 
 ```catala
 ## Returns the smallest of the two arguments.
-declaration min content decimal depends on 
+declaration min content decimal depends on
   m1 content decimal,
   m2 content decimal
 
 ## Returns the biggest of the two arguments.
-declaration max content decimal depends on 
+declaration max content decimal depends on
   m1 content decimal,
   m2 content decimal
 
 ## `ceiling of variable, max_value` puts an upper cap to `variable` and returns
 ## a value that never exceeds `max_value`.
-declaration ceiling content decimal depends on 
+declaration ceiling content decimal depends on
   variable content decimal,
   max_value content decimal
 
 ## `floor of variable, min_value` puts a lower cap to `variable` and returns
 ## a value that is never inferior to `min_value`.
-declaration floor content decimal depends on 
+declaration floor content decimal depends on
   variable content decimal,
   min_value content decimal
 
 ## Returns the argument if it is positive, 0 otherwise.
-declaration positive content decimal depends on 
+declaration positive content decimal depends on
   variable content decimal
 
 ## Removes decimal digits from a number. For instance, `truncate of 7.61 = 7.0`
 ## and `truncate of -7.61 = -7.0`.
-declaration truncate content decimal depends on 
+declaration truncate content decimal depends on
   variable content decimal
 
 ## Rounds a number to the next greater integer. For instance,
 ## `round_by_excess of 4.34 = 5` and `round_by_excess of -4.34 = -4.0`.
-declaration round_by_excess content decimal depends on 
+declaration round_by_excess content decimal depends on
   ariable content decimal
 
 ## Rounds a number to the previous lesser integer. For instance,
 ## `round_by_excess of 3.78 = 3` and `round_by_excess of -3.78 = -4.0`.
-declaration round_by_default content decimal depends on 
+declaration round_by_default content decimal depends on
   variable content decimal
 
 ## Rounds a number to the specified [nth_decimal].
