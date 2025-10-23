@@ -156,8 +156,8 @@ upon while coding the law with Catala.
 
 In the reference guide, [Chapter 5](./5-catala.md) details all the features
 available in the Catala language, while [Chapter
-6](./6-clerk.md) focus on the command line interfaces and features of the two
-binaries that you will be working with: `clerk` and `catala`.
+6](./6-clerk.md) focus on the command line interfaces and features of the
+tool that you will be working with: `clerk`.
 
 
 ~~~admonish  note title="Source code"

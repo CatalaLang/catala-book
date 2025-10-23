@@ -48,24 +48,25 @@ new, specific one with
 $ opam switch create 4.14.2
 ```
 
-Catala normally supports OCaml versions `4.14.X` and `5.0.X`.
+Catala normally supports OCaml versions from `4.14.X` up to `5.3.X`.
 ~~~
 
 ## Getting Catala
 
-Run the following command to install the latest Catala version via `opam`:
+Run the following commands to install the latest Catala version via `opam`:
 
 ```bash
-$ opam pin catala.dev git+https://github.com/CatalaLang/catala
+$ opam update
+$ opam install catala.1.0.0~beta
 ```
 
-Once this finishes, the Catala compiler (and its build system) should
-be installed. You should be able to succesfully call `$ catala
+Once this finishes, the Catala build system should
+be installed. You should be able to succesfully call `$ clerk
 --version` in your terminal. If that's not the case, try invoking `$
-eval $(opam env)` priorly.
+eval $(opam env)` before.
 
-~~~admonish tip title="Upgrading Catala"
-At any time, you can retrieve the latest Catala development version using
+### Upgrading Catala
+At any time, you can retrieve the latest Catala release using
 these simple commands:
 ```bash
 $ opam update
@@ -74,6 +75,35 @@ $ opam upgrade catala
 
 This method also works for the other `opam` packages presented below:
 just replace `upgrade catala` by `upgrade catala-lsp`, etc.
+
+~~~admonish danger collapsible=true title="Bleeding edge: getting development snapshots"
+
+If you feel adventurous, you can retrive the latest development version of
+the Catala tooling instead of the tried and tested releases. To do so,
+you need to [pin](https://opam.ocaml.org/doc/Usage.html#opam-pin) the `catala`
+opam package in your switch to a `dev` version pointing to the git repositories
+of the Catala tooling. Here are the commands to invoke:
+
+```bash
+$ opam pin catala.dev git+https://github.com/CatalaLang/catala
+$ opam pin catala-lsp.dev git+https://github.com/CatalaLang/catala-lsp
+$ opam pin catala-format.dev git+https://github.com/CatalaLang/catala-format
+```
+
+If you're tired of the bleeding edge and want to go back to the normal releases,
+simply unpin the development versions:
+
+```
+$ opam unpin catala.dev
+$ opam unpin catala-lsp.dev
+$ opam unpin catala-format.dev
+```
+
+And reinstall Catala:
+
+```bash
+$ opam reinstall catala
+```
 ~~~
 
 ## Getting the LSP server (needed by the VSCode extension)
@@ -82,7 +112,7 @@ The VSCode extension requires the Catala's Language Server Protocol to be
 installed. This can be done by running:
 
 ```bash
-$ opam pin catala-lsp.dev git+https://github.com/CatalaLang/catala-language-server -y
+$ opam install catala-lsp.1.0.0~beta
 ```
 
 ## Getting the VSCode extension
@@ -103,7 +133,7 @@ installed, you will need to load a WSL VSCode window by pressing F1
 
 Run the following command:
 ```shell
-$ opam pin catala-format.dev git+https://github.com/CatalaLang/catala-format
+$ opam install catala-format.1.0.0~beta
 ```
 
 ~~~admonish note

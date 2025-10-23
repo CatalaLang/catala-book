@@ -8,6 +8,5 @@ you should test whether everything is OK by [creating and
 running](./1-2-first.md) your first, "Hello, world!"-like Catala program.
 
 You will get introduced to :
-* the Catala compiler `catala` ;
 * the Catala build system `clerk`;
 * the Catala IDE tooling (language plugin and formatter).

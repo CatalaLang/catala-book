@@ -61,7 +61,7 @@ Windows. However, the Catala's lsp server bundles a subset of Catala
 which is fine. This may be installed with the following command
 
 ```bash
-$ opam pin catala-lsp git+https://github.com/CatalaLang/catala-language-server -y
+$ opam install catala.1.0.0~beta catala-lsp.1.0.0~beta
 ```
 ~~~admonish warning title="Ninja error"
 If the installation step fails to find the "ninja" tool, you may install it using winget.
