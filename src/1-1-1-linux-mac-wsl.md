@@ -48,7 +48,7 @@ new, specific one with
 $ opam switch create 4.14.2
 ```
 
-Catala normally supports OCaml versions from `4.14.X` up to `5.3.X`.
+Catala normally supports OCaml versions from `4.14.X` up to `5.4.X`.
 ~~~
 
 ## Getting Catala
@@ -56,8 +56,7 @@ Catala normally supports OCaml versions from `4.14.X` up to `5.3.X`.
 Run the following commands to install the latest Catala version via `opam`:
 
 ```bash
-$ opam update
-$ opam install catala.1.0.0~beta
+$ opam update && opam install catala.1.0.0~beta
 ```
 
 Once this finishes, the Catala build system should
@@ -80,14 +79,15 @@ just replace `upgrade catala` by `upgrade catala-lsp`, etc.
 
 If you feel adventurous, you can retrive the latest development version of
 the Catala tooling instead of the tried and tested releases. To do so,
-you need to [pin](https://opam.ocaml.org/doc/Usage.html#opam-pin) the `catala`
-opam package in your switch to a `dev` version pointing to the git repositories
-of the Catala tooling. Here are the commands to invoke:
+you need to [pin](https://opam.ocaml.org/doc/Usage.html#opam-pin) the `catala`,
+`catala-lsp` and `catala-format` opam packages in your switch to a `dev`
+version pointing to the git repositories of the Catala tooling. Here is the
+command to invoke:
 
 ```bash
-$ opam pin catala.dev git+https://github.com/CatalaLang/catala
-$ opam pin catala-lsp.dev git+https://github.com/CatalaLang/catala-lsp
-$ opam pin catala-format.dev git+https://github.com/CatalaLang/catala-format
+$ opam pin catala.dev --dev-repo
+$ opam pin catala-lsp.dev --dev-repo
+$ opam pin catala-format.dev --dev-repo
 ```
 
 If you're tired of the bleeding edge and want to go back to the normal releases,
@@ -103,6 +103,8 @@ And reinstall Catala:
 
 ```bash
 $ opam reinstall catala
+$ opam reinstall catala-lsp
+$ opam reinstall catala-format
 ```
 ~~~
 
@@ -138,8 +140,7 @@ $ opam install catala-format.1.0.0~beta
 
 ~~~admonish note
 This installation will take some time as it requires installing a Rust
-toolchain. If you already have a Rust tool chain installed (check by typing `cargo` in the terminal), select
-`ignore pin depends` when asked for.
+toolchain. If you already have a Rust tool chain installed (check by typing `cargo` in the terminal), select `ignore pin depends` when asked for.
 ~~~
 
 Once this is installed, you may refresh your VSCode environment (`F1`, then
