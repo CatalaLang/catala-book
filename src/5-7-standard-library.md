@@ -278,7 +278,7 @@ declaration month_to_integer
 
 ## Returns the named month corresponding to the month number (starting from 1).
 ## If the input is not between 1 and 12, fails with an `impossible` error.
-declaration month_of_integer
+declaration integer_to_month
   content Month
   depends on i content integer
 ```
@@ -323,10 +323,10 @@ declaration is_in_the_month
   depends on m content MonthYear, d content date
 
 ## Returns `true` if the date occurs before the end of the given month (included).
-## **Example:** `is_before_the_end_of_the_month of may_2025, |2025-04-13| = true`
-## **Example:** `is_before_the_end_of_the_month of may_2025, |2025-05-31| = true`
-## **Example:** `is_before_the_end_of_the_month of may_2025, |2025-06-01| = false`
-declaration is_before_the_end_of_the_month
+## **Example:** `is_before_the_end_of_month of may_2025, |2025-04-13| = true`
+## **Example:** `is_before_the_end_of_month of may_2025, |2025-05-31| = true`
+## **Example:** `is_before_the_end_of_month of may_2025, |2025-06-01| = false`
+declaration is_before_the_end_of_month
   content boolean
   depends on m content MonthYear, d content date
 
