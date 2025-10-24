@@ -335,7 +335,7 @@ jobs:
           opam --cli=2.1 exec -- clerk ci
 ```
 
-The `opam --cli=2.1 exec` is important because `clerk` and `catala` are installed
+The `opam --cli=2.1 exec` is important because `clerk` is installed
 via opam and the OCaml software toolchain in the CI images.
 
 ~~~admonish question title="What does `clerk ci` do?"
