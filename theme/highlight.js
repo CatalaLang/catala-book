@@ -3843,13 +3843,13 @@ if (typeof exports === 'object' && typeof module !== 'undefined') { module.expor
                         'scope', 'depends', 'on', 'result', 'declaration', 'includes',
                         'content', 'optional', 'structure', 'enumeration',
                         'context', 'input', 'output', 'internal', 'rule',
-                        'under', 'condition', 'data', 'consequence',
+                        'under', 'condition', 'data', 'consequence', 'type',
                         'fulfilled', 'equals', 'assertion', 'definition', 'state',
                         'label', 'exception', 'anything', 'list empty',
                         'is maximum', 'is minimum', 'minimum', 'maximum',
                         'combine', 'initially', 'sum', 'map', 'each', 'to', 'as'],
                     built_in:
-                        ['list', 'decimal', 'money', 'integer', 'date', 'duration', "boolean"],
+                        ['list', 'decimal', 'money', 'integer', 'date', 'duration', 'boolean'],
                     operator: ['not', 'or', 'xor', 'and', 'year', 'month', 'day'],
                     literal: ['true', 'false'],
                 },
@@ -3897,7 +3897,88 @@ if (typeof exports === 'object' && typeof module !== 'undefined') { module.expor
     })();
 
     hljs.registerLanguage('ocaml', hljsGrammar);
-})();/*! `python` grammar compiled for Highlight.js 11.10.0 */
+})();
+(function () {
+    var hljsGrammar = (function () {
+        'use strict';
+
+        /*
+        Language: Catala french
+        Author: Vincent Botbol <vincent.botbol@inria.fr>
+        Description: Catala_fr language definition.
+        Website: https://catala-lang.org
+        Category: functional
+        */
+
+        function catala(hljs) {
+            return {
+                name: 'Catala (French)',
+                case_insensitive: false,
+                aliases: ['catala_fr'],
+                keywords: {
+                    $pattern: /[a-zA-Zéèçùà_']+/,
+                    keyword: ['selon', 'sous', 'forme', 'mais', 'remplaçant', 'on',
+                        'soit', 'dans', 'tel', 'que', 'existe', 'parmi', 'pour', 'tout',
+                        'de', 'si', 'alors', 'sinon', 'initialement',
+                        'champ', 'd\'application', 'dépend', 'résultat', 'déclaration', 'Inclusion',
+                        'contenu', 'optionnel', 'structure', 'énumération',
+                        'contexte', 'entrée', 'interne', 'règle', 'type',
+                        'sous', 'condition', 'donnée', 'conséquence',
+                        'rempli', 'égal à', 'assertion', 'définition', 'état',
+                        'label', 'exception', 'n\'importe', 'quel', 'liste vide',
+                        'est', 'minimum', 'maximum',
+                              'combine', 'somme', 'transforme', 'chaque', 'en', 'dans'],
+                    // 'a' => highlights variables
+                    built_in:
+                        ['liste', 'décimal', 'argent', 'entier', 'date', 'durée', 'booléen'],
+                    operator: ['non', 'ou', 'ou bien', 'et', 'an', 'mois', 'jour'],
+                    literal: ['vrai', 'faux'],
+                },
+                contains: [
+                    hljs.COMMENT(
+                        '#',
+                        '\n',
+                    ),
+                    { /* Scope name or Enum variant or structure name */
+                        scope: 'title',
+                        begin: '\\b[A-Z][a-zA-Zéèçùà_\']*'
+                    },
+                    { /* struct field ' */
+                        scope: 'title.function',
+                        begin: '\\.[a-z_][a-zA-Zéèçùà_\']*',
+                    },
+                    // hljs.APOS_STRING_MODE, // breaks apostrophes
+                    {
+                        scope: 'number',
+                        begin:
+                            '\\b[0-9]+(|\\.[0-9]*)',
+                    },
+                    {
+                        scope: 'number',
+                        begin:
+                            '\\|[0-9]{4}-[0-9]{2}-[0-9]{2}\\|',
+                    },
+                    {
+                        /* operators */
+                        scope: 'operator',
+                        begin: '(\\+|\\-|\\*|\\/|\\<|\\>|\\=|\\%)'
+
+                    },
+                    {
+                        /* punctuation */
+                        scope: 'punctuation',
+                        begin: '(\\(|\\)|\\[|\\]|\\{|\\}|\\:|\\.)'
+                    },
+                ]
+            };
+        }
+
+        return catala;
+
+    })();
+
+    hljs.registerLanguage('catala_fr', hljsGrammar);
+})();
 (function () {
     var hljsGrammar = (function () {
         'use strict';
@@ -4681,7 +4762,7 @@ if (typeof exports === 'object' && typeof module !== 'undefined') { module.expor
           begin: /'[\w*@][\w*@ :()\./-]*':(?=[ \t]|$)/ },
       ]
     };
-    
+
     const TEMPLATE_VARIABLES = {
       className: 'template-variable',
       variants: [
