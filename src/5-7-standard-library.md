@@ -33,6 +33,7 @@ Here is a summary of all the available modules in the standard library:
 - [`Decimal`](#module-decimal) -- Advanced arithmetic functions on `decimal` type
 - [`Money`](#module-money) -- Arithmetic and financial operations on `money` type
 - [`Date`](#module-date) -- Date utility functions and representations for `date` type
+- [`MonthYear`](#module-monthyear) -- Structure and functions for months of specific years
 - [`Period`](#module-period) -- Periods of time and utility functions to manipulate them
 - [`List`](#module-list) -- Functions to create, access, sort and manipulate list values
 
@@ -364,62 +365,6 @@ declaration integer_to_month
   depends on i content integer
 ```
 
-### Months of specific years
-
-```catala
-declaration structure MonthYear:
-  data year_number content integer
-  data month_name content Month
-
-## Extracts the named month and year from a date ignoring the day.
-declaration to_month_year
-  content MonthYear
-  depends on d content date
-
-## Transforms a `MonthYear` into a `date` by choosing the first day of the
-## month.
-declaration to_first_day_of_month
-  content date
-  depends on m content MonthYear
-
-## Transforms a `MonthYear` into a `date` by choosing the last day of the
-## month.
-declaration to_last_day_of_month
-  content date
-  depends on m content MonthYear
-
-## Checks if the date occurs strictly before given month.
-declaration is_before_the_month
-  content boolean
-  depends on m content MonthYear, d content date
-
-## Checks if the date occurs strictly after the given month.
-declaration is_after_the_month
-  content boolean
-  depends on m content MonthYear, d content date
-
-## Checks if the date is in the given month.
-declaration is_in_the_month
-  content boolean
-  depends on m content MonthYear, d content date
-
-## Checks if the date occurs before the first day of the next month.
-## **Example:** `is_before_the_next_month of may_2025, |2025-04-13| = true`
-## **Example:** `is_before_the_next_month of may_2025, |2025-05-31| = true`
-## **Example:** `is_before_the_next_month of may_2025, |2025-06-01| = false`
-declaration is_before_the_next_month
-  content boolean
-  depends on m content MonthYear, d content date
-
-## Checks if the date occurs after the last day of the previous month.
-## **Example:** `is_after_the_previous_month of may_2025, |2025-06-15| = true`
-## **Example:** `is_after_the_previous_month of may_2025, |2025-05-01| = true`
-## **Example:** `is_after_the_previous_month of may_2025, |2025-04-30| = false`
-declaration is_after_the_previous_month
-  content boolean
-  depends on m content MonthYear, d content date
-```
-
 ### Date comparisons
 
 ```catala
@@ -486,6 +431,62 @@ declaration is_young_enough_rounding_up
     birth_date content date,
     age content duration,
     at_date content date
+```
+
+## Module `MonthYear`
+
+```catala
+declaration structure MonthYear:
+  data year_number content integer
+  data month_name content D.Month
+
+## Extracts the named month and year from a date ignoring the day.
+declaration to_month_year
+  content MonthYear
+  depends on d content date
+
+## Transforms a `MonthYear` into a `date` by choosing the first day of the
+## month.
+declaration first_day_of_month
+  content date
+  depends on m content MonthYear
+
+## Transforms a `MonthYear` into a `date` by choosing the last day of the
+## month.
+declaration last_day_of_month
+  content date
+  depends on m content MonthYear
+
+## Checks if the date occurs strictly before given month.
+declaration is_before_the_month
+  content boolean
+  depends on m content MonthYear, d content date
+
+## Checks if the date occurs strictly after the given month.
+declaration is_after_the_month
+  content boolean
+  depends on m content MonthYear, d content date
+
+## Checks if the date is in the given month.
+declaration is_in_the_month
+  content boolean
+  depends on m content MonthYear, d content date
+
+## Checks if the date occurs before the first day of the next month.
+## **Example:** `is_before_the_next_month of may_2025, |2025-04-13| = true`
+## **Example:** `is_before_the_next_month of may_2025, |2025-05-31| = true`
+## **Example:** `is_before_the_next_month of may_2025, |2025-06-01| = false`
+declaration is_before_the_next_month
+  content boolean
+  depends on m content MonthYear, d content date
+
+## Checks if the date occurs after the last day of the previous month.
+## **Example:** `is_after_the_previous_month of may_2025, |2025-06-15| = true`
+## **Example:** `is_after_the_previous_month of may_2025, |2025-05-01| = true`
+## **Example:** `is_after_the_previous_month of may_2025, |2025-04-30| = false`
+declaration is_after_the_previous_month
+  content boolean
+  depends on m content MonthYear, d content date
 ```
 
 ## Module `Period`

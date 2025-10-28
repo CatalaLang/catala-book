@@ -28,10 +28,11 @@ accessibles. Les modules anglais ne sont pas inclus.
 
 Voici un résumé de tous les modules disponibles de la bibliothèque standard:
 - [`Entier`](#module-entier) -- Fonctions arithmétiques sur les valeurs de type `entier`
-- [`Décimal`](#module-decimal) -- Fonctions arithmétiques sur les valeurs de type `décimal`
+- [`Décimal`](#module-décimal) -- Fonctions arithmétiques sur les valeurs de type `décimal`
 - [`Argent`](#module-argent) -- Fonctions arithmétiques et financières sur le type `argent`
 - [`Date`](#module-date) -- Fonctions de représentation et de manipulation du type `date`
-- [`Période`](#module-periode) -- Période de temps et utilitaires pour les manipuler
+- [`MoisAnnée`](#module-moisannée) -- Structure et fonctions sur les mois d'année spécifiques
+- [`Période`](#module-période) -- Période de temps et utilitaires pour les manipuler
 - [`Liste`](#module-liste) -- Fonctions pour créer, accéder et manipuler les valeurs de type `liste`
 
 ~~~admonish info title="Où se trouve les fichiers de la bibliothèque standard ?"
@@ -367,62 +368,6 @@ déclaration entier_vers_mois
   dépend de i contenu entier
 ```
 
-### Mois d'années spécifiques
-
-```catala_fr
-déclaration structure MoisAnnée:
-  donnée nom_mois contenu Mois
-  donnée numéro_année contenu entier
-
-## Extrait le mois d'année depuis une date en ignorant le jour.
-déclaration vers_mois_année
-  contenu MoisAnnée
-  dépend de d contenu date
-
-## Transforme un `MoisAnnée` vers une `date` en choisissant
-## le premier jour du mois.
-déclaration vers_premier_jour_du_mois
-  contenu date
-  dépend de m contenu MoisAnnée
-
-## Transforme un `MoisAnnée` vers une `date` en choisissant
-## le dernier jour du mois.
-déclaration vers_dernier_jour_du_mois
-  contenu date
-  dépend de m contenu MoisAnnée
-
-## Teste si la date survient strictement avant le mois concerné.
-déclaration est_avant_le_mois
-  contenu booléen
-  dépend de m contenu MoisAnnée, d contenu date
-
-## Teste si la date survient strictement après le mois concerné.
-déclaration est_après_le_mois
-  contenu booléen
-  dépend de m contenu MoisAnnée, d contenu date
-
-## Teste si la date survient durant le mois concerné.
-déclaration est_dans_le_mois
-  contenu booléen
-  dépend de m contenu MoisAnnée, d contenu date
-
-## Teste si la date survient avant le premier jour du mois suivant.
-## **Exemple:** `est_avant_le_mois_suivant de mai_2025, |2025-04-13| = vrai`
-## **Exemple:** `est_avant_le_mois_suivant de mai_2025, |2025-05-31| = vrai`
-## **Exemple:** `est_avant_le_mois_suivant de mai_2025, |2025-06-01| = faux`
-déclaration est_avant_le_mois_suivant
-  contenu booléen
-  dépend de m contenu MoisAnnée, d contenu date
-
-## Teste si la date survient après le dernier jour du mois suivant.
-## **Exemple:** `est_après_le_mois_précédent de mai_2025, |2025-06-15| = vrai`
-## **Exemple:** `est_après_le_mois_précédent de mai_2025, |2025-05-01| = vrai`
-## **Exemple:** `est_après_le_mois_précédent de mai_2025, |2025-04-30| = faux`
-déclaration est_après_le_mois_précédent
-  contenu booléen
-  dépend de m contenu MoisAnnée, d contenu date
-```
-
 ### Comparaisons de dates
 
 ```catala_fr
@@ -481,6 +426,62 @@ déclaration est_assez_jeune_arrondi_supérieur
     date_de_naissance contenu date,
     âge contenu durée,
     à_date contenu date
+```
+
+## Module `MoisAnnée`
+
+```catala_fr
+déclaration structure MoisAnnée:
+  donnée nom_mois contenu D.Mois
+  donnée numéro_année contenu entier
+
+## Extrait le mois d'année depuis une date en ignorant le jour.
+déclaration vers_mois_année
+  contenu MoisAnnée
+  dépend de d contenu date
+
+## Transforme un `MoisAnnée` vers une `date` en choisissant
+## le premier jour du mois.
+déclaration premier_jour_du_mois
+  contenu date
+  dépend de m contenu MoisAnnée
+
+## Transforme un `MoisAnnée` vers une `date` en choisissant
+## le dernier jour du mois.
+déclaration dernier_jour_du_mois
+  contenu date
+  dépend de m contenu MoisAnnée
+
+## Teste si la date survient strictement avant le mois concerné.
+déclaration est_avant_le_mois
+  contenu booléen
+  dépend de m contenu MoisAnnée, d contenu date
+
+## Teste si la date survient strictement après le mois concerné.
+déclaration est_après_le_mois
+  contenu booléen
+  dépend de m contenu MoisAnnée, d contenu date
+
+## Teste si la date survient durant le mois concerné.
+déclaration est_dans_le_mois
+  contenu booléen
+  dépend de m contenu MoisAnnée, d contenu date
+
+## Teste si la date survient avant le premier jour du mois suivant.
+## **Exemple:** `est_avant_le_mois_suivant de mai_2025, |2025-04-13| = vrai`
+## **Exemple:** `est_avant_le_mois_suivant de mai_2025, |2025-05-31| = vrai`
+## **Exemple:** `est_avant_le_mois_suivant de mai_2025, |2025-06-01| = faux`
+déclaration est_avant_le_mois_suivant
+  contenu booléen
+  dépend de m contenu MoisAnnée, d contenu date
+
+## Teste si la date survient après le dernier jour du mois suivant.
+## **Exemple:** `est_après_le_mois_précédent de mai_2025, |2025-06-15| = vrai`
+## **Exemple:** `est_après_le_mois_précédent de mai_2025, |2025-05-01| = vrai`
+## **Exemple:** `est_après_le_mois_précédent de mai_2025, |2025-04-30| = faux`
+déclaration est_après_le_mois_précédent
+  contenu booléen
+  dépend de m contenu MoisAnnée, d contenu date
 ```
 
 ## Module `Période`
