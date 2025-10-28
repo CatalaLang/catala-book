@@ -2,6 +2,11 @@
 
 <div id="tocw"></div>
 
+~~~admonish tip title="French version"
+A french translated version is also available here: [French version](./5-7-fr-standard-library.md)
+Other languages currently need to use the following english version
+~~~
+
 To avoid reinventing the wheel, Catala comes with a standard library containing
 helpful functions on basic types.
 We include below a listing of the function prototypes in the standard library, classified by
@@ -14,7 +19,7 @@ modules. To use a function of the standard library, simply type:
 Example:
 
 ```catala
-Date.last_day_of_month of |21-01-2024| = |31-01-2024|
+Date.last_day_of_month of |21-01-2024| # returns |31-01-2024|
 ```
 
 ~~~admonish info title="Using standard library modules"

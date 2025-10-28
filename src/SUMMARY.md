@@ -38,6 +38,7 @@
     - [Expressions](./5-5-expressions.md)
     - [Modules](./5-6-modules.md)
     - [Standard library](./5-7-standard-library.md)
+      - [French version](./5-7-1-fr-standard-library.md)
     - [Extra features](./5-8-extra-features.md)
       - [Attributes](./5-8-1-attributes.md)
       - [External modules](./5-8-2-external-modules.md)
