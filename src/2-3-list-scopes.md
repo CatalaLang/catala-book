@@ -184,11 +184,11 @@ share of household tax owed by this individual.
 Now, there are several strategies to implement article 8, but not all are
 legally correct. One strategy could be to compute the total amount of income tax
 owed by all the individuals in the household, and substract that total amount of
-income tax from the the totam amount of household tax to perform the deduction.
+income tax from the the total amount of household tax to perform the deduction.
 However, this strategy is incorrect, because the household tax deduction for one
 individual is implicitly capped by the amount of household tax due for this
 individual! This capping introduces a non-linearity in the formula that prevents
-rearranging the additions and substractions while keeping the same results in
+rearranging the additions and subtractions while keeping the same results in
 all configurations.
 
 ~~~admonish danger title="Watch out for the non-linearity of article 8!"
@@ -245,7 +245,7 @@ possible the computation steps and the articles they are based on.
 As it already happened for article 8, subsequent articles are likely to
 introduce refinements and exceptions for this share of household tax. In this
 case, it is preferable to use a fully-fledged scope to represent this extra
-computation step. The scope is readable by lawyers and has better convenient
+computation step. The scope is readable by lawyers and has convenient
 features to add input and output parameters, define exceptions for its local
 variables, etc.
 
@@ -389,8 +389,8 @@ deduction is $7,000.
 
 In this section of the tutorial, we have seen that in Catala, lists of items
 are represented as values with their own type like `list of money` or
-`list of Individual`. You can manipulate the list values with list operators
-like lenght count, aggregation, but also map, filter, map, etc. Please refer
+`list of Individual`. You can manipulate lists with operators
+like length, count, aggregation, but also map, filter, map, etc. Please refer
 to the [language reference](./5-catala.md) for information about all the
 list operators available in Catala. Furthermore, we have also seen in this
 section of the tutorial that rather than programming all the rules for dealing

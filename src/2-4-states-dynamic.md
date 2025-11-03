@@ -482,12 +482,12 @@ presented features that are unique to Catala, unlike the exceptions from [the
 second section](./2-2-conditionals-exceptions.md). Rather, in Catala we use
 the classic software engineering techniques from functional programming to split
 the code into multiple functions that call each other at the right level of
-abstraction, with the goal to keep the code close where it is specified in the
+abstraction, with the goal of keeping the code close where it is specified in the
 law. There are various ways to express something in Catala, but the proximity
 between the code and the legal specification should be the proxy for what is the
 idiomatic way to do things.
 
-Refactoring the Catala code continuously as new legal requirements are added or
+Refactoring Catala code continuously as new legal requirements are added or
 updated is the key to maintaining the codebase efficiently over the long term,
 and avoiding the spaghetti code that is common when translating law to code. We
 hope this tutorial put you on the right track for your journey into Catala
