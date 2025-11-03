@@ -4,7 +4,7 @@
 
 In the previous section, we defined a directory containing a Catala project with
 a `clerk.toml` configuration file that contained two main targets (`us-tax-code`
-and `housing-benefits`) that we aim to build and export them as source libraries
+and `housing-benefits`) that we aim to build and export as source libraries
 in different languages.
 
 ~~~~~~admonish info collapsible=true title="Recap from previous section: `clerk.toml` configuration file and project hierarchy"
