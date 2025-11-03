@@ -35,10 +35,11 @@ Voici un résumé de tous les modules disponibles de la bibliothèque standard:
 - [`Période`](#module-période) -- Période de temps et utilitaires pour les manipuler
 - [`Liste`](#module-liste) -- Fonctions pour créer, accéder et manipuler les valeurs de type `liste`
 
-~~~admonish info title="Où se trouve les fichiers de la bibliothèque standard ?"
-The standard library source files are contained in your installation
-of Catala and copied over in the `_build/libcatala` directory each
-time you run `clerk build` or `clerk run`.
+~~~admonish info title="Où se trouvent les fichiers de la bibliothèque standard ?"
+Les sources de la bibliothèque standard sont installées en même temps que
+Catala. Au sein de chaque projet, elles sont copiées dans le dossier
+`_build/libcatala` dès que nécessaire, en particulier lors de l'utilisation de
+`clerk build` ou `clerk run`.
 ~~~
 
 ~~~admonish tip title="Quelque chose manque, puis-je l'ajouter ?"
@@ -436,7 +437,7 @@ déclaration structure MoisAnnée:
   donnée numéro_année contenu entier
 
 ## Extrait le mois d'année depuis une date en ignorant le jour.
-déclaration vers_mois_année
+déclaration depuis_date
   contenu MoisAnnée
   dépend de d contenu date
 
@@ -466,19 +467,23 @@ déclaration est_après_le_mois
 déclaration est_dans_le_mois
   contenu booléen
   dépend de m contenu MoisAnnée, d contenu date
+    (est_après_le_mois_précédent de m, d)
+    et (est_avant_le_mois_suivant de m, d)
 
 ## Teste si la date survient avant le premier jour du mois suivant.
-## **Exemple:** `est_avant_le_mois_suivant de mai_2025, |2025-04-13| = vrai`
-## **Exemple:** `est_avant_le_mois_suivant de mai_2025, |2025-05-31| = vrai`
-## **Exemple:** `est_avant_le_mois_suivant de mai_2025, |2025-06-01| = faux`
+## **Exemples:**
+## - `est_avant_le_mois_suivant de mai_2025, |2025-04-13| = vrai`
+## - `est_avant_le_mois_suivant de mai_2025, |2025-05-31| = vrai`
+## - `est_avant_le_mois_suivant de mai_2025, |2025-06-01| = faux`
 déclaration est_avant_le_mois_suivant
   contenu booléen
   dépend de m contenu MoisAnnée, d contenu date
 
 ## Teste si la date survient après le dernier jour du mois suivant.
-## **Exemple:** `est_après_le_mois_précédent de mai_2025, |2025-06-15| = vrai`
-## **Exemple:** `est_après_le_mois_précédent de mai_2025, |2025-05-01| = vrai`
-## **Exemple:** `est_après_le_mois_précédent de mai_2025, |2025-04-30| = faux`
+## **Exemples:**
+## - `est_après_le_mois_précédent de mai_2025, |2025-06-15| = vrai`
+## - `est_après_le_mois_précédent de mai_2025, |2025-05-01| = vrai`
+## - `est_après_le_mois_précédent de mai_2025, |2025-04-30| = faux`
 déclaration est_après_le_mois_précédent
   contenu booléen
   dépend de m contenu MoisAnnée, d contenu date
@@ -643,14 +648,14 @@ déclaration nième_élément
 ## Donne le premier élément de la liste encapsulé dans le constructeur
 ## `Présent`.
 ## Si la liste est vide, retourne `Absent`.
-déclaration premier_element
+déclaration premier_élément
   contenu optionnel de n'importe quel de type t
   dépend de l contenu liste de n'importe quel de type t
 
 ## Donne le dernier élément de la liste encapsulé dans le constructeur
 ## `Présent`.
 ## Si la liste est vide, retourne `Absent`.
-déclaration dernier_element
+déclaration dernier_élément
   contenu optionnel de n'importe quel de type t
   dépend de l contenu liste de n'importe quel de type t
 
@@ -665,13 +670,13 @@ déclaration retire_nième_élément
 
 ## Retourne la liste sans son premier élément.
 ## La liste vide est retournée inchangée.
-déclaration retire_first_element
+déclaration retire_premier_élément
   contenu liste de n'importe quel de type t
   dépend de l contenu liste de n'importe quel de type t
 
 ## Retourne la liste sans son dernier élément.
 ## La liste vide est retournée inchangée.
-déclaration retire_last_element
+déclaration retire_dernier_élément
   contenu liste de n'importe quel de type t
   dépend de l contenu liste de n'importe quel de type t
 
