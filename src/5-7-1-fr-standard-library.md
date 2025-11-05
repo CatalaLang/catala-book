@@ -9,13 +9,13 @@ des prototypes de fonction de la bibliothèque standard, classifiée par
 modules. Pour utilister une fonction de la bibliothèque standard, vous
 pouvez taper:
 
-```catala_fr
+```catala-code-en_fr
 <nom module>.<nom fonction> de <arguments>
 ```
 
 Exemple:
 
-```catala_fr
+```catala-code-en_fr
 Date.dernier_jour_du_mois de |21-01-2024| # retourne |31-01-2024|
 ```
 
@@ -51,7 +51,7 @@ contribuer à l'extension de la bibliothèque standard en créant une
 
 ## Module `Entier`
 
-```catala_fr
+```catala-code-en_fr
 ## Renvoie le plus petit des deux arguments.
 déclaration min
   contenu entier
@@ -90,7 +90,7 @@ déclaration positif
 
 ## Module `Décimal`
 
-```catala_fr
+```catala-code-en_fr
 ## Renvoie le plus petit des deux arguments.
 déclaration min
   contenu décimal
@@ -164,7 +164,7 @@ déclaration arrondi_à_la_décimale
 
 ## Module `Argent`
 
-```catala_fr
+```catala-code-en_fr
 ## Renvoie le plus petit des deux arguments.
 déclaration min
   contenu argent
@@ -238,7 +238,7 @@ déclaration arrondi_à_la_décimale
 
 ### Opérations financières
 
-```catala_fr
+```catala-code-en_fr
 ## Retourne le montant positif duquel `a` dépasse de `référence`
 ## (sinon 0€).
 déclaration en_excès
@@ -260,7 +260,7 @@ déclaration en_défaut
 
 ### Fonctions utilitaires
 
-```catala_fr
+```catala-code-en_fr
 ## Renvoie la plus ancienne des deux dates.
 déclaration min
   contenu date
@@ -278,7 +278,7 @@ déclaration max
 
 ### Dates et années, mois et jours
 
-```catala_fr
+```catala-code-en_fr
 ## Construit une date à partir du numéro de l'année, du mois (à partir de 1)
 ## et du jour (à partir de 1).
 déclaration depuis_année_mois_jour
@@ -314,7 +314,7 @@ déclaration accès_jour
 
 ### Aller vers le passé ou le futur
 
-```catala_fr
+```catala-code-en_fr
 ## Renvoie le premier jour du mois de la date passée en argument.
 ## **Exemple:** `premier_jour_du_mois de |2024-01-21| = |2024-01-01|`.
 déclaration premier_jour_du_mois
@@ -342,7 +342,7 @@ déclaration dernier_jour_de_l_année
 
 ### Mois nommés
 
-```catala_fr
+```catala-code-en_fr
 déclaration énumération Mois:
   -- Janvier
   -- Février
@@ -371,7 +371,7 @@ déclaration entier_vers_mois
 
 ### Comparaisons de dates
 
-```catala_fr
+```catala-code-en_fr
 ## Teste si une personne née à `date_de_naissance` est au moins âgée de `âge` à
 ## la date `à_date`. Cette fonction calcule l'anniversaire en arrondissant à
 ## l'**inférieur**.
@@ -431,7 +431,7 @@ déclaration est_assez_jeune_arrondi_supérieur
 
 ## Module `MoisAnnée`
 
-```catala_fr
+```catala-code-en_fr
 déclaration structure MoisAnnée:
   donnée nom_mois contenu D.Mois
   donnée numéro_année contenu entier
@@ -495,7 +495,7 @@ déclaration est_après_le_mois_précédent
 
 Une période est composée d'une date de début et d'une date de fin.
 
-```catala_fr
+```catala-code-en_fr
 déclaration structure Période:
   donnée début contenu date
   # La date de fin est incluse dans la période par convention
@@ -591,7 +591,7 @@ déclaration trouve_période
 
 ### Opérations sur des listes associées indexées par des périodes
 
-```catala_fr
+```catala-code-en_fr
 ## Trie la liste de périodes en fonction de la date de début.
 ## Si deux périodes commencent le même jour, leur ordre dans la liste est
 ## préservé
@@ -602,7 +602,7 @@ déclaration tri_par_date
 
 ### Diviser des périodes
 
-```catala_fr
+```catala-code-en_fr
 ## Divise la période en autant de sous-périodes qu'elle contient de mois
 ## calendaires. Les premiers et derniers éléments retournés peuvent donc être
 ## des mois incomplets.
@@ -624,7 +624,7 @@ déclaration divise_par_année
 
 ## Module `Liste`
 
-```catala_fr
+```catala-code-en_fr
 ## Donne la liste constituée des entiers consécutifs de `début` à `fin`.
 ## Si `fin <= début`, le résultat est une liste vide.
 ## **Exemple**: `séquence de 3, 6` donne la liste `[ 3; 4; 5; 6 ]`

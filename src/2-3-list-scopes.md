@@ -51,7 +51,7 @@ even though it behaves more like an array in traditionnal Computer Science
 jargon.
 
 ~~~admonish note title="Declaring a new scope with a list input"
-```catala
+```catala-code-en
 declaration scope HouseholdTaxComputation:
   # The syntax "list of <X>" designates the type whose values are lists of
   # elements with type <X>.
@@ -83,7 +83,7 @@ in the narrow context of a single scope variable definition, you can use a
 local variable inside the definition of the scope variable. These local variables
 are introduced and used with the following syntax:
 
-```catala
+```catala-code-en
 # The following line defines local variable "x" as begin equal to 4 * 5
 let x equals 4 * 5 in
 # We can then use "x" after the "in" keyword in the rest of the code
@@ -103,7 +103,7 @@ be returned. Finally, we can piece steps 1 and 2 for the step 3 which computes
 the amount of tax:
 
 ~~~admonish note title="Computing the length of a list and aggregating amounts"
-```catala
+```catala-code-en
 scope HouseholdTaxComputation:
   definition household_tax equals
     let number_of_individuals equals number of individuals in
@@ -135,7 +135,7 @@ see just below...
 To test what happens when the rule for article 7 is at play,
 you can test the program with a household:
 
-```catala
+```catala-code-en
 declaration scope TestHousehold:
   output computation content HouseholdTaxComputation
 
@@ -277,7 +277,7 @@ of the tutorial](./2-2-conditionals-exceptions.md): `overseas_territory` and
 `current_date` This gives the following scope declaration:
 
 ~~~admonish quote title="Initial declaration of `HouseholdTaxIndividualComputation`"
-```catala
+```catala-code-en
 declaration scope HouseholdTaxIndividualComputation:
   input individual content Individual
   input overseas_territories content boolean
@@ -292,7 +292,7 @@ compute the deduction for `household_tax`. There is a bespoke method designed
 for lawyer-readbility to do exactly that in Catala!
 
 ~~~admonish note title="Declaring a static sub-scope call and defining the sub-scope call's inputs"
-```catala
+```catala-code-en
 # The single, static sub-scope call to "IncomeTaxComputation" has to be
 # declared in "HouseholdTaxIndividualComputation", so we repeat the
 # scope declaration here with a new line.
@@ -337,7 +337,7 @@ is now accessible at `income_tax_computation.income_tax`, since
 At this point, it is easy to define `household_tax` in a single sweep
 inside `HouseholdTaxIndividualComputation`:
 
-```catala
+```catala-code-en
 scope HouseholdTaxIndividualComputation:
   definition household_tax equals
     let tax equals
@@ -352,7 +352,7 @@ scope HouseholdTaxIndividualComputation:
 To test what happens when the rule for articles 7 and 8 are at play
 you can test the program with an individual:
 
-```catala
+```catala-code-en
 declaration scope TestIndividualHousehold:
   output computation content HouseholdTaxIndividualComputation
 

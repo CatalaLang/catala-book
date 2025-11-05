@@ -152,7 +152,7 @@ Let's illustrate with an example. Consider this very simple Catala program:
 ~~~catala
 > Module SimpleTax
 
-```catala
+```catala-code-en
 declaration scope IncomeTaxComputation:
   input income content money
   output income_tax content money

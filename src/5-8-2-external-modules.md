@@ -30,7 +30,7 @@ module in Catala is a Catala source code file containing a module with the
 ~~~catala
 > Module Foo external
 
-```catala-metadata
+```catala-code-en-metadata
 declaration structure Period:
   data date_begin content date
   data date_end content date

@@ -13,7 +13,7 @@ The deduction granted at article 8 is capped at $8,500 for the whole household.
 ~~~
 
 ~~~admonish example title="Implementation solution for articles 7, 8 and 9" collapsible=true
-```catala
+```catala-code-en
 declaration scope HouseholdTaxComputation:
   input individuals content list of Individual
   input overseas_territories content boolean
@@ -50,7 +50,7 @@ the household tax. The household tax owed is $10,000 per individual of the house
 and half the amount per children.
 
 
-```catala
+```catala-code-en
 scope HouseholdTaxIndividualComputation:
   definition household_tax equals
     $10,000 * (1.0 + decimal of individual.number_of_children / 2.0)
@@ -78,7 +78,7 @@ scope HouseholdTaxComputation:
 The amount of income tax paid by each individual can be deducted from the
 share of household tax owed by this individual.
 
-```catala
+```catala-code-en
 scope HouseholdTaxIndividualComputation:
   definition income_tax_computation.individual equals
     individual
@@ -110,7 +110,7 @@ scope HouseholdTaxComputation:
 
 The deduction granted at article 8 is capped at $8,500 for the whole household.
 
-```catala
+```catala-code-en
 scope HouseholdTaxComputation:
   definition total_deduction
     state capped

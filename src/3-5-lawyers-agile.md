@@ -156,7 +156,7 @@ some income deduction computation:
 
 The income deduction mentioned at article 234 is capped at $10,000.
 
-```catala
+```catala-code-en
 scope GrossToNetIncomeIndividual:
   # A literal reading of article 364 would entail putting $10,000 here. But
   # actually, agency instruction N°1045-58 published on 28/04/2023 specifies

@@ -29,7 +29,7 @@ to execute the example is included below for reference.
 Recall that we have defined `household_tax` in a single sweep
 inside `HouseholdTaxIndividualComputation`:
 
-```catala
+```catala-code-en
 scope HouseholdTaxIndividualComputation:
   definition household_tax equals
     let tax equals
@@ -51,7 +51,7 @@ two consecutive states for the variable `household_tax`, and lawyers understand
 the code better this way! So Catala has a feature to let you exactly that:
 
 ~~~admonish note title="Defining multiple states for the same variable"
-```catala
+```catala-code-en
 declaration scope HouseholdTaxIndividualComputation:
   input individual content Individual
   input overseas_territories content boolean
@@ -75,7 +75,7 @@ When several individuals live together, they are collectively subject to
 the household tax. The household tax owed is $10,000 per individual of the household,
 and half the amount per children.
 
-```catala
+```catala-code-en
 scope HouseholdTaxIndividualComputation:
   definition household_tax state base equals
     $10,000 * (1.0 + decimal of individual.number_of_children / 2.0)
@@ -86,7 +86,7 @@ scope HouseholdTaxIndividualComputation:
 The amount of income tax paid by each individual can be deducted from the
 share of household tax owed by this individual.
 
-```catala
+```catala-code-en
 scope HouseholdTaxIndividualComputation:
   definition household_tax state with_deduction equals
     # Below, "household_tax" refers to the value of "household_tax" computed
@@ -126,7 +126,7 @@ With all our refactorings, the declaration of the scope `HouseholdTaxComputation
 can be simplified (we don't need the function variable `share_household_tax`
 anymore):
 
-```catala
+```catala-code-en
 declaration scope HouseholdTaxComputation:
   input individuals content list of Individual
   output household_tax content money
@@ -135,7 +135,7 @@ declaration scope HouseholdTaxComputation:
 Then, the definition of `household_tax` could be re-written as follows next
 to article 7:
 
-```catala
+```catala-code-en
 scope HouseholdTaxComputation:
   definition household_tax equals
     sum money of
@@ -173,7 +173,7 @@ time to test and debug it. Similarly to the test presented in the
 test scope for the household tax computation, and execute it:
 
 ~~~admonish success title="New test for `HouseholdTaxComputation`"
-```catala
+```catala-code-en
 declaration scope TestHousehold:
   output computation content HouseholdTaxComputation
 

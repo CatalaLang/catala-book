@@ -17,7 +17,7 @@ block that is assumed to have already been declared elsewhere.
 
 The full syntax of what will be covered in this section is :
 
-```catala
+```catala-code-en
 scope <scope_name>:
   [label <label_name>]
   [exception <label_name>]
@@ -34,7 +34,7 @@ scope <scope_name>:
 Scope variable definitions is where the bulk of the Catala code will live.
 Defining a variable `bar` inside scope `Foo` as the value 42 is as simple as:
 
-```catala
+```catala-code-en
 scope Foo:
   definition bar equals 42
 ```
@@ -48,7 +48,7 @@ If the scope variable you are defining is a function variable, for instance if `
 is a function of scope `Foo` with arguments `x` and `y`, then the syntax
 for definition the variable is:
 
-```catala
+```catala-code-en
 scope Foo:
   definition bar of x,y equals x + y
 ```
@@ -59,7 +59,7 @@ If the scope variable has several [states](./5-3-scopes-toplevel.md#variable-sta
 for instance if `bar` has states `beginning`, `middle` and `last`, then the syntax for defining
 the state `middle` of the variable is:
 
-```catala
+```catala-code-en
 scope Foo:
   definition bar state middle equals bar * 2
   # "bar" above refers to the value of bar in the previous state,
@@ -68,7 +68,7 @@ scope Foo:
 
 Variable states and functions mix this way:
 
-```catala
+```catala-code-en
 scope Foo:
   definition bar of x, y state middle equals (bar of x, y) * 2 + x + y
 ```
@@ -80,7 +80,7 @@ value of `false`) have a different, lawyer-friendly syntax for the definitions:
 `definition` is replaced by `rule` and `equals <expression>` is replaced
 by `fulfilled` or `not fulfilled`:
 
-```catala
+```catala-code-en
 scope Foo:
   # Rules usually always come in the form of conditional definitions, see below
   rule bar under condition ... consequence not fulfilled
@@ -105,7 +105,7 @@ are conditional, and each will only trigger if its condition is met.
 Conditions are introduced in scope variable definitions just before
 the `equals` keyword with the following syntax :
 
-```catala
+```catala-code-en
 scope Foo:
   definition bar under condition fizz >= 0 consequence 42
 ```
@@ -119,7 +119,7 @@ Sometimes, the same condition will apply to several definitions grouped in the
 same `scope` block. This often comes from a temporal condition over which
 the definitions apply, like:
 
-```catala
+```catala-code-en
 scope Foo:
   definition bar under condition current_date >= |2025-01-01| consequence equals ...
 
@@ -129,7 +129,7 @@ scope Foo:
 To avoid duplicating `current_date >= |2025-01-01|`, you can put the
 condition directly to the scope block with:
 
-```catala
+```catala-code-en
 scope Foo under condition current_date >= |2025-01-01|:
   definition bar equals ...
 
@@ -155,7 +155,7 @@ Let us start with the most basic case. Each node of the exceptions tree for a
 given scope variable starts with a conditional or non-conditional definitions.
 You can give a label to this node of the tree with the `label` syntax:
 
-```catala
+```catala-code-en
 scope Foo:
   label base_case definition bar equals 42
 ```
@@ -163,7 +163,7 @@ scope Foo:
 Then, later in the codebase, if you want to add an exception to this `base_case`
 of the definition of `bar`, you will do so with the syntax:
 
-```catala
+```catala-code-en
 scope Foo:
   # The line below means that the current definition is an exception *to*
   # the other definition with the "base_case" label.
@@ -179,7 +179,7 @@ there is only one choice as to what the `exception` is referring to (the other
 definition). In those cases where it is unambiguous what you are defining
 an exception to, you can drop the `label` and simply write:
 
-```catala
+```catala-code-en
 scope Foo:
   definition bar equals 42
 
@@ -210,7 +210,7 @@ exception to the base case, it suffices to give the three exceptional
 definitions the same label `fizz_exn` (you can choose the label name) and
 exception indication:
 
-```catala
+```catala-code-en
 scope Foo:
   label base_case definition bar equals 42
 
@@ -250,7 +250,7 @@ the exceptional definitions are `exception` to, and if they're all exceptions
 to the same thing without any labels, they will be grouped implicitly together.
 So, you could have dropped all the labels are write:
 
-```catala
+```catala-code-en
 scope Foo:
   definition bar equals 42
 
@@ -285,7 +285,7 @@ two conditional definitions in the base case (those two grouped definitions
 are still mutually exclusive). This is achieved in Catala simply by giving
 the samel label `base_case` to the two base case definitions:
 
-```catala
+```catala-code-en
 scope Foo:
   label base_case definition bar under condition
     current_date < |2025-01-01|
@@ -347,7 +347,7 @@ sub-scope in the scope. For instance, if scope `Foo` has sub-scope `bar` calling
 scope `Bar` that has input variables `fizz` and `buzz`, you will need to define
 `bar.fizz` and `bar.fuzz` with this syntax:
 
-```catala
+```catala-code-en
 scope Foo:
   definition bar.fizz equals ...
 
@@ -375,7 +375,7 @@ used for:
 
 Their syntax is as simple as:
 
-```catala
+```catala-code-en
 scope Foo:
   assertion bar + 2 = fizz * 4
 ```
@@ -386,7 +386,7 @@ To set the date computation rounding mode to either up or down (see the
 [relevant reference section](./5-2-types.md#semantic-of-date-addition)), for
 all the date operations inside a whole scope, use this syntax:
 
-```catala
+```catala-code-en
 # Let us suppose you want to set the rounding more for date operations
 # inside scope Foo declared elsewhere
 scope Foo:

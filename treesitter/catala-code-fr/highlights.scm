@@ -1,0 +1,1 @@
+../../../tree-sitter-catala/queries/highlights.scm

@@ -75,7 +75,7 @@ inputs. For instance, imagine that one of your `src` files,
 `src/income_tax.catala_en`, contains the following scope declaration (adapted
 and expanded from [earlier](./3-2-compilation-deployment.md))
 
-```catala
+```catala-code-en
 > Module
 
 declaration enumeration Filing:
@@ -95,7 +95,7 @@ Then, in the file `tests/tests_income_tax.catala_en`, you can write a test
 for the scope `IncomeTaxComputation`. While there is no constrained format
 for tests in Catala, we recommend that you follow this pattern:
 
-```catala
+```catala-code-en
 # First, declare your test
 declaration scope TestIncomeTax1: # You can choose any name for your test
   computation content IncomeTaxComputation # Put here the scope you want to test
@@ -133,7 +133,7 @@ an expected value, using Catala's [`assertion`s](./5-4-definitions-exceptions.md
 To register an assertion test into `clerk test`, simply put the `#[test]` [attribute](./5-8-1-attributes.md) to the test scope declaration. For instance, here
 is our test example set up as an assertion test:
 
-```catala
+```catala-code-en
 #[test]
 declaration scope TestIncomeTax1:
   computation content IncomeTaxComputation
@@ -186,7 +186,7 @@ For instance, here is how to create a cram test from our `IncomeTaxComputation`
 example above:
 
 ~~~markdown
-```catala
+```catala-code-en
 declaration scope TestIncomeTax1:
   computation content IncomeTaxComputation
 
@@ -200,7 +200,7 @@ scope TestIncomeTax1:
     }
 ```
 
-```catala-test-cli
+```catala-code-en-test-cli
 $ catala test-scope TestIncomeTax1
 ┌─[RESULT]─ Exemple1 ─
 │ computation = IncomeTaxComputation {

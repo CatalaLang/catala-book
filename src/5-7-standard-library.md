@@ -12,13 +12,13 @@ helpful functions on basic types.
 We include below a listing of the function prototypes in the standard library, classified by
 modules. To use a function of the standard library, simply type:
 
-```catala
+```catala-code-en
 <module name>.<function name> of <arguments>
 ```
 
 Example:
 
-```catala
+```catala-code-en
 Date.last_day_of_month of |21-01-2024| # returns |31-01-2024|
 ```
 
@@ -53,7 +53,7 @@ standard library by filing a pull request updating the
 
 ## Module `Integer`
 
-```catala
+```catala-code-en
 ## Returns the smaller of the two arguments.
 declaration min
   content integer
@@ -91,7 +91,7 @@ declaration positive
 
 ## Module `Decimal`
 
-```catala
+```catala-code-en
 ## Returns the smaller of the two arguments.
 declaration min
   content decimal
@@ -164,7 +164,7 @@ declaration round_to_decimal
 
 ## Module `Money`
 
-```catala
+```catala-code-en
 ## Returns the smaller of the two arguments.
 declaration min
   content money
@@ -237,7 +237,7 @@ declaration round_to_decimal
 
 ### Financial operations
 
-```catala
+```catala-code-en
 ## Returns the positive amount that `m` overflows from `reference`
 ## ($0 otherwise).
 declaration in_excess
@@ -259,7 +259,7 @@ declaration in_default
 
 ### Helper functions
 
-```catala
+```catala-code-en
 ## Returns the earlier of two dates.
 declaration min
   content date
@@ -277,7 +277,7 @@ declaration max
 
 ### Dates and years, months and days
 
-```catala
+```catala-code-en
 ## Builds a date from the number of the year, month (starting from 1)
 ## and day (starting from 1).
 declaration of_year_month_day
@@ -310,7 +310,7 @@ declaration get_day
 
 ### Getting to the past or future
 
-```catala
+```catala-code-en
 ## Returns the first day of the current month from the given date.
 ## **Example:** `first_day_of_month of |2024-01-21| = |2024-01-01|`
 declaration first_day_of_month
@@ -338,7 +338,7 @@ declaration last_day_of_year
 
 ### Named months
 
-```catala
+```catala-code-en
 declaration enumeration Month:
   -- January
   -- February
@@ -367,7 +367,7 @@ declaration integer_to_month
 
 ### Date comparisons
 
-```catala
+```catala-code-en
 ## Checks whether a person born at `birth_date` is at least `age` old at
 ## `at_date`. This function rounds **down** when computing the birthday.
 ## **Examples:**
@@ -435,7 +435,7 @@ declaration is_young_enough_rounding_up
 
 ## Module `MonthYear`
 
-```catala
+```catala-code-en
 declaration structure MonthYear:
   data year_number content integer
   data month_name content D.Month
@@ -497,7 +497,7 @@ declaration is_after_the_previous_month
 
 A period is a starting date and an end date.
 
-```catala
+```catala-code-en
 declaration structure Period:
   data begin content date
   # The end date is included in the period
@@ -593,7 +593,7 @@ declaration find_period
 
 ### Operations on associated lists indexed by periods
 
-```catala
+```catala-code-en
 ## Sorts the given periods by starting day.
 ## if two periods start on the same day, their order in the list is preserved
 declaration sort_by_date
@@ -603,7 +603,7 @@ declaration sort_by_date
 
 ### Splitting periods
 
-```catala
+```catala-code-en
 ## Splits the given period, returning one period per calendar month. The first
 ## and last elements may be non-whole months.
 ## If the given period is empty (begin >= end), an empty list is returned.
@@ -625,7 +625,7 @@ declaration split_by_year
 
 ## Module `List`
 
-```catala
+```catala-code-en
 ## Returns a list made of the consecutive integers from `begin` to `end`.
 ## If `end <= begin`, the returned list is empty.
 ## **Example:** `sequence of 3, 6 = [ 3; 4; 5; 6 ]`

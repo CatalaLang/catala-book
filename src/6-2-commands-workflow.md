@@ -87,7 +87,7 @@ files, will process both kinds of tests and print a report.
 A **test scope** is a scope that is marked with the "test" [attribute](./5-8-1-attributes.md): simply
 write `#[test]` just before its `declaration` keyword.
 
-```catala
+```catala-code-en
 #[test]
 declaration scope TestMoneyRounding:
   output result content money
@@ -103,7 +103,7 @@ The expected output of the test should be validated with `assertion` statements.
 Without them, the only thing the test would validate is that the computation
 doesn't trigger an error.
 
-```catala
+```catala-code-en
 scope TestMoneyRounding:
   definition result equals $100 / 3
   assertion result = $33.33
@@ -113,7 +113,7 @@ As seen in [the tutorial](2-1-basic-blocks.html#testing-the-code), a test scope
 almost always take the form of a call to the real scope you want to test,
 providing it with specific inputs and an expected result:
 
-```catala
+```catala-code-en
 #[test]
 declaration scope Test_IncomeTaxComputation_1:
   output computation content IncomeTaxComputation
@@ -149,7 +149,7 @@ rest is the expected output from the command ; additionally, if the command
 terminated with an error, the last line will show the error code.
 
 ~~~markdown
-```catala-test-cli
+```catala-code-en-test-cli
 $ catala interpret --scope=Test --trace
 [LOG] ☛ Definition applied:
       ─➤ tutorial.catala_en:214.14-214.25:

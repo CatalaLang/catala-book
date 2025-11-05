@@ -75,7 +75,7 @@ the rule defining it as a multiplication of the income as rate. It is time
 to dive into Catala as a programming language.
 
 
-```catala
+```catala-code-en
 # We will soon learn what to write here in order to translate the meaning
 # of article 1 into Catala code.
 
@@ -108,7 +108,7 @@ computation. This individual has an income and a number of children, both pieces
 of information which will be needed for tax purposes :
 
 ~~~admonish note title="Declaring a structure"
-```catala
+```catala-code-en
 # Data structure declarations and generally any declaration in Catala often
 # does not match any specific article of law. Hence, you can put all the
 # declarations at the top of your tutorial.catala_en file, before article 1.
@@ -137,7 +137,7 @@ advise you to aim at optimizing code readability.
 Sometimes, the law gives an enumeration of different situations. These
 enumerations are modeled in Catala using an enumeration type, like:
 
-```catala
+```catala-code-en
 # The name "TaxCredit" is also written in CamelCase.
 declaration enumeration TaxCredit:
   # The line below says that "TaxCredit" can be a "NoTaxCredit" situation.
@@ -180,7 +180,7 @@ Catala is called a *scope*. A scope is comprised of :
 For instance, article 1 declares a scope for computing the income tax:
 
 ~~~admonish note title="Declaring a scope"
-```catala
+```catala-code-en
 # Scope names use the CamelCase naming convention, like names of structs
 # or enums Scope variables, on the other hand, use the snake_case naming
 # convention, like struct fields.
@@ -224,7 +224,7 @@ scope `IncomeTaxComputation`, which translates to the following Catala code:
 ~~~
 
 ~~~admonish note title="Defining a variable"
-```catala
+```catala-code-en
 scope IncomeTaxComputation:
   definition income_tax equals
     individual.income * tax_rate
@@ -252,7 +252,7 @@ language. Concretely, if `tax_credit` is a variable whose type is `TaxCredit` as
 declared above, then you can define the amount of a tax credit that depends
 on a number of eligible children with the following pattern matching:
 
-```catala
+```catala-code-en
 match tax_credit with pattern
 -- NoTaxCredit: $0
 -- ChildrenTaxCredit of number_of_eligible_children:
@@ -287,7 +287,7 @@ you at this point.
 ~~~admonish quote title="Article 2"
 The fixed percentage mentioned at article 1 is equal to 20 %.
 
-```catala
+```catala-code-en
 scope IncomeTaxComputation:
   # Writing 20% is just an alternative for the decimal "0.20".
   definition tax_rate equals 20 %
@@ -325,7 +325,7 @@ These choices has several consequences:
 
 ~~~admonish example title="Types, values and operations"
 Concretely, this gives:
-```catala
+```catala-code-en
 10 / 3 = 3.333333333...
 $10 / 3.0 = $3.33
 $20 / 3.0 = $6.67
@@ -416,7 +416,7 @@ we will be creating for our test case a new test that will pass specific
 arguments to `IncomeTaxComputation` which is being tested:
 
 ~~~admonish note title="Defining a test"
-```catala
+```catala-code-en
 declaration scope Test:
   # The following line is mysterious for now
   output computation content IncomeTaxComputation

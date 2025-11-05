@@ -90,7 +90,7 @@ All the Catala source code must be contained inside a Catala code block.
 A Catala code block looks like this inside your source file:
 
 ~~~markdown
-```catala
+```catala-code-en
 <your code goes here>
 ```
 ~~~

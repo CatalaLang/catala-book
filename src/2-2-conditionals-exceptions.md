@@ -39,7 +39,7 @@ condition with the `under condition ... consequence` syntax between the name
 of the variable being defined and the `equals` keyword:
 
 ~~~admonish note title="Defining a variable conditionally"
-```catala
+```catala-code-en
 scope IncomeTaxComputation:
   definition tax_rate under condition
     individual.number_of_children >= 2
@@ -60,7 +60,7 @@ To test what happens when the rules for articles 2 and 3 are at play,
 you can test the program when there are three children, by tweaking the
 `Test` scope as follows:
 
-```catala
+```catala-code-en
 scope Test:
   definition computation equals
     output of IncomeTaxComputation with {
@@ -112,7 +112,7 @@ percentage mentioned at article 1 is equal to 15 %.
 ~~~
 
 ~~~admonish note title="Defining an exception for a variable"
-```catala
+```catala-code-en
 scope IncomeTaxComputation:
   exception definition tax_rate under condition
     individual.number_of_children >= 2
@@ -170,7 +170,7 @@ article 2:
 Individuals earning less than $10,000 are exempted of the income tax mentioned
 at article 1.
 
-```catala
+```catala-code-en
 scope IncomeTaxComputation:
   exception definition tax_rate under condition
     individual.income <= $10,000
@@ -187,7 +187,7 @@ To test what happens when the rules for articles 3 and 4 are at play,
 you can test the program when there are three children, and an income
 lower than $10,000 by tweaking the `Test` scope as follows:
 
-```catala
+```catala-code-en
 scope Test:
   definition computation equals
     output of IncomeTaxComputation with {
@@ -254,7 +254,7 @@ articles 2 and 3 an explicit `label` so that the `exception` keywords in article
 
 The fixed percentage mentioned at article 1 is equal to 20 %.
 
-```catala
+```catala-code-en
 scope IncomeTaxComputation:
   # The keyword "label" introduces the name of the label itself, here
   # "article_2".
@@ -266,7 +266,7 @@ scope IncomeTaxComputation:
 If the individual is in charge of 2 or more children, then the fixed
 percentage mentioned at article 1 is equal to 15 %.
 
-```catala
+```catala-code-en
 scope IncomeTaxComputation:
   # This definition is preceded by two indications:
   # * it has its own label, "article_3";
@@ -282,7 +282,7 @@ scope IncomeTaxComputation:
 Individuals earning less than $10,000 are exempted of the income tax mentioned
 at article 1.
 
-```catala
+```catala-code-en
 scope IncomeTaxComputation:
   label article_4 exception article_3
   definition tax_rate under condition
@@ -318,7 +318,7 @@ branches of exceptions. Let us provide an example with a new article of the CTTC
 Individuals earning more than $100,000 are subjects to a tax rate of
 30%, regardless of their number of children.
 
-```catala
+```catala-code-en
 scope IncomeTaxComputation:
   label article_5 exception article_3
   definition tax_rate under condition
@@ -400,7 +400,7 @@ To test what happens when the rule for article 5 is at play,
 you can test the program when there are 3 children, and an income
 greater than $100,000 by tweaking the `Test` scope as follows:
 
-```catala
+```catala-code-en
 scope Test:
   definition computation equals
     output of IncomeTaxComputation with {
@@ -438,7 +438,7 @@ are we in an overseas territory or not? We can model it with a new input to the
 scope `IncomeTaxComputation`, leading to a revised scope declaration:
 
 ~~~admonish quote title="Revised scope declaration"
-```catala
+```catala-code-en
 declaration scope IncomeTaxComputation:
    input individual content Individual
    input overseas_territories content boolean
@@ -449,7 +449,7 @@ declaration scope IncomeTaxComputation:
 
 With this new input variable, the code for article 6 is as follows:
 
-```catala
+```catala-code-en
 scope IncomeTaxComputation:
   label article_6 exception article_5
   definition tax_rate under condition
@@ -470,7 +470,7 @@ implicit, creating a danger of putting the wrong conditional in the Catala
 code in presence of exception branches. Suppose we had omitted the income
 condition in the code for article 6:
 
-```catala
+```catala-code-en
 scope IncomeTaxComputation:
   label article_6 exception article_5
   definition tax_rate under condition
@@ -521,7 +521,7 @@ to coexist in the same Catala program. This choice leads us to introduce the
 current date as a new input of the scope `IncomeTaxComputation`:
 
 ~~~admonish quote title="Revised scope declaration"
-```catala
+```catala-code-en
 declaration scope IncomeTaxComputation:
    input current_date content date
    input individual content Individual
@@ -569,7 +569,7 @@ is an exception to the label `article_2`, it suffices to give the same label
 
 The fixed percentage mentioned at article 1 is equal to 20 %.
 
-```catala
+```catala-code-en
 scope IncomeTaxComputation:
   label article_2 definition tax_rate under condition
     current_date < |2000-01-01|
@@ -580,7 +580,7 @@ scope IncomeTaxComputation:
 
 The fixed percentage mentioned at article 1 is equal to 21 % %.
 
-```catala
+```catala-code-en
 scope IncomeTaxComputation:
   # Simply use the same label "article_2" as the previous definition to group
   # them together

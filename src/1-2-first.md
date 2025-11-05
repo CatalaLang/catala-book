@@ -47,7 +47,7 @@ Below the `## Hello, world!` paragraph, open a Markdown code block indicating
 the `catala` language:
 
 ~~~text
-```catala
+```catala-code-en
 <you will insert your Catala code here !>
 ```
 ~~~
@@ -66,7 +66,7 @@ Otherwise, the Catala compiler will just ignore your code.
 
 Now, inside the Catala code block, copy-paste the following:
 
-```catala
+```catala-code-en
 declaration scope HelloWorld:
   output answer_everything content integer
 

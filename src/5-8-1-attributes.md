@@ -10,7 +10,7 @@ An attribute is always bound to the element directly following it: an extension
 could for example make use of them to retrieve labels to the input fields of a
 scope in order to generate a web form:
 
-```catala
+```catala-code-en
 declaration scope SomeComputation:
   #[form.label = "Enter the number of children satisfying the condition XXX"]
   input children_of_age content integer

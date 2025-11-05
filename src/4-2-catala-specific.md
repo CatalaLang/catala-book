@@ -7,7 +7,7 @@
 You may have noticed the keywords `condition` and `rule` in Catala scopes,
 for instance:
 
-```catala
+```catala-code-en
 declaration scope Foo:
   input i content integer
   output x condition
@@ -18,8 +18,8 @@ scope Foo:
 
 The above is strictly equivalent to the following program:
 
-```catala
-```catala
+```catala-code-en
+```catala-code-en
 declaration scope Foo:
   input i content integer
   output x content boolean
@@ -167,7 +167,7 @@ irreducible fractions made of two GMP infinite-precision integers.
 
 To get a duration, simply multiply the desired duration unit by the integer or decimal:
 
-```catala
+```catala-code-en
 1 month * 24 = 24 month
 
 declaration duration_of_days content duration
@@ -180,7 +180,7 @@ However, you cannot build a `YYYY-MM−DD` by directly concatenating together th
 `integer` values of `YYYY-MM-DD`. Instead, convert the integer values to
 durations, and add the durations to a starting date:
 
-```catala
+```catala-code-en
 declaration date_of_YMD content date depends on
   year_number content integer,
   month_number content integer,

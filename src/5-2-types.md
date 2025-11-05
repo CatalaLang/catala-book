@@ -226,7 +226,7 @@ Structure types are declared by the user, and each structure type has a name
 chosen by the user. Structure names begin by a capital letter and should follow
 the `CamlCase` naming convention. An example of structure declaration is:
 
-```catala
+```catala-code-en
 declaration structure Individual:
   data birth_date content date
   data income content money
@@ -239,7 +239,7 @@ as another structure or enumeration), but not recursively.
 
 Structure values are built with the following syntax:
 
-```catala
+```catala-code-en
 Individual {
     -- birth_date: |1930-09-11|
     -- income: $100,000
@@ -263,7 +263,7 @@ Enumeration types are declared by the user, and each enumeration type has a name
 chosen by the user. Enumeration names begin by a capital letter and should follow
 the `CamlCase` naming convention. An example of enumeration declaration is:
 
-```catala
+```catala-code-en
 declaration enumeration NoTaxCredit:
   -- NoTaxCredit
   -- TaxCreditForIndividual content Individual
@@ -277,7 +277,7 @@ an enumeration as another enumeration or structure), but not recursively.
 
 Enumeration values are built with the following syntax:
 
-```catala
+```catala-code-en
 # First case
 NoTaxCredit
 # Second case
@@ -300,7 +300,7 @@ For instance, `list of integer` represents a fixed-size array of integers.
 
 You can build list values using the following syntax:
 
-```catala
+```catala-code-en
 [1; 6; -4; 846645; 0]
 ```
 
@@ -332,7 +332,7 @@ done simply by writing a [tuple](./5-5-expressions.md#tuples) of lists intead
 of one `<list>` inside the operations; then you have a tuple of `<var>` instead
 of one to match the elements of each list in the tuple of lists. For instance,
 
-```catala
+```catala-code-en
 map each (x, y) among (lst1, lst2) to x + y
 ```
 
@@ -350,7 +350,7 @@ into a triplet type, or even an `n`-uplet for an arbitrary number `n` by
 
 You can build tuple values with the following syntax:
 
-```catala
+```catala-code-en
 (|2024-04-01|, $30, 1%) # This values has type (date, money, decimal)
 ```
 You can access the `n`-th element of a tuple, starting at `1`, with the syntax `<tuple>.n`.
@@ -360,7 +360,7 @@ You can access the `n`-th element of a tuple, starting at `1`, with the syntax `
 The type `optional of <type>` can be used to hold a value of `<type>` that could
 be absent. For instance, `optional of integer` equivalent to the enumeration:
 
-```catala
+```catala-code-en
 declaration enumeration OptionalInteger:
   -- Absent
   -- Present content integer
@@ -372,7 +372,7 @@ enumeration, values of type `optional` can be created using `Present content
 <expr>`, and used in the forms `match <expr> with pattern` and `<expr> with
 pattern <constr>`, e.g.
 
-```catala
+```catala-code-en
 if foo with pattern Present of bar and bar > 3 then ...
 ```
 
@@ -385,7 +385,7 @@ language](https://en.wikipedia.org/wiki/Functional_programming).
 
 The general syntax for describing a function type is :
 
-```catala
+```catala-code-en
 <type of result> depends on
   <name of argument 1> content <type of argument 1>,
   <name of argument 2> content <type of argument 2>,
@@ -426,7 +426,7 @@ such an argument "generic", or say it has a "wildcard" type. For instance, it is
 convenient to be able to write the `is_empty` function once for lists of
 elements of any type:
 
-```catala
+```catala-code-en
 declaration is_empty content boolean
   depends on argument content list of anything
   equals (number of argument = 0)
@@ -445,7 +445,7 @@ function reverses the elements of a list, the type of the list elements will be
 the same in and out the function. The `anything` types can be _named_ for this
 purpose, using `anything of type <name>`. For example:
 
-```catala
+```catala-code-en
 declaration reverse content list of anything of type element_type
   depends on argument content list of anything of type element_type
 ```
