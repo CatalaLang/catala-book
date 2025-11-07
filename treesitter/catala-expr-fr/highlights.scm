@@ -11,27 +11,20 @@
 (constructor_name) @constructor
 (enum_struct_name) @type
 
-(label) @tag
 
 [(LBRACE) (RBRACE) (LPAREN) (RPAREN) (LBRACKET) (RBRACKET)] @punctuation.bracket
 
-(toplevel_def [(DECLARATION) (CONTENT) (DEFINED_AS)]* @keyword.def)
 
 ;; upper level (only)
-[(SCOPE) (CONSEQUENCE) (DATA) (DEPENDS) (LABEL) (DECLARATION) (CONTEXT) (ENUM) (DEFINITION) (EXCEPTION) (UNDER_CONDITION) (CONDITION) (STRUCT) (ASSERTION) (RULE) (INPUT) (OUTPUT) (INTERNAL)] @keyword
 
 ;; expression level
 [(OF) (CONTAINS) (SUM) (STATE) (DEFINED_AS) (MATCH) (WITH_PATT) (BUT_REPLACE) (IF) (THEN) (ELSE) (CONTENT) (WITH) (LET) (IN) (NOT) (TO)] @keyword
 
-[(DECREASING) (INCREASING)] @constant
 
-(rule (NOT)? @constant (FILLED) @constant)
 
-(rounding_mode (_)* @keyword . (_) @constant .)
 
 (primitive_typ (WILDCARD) @type (OF)? @type)
 
-(type_variable) @variable.parameter
 
 (match_case (WILDCARD) @constructor)
 
@@ -42,7 +35,6 @@
 (state_label) @string
 
 [(primitive_typ)] @type.builtin
-(typ [(OPTION) (LIST)] @type.builtin)
 
 (builtin) @function.builtin
 

@@ -177,7 +177,7 @@ scope GrossToNetIncomeIndividual:
 # whole household. This is equivalent because if the sum of the incomes is below
 # the cap, then the capping operation will not yield any effect.
 scope GrossToNetIncomeHousehold:
-  ...
+  # ...
 ```
 
 ---

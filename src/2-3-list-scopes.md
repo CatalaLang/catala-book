@@ -20,7 +20,7 @@ This section of the tutorial builds up on the [previous one](./2-2-conditionals-
 and will reuse the same running example, but all the Catala code necessary
 to execute the example is included below for reference.
 
-~~~
+~~~catala-en
 {{#include ../examples/tutorial_end_2_2.catala_en}}
 ~~~
 ~~~~~~
@@ -83,7 +83,7 @@ in the narrow context of a single scope variable definition, you can use a
 local variable inside the definition of the scope variable. These local variables
 are introduced and used with the following syntax:
 
-```catala-code-en
+```catala-expr-en
 # The following line defines local variable "x" as begin equal to 4 * 5
 let x equals 4 * 5 in
 # We can then use "x" after the "in" keyword in the rest of the code
@@ -158,7 +158,7 @@ scope TestHousehold:
 
 The result of the execution is then:
 
-```test
+```console
 $ clerk run tutorial.catala_en --scope=TestHousehold
 ┌─[RESULT]─
 │ computation = HouseholdTaxComputation { -- household_tax: $30,000.00 }
@@ -410,7 +410,7 @@ tutorial](./2-4-states-dynamic.md).
 For reference, here is the final version of the Catala code consolidated at
 the end of this section of the tutorial.
 
-~~~
+~~~catala-en
 {{#include ../examples/tutorial_end_2_3.catala_en}}
 ~~~
 ~~~~~~

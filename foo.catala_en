@@ -1,0 +1,11 @@
+> Module Foo
+
+
+```catala
+declaration xx content integer equals
+match tax_credit with pattern
+-- NoTaxCredit: $0
+-- ChildrenTaxCredit of number_of_eligible_children:
+  $10,000 * number_of_eligible_children
+
+```

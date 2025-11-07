@@ -64,7 +64,7 @@ You may expect updates to the external code to be needed with the next versions 
 To help with this, the `catala` command supports a `--gen-external` flag that
 will generate a template implementation in the given backend:
 
-```shell-session
+```console
 $ catala ocaml --gen-external foo.catala_en
 ┌─[RESULT]─
 │ Generated template external implementations:

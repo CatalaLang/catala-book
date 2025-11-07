@@ -8,7 +8,7 @@ title = "The Catala domain-specific programming language"
 [output.html]
 smart-punctuation = true
 additional-css = ["./mdbook-admonish.css"]
-additional-js = ["mermaid.min.js", "mermaid-init.js", "treesitter.js"]
+additional-js = ["mermaid.min.js", "mermaid-init.js"]
 edit-url-template = "https://github.com/CatalaLang/catala-book/edit/main/{path}"
 
 [preprocessor]
@@ -28,7 +28,7 @@ renderer = ["html"]
 
 [preprocessor.treesitter]
 command = "mdbook-treesitter"
-languages = ["catala-code-en", "catala-code-fr"]
+languages = ["catala-en", "catala-fr", "catala-code-en", "catala-code-fr", "catala-expr-en", "catala-expr-fr"]
 
 [output.linkcheck]
 

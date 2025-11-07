@@ -56,7 +56,7 @@ Catala uses Markdown-like formatting for the legal text in the `.catala_en`
 files. So, to copy the text of the article into your `tutorial.catala_en`
 file, mark up the article header with `##` and put the text below, as such:
 
-```markdown
+```catala-en
 ## Article 1
 
 The income tax for an individual is defined as a fixed percentage of the
@@ -122,7 +122,7 @@ declaration structure Individual:
   # "duration", and any other structure or enumeration that you declare.
   data income content money
   # The field names "income" and "number_of_children" start by a lowercase
-  # letter, they follow the snake_case convention.
+  # letter, they follow the snake_case convention.
   data number_of_children content integer
 ```
 ~~~
@@ -252,10 +252,10 @@ language. Concretely, if `tax_credit` is a variable whose type is `TaxCredit` as
 declared above, then you can define the amount of a tax credit that depends
 on a number of eligible children with the following pattern matching:
 
-```catala-code-en
+```catala-expr-en
 match tax_credit with pattern
 -- NoTaxCredit: $0
--- ChildrenTaxCredit of number_of_eligible_children:
+-- ChildrenTaxCredit content number_of_eligible_children:
   $10,000 * number_of_eligible_children
 ```
 
@@ -316,7 +316,7 @@ to ℚ) and do not suffer from floating-point imprecisions. For `money`, the
 language makes an opinionated decision: a value of type `money` is always
 an integer number of cents.
 
-These choices has several consequences:
+These choices have several consequences:
 * `integer` divided by `integer` gives a `decimal` ;
 * `money` cannot be multiplied by `money` (instead, multiply `money` by `decimal`) ;
 * `money` multiplied (or divided) by `decimal` rounds the result to the nearest cent ;
@@ -325,11 +325,11 @@ These choices has several consequences:
 
 ~~~admonish example title="Types, values and operations"
 Concretely, this gives:
-```catala-code-en
-10 / 3 = 3.333333333...
+```text
+10  / 3   = 3.333333333...
 $10 / 3.0 = $3.33
 $20 / 3.0 = $6.67
-$10 / $3 = 3.33333333...
+$10 / $3  = 3.33333333...
 ```
 ~~~
 
@@ -337,7 +337,7 @@ The Catala compiler will guide you into using the correct operations explicitly,
 by reporting compiler errors when that is not the case.
 
 ~~~admonish bug title="Resolving typing errors on operations"
-For instance, typing to add an `integer` and a `decimal` gives the
+For instance, trying to add an `integer` and a `decimal` gives the
 following error message from the Catala compiler:
 
 ```text
@@ -388,7 +388,7 @@ the scope to be interpreted?
 
 ~~~admonish failure title="Why can't I test `IncomeTaxComputation` directly?" collapsible=true
 The reflex at this point is to execute the following command:
-```text
+```console
 $ clerk run tutorial.catala_en --scope=IncomeTaxComputation
 ┌─[ERROR]─
 │
@@ -441,7 +441,7 @@ scope Test:
 
 This test can now be executed through the Catala interpreter:
 
-```text
+```console
 $ clerk run tutorial.catala_en --scope=Test
 ┌─[RESULT]─
 │ computation = IncomeTaxComputation { -- income_tax: $4,000.00 }
@@ -458,7 +458,7 @@ the behavior of Catala programs, and spot errors in your code 😀
 You can also check that there is no syntax or typing error in your code,
 without testing it, with the following command:
 
-```text
+```console
 $ clerk typecheck tutorial.catala_en
 ┌─[RESULT]─
 │ Typechecking successful!
@@ -479,7 +479,7 @@ arithmetic operations and define local variables.
 For reference, here is the final version of the Catala code consolidated at
 the end of this section of the tutorial.
 
-~~~
+~~~catala-en
 {{#include ../examples/tutorial_end_2_1.catala_en}}
 ~~~
 ~~~~~~

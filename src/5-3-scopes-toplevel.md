@@ -77,7 +77,7 @@ Here is the syntax to declare scope `Foo` with local variables
 date variable with two states `before` and `after`, and `buzz` is a decimal
 that is both input and output to the scope:
 
-~~~catala
+~~~catala-code-en
 declaration scope Foo:
   input baz content boolean
   internal fizz content date
@@ -173,10 +173,11 @@ alongside the variable. For instance, if the internal integer variable `foo` has
 `a`, `b` and `c` in this order, then `foo` shall be declared with:
 
 ```catala-code-en
-internal foo content integer
-  state a
-  state b
-  state c
+declaration scope Foo:
+  internal foo content integer
+    state a
+    state b
+    state c
 ```
 
 The order of the `state` clauses in the declaration determines the computation

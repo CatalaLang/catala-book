@@ -21,12 +21,12 @@ the [official installation instructions](https://opam.ocaml.org/doc/Install.html
 that we repeat here for convenience.
 
 With aptitude (debian-like linux distributions):
-```bash
+```console
 $ sudo apt update
 $ sudo apt install opam
 ```
 Without aptitude:
-```bash
+```console
 $ bash -c "sh <(curl -fsSL https://opam.ocaml.org/install.sh)"
 ```
 
@@ -35,7 +35,7 @@ as `opam` needs to create a *switch* with a specific version of OCaml, where
 all the packages that we'll install later will be compiled and stored. To
 initialize `opam` and create this first switch, enter the following:
 
-```bash
+```console
 $ opam init -c 4.14.2
 $ eval $(opam env)
 ```
@@ -44,7 +44,7 @@ $ eval $(opam env)
 Then you can keep your current switch for installing Catala, or create a
 new, specific one with
 
-```
+```console
 $ opam switch create 4.14.2
 ```
 
@@ -55,7 +55,7 @@ Catala normally supports OCaml versions from `4.14.X` up to `5.4.X`.
 
 Run the following commands to install the latest Catala version via `opam`:
 
-```bash
+```console
 $ opam update && opam install catala.1.0.0~beta
 ```
 
@@ -67,7 +67,7 @@ eval $(opam env)` before.
 ### Upgrading Catala
 At any time, you can retrieve the latest Catala release using
 these simple commands:
-```bash
+```console
 $ opam update
 $ opam upgrade catala
 ```
@@ -84,7 +84,7 @@ you need to [pin](https://opam.ocaml.org/doc/Usage.html#opam-pin) the `catala`,
 version pointing to the git repositories of the Catala tooling. Here is the
 command to invoke:
 
-```bash
+```console
 $ opam pin catala.dev --dev-repo
 $ opam pin catala-lsp.dev --dev-repo
 $ opam pin catala-format.dev --dev-repo
@@ -93,7 +93,7 @@ $ opam pin catala-format.dev --dev-repo
 If you're tired of the bleeding edge and want to go back to the normal releases,
 simply unpin the development versions:
 
-```
+```console
 $ opam unpin catala.dev
 $ opam unpin catala-lsp.dev
 $ opam unpin catala-format.dev
@@ -101,7 +101,7 @@ $ opam unpin catala-format.dev
 
 And reinstall Catala:
 
-```bash
+```console
 $ opam reinstall catala
 $ opam reinstall catala-lsp
 $ opam reinstall catala-format
@@ -113,7 +113,7 @@ $ opam reinstall catala-format
 The VSCode extension requires the Catala's Language Server Protocol to be
 installed. This can be done by running:
 
-```bash
+```console
 $ opam install catala-lsp.1.0.0~beta
 ```
 

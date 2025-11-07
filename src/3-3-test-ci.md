@@ -29,7 +29,7 @@ backends = [ "c", "java" ]                        # Output language backends
 
 [[target]]
 name     = "housing-benefits"
-modules  = [ "Section_8, ... ]
+modules  = [ "Section_8", ... ]
 tests    = [ "tests/test_housing_benefits.catala_en" ]
 backends = [ "ocaml", "c", "java" ]
 ```
@@ -75,9 +75,10 @@ inputs. For instance, imagine that one of your `src` files,
 `src/income_tax.catala_en`, contains the following scope declaration (adapted
 and expanded from [earlier](./3-2-compilation-deployment.md))
 
-```catala-code-en
-> Module
+~~~catala-en
+> Module Income_tax
 
+```catala
 declaration enumeration Filing:
   -- Single
   -- Joint content date
@@ -88,35 +89,42 @@ declaration scope IncomeTaxComputation:
   input filing content Filing
 
   output income_tax content money
-
 ```
+~~~
 
 Then, in the file `tests/tests_income_tax.catala_en`, you can write a test
 for the scope `IncomeTaxComputation`. While there is no constrained format
 for tests in Catala, we recommend that you follow this pattern:
 
-```catala-code-en
+~~~catala-en
+> Usage de Income_tax
+
+```catala
 # First, declare your test
 declaration scope TestIncomeTax1: # You can choose any name for your test
-  computation content IncomeTaxComputation # Put here the scope you want to test
+  output computation content Income_tax.IncomeTaxComputation # Put here the scope you want to test
 
 # Then, fill the inputs of your test
 scope TestIncomeTax1:
   definition computation equals
-    result of IncomeTaxComputation {
+    result of Income_tax.IncomeTaxComputation {
       # The inputs of this test to IncomeTaxComputation are below :
       -- income: $20,000
       -- number_of_children: 2
       -- filing: Joint content |1998-04-03|
     }
 ```
+~~~
 
 This test is now a valid program. You can run it with :
 
-```text
+```console
 $ clerk run tests/tests_income_tax.catala_en --scope=TestIncomeTax1
-┌─[RESULT]─ Exemple2 ─
-│ income_tax = $5,000
+┌─[RESULT]─ TestIncomeTax1 ─
+│ computation =
+│   Income_tax.IncomeTaxComputation {
+│     -- income_tax: $5,000
+│   }
 └─
 ```
 
@@ -136,7 +144,7 @@ is our test example set up as an assertion test:
 ```catala-code-en
 #[test]
 declaration scope TestIncomeTax1:
-  computation content IncomeTaxComputation
+  output computation content IncomeTaxComputation
 
 scope TestIncomeTax1:
   definition computation equals
@@ -155,15 +163,15 @@ on the input is satisfied, etc. At test time, `clerk test` will only check
 whether all the assertions that you defined hold.
 
 ~~~admonish danger title="Don't forget the assertions!"
-Assertion-based testing needs assertions. If you just put `#[test]` without
-any assertions in your test, it will always succeed (since no assertions fail),
-which isn't probably what you want for a test.
+Assertion-based testing needs assertions. If you just put `#[test]` without any
+assertions in your test, it will succeed whatever the result (since no
+assertions fail), which isn't probably what you want for a test.
 ~~~
 
 ~~~admonish success title="The Catala team approves assertion-testing"
 The Catala team recommends the use of assertion-based testing as the primary
 method for testing projects, for unit or end-to-end testing. The reasons are
-the following :
+the following : <!-- TODO -->
 ~~~
 
 ### Cram testing
@@ -172,21 +180,21 @@ The second way to check the expected result of a computation is simply to
 check the textual output of running the command in the terminal. This is
 called [cram testing](https://bitheap.org/cram/). To enable cram testing
 in Catala, you need to specify :
-1. what is the command you want to test;
-2. what should be the expected terminal output.
+1. what the command you want to test is;
+2. what the expected terminal output should be.
 
 Cram tests are directly embedded in Catala source code files, under the form of
 a `` ```catala-test-cli `` Markdown code block. Inside, you specify which
-command to test after the prompt `$ catala ...`. For instance, the `test-scope
-TestIncomeTax1` command is equivalent to running `clerk run
---scope=TestIncomeTax1`. Then, you provide the expected result as it is spit out
+command to test after the prompt `$ catala ...`. For instance, the `interpret
+--scope=TestIncomeTax1` command is equivalent to running `clerk run
+--scope=TestIncomeTax1`. Then follows a verbatim of the expected result as it is spit out
 by running the command on the terminal.
 
 For instance, here is how to create a cram test from our `IncomeTaxComputation`
 example above:
 
-~~~markdown
-```catala-code-en
+~~~catala-en
+```catala
 declaration scope TestIncomeTax1:
   computation content IncomeTaxComputation
 
@@ -200,12 +208,13 @@ scope TestIncomeTax1:
     }
 ```
 
-```catala-code-en-test-cli
-$ catala test-scope TestIncomeTax1
-┌─[RESULT]─ Exemple1 ─
-│ computation = IncomeTaxComputation {
-│   -- income_tax: $5000,0
-│ }
+```catala-test-cli
+$ catala interpret --scope=TestIncomeTax1
+┌─[RESULT]─ TestIncomeTax1 ─
+│ computation =
+│   Income_tax.IncomeTaxComputation {
+│     -- income_tax: $5,000
+│   }
 └─
 ```
 ~~~
@@ -213,7 +222,7 @@ $ catala test-scope TestIncomeTax1
 `clerk test` will pick up the `` ```catala-test-cli `` blocks, run the command
 inside, and compare the output with the expected output.
 
-Remember that beyond `test-scope`, you can put any acceptable Catala
+Remember that beyond `interpret`, you can put any acceptable Catala
 command on a cram test. See the [reference](./6-2-commands-workflow.md#clerk-test)
 for more details.
 
@@ -225,7 +234,7 @@ changing the name of a type can break the terminal output while having no
 effect on an assertion in your test.
 
 Hence, the Catala team recommends using assertion-based testing when possible,
-and only use cram testing for checking what the compiler outputs with specific
+and only using cram testing for checking what the compiler outputs with specific
 options and commands different from `clerk run`.
 ~~~
 
@@ -255,7 +264,7 @@ failure:
 
 ```text
 ■ scope Test TestIncomeTax1
-  $ ../.opam/catala/bin/catala interpret -I tax_code --scope=TestIncomeTax1
+  $ catala interpret -I tax_code --scope=TestIncomeTax1
     tests/tests_income_tax.catala_en:34 Assertion failed: $5,0000 = $4,500
 ```
 
@@ -284,7 +293,7 @@ CI based on [Alpine Linux](https://www.alpinelinux.org/).
 You can browse them [here](https://gitlab.inria.fr/catala/ci-images/container_registry/4100)
 or pull them with:
 
-```text
+```console
 $ docker pull registry.gitlab.inria.fr/catala/ci-images:latest
 ```
 
@@ -303,7 +312,7 @@ that execute certain commands, typically to run the test or build an artifact.
 
 This walkthrough will not teach you how to write these workflow files, please
 refer to the documentation of your software forge. However, to give you a quick
-idea, here is an example workflow file using the Github format for our
+idea, here is an example workflow file for Github-hosted projects for our
 example Catala project:
 
 ```yaml
@@ -311,31 +320,21 @@ name: CI
 
 on:
   push:
-    branches: [main]
-    tags: ["*.*.*"]
-  workflow_dispatch:
-  pull_request:
 
 jobs:
   tests:
     name: Test suite and build
-    runs-on: self-hosted
     container:
       image: registry.gitlab.inria.fr/catala/ci-images:latest-c
       options: --user root
     steps:
-      - name: Fix home
-        # Workaround Github actions issue, see
-        # https://github.com/actions/runner/issues/863
-        run: sudo sh -c "echo HOME=/home/ocaml >> ${GITHUB_ENV}"
       - name: Checkout
         uses: actions/checkout@v4
       - name: Run test suite with the Catala interpreter and backends
-        run: |
-          opam --cli=2.1 exec -- clerk ci
+        run: opam exec -- clerk ci
 ```
 
-The `opam --cli=2.1 exec` is important because `clerk` is installed
+The `opam exec` is important because `clerk` is installed
 via opam and the OCaml software toolchain in the CI images.
 
 ~~~admonish question title="What does `clerk ci` do?"

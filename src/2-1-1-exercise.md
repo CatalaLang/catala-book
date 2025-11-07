@@ -223,7 +223,7 @@ deceased individual.
 
 You can test your solution using the following TestKillPerson
 scope by invoking this command in a console:
-```bash
+```console
 clerk run exercise-2-1-1.catala_en --scope TestKillPerson
 ```
 
@@ -347,10 +347,11 @@ In order to decompose and reason on enumeration values, one can use
 the _pattern-matching_ construction. For example, _pattern-matching_ a `DateOfDeath`
 enumeration looks like this:
 ```catala-code-en
-definition individual_age equals
-  match individual.date_of_death with
-  -- StillAlive: current_date - individual.date_of_birth
-  -- Deceased of deceased_date: deceased_date - individual.date_of_birth
+scope TaxComputation:
+  definition individual_age equals
+    match individual.date_of_death with pattern
+    -- StillAlive: current_date - individual.date_of_birth
+    -- Deceased content deceased_date: deceased_date - individual.date_of_birth
 ```
 *Nota bene*: all the different branches of a _pattern-matching_ must contain same
 data type expressions.
@@ -384,8 +385,8 @@ declaration scope TestTaxComputation:
 ```
 
 Same as before, you can use a similar command to execute your test:
-```bash
-clerk run exercise-2-1-1.catala_en --scope TestTaxComputation
+```console
+$ clerk run exercise-2-1-1.catala_en --scope TestTaxComputation
 ```
 
 ~~~admonish example title="Solution to Question 5" collapsible=true

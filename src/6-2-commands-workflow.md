@@ -33,7 +33,7 @@ Discover, build and run tests.
 `clerk test` can be used without any arguments at the root directory of
 a Catala project, with the following output:
 
-```shell-session
+```console
 $ clerk test
 ┏━━━━━━━━━━━━━━━━━━━━━━━━  ALL TESTS PASSED  ━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃                                                                    ┃
@@ -176,10 +176,12 @@ Beware, cram tests this cannot be used to test backend-generated code; so `clerk
   test --backend=...` won't run cram tests.
 
 ~~~admonish example title="`test-scope`"
-Note that for these `` ```catala-test-cli``, `$catala test-scope Test` is a shorthand for
-```
+Note that for these `` ```catala-test-cli``, `$ catala test-scope Test` is a shorthand for
+```console
 $ catala interpret --scope=Test
 ```
+In addition, they allow the test to be run with varying flags using `clerk
+run`'s `--test-flags` flag. See `clerk test --help` for details.
 ~~~
 
 ~~~admonish tip title="Resetting the expected output of a cram test"

@@ -121,9 +121,11 @@ the definitions apply, like:
 
 ```catala-code-en
 scope Foo:
-  definition bar under condition current_date >= |2025-01-01| consequence equals ...
+  definition bar under condition current_date >= |2025-01-01|
+  consequence equals x...
 
-  definition baz under condition current_date >= |2025-01-01| consequence equals ...
+  definition baz under condition current_date >= |2025-01-01|
+  consequence equals x...
 ```
 
 To avoid duplicating `current_date >= |2025-01-01|`, you can put the
@@ -287,43 +289,48 @@ the samel label `base_case` to the two base case definitions:
 
 ```catala-code-en
 scope Foo:
-  label base_case definition bar under condition
-    current_date < |2025-01-01|
-  equals 42
+  label base_case definition bar
+  under condition current_date < |2025-01-01|
+  consequence equals
+    42
 
 ...
 
 scope Foo:
-  label base_case definition bar under condition
-    current_date >= |2025-01-01|
-  equals 43
-
-...
-
-scope Foo:
-  label fizz_exn
-  exception base_case
-  definition bar under condition
-    fizz = 0
-  consequence equals 0
+  label base_case definition bar
+  under condition current_date >= |2025-01-01|
+  consequence equals
+    43
 
 ...
 
 scope Foo:
   label fizz_exn
   exception base_case
-  definition bar under condition
-    fizz > 0
-  consequence equals 1
+  definition bar
+  under condition fizz = 0
+  consequence equals
+    0
 
 ...
 
 scope Foo:
   label fizz_exn
   exception base_case
-  definition bar under condition
-    fizz < 0
-  consequence equals -1
+  definition bar
+  under condition fizz > 0
+  consequence equals
+    1
+
+...
+
+scope Foo:
+  label fizz_exn
+  exception base_case
+  definition bar
+  under condition fizz < 0
+  consequence equals
+    -1
 ```
 
 ~~~admonish tip title="Could I drop some labels here?"

@@ -1,6 +1,8 @@
 ; highlights.scm
 
 (COMMENT) @comment
+(law_heading) @module
+(verb_block) @comment
 
 (literal) @constant
 
@@ -64,8 +66,10 @@
 
 (ATTRIBUTE) @attribute
 
+[(BEGIN_METADATA) (BEGIN_CODE) (END_CODE)] @punctuation.delimiter
 
 [(COMMA) (DOT) (SEMICOLON)] @punctuation
 
 [(ALT) (COLON)] @punctuation
 
+(law_text) @law_text

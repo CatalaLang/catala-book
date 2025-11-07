@@ -13,7 +13,7 @@ This section of the tutorial builds up on the [previous one](./2-1-basic-blocks.
 and will reuse the same running example, but all the Catala code necessary
 to execute the example is included below for reference.
 
-~~~
+~~~catala-en
 {{#include ../examples/tutorial_end_2_1.catala_en}}
 ~~~
 ~~~~~~
@@ -78,7 +78,7 @@ During the above test, two definitions for `tax_rate` are valid at the
 same time. What happens then? In these cases, Catala will abort
 execution and return an error message like the one below:
 
-```text
+```console
 $ clerk run tutorial.catala_en --scope=Test
 ┌─[ERROR]─
 │
@@ -203,7 +203,7 @@ scope Test:
 ~~~admonish bug title="Conflicting definitions"
 The program execution yields the following error at runtime:
 
-```text
+```console
 $ clerk run tutorial.catala_en --scope=Test
 ┌─[ERROR]─
 │
@@ -337,7 +337,7 @@ the conditional definitions of a variable as well as the prioritization between
 them. To help, the Catala compiler can display the exception branches with
 the following command:
 
-```text
+```console
 $ catala exceptions tutorial.catala_en --scope=IncomeTaxComputation --variable=tax_rate
 ┌[RESULT]─
 │ Printing the tree of exceptions for the definitions of variable "tax_rate" of scope "IncomeTaxComputation".
@@ -414,7 +414,7 @@ scope Test:
 
 The result of the execution is then:
 
-```test
+```console
 $ clerk run tutorial.catala_en --scope=Test
 ┌─[RESULT]─
 │ computation = IncomeTaxComputation { -- income_tax: $60,000.00 }
@@ -606,7 +606,7 @@ complex logic behind the legal texts while matching their structure.
 For reference, here is the final version of the Catala code consolidated at
 the end of this section of the tutorial.
 
-~~~
+~~~catala-en
 {{#include ../examples/tutorial_end_2_2.catala_en}}
 ~~~
 ~~~~~~
