@@ -19,7 +19,6 @@ scope Foo:
 The above is strictly equivalent to the following program:
 
 ```catala-code-en
-```catala-code-en
 declaration scope Foo:
   input i content integer
   output x content boolean
@@ -168,7 +167,7 @@ irreducible fractions made of two GMP infinite-precision integers.
 To get a duration, simply multiply the desired duration unit by the integer or decimal:
 
 ```catala-code-en
-1 month * 24 = 24 month
+# 1 month * 24 = 24 month
 
 declaration duration_of_days content duration
   depends on number_of_days content integer
@@ -177,24 +176,8 @@ declaration duration_of_days content duration
 ```
 
 However, you cannot build a `YYYY-MM−DD` by directly concatenating together the
-`integer` values of `YYYY-MM-DD`. Instead, convert the integer values to
-durations, and add the durations to a starting date:
-
-```catala-code-en
-declaration date_of_YMD content date depends on
-  year_number content integer,
-  month_number content integer,
-  day_number content integer
-  equals
-    |0000-01-01| +
-      1 year * year_number +
-      1 month * (month_number - 1) +
-      1 day * (day_number - 1)
-```
-
-Using this helper function helps you avoid building invalid dates; for instance
-`date_of_YMD of 2025,4,31 = |2025-01-01|` because there are only 30 days in
-April.
+`integer` values of `YYYY-MM-DD`. Instead, use the `Date.of_year_month_day`
+function.
 
 ## Why are there no strings?
 

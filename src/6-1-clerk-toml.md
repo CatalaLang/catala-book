@@ -139,7 +139,7 @@ Global table used to override clerk build variables. The full list of
 variables can be accessed using `clerk list-vars`.
 
 Example:
-```
+```toml
 [variables]
 CATALA_FLAGS_C = "-O"
 CC = "clang"

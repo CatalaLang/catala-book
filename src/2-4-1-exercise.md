@@ -53,7 +53,7 @@ and half the amount per children.
 ```catala-code-en
 scope HouseholdTaxIndividualComputation:
   definition household_tax equals
-    $10,000 * (1.0 + decimal of individual.number_of_children / 2.0)
+    $10,000 * (1.0 + individual.number_of_children / 2)
 
 scope HouseholdTaxComputation:
   definition shares_of_household_tax equals

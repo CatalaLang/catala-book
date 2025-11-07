@@ -44,13 +44,13 @@ has the correct type with respect to the scope variable declaration.
 
 ### Scope variables that are functions
 
-If the scope variable you are defining is a function variable, for instance if `bar`
+If the scope variable you are defining is a function variable, for instance if `foo`
 is a function of scope `Foo` with arguments `x` and `y`, then the syntax
 for definition the variable is:
 
 ```catala-code-en
 scope Foo:
-  definition bar of x,y equals x + y
+  definition foo of x, y equals x + y
 ```
 
 ### Scope variables with multiple states
@@ -70,7 +70,7 @@ Variable states and functions mix this way:
 
 ```catala-code-en
 scope Foo:
-  definition bar of x, y state middle equals (bar of x, y) * 2 + x + y
+  definition foo of x, y state middle equals (foo of x, y) * 2 + x + y
 ```
 
 ### Scope variables that are `condition`
@@ -83,7 +83,7 @@ by `fulfilled` or `not fulfilled`:
 ```catala-code-en
 scope Foo:
   # Rules usually always come in the form of conditional definitions, see below
-  rule bar under condition ... consequence not fulfilled
+  rule bar under condition [...] consequence not fulfilled
 ```
 
 
@@ -107,7 +107,7 @@ the `equals` keyword with the following syntax :
 
 ```catala-code-en
 scope Foo:
-  definition bar under condition fizz >= 0 consequence 42
+  definition bar under condition fizz >= 0 consequence equals 42
 ```
 
 Follow the [relevant tutorial section](./2-2-conditionals-exceptions.md) for
@@ -121,9 +121,11 @@ the definitions apply, like:
 
 ```catala-code-en
 scope Foo:
-  definition bar under condition current_date >= |2025-01-01| consequence equals ...
+  definition bar under condition current_date >= |2025-01-01|
+  consequence equals [...]
 
-  definition baz under condition current_date >= |2025-01-01| consequence equals ...
+  definition baz under condition current_date >= |2025-01-01|
+  consequence equals [...]
 ```
 
 To avoid duplicating `current_date >= |2025-01-01|`, you can put the
@@ -131,9 +133,9 @@ condition directly to the scope block with:
 
 ```catala-code-en
 scope Foo under condition current_date >= |2025-01-01|:
-  definition bar equals ...
+  definition bar equals [...]
 
-  definition baz equals ...
+  definition baz equals [...]
 ```
 ~~~
 
@@ -168,9 +170,10 @@ scope Foo:
   # The line below means that the current definition is an exception *to*
   # the other definition with the "base_case" label.
   exception base_case
-  definition bar under condition
-    fizz = 0
-  consequence equals 0
+  definition bar
+  under condition fizz = 0
+  consequence equals
+    0
 ```
 
 ~~~admonish tip title="Do I have to give a label to each definition all the time?"
@@ -186,9 +189,10 @@ scope Foo:
 ...
 
 scope Foo:
-  exception definition bar under condition
-    fizz = 0
-  consequence equals 0
+  exception definition bar
+  under condition fizz = 0
+  consequence equals
+    0
 ```
 
 If there is any ambiguity with your setup using this short-hand format, the
@@ -219,27 +223,30 @@ scope Foo:
 scope Foo:
   label fizz_exn
   exception base_case
-  definition bar under condition
-    fizz = 0
-  consequence equals 0
+  definition bar
+  under condition fizz = 0
+  consequence equals
+    0
 
 ...
 
 scope Foo:
   label fizz_exn
   exception base_case
-  definition bar under condition
-    fizz > 0
-  consequence equals 1
+  definition bar
+  under condition fizz > 0
+  consequence equals
+    1
 
 ...
 
 scope Foo:
   label fizz_exn
   exception base_case
-  definition bar under condition
-    fizz < 0
-  consequence equals -1
+  definition bar
+  under condition fizz < 0
+  consequence equals
+    -1
 ```
 
 ~~~admonish tip title="Could I drop some labels here?"
@@ -257,23 +264,26 @@ scope Foo:
 ...
 
 scope Foo:
-  exception definition bar under condition
-    fizz = 0
-  consequence equals 0
+  exception definition bar
+  under condition fizz = 0
+  consequence equals
+    0
 
 ...
 
 scope Foo:
-  exception definition bar under condition
-    fizz > 0
-  consequence equals 1
+  exception definition bar
+  under condition fizz > 0
+  consequence equals
+    1
 
 ...
 
 scope Foo:
-  exception definition bar under condition
-    fizz < 0
-  consequence equals -1
+  exception definition bar
+  under condition fizz < 0
+  consequence equals
+    -1
 ```
 ~~~
 
@@ -287,43 +297,48 @@ the samel label `base_case` to the two base case definitions:
 
 ```catala-code-en
 scope Foo:
-  label base_case definition bar under condition
-    current_date < |2025-01-01|
-  equals 42
+  label base_case definition bar
+  under condition current_date < |2025-01-01|
+  consequence equals
+    42
 
 ...
 
 scope Foo:
-  label base_case definition bar under condition
-    current_date >= |2025-01-01|
-  equals 43
-
-...
-
-scope Foo:
-  label fizz_exn
-  exception base_case
-  definition bar under condition
-    fizz = 0
-  consequence equals 0
+  label base_case definition bar
+  under condition current_date >= |2025-01-01|
+  consequence equals
+    43
 
 ...
 
 scope Foo:
   label fizz_exn
   exception base_case
-  definition bar under condition
-    fizz > 0
-  consequence equals 1
+  definition bar
+  under condition fizz = 0
+  consequence equals
+    0
 
 ...
 
 scope Foo:
   label fizz_exn
   exception base_case
-  definition bar under condition
-    fizz < 0
-  consequence equals -1
+  definition bar
+  under condition fizz > 0
+  consequence equals
+    1
+
+...
+
+scope Foo:
+  label fizz_exn
+  exception base_case
+  definition bar
+  under condition fizz < 0
+  consequence equals
+    -1
 ```
 
 ~~~admonish tip title="Could I drop some labels here?"
@@ -349,9 +364,9 @@ scope `Bar` that has input variables `fizz` and `buzz`, you will need to define
 
 ```catala-code-en
 scope Foo:
-  definition bar.fizz equals ...
+  definition bar.fizz equals [...]
 
-  definition bar.fuzz equals ...
+  definition bar.fuzz equals [...]
 ```
 
 Of course, you can use exceptions and conditional definitions for these
@@ -390,7 +405,7 @@ all the date operations inside a whole scope, use this syntax:
 # Let us suppose you want to set the rounding more for date operations
 # inside scope Foo declared elsewhere
 scope Foo:
-  date round decreasing # rounding down
+  date round up # rounding to the next date
   # or
-  date round increasing # rounding up
+  date round down # rounding to the earlier date
 ```

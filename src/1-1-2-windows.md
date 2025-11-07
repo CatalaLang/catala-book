@@ -50,7 +50,7 @@ listed on the [OCaml on Windows](https://ocaml.org/docs/ocaml-on-windows) offici
 
 Then, initialize `opam`:
 
-```bash
+```console
 $ opam init -c 4.14.2
 ```
 
@@ -60,7 +60,7 @@ Currently, the `opam` Catala package is not directly buildable on
 Windows. However, the Catala's lsp server bundles a subset of Catala
 which is fine. This may be installed with the following command
 
-```bash
+```console
 $ opam install catala.1.0.0~beta catala-lsp.1.0.0~beta
 ```
 ~~~admonish warning title="Ninja error"

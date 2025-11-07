@@ -3,3 +3,4 @@ _build
 .#*
 **/#*#
 src/lib/
+treesitter/tree-sitter-catala

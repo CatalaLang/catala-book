@@ -34,6 +34,9 @@
 
 
 (COMMENT) @comment
+(law_heading) @tag
+(verb_block) @comment
+(directive) @string
 
 (variable) @symbol
 
@@ -95,6 +98,7 @@
 
 (ATTRIBUTE) @attribute
 
+[(BEGIN_METADATA) (BEGIN_CODE) (END_CODE)] @comment
 
 [(COMMA) (SEMICOLON)] @punctuation
 

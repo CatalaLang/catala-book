@@ -26,6 +26,7 @@ If you're familiar with this format, you can read it below:
     -- <enum variant 2> of <variable>: <expr 2>
   | <expr> with pattern <enum variant>                # Pattern variant test
   | <expr> with pattern <enum variant> of <variable>  # Ditto with content binding
+      and <expr>                                      #   and test on the variable
   | <expr> but replace                                # Structure partial updates
       {  -- <variable 1>: <expr 1> -- ... }
   | - <expr>                                          # Negation
@@ -99,7 +100,7 @@ If you have a value `x` of type `(integer, boolean)`, you can use
 `x.0` and `x.1` to access the two components of the tuple. But you can also
 bind the two components to two new variables `y` and `z` with:
 
-```catala-code-en
+```catala-expr-en
 let (y, z) = x in
 if z then y else 0
 ```
@@ -128,11 +129,11 @@ yielding a value and not a statement that conditionally updates some memory cell
 As explained [previously](./5-2-types.md#structures), structure values are built with the following
 syntax:
 
-```catala-code-en
+```catala-expr-en
 Individual {
-    -- birth_date: |1930-09-11|
-    -- income: $100,000
-    -- number_of_children: 2
+  -- birth_date: |1930-09-11|
+  -- income: $100,000
+  -- number_of_children: 2
 }
 ```
 To access the field of a structure, simply use the syntax <struct value>.<field name>, like
@@ -143,7 +144,7 @@ Suppose you have a value `foo` containing a big structure `Bar` with a dozen fie
 including `baz`. You want to obtain a new structure value similar to `foo`
 but with a different value for bar. You could write:
 
-```catala-code-en
+```catala-expr-en
 Bar {
   -- baz: 42
   -- fizz: foo.fizz
@@ -154,7 +155,7 @@ Bar {
 But this is very tedious as you have to copy over all the fields. Instead, you can
 write:
 
-```catala-code-en
+```catala-expr-en
 foo but replace { -- baz: 42 }
 ```
 ~~~
@@ -167,15 +168,15 @@ field of an enumeration as another enumeration or structure), but not recursivel
 
 Enumeration values are built with the following syntax:
 
-```catala-code-en
+```catala-expr-en
 # First case
-NoTaxCredit
+NoTaxCredit,
 # Second case
-TaxCreditForIndividual content (Individual {
+TaxCreditForIndividual content Individual {
     -- birth_date: |1930-09-11|
     -- income: $100,000
     -- number_of_children: 2
-})
+},
 # Third case
 TaxCreditAfterDate content |2000-01-01|
 ```
@@ -208,14 +209,14 @@ pattern matching a powerful an intuitive way to "inspect" nested content.
 For instance, here is the pattern matching syntax to compute the tax credit
 in our example:
 
-```catala-code-en
+```catala-expr-en
 match foo with pattern
 -- NoTaxCredit: $0
--- TaxCreditForIndividual of individual: individual.income * 10%
--- TaxCreditAfterDate of date: if today >= date then $1000 else $0
+-- TaxCreditForIndividual content individual: individual.income * 10%
+-- TaxCreditAfterDate content date: if today >= date then $1000 else $0
 ```
 
-In `TaxCreditForIndividual of individual`, while `TaxCreditForIndividual` is
+In `TaxCreditForIndividual content individual`, while `TaxCreditForIndividual` is
 the name of the enumeration case being inspected, `individual` is a user-chosen
 variable name standing for the content of this enumeration case. In other words:
 you can choose your own name for the variable in the syntax at this location!
@@ -231,7 +232,7 @@ For conciseness and precision, you can use the `anything` catch-all case as
 the last case of your pattern matching. For instance, here this computes whether
 you should apply a tax credit or not:
 
-```catala-code-en
+```catala-expr-en
 match foo with pattern
 -- NoTaxCredit: true
 -- anything: false
@@ -242,9 +243,9 @@ match foo with pattern
 You can create a boolean test for a specific case of an enum value with
 pattern matching:
 
-```catala-code-en
+```catala-expr-en
 match foo with pattern
--- TaxCreditForIndividual of individual: true
+-- TaxCreditForIndividual content individual: true
 -- anything: false
 ```
 
@@ -253,23 +254,23 @@ of a specific case is cumbersome. Catala offers a [sugar](https://en.wikipedia.o
 to make things more concise; the code below is exactly equivalent to the code
 above.
 
-```catala-code-en
+```catala-expr-en
 foo with pattern TaxCreditForIndividual
 ```
 
 Now suppose you want to test whether `foo` is `TaxCreditForIndividual`
 and that the `individual`'s income is greater than $10,000. You could write:
 
-```catala-code-en
+```catala-expr-en
 match foo with pattern
--- TaxCreditForIndividual of individual: individual.income >= $10,000
+-- TaxCreditForIndividual content individual: individual.income >= $10,000
 -- anything: false
 ```
 
 But instead you can also write the more concise:
 
-```catala-code-en
-foo with pattern TaxCreditForIndividual of individual and individual.income >= $10,000
+```catala-expr-en
+foo with pattern TaxCreditForIndividual content individual and individual.income >= $10,000
 ```
 ~~~
 
@@ -286,7 +287,7 @@ have not yet been implemented.
 As explained [previously](./5-2-types.md#tuples), you can build tuple values with the following
 syntax:
 
-```catala-code-en
+```catala-expr-en
 (|2024-04-01|, $30, 1%) # This values has type (date, money, decimal)
 ```
 
@@ -297,7 +298,7 @@ You can also access the `n`-th element of a tuple, starting at `1`, with the syn
 
 You can build list values using the following syntax:
 
-```catala-code-en
+```catala-expr-en
 [1; 6; -4; 846645; 0]
 ```
 
@@ -308,7 +309,7 @@ page](./5-2-types.md#list-operations).
 
 To call function `foo` with arguments `1`, `baz` and `true`, the syntax is:
 
-```catala-code-en
+```catala-expr-en
 foo of 1, baz, true
 ```
 
@@ -329,8 +330,8 @@ use direct scope calls which are the equivalent of direct function calls, but
 for scopes, as an expression. For instance, suppose you are inside an expression
 and want to call scope `Foo` with arguments `bar` and `baz`; the syntax is:
 
-```catala-code-en
-result of Foo with {
+```catala-expr-en
+output of Foo with {
   -- bar: 0
   -- baz: true
 }
@@ -357,9 +358,9 @@ case is deemed impossible.
 `impossible` has type `anything`, so that it can be used in place of any value.
 For example:
 
-```catala-code-en
+```catala-expr-en
 match foo with pattern
--- TaxCreditForIndividual of individual : individual.birth_date
+-- TaxCreditForIndividual content individual : individual.birth_date
 -- anything :
    impossible # We know that foo is not in any other form at this point because...
 ```

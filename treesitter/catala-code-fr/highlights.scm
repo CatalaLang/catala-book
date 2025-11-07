@@ -1,1 +1,1 @@
-../../../tree-sitter-catala/queries/highlights.scm
+../catala-code-en/highlights.scm

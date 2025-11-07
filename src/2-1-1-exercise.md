@@ -7,11 +7,11 @@ environment](./1-1-0-installing.md), open an editor (such as `vscode`)
 and copy-paste the following exercise template in a catala file; you
 may name it `exercise-2-1-1.catala_en`.
 
-~~~admonish example title="'exercise-2-1-1.catala_en' template file" collapsible=true
-<pre>
+~~~~~~admonish example title="'exercise-2-1-1.catala_en' template file" collapsible=true
+~~~catala-en
 # Catala Book: Exercise 2-1-1
 
-```catala-code-en
+```catala
 declaration structure Individual:
   data date_of_birth content date
   data date_of_death content DateOfDeath
@@ -26,7 +26,7 @@ declaration enumeration DateOfDeath:
 Based on the `test_person1` declaration, declare a `test_person2` born
 on the 21st of December 1977 that is still alive.
 
-```catala-code-en
+```catala
 # Declaration and definition of a constant value named test_person1
 declaration test_person1 content Individual equals
   Individual {
@@ -39,7 +39,7 @@ declaration test_person2 content Individual equals
   test_person1 # <= Remove this line and replace it with your answer
 ```
 
-```catala-code-en
+```catala
 declaration scope KillPerson:
   input fateful_date content date
   input victim content Individual
@@ -58,7 +58,7 @@ deceased individual.
 You can test your solution by invoking the TestKillPerson Catala
 scope: `clerk run exercise-2-1-1.catala_en --scope TestKillPerson`.
 
-```catala-code-en
+```catala
 declaration scope TestKillPerson:
   output computation content KillPerson
 
@@ -75,7 +75,7 @@ scope TestKillPerson:
 #   ...
 ```
 
-```catala-code-en
+```catala
 declaration structure Couple:
   data household_yearly_income content money
   data person_1 content Individual
@@ -87,7 +87,7 @@ declaration structure Couple:
 #   ...
 ```
 
-```catala-code-en
+```catala
 declaration scope TaxComputation:
   input processing_date content date
   input couple content Couple
@@ -112,7 +112,7 @@ Define another `TaxComputation` scope definition that defines both
 internal boolean variables `person1_dead_before_processing_date` and
 `person2_dead_before_processing_date`.
 
-```catala-code-en
+```catala
 # Define your new TaxComputation scope here
 
 # scope TaxComputation:
@@ -126,7 +126,7 @@ previously defined tests, write a definition of the
 `TestTaxComputation` test scope. Then, tweak the given test values to
 make sure your implementation is correct.
 
-```catala-code-en
+```catala
 declaration scope TestTaxComputation:
   output test_tax_computation content TaxComputation
 
@@ -135,8 +135,8 @@ declaration scope TestTaxComputation:
 # scope TestTaxComputation:
 #   ...
 ```
-</pre>
 ~~~
+~~~~~~
 
 ***
 
@@ -223,7 +223,7 @@ deceased individual.
 
 You can test your solution using the following TestKillPerson
 scope by invoking this command in a console:
-```bash
+```console
 clerk run exercise-2-1-1.catala_en --scope TestKillPerson
 ```
 
@@ -318,11 +318,11 @@ declaration scope TaxComputation:
 
 scope TaxComputation:
   definition tax_amount equals
-    if person1_dead_before_processing_date
-      or person2_dead_before_processing_date then
-     $0
-   else
-     couple.household_yearly_income * 15%
+    if
+      person1_dead_before_processing_date
+      or person2_dead_before_processing_date
+    then $0
+    else couple.household_yearly_income * 15%
 ```
 
 In order to trivialise the definition of `tax_amount`, we introduced
@@ -347,10 +347,11 @@ In order to decompose and reason on enumeration values, one can use
 the _pattern-matching_ construction. For example, _pattern-matching_ a `DateOfDeath`
 enumeration looks like this:
 ```catala-code-en
-definition individual_age equals
-  match individual.date_of_death with
-  -- StillAlive: current_date - individual.date_of_birth
-  -- Deceased of deceased_date: deceased_date - individual.date_of_birth
+scope TaxComputation:
+  definition individual_age equals
+    match individual.date_of_death with pattern
+    -- StillAlive: current_date - individual.date_of_birth
+    -- Deceased content deceased_date: deceased_date - individual.date_of_birth
 ```
 *Nota bene*: all the different branches of a _pattern-matching_ must contain same
 data type expressions.
@@ -384,8 +385,8 @@ declaration scope TestTaxComputation:
 ```
 
 Same as before, you can use a similar command to execute your test:
-```bash
-clerk run exercise-2-1-1.catala_en --scope TestTaxComputation
+```console
+$ clerk run exercise-2-1-1.catala_en --scope TestTaxComputation
 ```
 
 ~~~admonish example title="Solution to Question 5" collapsible=true

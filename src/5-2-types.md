@@ -44,7 +44,7 @@ more readable.
 | Symbol       | Type of first argument | Type of second argument | Type of result | Semantic                   |
 |--------------|------------------------|-------------------------|----------------|----------------------------|
 | `+`          | integer                | integer                 | integer        | Integer addition           |
-| `-`          | integer                | integer                 | integer        | Integer substraction       |
+| `-`          | integer                | integer                 | integer        | Integer subtraction       |
 | `-`          | integer                |                         | integer        | Integer negation           |
 | `*`          | integer                | integer                 | integer        | Integer multiplication     |
 | `/`          | integer                | integer                 | decimal        | Rational division          |
@@ -71,12 +71,12 @@ and you can use the `%` notation if this makes your code easier to read.
 | Symbol       | Type of first argument | Type of second argument | Type of result | Semantic                |
 |--------------|------------------------|-------------------------|----------------|-------------------------|
 | `+`          | decimal                | decimal                 | decimal        | Rational addition       |
-| `-`          | decimal                | decimal                 | decimal        | Rational substraction   |
+| `-`          | decimal                | decimal                 | decimal        | Rational subtraction   |
 | `-`          | decimal                |                         | decimal        | Rational negation       |
 | `*`          | decimal                | decimal                 | decimal        | Rational multiplication |
 | `/`          | decimal                | decimal                 | decimal        | Rational division       |
 | `round of`   | decimal                |                         | decimal        | Round to nearest unit   |
-| `decimal of` | integer, money         |                         | decimal        | Casting
+| `decimal of` | integer, money         |                         | decimal        | Casting                 |
 
 See also the [`Decimal` module of the standard library](./5-7-standard-library.md#module-decimal) for
 more operations.
@@ -95,7 +95,7 @@ symbol, like `$12.36` or `-$871,84.1`.
 | Symbol     | Type of first argument | Type of second argument | Type of result | Semantic                        |
 |------------|------------------------|-------------------------|----------------|---------------------------------|
 | `+`        | money                  | money                   | money          | Money addition                  |
-| `-`        | money                  | money                   | money          | Money substraction              |
+| `-`        | money                  | money                   | money          | Money subtraction              |
 | `-`        | money                  |                         | money          | Money negation                  |
 | `/`        | money                  | money                   | decimal        | Rational division               |
 | `round of` | money                  |                         | money          | Round to nearest unit           |
@@ -142,11 +142,11 @@ content of the duration:
 There are three rounding modes in Catala, whose description is below:
 
 
-| Rounding mode     | Semantic                      | Example                                                     |
-|-------------------|-------------------------------|-------------------------------------------------------------|
-| No rounding       | Runtime error if invalid date | `Jan 31st + 1 month = AmbiguousDateComputation`             |
-| Rounding up       | First day of next month       | `Jan 31st + 1 month = March 1st`                            |
-| Rounding down     | Last day of previous month    | `Jan 31st + 1 month = Feb 28/29th` (depending on leap year) |
+| Rounding mode | Semantic                      | Example                                                     |
+|---------------|-------------------------------|-------------------------------------------------------------|
+| No rounding   | Runtime error if invalid date | `Jan 31st + 1 month` fails with `AmbiguousDateComputation`  |
+| Rounding up   | First day of next month       | `Jan 31st + 1 month = March 1st`                            |
+| Rounding down | Last day of previous month    | `Jan 31st + 1 month = Feb 28/29th` (depending on leap year) |
 
 By default, Catala is in the "No rounding" mode. To set the rounding mode to either up or down, for all the date operations
 inside a whole scope, see the [relevant reference section](./5-4-definitions-exceptions.md#date-rounding-mode).
@@ -156,15 +156,16 @@ the component with the largest unit (here, `month`), then the component with the
 
 #### Date operations
 
-| Symbol                   | Type of first argument | Type of second argument | Type of result | Semantic                      |
-|--------------------------|------------------------|-------------------------|----------------|-------------------------------|
-| `+`                      | date                   | duration                | date           | Date addition (see above)     |
-| `-`                      | date                   | date                    | duration       | Number of days between dates  |
-| `get_day of`             | date                   |                         | integer        | Day in month (1..31)          |
-| `get_month of`           | date                   |                         | integer        | Month in year (1..12)         |
-| `get_year of`            | date                   |                         | integer        | Year number                   |
-| `first_day_of_month of`  | date                   |                         | date           | First day in the month        |
-| `last_day_of_month of`   | date                   |                         | date           | Last day in the month         |
+| Symbol                       | Type of first argument | Type of second argument | Type of result | Semantic                     |
+|------------------------------|------------------------|-------------------------|----------------|------------------------------|
+| `+`                          | date                   | duration                | date           | Date addition (see above)    |
+| `-`                          | date                   | duration                | date           | Date subtraction            |
+| `-`                          | date                   | date                    | duration       | Number of days between dates |
+| `Date.get_day of`            | date                   |                         | integer        | Day in month (1..31)         |
+| `Date.get_month of`          | date                   |                         | integer        | Month in year (1..12)        |
+| `Date.get_year of`           | date                   |                         | integer        | Year number                  |
+| `Date.first_day_of_month of` | date                   |                         | date           | First day in the month       |
+| `Date.last_day_of_month of`  | date                   |                         | date           | Last day in the month        |
 
 See also the [`Date` module of the standard library](./5-7-standard-library.md#module-date) for
 more operations.
@@ -187,12 +188,12 @@ in days.
 
 #### Duration operations
 
-| Symbol                   | Type of first argument | Type of second argument | Type of result | Semantic                                  |
-|--------------------------|------------------------|-------------------------|----------------|-------------------------------------------|
-| `+`                      | duration               | duration                | date           | Add the number of days, months, years     |
-| `-`                      | duration               | duration                | date           | Add the opposed duration                  |
-| `-`                      | duration               |                         | duration       | Negate the duration components            |
-| `*`                      | duration               | integer                 | duration       | Multiply the number of days, month, years |
+| Symbol | Type of first argument | Type of second argument | Type of result | Semantic                                  |
+|--------|------------------------|-------------------------|----------------|-------------------------------------------|
+| `+`    | duration               | duration                | duration       | Add the number of days, months, years     |
+| `-`    | duration               | duration                | duration       | Add the opposed duration                  |
+| `-`    | duration               |                         | duration       | Negate the duration components            |
+| `*`    | duration               | integer                 | duration       | Multiply the number of days, month, years |
 
 
 ## Casting base number types
@@ -239,11 +240,11 @@ as another structure or enumeration), but not recursively.
 
 Structure values are built with the following syntax:
 
-```catala-code-en
+```catala-expr-en
 Individual {
-    -- birth_date: |1930-09-11|
-    -- income: $100,000
-    -- number_of_children: 2
+  -- birth_date: |1930-09-11|
+  -- income: $100,000
+  -- number_of_children: 2
 }
 ```
 
@@ -277,15 +278,15 @@ an enumeration as another enumeration or structure), but not recursively.
 
 Enumeration values are built with the following syntax:
 
-```catala-code-en
+```catala-expr-en
 # First case
-NoTaxCredit
+NoTaxCredit,
 # Second case
-TaxCreditForIndividual content (Individual {
+TaxCreditForIndividual content Individual {
     -- birth_date: |1930-09-11|
     -- income: $100,000
     -- number_of_children: 2
-})
+},
 # Third case
 TaxCreditAfterDate content |2000-01-01|
 ```
@@ -300,7 +301,7 @@ For instance, `list of integer` represents a fixed-size array of integers.
 
 You can build list values using the following syntax:
 
-```catala-code-en
+```catala-expr-en
 [1; 6; -4; 846645; 0]
 ```
 
@@ -332,7 +333,7 @@ done simply by writing a [tuple](./5-5-expressions.md#tuples) of lists intead
 of one `<list>` inside the operations; then you have a tuple of `<var>` instead
 of one to match the elements of each list in the tuple of lists. For instance,
 
-```catala-code-en
+```catala-expr-en
 map each (x, y) among (lst1, lst2) to x + y
 ```
 
@@ -350,7 +351,7 @@ into a triplet type, or even an `n`-uplet for an arbitrary number `n` by
 
 You can build tuple values with the following syntax:
 
-```catala-code-en
+```catala-expr-en
 (|2024-04-01|, $30, 1%) # This values has type (date, money, decimal)
 ```
 You can access the `n`-th element of a tuple, starting at `1`, with the syntax `<tuple>.n`.
@@ -372,7 +373,7 @@ enumeration, values of type `optional` can be created using `Present content
 <expr>`, and used in the forms `match <expr> with pattern` and `<expr> with
 pattern <constr>`, e.g.
 
-```catala-code-en
+```catala-expr-en
 if foo with pattern Present of bar and bar > 3 then ...
 ```
 
@@ -385,7 +386,7 @@ language](https://en.wikipedia.org/wiki/Functional_programming).
 
 The general syntax for describing a function type is :
 
-```catala-code-en
+```text
 <type of result> depends on
   <name of argument 1> content <type of argument 1>,
   <name of argument 2> content <type of argument 2>,

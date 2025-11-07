@@ -31,7 +31,7 @@ declaration scope Min:
   output b content decimal
 ```
 
-~~~admonish warning title="This section only cover scope declarations"
+~~~admonish warning title="This section only covers scope declarations"
 For information about the scope body, including definitions of scope
 variables, check out the reference sections about [definition and exceptions](./5-4-definitions-exceptions.md)
 or [expressions](./5-5-expressions.md).
@@ -77,7 +77,7 @@ Here is the syntax to declare scope `Foo` with local variables
 date variable with two states `before` and `after`, and `buzz` is a decimal
 that is both input and output to the scope:
 
-~~~catala
+~~~catala-code-en
 declaration scope Foo:
   input baz content boolean
   internal fizz content date
@@ -173,10 +173,11 @@ alongside the variable. For instance, if the internal integer variable `foo` has
 `a`, `b` and `c` in this order, then `foo` shall be declared with:
 
 ```catala-code-en
-internal foo content integer
-  state a
-  state b
-  state c
+declaration scope Foo:
+  internal foo content integer
+    state a
+    state b
+    state c
 ```
 
 The order of the `state` clauses in the declaration determines the computation
@@ -221,7 +222,7 @@ Scopes are functions, and as such they can be called like functions. Calling
 a scope can be done inside any [expression](./5-5-expressions.md#direct-scope-call)
 by simply providing the input variables as arguments.
 
-But sometimes, one knows that they will always call perform a single, static
+But sometimes, one knows that they will always perform a single, static
 *sub-scope* call from a calling scope. For this situation, Catala has a special
 declarative syntax making it easier for lawyers to understand what is going on.
 
@@ -308,9 +309,10 @@ declaration foo content is_round content boolean
   equals
     round of x = x
 
-declaration bar content excess_of content money
-  depends on arg content money,
-  depends on threshold content money
+declaration excess_of content money
+  depends on
+    arg content money,
+    threshold content money
   equals
     if arg >= threshold
     then arg - threshold

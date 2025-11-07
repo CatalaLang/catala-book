@@ -23,7 +23,7 @@ and picks only the source code. This is called _tangling_.
 
 But you might also want to produce a human-readable (or even lawyer-readable)
 comprehensive document about the program and its specification. The Catala
-compiler and build system also lets you do that, see the [build system reference](./6-clerk.md)
+compiler and build system also let you do that, see the [build system reference](./6-clerk.md)
 for more information. This is called _weaving_.
 
 ### Free text and paragraphs
@@ -38,7 +38,7 @@ blocks](./5-1-literate-programming.md#catala-code-blocks).
 Free text follows the classic Markdown syntax: you need to leave a blank line to
 introduce a new paragraph.
 
-~~~markdown
+~~~catala-en
 This is a first paragraph of free text.
 This sentence will be rendered on the same line as the one before.
 
@@ -53,7 +53,7 @@ the plan of the document. Use these headers to replicate the hierarchical
 structure of legal documents (sections, articles, etc.); each paragraph
 of the legal specification should have a header specifying its title.
 
-```markdown
+```catala-en
 # Title of the document
 
 ## First section
@@ -89,8 +89,8 @@ features supported by [Pandoc](https://pandoc.org/MANUAL.html#pandocs-markdown).
 All the Catala source code must be contained inside a Catala code block.
 A Catala code block looks like this inside your source file:
 
-~~~markdown
-```catala-code-en
+~~~catala-en
+```catala
 <your code goes here>
 ```
 ~~~
@@ -125,83 +125,74 @@ variable name.
 
 The reserved keywords in Catala are :
 
-
-* `scope`
-* `consequence`
-* `data`
-* `depends on`
-* `declaration`
-* `context`
-* `decreasing`
-* `increasing`
-* `of`
-* `list of`
-* `contains`
-* `enumeration`
-* `integer`
-* `money`
-* `text`
-* `decimal`
-* `date`
-* `duration`
-* `boolean`
-* `sum`
-* `fulfilled`
-* `definition`
-* `state`
-* `label`
-* `exception`
-* `equals`
-* `match`
-* `anything`
-* `with pattern`
-* `under condition`
-* `if`
-* `then`
-* `else`
-* `condition`
-* `content`
-* `structure`
-* `assertion`
-* `with`
-* `for`
-* `all`
-* `we have`
-* `rule`
-* `let`
-* `exists`
-* `in`
-* `among`
-* `combine`
-* `map each`
-* `to`
-* `such`
-* `that`
-* `and`
-* `or`
-* `xor`
-* `not`
-* `maximum`
-* `minimum`
-* `is`
-* `or if list empty`
-* `but replace`
-* `initially`
-* `number`
-* `year`
-* `month`
-* `day`
-* `true`
-* `false`
-* `input`
-* `output`
-* `internal`
-* `round`
-* `get_day`
-* `get_month`
-* `get_year`
-* `first_day_of_month`
-* `last_day_of_month`
+`scope`
+`consequence`
+`data`
+`depends on`
+`declaration`
+`context`
+`of`
+`list of`
+`contains`
+`enumeration`
+`integer`
+`money`
+`decimal`
+`date`
+`duration`
+`boolean`
+`sum`
+`fulfilled`
+`definition`
+`state`
+`label`
+`exception`
+`equals`
+`match`
+`anything`
+`with pattern`
+`under condition`
+`if`
+`then`
+`else`
+`condition`
+`content`
+`structure`
+`assertion`
+`with`
+`for`
+`all`
+`we have`
+`rule`
+`let`
+`exists`
+`in`
+`among`
+`combine`
+`map each`
+`to`
+`such`
+`that`
+`and`
+`or`
+`xor`
+`not`
+`maximum`
+`minimum`
+`is`
+`or if list empty`
+`but replace`
+`initially`
+`number`
+`year`
+`month`
+`day`
+`true`
+`false`
+`input`
+`output`
+`internal`
+`round`
 
 
 ### Textual inclusion
@@ -215,7 +206,7 @@ have gigantic Catala source files to represent one module.
 Hence, Catala has a textual inclusion feature. It works like this. If, inside
 `foo.catala_en`, you put (in free text mode, not inside a Catala code block):
 
-```markdown
+```catala-en
 > Include: bar.catala_en
 ```
 
@@ -234,7 +225,7 @@ mirroring the different sources of the specification: `tax.catala_en`,
 
 `tax.catala_en` will be the master file listing the other ones:
 
-```
+```catala-en
 # Tax computation
 
 > Include: statute.catala_en
