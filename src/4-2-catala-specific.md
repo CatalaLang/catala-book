@@ -7,7 +7,7 @@
 You may have noticed the keywords `condition` and `rule` in Catala scopes,
 for instance:
 
-```catala
+```catala-code-en
 declaration scope Foo:
   input i content integer
   output x condition
@@ -18,8 +18,7 @@ scope Foo:
 
 The above is strictly equivalent to the following program:
 
-```catala
-```catala
+```catala-code-en
 declaration scope Foo:
   input i content integer
   output x content boolean
@@ -126,22 +125,21 @@ step. This aims at making review by domain experts easier, since for each
 intermediate value, they can follow along and perform example computations with
 a simple desk calculator.
 
-To round to the nearest monetary unit, use `round of`. To round an amount to an
-arbitrary multiple of a cent, you can perform a multiplication with that
-multiple, round the amount and divide it by the same amount. For instance,
-`(round of $4.13 * 10.) / 10. = $4.10`. To round up or down, add or subtract
-half a unit before performing the computation and rounding. For instance, to
-round down to a cent the result of a multiplication between a `money` value and
-a decimal, you have to cast to `decimal`, subtract half a cent, and round back
-to the nearest cent by casting again to `money`: `money of ((decimal of $149.26)
-* 0.5% - 0.005) = $0.74` and not `0.75$`. This is a bit of a mouthful, but can
-be adapted to any desired rounding rule. Encapsulate these computation tidbits
-inside a global function to reuse them across your codebase. See the [language
-reference for more details](./5-2-types.md#money-operations).
+To round to the nearest monetary unit, use `round of`. To round an
+amount to an arbitrary multiple of a cent, you may use the [dedicated
+helper functions](./5-7-standard-library.md#module-money) present in
+the Catala standard library ([section 5-7](./5-7-standard-library.md)).
+For instance, `Money.round_by_excess of $4.13` yields `$5`,
+`Money.round_by_default of $4.13` yields `$4`. And, if one needs to
+round to the nearest 10 cents, you can use `Money.round_to_decimal of
+$123.45, 1 = $123.5` where `1` defines the `n-th` decimal to round
+on. If a negative number is provided, you may round on the amount
+before the decimal part. For example, `Money.round_to_decimal of
+$123.45, -2 = $100.0` rounds to the nearest hundred of monetary unit.
 
-
-This technique can also be reused for `decimal` values that require rounding up
-or down to a specific precision.
+These helper functions are also available for `decimal` values in the
+dedicated [standard library
+module](./5-7-standard-library.md#module-decimal).
 
 ## Why mathematical integers and decimals instead of machine integers and floats?
 
@@ -167,8 +165,8 @@ irreducible fractions made of two GMP infinite-precision integers.
 
 To get a duration, simply multiply the desired duration unit by the integer or decimal:
 
-```catala
-1 month * 24 = 24 month
+```catala-code-en
+# 1 month * 24 = 24 month
 
 declaration duration_of_days content duration
   depends on number_of_days content integer
@@ -177,24 +175,8 @@ declaration duration_of_days content duration
 ```
 
 However, you cannot build a `YYYY-MM−DD` by directly concatenating together the
-`integer` values of `YYYY-MM-DD`. Instead, convert the integer values to
-durations, and add the durations to a starting date:
-
-```catala
-declaration date_of_YMD content date depends on
-  year_number content integer,
-  month_number content integer,
-  day_number content integer
-  equals
-    |0000-01-01| +
-      1 year * year_number +
-      1 month * (month_number - 1) +
-      1 day * (day_number - 1)
-```
-
-Using this helper function helps you avoid building invalid dates; for instance
-`date_of_YMD of 2025,4,31 = |2025-01-01|` because there are only 30 days in
-April.
+`integer` values of `YYYY-MM-DD`. Instead, use the `Date.of_year_month_day`
+function.
 
 ## Why are there no strings?
 

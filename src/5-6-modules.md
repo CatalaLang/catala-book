@@ -14,9 +14,9 @@ A Catala source file can be turned into a module by inserting at the top a
 module declaration. For instance, if the file is named `foo.catala_en`,
 the module declaration is simply:
 
-```catala
+~~~catala-en
 > Module Foo
-```
+~~~
 
 The name of the file and the name of the module in the module declaration
 should match, but differences in casing are allowed as module names have to be
@@ -34,7 +34,7 @@ Modules can "use" other modules to import their public types, scopes and
 constants. If you want to use module `Bar` inside module `Foo`, the top of
 `foo.catala_en` should look like:
 
-```catala
+```catala-en
 > Module Foo
 
 > Using Bar
@@ -44,7 +44,7 @@ You can then refer to types, scopes and constants like of `Bar` like `Fizz` with
 `Bar.Fizz` inside `Foo`. If you don't want to type in `Bar.` each time, you can
 give `Bar` an alias inside `Foo` with:
 
-```catala
+```catala-en
 > Module Foo
 
 > Using Bar as B
@@ -69,7 +69,7 @@ files `benefit_law.catala_en`, `benefit_regulation.catala_en`, and `benefit_inst
 Then, the contents of `benefit.catala_en` should look like this to include
 all the other files:
 
-```catala
+```catala-en
 > Module Benefit
 
 > Include: benefit_law.catala_en

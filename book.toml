@@ -26,6 +26,10 @@ command = "mdbook-mermaid"
 command = "mdbook-toc"
 renderer = ["html"]
 
+[preprocessor.treesitter]
+command = "mdbook-treesitter"
+languages = ["catala-en", "catala-fr", "catala-code-en", "catala-code-fr", "catala-expr-en", "catala-expr-fr"]
+
 [output.linkcheck]
 
 [preprocessor.tocjs]

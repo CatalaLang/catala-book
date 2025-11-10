@@ -40,9 +40,9 @@ as the work around it:
   foundational choices to be made at the start of the project.
 
 ~~~admonish tip title="The last section will surprise you!"
-While the first four sections are primarily geared towards programmers, the
-Catala teams recommends that everyone on the project, including lawyers, read
-the [fifth section](./3-5-lawyers-agile.md) before diving into the production
+While the first sections are primarily geared towards programmers, the
+Catala team recommends that everyone on the project, including lawyers, read
+the [last section](./3-5-lawyers-agile.md) before diving into the production
 of the Catala code.
 ~~~
 

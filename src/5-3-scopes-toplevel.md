@@ -25,13 +25,13 @@ The following reference sections tell you how to write the scope declaration. As
 a spoiler, here is a complete example for a minimal scope named `Min` with two
 variables, `a` and `b`:
 
-```catala
+```catala-code-en
 declaration scope Min:
   input a content integer
   output b content decimal
 ```
 
-~~~admonish warning title="This section only cover scope declarations"
+~~~admonish warning title="This section only covers scope declarations"
 For information about the scope body, including definitions of scope
 variables, check out the reference sections about [definition and exceptions](./5-4-definitions-exceptions.md)
 or [expressions](./5-5-expressions.md).
@@ -44,7 +44,7 @@ by a capital letter and follow the CamlCase convention. A scope declaration is a
 toplevel item inside a Catala code block. For instance, you want to name your
 scope `Foo`, then its declaration begins by:
 
-```catala
+```catala-code-en
 declaration scope Foo:
    ...
 ```
@@ -77,7 +77,7 @@ Here is the syntax to declare scope `Foo` with local variables
 date variable with two states `before` and `after`, and `buzz` is a decimal
 that is both input and output to the scope:
 
-~~~catala
+~~~catala-code-en
 declaration scope Foo:
   input baz content boolean
   internal fizz content date
@@ -153,7 +153,7 @@ variable whose default value is `false`. This case maps directly to a legal
 condition, so it is named `condition` in Catala. The syntax for declaring a
 `condition` scope variable (here named `bar`, with an `internal` qualifier) is:
 
-```catala
+```catala-code-en
 declaration scope Foo:
   internal bar condition
 ```
@@ -172,11 +172,12 @@ The ordered list of states the variable assumes during computation is declared
 alongside the variable. For instance, if the internal integer variable `foo` has states
 `a`, `b` and `c` in this order, then `foo` shall be declared with:
 
-```catala
-internal foo content integer
-  state a
-  state b
-  state c
+```catala-code-en
+declaration scope Foo:
+  internal foo content integer
+    state a
+    state b
+    state c
 ```
 
 The order of the `state` clauses in the declaration determines the computation
@@ -194,7 +195,7 @@ of the scope is usable like any other structure type declared by the user.
 
 For instance, if I have the scope declaration:
 
-```catala
+```catala-code-en
 declaration scope Foo:
   output bar content integer
   output baz content decimal
@@ -206,7 +207,7 @@ declaration scope Foo:
 Then implicitly, an output structure also named `Foo` will be usable as if it had the
 following declaration:
 
-```catala
+```catala-code-en
 declaration structure Foo:
   data bar content integer
   data baz content decimal
@@ -221,7 +222,7 @@ Scopes are functions, and as such they can be called like functions. Calling
 a scope can be done inside any [expression](./5-5-expressions.md#direct-scope-call)
 by simply providing the input variables as arguments.
 
-But sometimes, one knows that they will always call perform a single, static
+But sometimes, one knows that they will always perform a single, static
 *sub-scope* call from a calling scope. For this situation, Catala has a special
 declarative syntax making it easier for lawyers to understand what is going on.
 
@@ -229,7 +230,7 @@ Sub-scopes are declared in the scope declaration like scope variables.
 For instance, is inside scope `Foo` you will call scope `Bar` exactly one time,
 then you will write:
 
-```catala
+```catala-code-en
 declaration scope Foo:
   bar_call scope Bar
 ```
@@ -238,7 +239,7 @@ declaration scope Foo:
 instance of calling `Bar` inside `Foo`. You can have multiple, static calls to the
 same scope like:
 
-```catala
+```catala-code-en
 declaration scope Foo:
   first_bar_call scope Bar
   second_bar_call scope Bar
@@ -286,13 +287,13 @@ To declare and define globally a constant `foo` of type `<type>` (any item in
 the [type reference](./5-2-types.md)) with value `<expr>` (any
 [expression](./5-5-expressions.md) of type `<type>`), use the following syntax:
 
-```catala
+```catala-code-en
 declaration foo content <type> equals <expr>
 ```
 
 For instance:
 
-```catala
+```catala-code-en
 declaration foo content boolean equals true
 declaration bar content integer equals 4643 * 876 - 524
 ```
@@ -302,15 +303,16 @@ declaration bar content integer equals 4643 * 876 - 524
 If the type of the constant you declare and define is a [function type](./5-2-types.md),
 then the constant becomes a global function for free. For instance:
 
-```catala
+```catala-code-en
 declaration foo content is_round content boolean
   depends on x content decimal
   equals
     round of x = x
 
-declaration bar content excess_of content money
-  depends on arg content money,
-  depends on threshold content money
+declaration excess_of content money
+  depends on
+    arg content money,
+    threshold content money
   equals
     if arg >= threshold
     then arg - threshold

@@ -19,7 +19,7 @@ This section of the tutorial builds up on the [previous one](./2-3-list-scopes.m
 and will reuse the same running example, but all the Catala code necessary
 to execute the example is included below for reference.
 
-~~~
+~~~catala-en
 {{#include ../examples/tutorial_end_2_3.catala_en}}
 ~~~
 ~~~~~~
@@ -29,11 +29,11 @@ to execute the example is included below for reference.
 Recall that we have defined `household_tax` in a single sweep
 inside `HouseholdTaxIndividualComputation`:
 
-```catala
+```catala-code-en
 scope HouseholdTaxIndividualComputation:
   definition household_tax equals
     let tax equals
-      $10,000 * (1.0 + decimal of individual.number_of_children / 2.0)
+      $10,000 * (1.0 + individual.number_of_children / 2)
     in
     let deduction equals income_tax_computation.income_tax in
     # Don't forget to cap the deduction!
@@ -51,7 +51,7 @@ two consecutive states for the variable `household_tax`, and lawyers understand
 the code better this way! So Catala has a feature to let you exactly that:
 
 ~~~admonish note title="Defining multiple states for the same variable"
-```catala
+```catala-code-en
 declaration scope HouseholdTaxIndividualComputation:
   input individual content Individual
   input overseas_territories content boolean
@@ -75,10 +75,10 @@ When several individuals live together, they are collectively subject to
 the household tax. The household tax owed is $10,000 per individual of the household,
 and half the amount per children.
 
-```catala
+```catala-code-en
 scope HouseholdTaxIndividualComputation:
   definition household_tax state base equals
-    $10,000 * (1.0 + decimal of individual.number_of_children / 2.0)
+    $10,000 * (1.0 + individual.number_of_children / 2)
 ```
 
 #### Article 8
@@ -86,7 +86,7 @@ scope HouseholdTaxIndividualComputation:
 The amount of income tax paid by each individual can be deducted from the
 share of household tax owed by this individual.
 
-```catala
+```catala-code-en
 scope HouseholdTaxIndividualComputation:
   definition household_tax state with_deduction equals
     # Below, "household_tax" refers to the value of "household_tax" computed
@@ -126,7 +126,7 @@ With all our refactorings, the declaration of the scope `HouseholdTaxComputation
 can be simplified (we don't need the function variable `share_household_tax`
 anymore):
 
-```catala
+```catala-code-en
 declaration scope HouseholdTaxComputation:
   input individuals content list of Individual
   output household_tax content money
@@ -135,11 +135,11 @@ declaration scope HouseholdTaxComputation:
 Then, the definition of `household_tax` could be re-written as follows next
 to article 7:
 
-```catala
+```catala-code-en
 scope HouseholdTaxComputation:
   definition household_tax equals
     sum money of
-      map each individual among individuals (
+      map each individual among individuals to (
         # Below is the syntax for calling the sub-scope
         # "HouseholdTaxIndividualComputation" dynamically, on the spot.
         # after "with" is the list of inputs of the scope.
@@ -173,7 +173,7 @@ time to test and debug it. Similarly to the test presented in the
 test scope for the household tax computation, and execute it:
 
 ~~~admonish success title="New test for `HouseholdTaxComputation`"
-```catala
+```catala-code-en
 declaration scope TestHousehold:
   output computation content HouseholdTaxComputation
 
@@ -194,8 +194,8 @@ scope TestHousehold:
     }
 ```
 
-```text
-clerk run tutorial.catala_en --scope=TestHousehold
+```console
+$ clerk run tutorial.catala_en --scope=TestHousehold
 ┌─[RESULT]─
 │ computation = HouseholdTaxComputation { -- household_tax: $21,500.00 }
 └─
@@ -226,7 +226,7 @@ computation trace for that purpose. Here is the output on the interpretation
 of `TestHousehold`:
 
 ~~~admonish abstract title="Trace of `TestHousehold`" collapsible=true
-```text
+```console
 $ clerk run tutorial.catala_en --scope=TestHousehold -c--trace
 [LOG] ☛ Definition applied:
       ─➤ tutorial.catala_en
@@ -502,7 +502,7 @@ coding in Catala but also interacting with lawyers.
 For reference, here is the final version of the Catala code consolidated at
 the end of this section of the tutorial.
 
-~~~
+~~~catala-en
 {{#include ../examples/tutorial_end_2_4.catala_en}}
 ~~~
 ~~~~~~

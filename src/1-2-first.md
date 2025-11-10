@@ -26,7 +26,7 @@ instance named `catala`) and inside it an empty text file (for instance named
 
 Copy paste the following text into your file:
 
-```text
+```catala-en
 # Catala tutorial
 
 ## Hello, world!
@@ -46,9 +46,9 @@ see how to actually write some code!
 Below the `## Hello, world!` paragraph, open a Markdown code block indicating
 the `catala` language:
 
-~~~text
+~~~catala-en
 ```catala
-<you will insert your Catala code here !>
+# <you will insert your Catala code here !>
 ```
 ~~~
 
@@ -66,7 +66,7 @@ Otherwise, the Catala compiler will just ignore your code.
 
 Now, inside the Catala code block, copy-paste the following:
 
-```catala
+```catala-code-en
 declaration scope HelloWorld:
   output answer_everything content integer
 
@@ -83,13 +83,13 @@ Since Catala is a strongly typed language, you can *typecheck* your program
 without running it to see whether there are some syntax or typing errors. This
 is done through the `clerk typecheck` command:
 
-```test
+```console
 $ clerk typecheck hello_world.catala_en
 ```
 
 The result of this command should be:
 
-```text
+```console
 ┌─[RESULT]─
 │ Typechecking successful!
 └─
@@ -99,7 +99,7 @@ If the program typechecks, we can run it through the interpreter contained
 inside the `catala` compiler. This is done with the following command, indicating
 that we want to run the `--scope` named `HelloWorld` inside the file `hello_world.catala_en`:
 
-```text
+```console
 $ clerk run hello_world.catala_en --scope=HelloWorld
 ```
 

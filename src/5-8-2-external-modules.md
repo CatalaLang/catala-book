@@ -27,7 +27,7 @@ unimplementable logic. This is the purpose of external module. An external
 module in Catala is a Catala source code file containing a module with the
 `external` annotation, like this:
 
-~~~catala
+~~~catala-en
 > Module Foo external
 
 ```catala-metadata
@@ -64,7 +64,7 @@ You may expect updates to the external code to be needed with the next versions 
 To help with this, the `catala` command supports a `--gen-external` flag that
 will generate a template implementation in the given backend:
 
-```shell-session
+```console
 $ catala ocaml --gen-external foo.catala_en
 ┌─[RESULT]─
 │ Generated template external implementations:

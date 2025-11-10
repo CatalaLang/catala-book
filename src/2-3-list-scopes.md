@@ -20,7 +20,7 @@ This section of the tutorial builds up on the [previous one](./2-2-conditionals-
 and will reuse the same running example, but all the Catala code necessary
 to execute the example is included below for reference.
 
-~~~
+~~~catala-en
 {{#include ../examples/tutorial_end_2_2.catala_en}}
 ~~~
 ~~~~~~
@@ -51,7 +51,7 @@ even though it behaves more like an array in traditionnal Computer Science
 jargon.
 
 ~~~admonish note title="Declaring a new scope with a list input"
-```catala
+```catala-code-en
 declaration scope HouseholdTaxComputation:
   # The syntax "list of <X>" designates the type whose values are lists of
   # elements with type <X>.
@@ -83,7 +83,7 @@ in the narrow context of a single scope variable definition, you can use a
 local variable inside the definition of the scope variable. These local variables
 are introduced and used with the following syntax:
 
-```catala
+```catala-expr-en
 # The following line defines local variable "x" as begin equal to 4 * 5
 let x equals 4 * 5 in
 # We can then use "x" after the "in" keyword in the rest of the code
@@ -103,7 +103,7 @@ be returned. Finally, we can piece steps 1 and 2 for the step 3 which computes
 the amount of tax:
 
 ~~~admonish note title="Computing the length of a list and aggregating amounts"
-```catala
+```catala-code-en
 scope HouseholdTaxComputation:
   definition household_tax equals
     let number_of_individuals equals number of individuals in
@@ -113,10 +113,10 @@ scope HouseholdTaxComputation:
     in
     $10,000
     * (
-      # "number_of_individuals" is an integer, but money can only be multiplied
-      # by decimals: we need to explicitly cast before using the value
-      decimal of number_of_individuals
-      + decimal of number_of_children / 2.0
+      # "number_of_individuals" is an integer, but the result of the division
+      # is a decimal, and we cannot add an ingeger and a decimal without first
+      # converting one of them
+      decimal of number_of_individuals + number_of_children / 2
     )
 ```
 ~~~
@@ -135,7 +135,7 @@ see just below...
 To test what happens when the rule for article 7 is at play,
 you can test the program with a household:
 
-```catala
+```catala-code-en
 declaration scope TestHousehold:
   output computation content HouseholdTaxComputation
 
@@ -158,7 +158,7 @@ scope TestHousehold:
 
 The result of the execution is then:
 
-```test
+```console
 $ clerk run tutorial.catala_en --scope=TestHousehold
 ┌─[RESULT]─
 │ computation = HouseholdTaxComputation { -- household_tax: $30,000.00 }
@@ -183,7 +183,7 @@ share of household tax owed by this individual.
 
 Now, there are several strategies to implement article 8, but not all are
 legally correct. One strategy could be to compute the total amount of income tax
-owed by all the individuals in the household, and substract that total amount of
+owed by all the individuals in the household, and subtract that total amount of
 income tax from the the total amount of household tax to perform the deduction.
 However, this strategy is incorrect, because the household tax deduction for one
 individual is implicitly capped by the amount of household tax due for this
@@ -202,7 +202,7 @@ pays $64,000 of income tax.
 
 On the other hand, the household tax due by this household is
 $10,000 + $10,000 = $20,000. How to apply article 8 in this situation?
-Naively substracting the total income tax ($64,000) from the total household
+Naively subtracting the total income tax ($64,000) from the total household
 tax ($20,000) yields a revised household tax of $0, but this is not the legal
 amount. Indeed, the deduction can only occur at the individual level.
 
@@ -212,7 +212,7 @@ share of household tax, leaving them with with $0 household tax to pay, but
 not -$50,000! This is the non-linearity in action.
 
 So in total, the correct total amount of household tax to pay here is
-$6,000 and not $0 as the bulk substraction method computed.
+$6,000 and not $0 as the bulk subtraction method computed.
 ~~~
 
 So, we are stuck with explicitly decomposing the household tax computation into
@@ -277,7 +277,7 @@ of the tutorial](./2-2-conditionals-exceptions.md): `overseas_territory` and
 `current_date` This gives the following scope declaration:
 
 ~~~admonish quote title="Initial declaration of `HouseholdTaxIndividualComputation`"
-```catala
+```catala-code-en
 declaration scope HouseholdTaxIndividualComputation:
   input individual content Individual
   input overseas_territories content boolean
@@ -292,7 +292,7 @@ compute the deduction for `household_tax`. There is a bespoke method designed
 for lawyer-readbility to do exactly that in Catala!
 
 ~~~admonish note title="Declaring a static sub-scope call and defining the sub-scope call's inputs"
-```catala
+```catala-code-en
 # The single, static sub-scope call to "IncomeTaxComputation" has to be
 # declared in "HouseholdTaxIndividualComputation", so we repeat the
 # scope declaration here with a new line.
@@ -337,11 +337,11 @@ is now accessible at `income_tax_computation.income_tax`, since
 At this point, it is easy to define `household_tax` in a single sweep
 inside `HouseholdTaxIndividualComputation`:
 
-```catala
+```catala-code-en
 scope HouseholdTaxIndividualComputation:
   definition household_tax equals
     let tax equals
-      $10,000 * (1.0 + decimal of individual.number_of_children / 2.0)
+      $10,000 * (1.0 + individual.number_of_children / 2)
     in
     let deduction equals income_tax_computation.income_tax in
     # Don't forget to cap the deduction!
@@ -352,7 +352,7 @@ scope HouseholdTaxIndividualComputation:
 To test what happens when the rule for articles 7 and 8 are at play
 you can test the program with an individual:
 
-```catala
+```catala-code-en
 declaration scope TestIndividualHousehold:
   output computation content HouseholdTaxIndividualComputation
 
@@ -410,7 +410,7 @@ tutorial](./2-4-states-dynamic.md).
 For reference, here is the final version of the Catala code consolidated at
 the end of this section of the tutorial.
 
-~~~
+~~~catala-en
 {{#include ../examples/tutorial_end_2_3.catala_en}}
 ~~~
 ~~~~~~

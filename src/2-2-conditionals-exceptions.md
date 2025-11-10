@@ -13,7 +13,7 @@ This section of the tutorial builds up on the [previous one](./2-1-basic-blocks.
 and will reuse the same running example, but all the Catala code necessary
 to execute the example is included below for reference.
 
-~~~
+~~~catala-en
 {{#include ../examples/tutorial_end_2_1.catala_en}}
 ~~~
 ~~~~~~
@@ -39,10 +39,10 @@ condition with the `under condition ... consequence` syntax between the name
 of the variable being defined and the `equals` keyword:
 
 ~~~admonish note title="Defining a variable conditionally"
-```catala
+```catala-code-en
 scope IncomeTaxComputation:
-  definition tax_rate under condition
-    individual.number_of_children >= 2
+  definition tax_rate
+  under condition individual.number_of_children >= 2
   consequence equals 15 %
 ```
 ~~~
@@ -60,7 +60,7 @@ To test what happens when the rules for articles 2 and 3 are at play,
 you can test the program when there are three children, by tweaking the
 `Test` scope as follows:
 
-```catala
+```catala-code-en
 scope Test:
   definition computation equals
     output of IncomeTaxComputation with {
@@ -78,7 +78,7 @@ During the above test, two definitions for `tax_rate` are valid at the
 same time. What happens then? In these cases, Catala will abort
 execution and return an error message like the one below:
 
-```text
+```console
 $ clerk run tutorial.catala_en --scope=Test
 ┌─[ERROR]─
 │
@@ -112,10 +112,10 @@ percentage mentioned at article 1 is equal to 15 %.
 ~~~
 
 ~~~admonish note title="Defining an exception for a variable"
-```catala
+```catala-code-en
 scope IncomeTaxComputation:
-  exception definition tax_rate under condition
-    individual.number_of_children >= 2
+  exception definition tax_rate
+  under condition individual.number_of_children >= 2
   consequence equals 15 %
 ```
 ~~~
@@ -170,10 +170,10 @@ article 2:
 Individuals earning less than $10,000 are exempted of the income tax mentioned
 at article 1.
 
-```catala
+```catala-code-en
 scope IncomeTaxComputation:
-  exception definition tax_rate under condition
-    individual.income <= $10,000
+  exception definition tax_rate
+  under condition individual.income <= $10,000
   consequence equals 0 %
 ```
 ~~~
@@ -187,7 +187,7 @@ To test what happens when the rules for articles 3 and 4 are at play,
 you can test the program when there are three children, and an income
 lower than $10,000 by tweaking the `Test` scope as follows:
 
-```catala
+```catala-code-en
 scope Test:
   definition computation equals
     output of IncomeTaxComputation with {
@@ -203,7 +203,7 @@ scope Test:
 ~~~admonish bug title="Conflicting definitions"
 The program execution yields the following error at runtime:
 
-```text
+```console
 $ clerk run tutorial.catala_en --scope=Test
 ┌─[ERROR]─
 │
@@ -254,7 +254,7 @@ articles 2 and 3 an explicit `label` so that the `exception` keywords in article
 
 The fixed percentage mentioned at article 1 is equal to 20 %.
 
-```catala
+```catala-code-en
 scope IncomeTaxComputation:
   # The keyword "label" introduces the name of the label itself, here
   # "article_2".
@@ -266,14 +266,14 @@ scope IncomeTaxComputation:
 If the individual is in charge of 2 or more children, then the fixed
 percentage mentioned at article 1 is equal to 15 %.
 
-```catala
+```catala-code-en
 scope IncomeTaxComputation:
   # This definition is preceded by two indications:
   # * it has its own label, "article_3";
   # * this definition is an exception to the definition labeled "article_2".
   label article_3 exception article_2
-  definition tax_rate under condition
-    individual.number_of_children >= 2
+  definition tax_rate
+  under condition individual.number_of_children >= 2
   consequence equals 15 %
 ```
 
@@ -282,11 +282,11 @@ scope IncomeTaxComputation:
 Individuals earning less than $10,000 are exempted of the income tax mentioned
 at article 1.
 
-```catala
+```catala-code-en
 scope IncomeTaxComputation:
   label article_4 exception article_3
-  definition tax_rate under condition
-    individual.income <= $10,000
+  definition tax_rate
+  under condition individual.income <= $10,000
   consequence equals 0 %
 ```
 ~~~
@@ -318,11 +318,11 @@ branches of exceptions. Let us provide an example with a new article of the CTTC
 Individuals earning more than $100,000 are subjects to a tax rate of
 30%, regardless of their number of children.
 
-```catala
+```catala-code-en
 scope IncomeTaxComputation:
   label article_5 exception article_3
-  definition tax_rate under condition
-    individual.income > $100,000
+  definition tax_rate
+  under condition individual.income > $100,000
   consequence equals 30 %
 ```
 ~~~
@@ -337,7 +337,7 @@ the conditional definitions of a variable as well as the prioritization between
 them. To help, the Catala compiler can display the exception branches with
 the following command:
 
-```text
+```console
 $ catala exceptions tutorial.catala_en --scope=IncomeTaxComputation --variable=tax_rate
 ┌[RESULT]─
 │ Printing the tree of exceptions for the definitions of variable "tax_rate" of scope "IncomeTaxComputation".
@@ -400,7 +400,7 @@ To test what happens when the rule for article 5 is at play,
 you can test the program when there are 3 children, and an income
 greater than $100,000 by tweaking the `Test` scope as follows:
 
-```catala
+```catala-code-en
 scope Test:
   definition computation equals
     output of IncomeTaxComputation with {
@@ -414,7 +414,7 @@ scope Test:
 
 The result of the execution is then:
 
-```test
+```console
 $ clerk run tutorial.catala_en --scope=Test
 ┌─[RESULT]─
 │ computation = IncomeTaxComputation { -- income_tax: $60,000.00 }
@@ -438,7 +438,7 @@ are we in an overseas territory or not? We can model it with a new input to the
 scope `IncomeTaxComputation`, leading to a revised scope declaration:
 
 ~~~admonish quote title="Revised scope declaration"
-```catala
+```catala-code-en
 declaration scope IncomeTaxComputation:
    input individual content Individual
    input overseas_territories content boolean
@@ -449,11 +449,11 @@ declaration scope IncomeTaxComputation:
 
 With this new input variable, the code for article 6 is as follows:
 
-```catala
+```catala-code-en
 scope IncomeTaxComputation:
   label article_6 exception article_5
-  definition tax_rate under condition
-    individual.income > $100,000 and overseas_territories
+  definition tax_rate
+  under condition individual.income > $100,000 and overseas_territories
   consequence equals 25 %
 ```
 
@@ -470,11 +470,11 @@ implicit, creating a danger of putting the wrong conditional in the Catala
 code in presence of exception branches. Suppose we had omitted the income
 condition in the code for article 6:
 
-```catala
+```catala-code-en
 scope IncomeTaxComputation:
   label article_6 exception article_5
-  definition tax_rate under condition
-    overseas_territories
+  definition tax_rate
+  under condition overseas_territories
   consequence equals 25 %
 ```
 
@@ -521,7 +521,7 @@ to coexist in the same Catala program. This choice leads us to introduce the
 current date as a new input of the scope `IncomeTaxComputation`:
 
 ~~~admonish quote title="Revised scope declaration"
-```catala
+```catala-code-en
 declaration scope IncomeTaxComputation:
    input current_date content date
    input individual content Individual
@@ -569,10 +569,10 @@ is an exception to the label `article_2`, it suffices to give the same label
 
 The fixed percentage mentioned at article 1 is equal to 20 %.
 
-```catala
+```catala-code-en
 scope IncomeTaxComputation:
-  label article_2 definition tax_rate under condition
-    current_date < |2000-01-01|
+  label article_2 definition tax_rate
+  under condition current_date < |2000-01-01|
   consequence equals 20 %
 ```
 
@@ -580,12 +580,12 @@ scope IncomeTaxComputation:
 
 The fixed percentage mentioned at article 1 is equal to 21 % %.
 
-```catala
+```catala-code-en
 scope IncomeTaxComputation:
   # Simply use the same label "article_2" as the previous definition to group
   # them together
-  label article_2 definition tax_rate under condition
-    current_date >= |2000-01-01|
+  label article_2 definition tax_rate
+  under condition current_date >= |2000-01-01|
   consequence equals 21 %
 ```
 ~~~
@@ -606,7 +606,7 @@ complex logic behind the legal texts while matching their structure.
 For reference, here is the final version of the Catala code consolidated at
 the end of this section of the tutorial.
 
-~~~
+~~~catala-en
 {{#include ../examples/tutorial_end_2_2.catala_en}}
 ~~~
 ~~~~~~

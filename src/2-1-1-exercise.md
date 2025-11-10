@@ -7,8 +7,8 @@ environment](./1-1-0-installing.md), open an editor (such as `vscode`)
 and copy-paste the following exercise template in a catala file; you
 may name it `exercise-2-1-1.catala_en`.
 
-~~~admonish example title="'exercise-2-1-1.catala_en' template file" collapsible=true
-<pre>
+~~~~~~admonish example title="'exercise-2-1-1.catala_en' template file" collapsible=true
+~~~catala-en
 # Catala Book: Exercise 2-1-1
 
 ```catala
@@ -135,8 +135,8 @@ declaration scope TestTaxComputation:
 # scope TestTaxComputation:
 #   ...
 ```
-</pre>
 ~~~
+~~~~~~
 
 ***
 
@@ -162,7 +162,7 @@ done using an enumeration: if the individual is still alive, its
 `Deceased` that must come along a date value as specified in the
 following declaration.
 
-```catala
+```catala-code-en
 declaration structure Individual:
   data date_of_birth content date
   data date_of_death content DateOfDeath
@@ -189,7 +189,7 @@ Based on the `test_person1` declaration, try to define a
 
 Answer:
 
-```catala
+```catala-code-en
 
 declaration test_person2 content Individual equals
   Individual {
@@ -205,7 +205,7 @@ We now want a way to update the status of a person from alive to dead. We do
 it through a dedicated `KillPerson` scope whose declaration is:
 
 
-```catala
+```catala-code-en
 declaration scope KillPerson:
   input fateful_date content date
   input victim content Individual
@@ -223,11 +223,11 @@ deceased individual.
 
 You can test your solution using the following TestKillPerson
 scope by invoking this command in a console:
-```bash
+```console
 clerk run exercise-2-1-1.catala_en --scope TestKillPerson
 ```
 
-```catala
+```catala-code-en
 declaration scope TestKillPerson:
   output computation content KillPerson
 
@@ -240,7 +240,7 @@ scope TestKillPerson:
 ```
 
 ~~~admonish example title="Solution to Question 2" collapsible=true
-```catala
+```catala-code-en
 scope KillPerson:
   definition killed_individual equals
     Individual {
@@ -256,7 +256,7 @@ structure. It allows you to only modify specific fields which can be
 useful especially when a structure defines a lot of fields!
 
 
-```catala
+```catala-code-en
 scope KillPerson:
   definition killed_individual equals
     victim but replace { -- date_of_death: Deceased content fateful_date }
@@ -268,7 +268,7 @@ household. This structure has three different entries:
 - Two individuals: `person_1` and `person_2`;
 - And, their combined `household_yearly_income`.
 
-```catala
+```catala-code-en
 declaration structure Couple:
   data person_1 content Individual
   data person_2 content Individual
@@ -283,7 +283,7 @@ previously defined individuals (namely `test_person_1` and
 
 
 ~~~admonish example title="Solution to Question 3" collapsible=true
-```catala
+```catala-code-en
 declaration test_couple content Couple equals
   Couple {
     -- household_yearly_income: $80,000
@@ -306,7 +306,7 @@ prior to the file's processing date.
 
 This translates to the following Catala code:
 
-```catala
+```catala-code-en
 declaration scope TaxComputation:
   input processing_date content date
   input couple content Couple
@@ -318,11 +318,11 @@ declaration scope TaxComputation:
 
 scope TaxComputation:
   definition tax_amount equals
-    if person1_dead_before_processing_date
-      or person2_dead_before_processing_date then
-     $0
-   else
-     couple.household_yearly_income * 15%
+    if
+      person1_dead_before_processing_date
+      or person2_dead_before_processing_date
+    then $0
+    else couple.household_yearly_income * 15%
 ```
 
 In order to trivialise the definition of `tax_amount`, we introduced
@@ -346,18 +346,19 @@ internal boolean variables `person1_dead_before_processing_date` and
 In order to decompose and reason on enumeration values, one can use
 the _pattern-matching_ construction. For example, _pattern-matching_ a `DateOfDeath`
 enumeration looks like this:
-```catala
-definition individual_age equals
-  match individual.date_of_death with
-  -- StillAlive: current_date - individual.date_of_birth
-  -- Deceased of deceased_date: deceased_date - individual.date_of_birth
+```catala-code-en
+scope TaxComputation:
+  definition individual_age equals
+    match individual.date_of_death with pattern
+    -- StillAlive: current_date - individual.date_of_birth
+    -- Deceased content deceased_date: deceased_date - individual.date_of_birth
 ```
 *Nota bene*: all the different branches of a _pattern-matching_ must contain same
 data type expressions.
 ~~~
 
 ~~~admonish example title="Solution to Question 4" collapsible=true
-```catala
+```catala-code-en
 scope TaxComputation:
   definition person1_dead_before_processing_date equals
     match couple.person_1.date_of_death with pattern
@@ -378,18 +379,18 @@ previously defined tests, write a definition of the
 `TestTaxComputation` test scope. Then, tweak the given test values to
 make sure your implementation is correct.
 
-```catala
+```catala-code-en
 declaration scope TestTaxComputation:
   output test_tax_computation content TaxComputation
 ```
 
 Same as before, you can use a similar command to execute your test:
-```bash
-clerk run exercise-2-1-1.catala_en --scope TestTaxComputation
+```console
+$ clerk run exercise-2-1-1.catala_en --scope TestTaxComputation
 ```
 
 ~~~admonish example title="Solution to Question 5" collapsible=true
-```catala
+```catala-code-en
 scope TestTaxComputation:
   definition test_tax_computation equals
     output of TaxComputation with {

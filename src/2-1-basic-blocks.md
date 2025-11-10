@@ -56,7 +56,7 @@ Catala uses Markdown-like formatting for the legal text in the `.catala_en`
 files. So, to copy the text of the article into your `tutorial.catala_en`
 file, mark up the article header with `##` and put the text below, as such:
 
-```markdown
+```catala-en
 ## Article 1
 
 The income tax for an individual is defined as a fixed percentage of the
@@ -75,7 +75,7 @@ the rule defining it as a multiplication of the income as rate. It is time
 to dive into Catala as a programming language.
 
 
-```catala
+```catala-code-en
 # We will soon learn what to write here in order to translate the meaning
 # of article 1 into Catala code.
 
@@ -108,7 +108,7 @@ computation. This individual has an income and a number of children, both pieces
 of information which will be needed for tax purposes :
 
 ~~~admonish note title="Declaring a structure"
-```catala
+```catala-code-en
 # Data structure declarations and generally any declaration in Catala often
 # does not match any specific article of law. Hence, you can put all the
 # declarations at the top of your tutorial.catala_en file, before article 1.
@@ -122,7 +122,7 @@ declaration structure Individual:
   # "duration", and any other structure or enumeration that you declare.
   data income content money
   # The field names "income" and "number_of_children" start by a lowercase
-  # letter, they follow the snake_case convention.
+  # letter, they follow the snake_case convention.
   data number_of_children content integer
 ```
 ~~~
@@ -137,7 +137,7 @@ advise you to aim at optimizing code readability.
 Sometimes, the law gives an enumeration of different situations. These
 enumerations are modeled in Catala using an enumeration type, like:
 
-```catala
+```catala-code-en
 # The name "TaxCredit" is also written in CamelCase.
 declaration enumeration TaxCredit:
   # The line below says that "TaxCredit" can be a "NoTaxCredit" situation.
@@ -180,7 +180,7 @@ Catala is called a *scope*. A scope is comprised of :
 For instance, article 1 declares a scope for computing the income tax:
 
 ~~~admonish note title="Declaring a scope"
-```catala
+```catala-code-en
 # Scope names use the CamelCase naming convention, like names of structs
 # or enums Scope variables, on the other hand, use the snake_case naming
 # convention, like struct fields.
@@ -224,7 +224,7 @@ scope `IncomeTaxComputation`, which translates to the following Catala code:
 ~~~
 
 ~~~admonish note title="Defining a variable"
-```catala
+```catala-code-en
 scope IncomeTaxComputation:
   definition income_tax equals
     individual.income * tax_rate
@@ -252,10 +252,10 @@ language. Concretely, if `tax_credit` is a variable whose type is `TaxCredit` as
 declared above, then you can define the amount of a tax credit that depends
 on a number of eligible children with the following pattern matching:
 
-```catala
+```catala-expr-en
 match tax_credit with pattern
 -- NoTaxCredit: $0
--- ChildrenTaxCredit of number_of_eligible_children:
+-- ChildrenTaxCredit content number_of_eligible_children:
   $10,000 * number_of_eligible_children
 ```
 
@@ -287,7 +287,7 @@ you at this point.
 ~~~admonish quote title="Article 2"
 The fixed percentage mentioned at article 1 is equal to 20 %.
 
-```catala
+```catala-code-en
 scope IncomeTaxComputation:
   # Writing 20% is just an alternative for the decimal "0.20".
   definition tax_rate equals 20 %
@@ -316,7 +316,7 @@ to ℚ) and do not suffer from floating-point imprecisions. For `money`, the
 language makes an opinionated decision: a value of type `money` is always
 an integer number of cents.
 
-These choices has several consequences:
+These choices have several consequences:
 * `integer` divided by `integer` gives a `decimal` ;
 * `money` cannot be multiplied by `money` (instead, multiply `money` by `decimal`) ;
 * `money` multiplied (or divided) by `decimal` rounds the result to the nearest cent ;
@@ -325,11 +325,11 @@ These choices has several consequences:
 
 ~~~admonish example title="Types, values and operations"
 Concretely, this gives:
-```catala
-10 / 3 = 3.333333333...
-$10 / 3.0 = $3.33
-$20 / 3.0 = $6.67
-$10 / $3 = 3.33333333...
+```catala-expr-en
+10  / 3   = 3.333333333... and
+$10 / 3.0 = $3.33 and
+$20 / 3.0 = $6.67 and
+$10 / $3  = 3.33333333...
 ```
 ~~~
 
@@ -337,7 +337,7 @@ The Catala compiler will guide you into using the correct operations explicitly,
 by reporting compiler errors when that is not the case.
 
 ~~~admonish bug title="Resolving typing errors on operations"
-For instance, typing to add an `integer` and a `decimal` gives the
+For instance, trying to add an `integer` and a `decimal` gives the
 following error message from the Catala compiler:
 
 ```text
@@ -370,7 +370,7 @@ possible casting, operations and their associated semantics.
 ~~~
 
 Catala also has built-in `date` and `duration` types with the common associated
-operations (adding a duration to a date, substracting two dates to get a
+operations (adding a duration to a date, subtracting two dates to get a
 duration, etc.). For a deeper look at date computations (which are [very tricky](https://link.springer.com/chapter/10.1007/978-3-031-57267-8_16)!), look at the [language reference](./5-catala.md).
 
 
@@ -388,7 +388,7 @@ the scope to be interpreted?
 
 ~~~admonish failure title="Why can't I test `IncomeTaxComputation` directly?" collapsible=true
 The reflex at this point is to execute the following command:
-```text
+```console
 $ clerk run tutorial.catala_en --scope=IncomeTaxComputation
 ┌─[ERROR]─
 │
@@ -416,7 +416,7 @@ we will be creating for our test case a new test that will pass specific
 arguments to `IncomeTaxComputation` which is being tested:
 
 ~~~admonish note title="Defining a test"
-```catala
+```catala-code-en
 declaration scope Test:
   # The following line is mysterious for now
   output computation content IncomeTaxComputation
@@ -441,7 +441,7 @@ scope Test:
 
 This test can now be executed through the Catala interpreter:
 
-```text
+```console
 $ clerk run tutorial.catala_en --scope=Test
 ┌─[RESULT]─
 │ computation = IncomeTaxComputation { -- income_tax: $4,000.00 }
@@ -458,7 +458,7 @@ the behavior of Catala programs, and spot errors in your code 😀
 You can also check that there is no syntax or typing error in your code,
 without testing it, with the following command:
 
-```text
+```console
 $ clerk typecheck tutorial.catala_en
 ┌─[RESULT]─
 │ Typechecking successful!
@@ -479,7 +479,7 @@ arithmetic operations and define local variables.
 For reference, here is the final version of the Catala code consolidated at
 the end of this section of the tutorial.
 
-~~~
+~~~catala-en
 {{#include ../examples/tutorial_end_2_1.catala_en}}
 ~~~
 ~~~~~~

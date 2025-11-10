@@ -55,8 +55,9 @@ jobs:
           curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y
           . "$HOME/.cargo/env"
           rustup update
-          cargo install mdbook-admonish mdbook-cmdrun mdbook-mermaid mdbook-toc mdbook-linkcheck mdbook-tocjs
+          make cargo-deps-nomdbook
           cargo install --version ${MDBOOK_VERSION} mdbook
+          make -C treesitter init build
       - name: Build with mdBook
         run: |
           . "$HOME/.cargo/env"
