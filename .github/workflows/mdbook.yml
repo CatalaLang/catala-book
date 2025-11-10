@@ -49,14 +49,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install build dependencies
-        run: apk add --no-cache perl
+        run: apk add --no-cache perl nodejs tree-sitter-cli
       - name: Install mdBook
         run: |
           curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y
           . "$HOME/.cargo/env"
           rustup update
-          make cargo-deps-nomdbook
           cargo install --version ${MDBOOK_VERSION} mdbook
+          make cargo-deps-nomdbook
           make -C treesitter init build
       - name: Build with mdBook
         run: |

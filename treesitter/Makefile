@@ -6,7 +6,15 @@ tree-sitter-catala/libtree-sitter-catala_expr_fr.so:
 	  echo ">> The former will do a fresh clone, the latter link an existing one in ../" >&2; \
 	  exit 1; \
 	fi
-	make -C tree-sitter-catala full
+	for lang in en fr; do \
+	  for variant in catala catala_code catala_expr; do \
+	    make -C tree-sitter-catala generate \
+	      TREESITTER_CATALA_LANG=$$lang \
+	      TREESITTER_CATALA_VARIANT=$$variant; \
+	    ( cd tree-sitter-catala/$${variant}_$${lang} && tree-sitter build && \
+	      cp parser.so ../libtree-sitter-$${variant}_$${lang}.so; )\
+	  done; \
+	done
 
 link:
 	ln -sf ../../tree-sitter-catala .
