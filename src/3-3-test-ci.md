@@ -169,9 +169,10 @@ assertions fail), which isn't probably what you want for a test.
 ~~~
 
 ~~~admonish success title="The Catala team approves assertion-testing"
-The Catala team recommends the use of assertion-based testing as the primary
-method for testing projects, for unit or end-to-end testing. The reasons are
-the following : <!-- TODO -->
+The Catala team recommends the use of assertion-based testing as the
+primary method for testing projects, for unit or end-to-end
+testing. This helps preventing any future undesired regressions on
+your code base.
 ~~~
 
 ### Cram testing
