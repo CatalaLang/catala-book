@@ -12,7 +12,7 @@ link:
 	ln -sf ../../tree-sitter-catala .
 
 init:
-	git clone git@github.com:CatalaLang/tree-sitter-catala
+	git clone https://github.com/CatalaLang/tree-sitter-catala
 
 highlights:
 	sed '/law_\|block\|directive\|_METADATA\|_CODE/d' catala-en/highlights.scm > catala-code-en/highlights.scm
