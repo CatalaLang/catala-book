@@ -144,8 +144,8 @@ declaration round_by_excess
 
 ## Rounds a number to the previous lesser integer.
 ## **Examples:**
-## - `round_by_excess of 3.78 = 3`
-## - `round_by_excess of -3.78 = -4.0`
+## - `round_by_default of 3.78 = 3`
+## - `round_by_default of -3.78 = -4.0`
 declaration round_by_default
   content decimal
   depends on d content decimal
@@ -217,8 +217,8 @@ declaration round_by_excess
 
 ## Rounds a money amount to the previous lesser dollar.
 ## **Examples:**
-## - `round_by_excess of $3.78 = $3`
-## - `round_by_excess of -$3.78 = -$4.0`
+## - `round_by_default of $3.78 = $3`
+## - `round_by_default of -$3.78 = -$4.0`
 declaration round_by_default
   content money
   depends on m content money
