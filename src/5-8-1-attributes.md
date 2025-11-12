@@ -18,7 +18,30 @@ declaration scope SomeComputation:
 
 ## Built-in attributes
 
-Some attributes affect the Catala compiler itself with built-in support.
+Some attributes affect the Catala compiler itself and have built-in support.
+
+## Tests
+
+Used on scope declarations to mark them for testing. See [the "Test"
+section](./3-3-test-ci.md#assertion-testing).
+
+## Documentation text
+
+Attached to declarations, structure fields, enumeration cases, or function
+arguments, the `#[doc = "documentation text"]` attribute can be used to document
+them. This information will be available to the users of the module and should
+explain the purpose and usage of its linked element.
+
+The alternative syntax `## documentation text` (a code comment starting with a
+double `#` character) is available and preferred for readability. Like the
+attribute, it must be present just above its target.
+
+## Error messages
+
+The `#[error.message = "informative message"]` attribute can be attached to
+assertions or to the `impossible` keyword. The given message will be printed
+alongside the normal error message and the code location when the error is
+triggered, both in the interpreter and other backends.
 
 ## Debug print
 
@@ -34,3 +57,15 @@ Note that, in some cases, due to how the compiler works, debug prints could
 appear duplicated or not at all, especially if optimisations are enabled (with
 the `-O` flag). If that happens, try to move the attribute to the root of the
 definition.
+
+## Implicit position arguments
+
+The `#[implicit_position_argument]` is used when declaring a function (often
+useful in conjunction with [external modules](./5-8-2-external-modules.md)), to
+mark one of its arguments of type `code_location` as _implicit_. The argument
+will not appear when calling the function, and will automatically be filled with
+the code position where the function was called from.
+
+This enables functions from libraries that can fail in some definite conditions
+to report the error where it happens in the user code, rather than point to the
+library.

@@ -1,0 +1,15 @@
+[dependencies]
+mdbook = "0.4.36"
+mdbook-admonish = ">=1.20.0"
+md book-mermaid = ">=0.16.0"
+mdbook-toc = ">=0.14.0"
+mdbook-tocjs = ">=0.1.4"
+mdbook-linkcheck = ">=0.7.0"
+mdbook-cmdrun = ">=0.7.0"
+mdbook-treesitter = { git = "https://github.com/AltGr/mdbook-treesitter" }
+tree-sitter-cli = ">=0.24.0"
+
+[package]
+name = "book"
+
+[lib]

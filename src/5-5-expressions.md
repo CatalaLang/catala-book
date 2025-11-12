@@ -34,6 +34,7 @@ If you're familiar with this format, you can read it below:
     < + - * / and or not xor > < >= <= == != > <expr> # Binary operations
   | if <expr 1> then <expr 2> else <expr 3>           # Conditionals
   | let <variable> equals <expr 1> in <expr 2>        # Local let-binding
+  | assertion <expr 1> in <expr 2>                    # Local assertion
   | ...                                               # Variable, literals,
                                                       # list operators, ...
 ```
@@ -365,7 +366,31 @@ match foo with pattern
    impossible # We know that foo is not in any other form at this point because...
 ```
 
-Be careful that any value that is not guarded by conditions may be computed,
-even if not directly needed to compute the result (in other words, Catala is not
-a _lazy_ language). Therefore, `impossible` is not fit to initialise fields of
-structures, for example, even if those fields are never used.
+Be careful that any value that is not guarded by conditions or pattern-matching
+may be computed, even if not directly needed to compute the result (in other
+words, Catala is not a _lazy_ language). Therefore, `impossible` is not fit to
+initialise fields of structures, for example, even if those fields are never
+used.
+
+The `#[error.message]` [attribute](./5-8-1-attributes.md#error-messages) can be
+attached to an `impossible` in order to add information to the message displayed
+when it is triggered.
+
+
+## Assertions
+
+We have seen assertions at the [definition
+level](./5-4-definitions-exceptions.md#assertions), to verify invariants on the
+variables of a scope. While those should be preferred when applicable, it is
+also possible to verify intermediate values directly inside an expression, using
+the syntax `assertion ... in ...`.
+
+```catala-expr-en
+let foo equals ... in
+assertion foo > 0 in
+...
+```
+
+Like for scope-level assertions and `impossible`, the `#[error.message]`
+[attribute](./5-8-1-attributes.md#error-messages) can be attached to an
+assertion to add a message that will be printed in case it fails.

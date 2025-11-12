@@ -27,7 +27,7 @@ backends = [ "c", "java" ]                        # Output language backends
 
 [[target]]
 name     = "housing-benefits"
-modules  = [ "Section_8, ... ]
+modules  = [ "Section_8", ... ]
 tests    = [ "tests/test_housing_benefits.catala_en" ]
 backends = [ "ocaml", "c", "java" ]
 ```
