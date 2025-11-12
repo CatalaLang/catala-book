@@ -28,40 +28,71 @@ jobs:
   # Test job
   test:
     runs-on: ubuntu-latest
-    container:
-      image: "registry.gitlab.inria.fr/catala/ci-images:latest"
-      options: --user root
+    env:
+      CAMLLIB: /usr/lib/x86_64-linux-gnu/ocaml/5.3.0
     steps:
+      - name: Get OCaml
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: ocaml
+          version: 1.0
+      - name: Download catala
+        uses: wei/wget@v1
+        with:
+          args: https://github.com/CatalaLang/catala/releases/download/1.0.0/catala_1.0.0_amd64.deb -O catala.deb
+      - name: Install catala
+        run: sudo dpkg -i --force-all ./catala.deb
       - uses: actions/checkout@v4
       - name: typecheck
-        run: |
-          eval $(opam env)
-          clerk typecheck
+        run: clerk typecheck
 
   # Build job
   build:
     runs-on: ubuntu-latest
-    container:
-        image: "registry.gitlab.inria.fr/catala/ci-images:latest"
-        options: --user root
     env:
       MDBOOK_VERSION: 0.4.36
     steps:
+      - uses: baptiste0928/cargo-install@v3
+        with:
+          crate: mdbook
+          version: ${{ env.MDBOOK_VERSION }}
+      - uses: baptiste0928/cargo-install@v3
+        with:
+          crate: mdbook-admonish
+      - uses: baptiste0928/cargo-install@v3
+        with:
+          crate: mdbook-mermaid
+      - uses: baptiste0928/cargo-install@v3
+        with:
+          crate: mdbook-toc
+      - uses: baptiste0928/cargo-install@v3
+        with:
+          crate: mdbook-tocjs
+      - uses: baptiste0928/cargo-install@v3
+        with:
+          crate: mdbook-linkcheck
+      - uses: baptiste0928/cargo-install@v3
+        with:
+          crate: mdbook-cmdrun
+      - uses: baptiste0928/cargo-install@v3
+        with:
+          crate: mdbook-treesitter
+          git: https://github.com/AltGr/mdbook-treesitter.git
+      - uses: baptiste0928/cargo-install@v3
+        with:
+          crate: tree-sitter-cli
+      - name: Download catala
+        uses: wei/wget@v1
+        with:
+          args: https://github.com/CatalaLang/catala/releases/download/1.0.0/catala_1.0.0_amd64.deb -O catala.deb
+      - name: Install catala
+        run: sudo dpkg -i ./catala.deb || true
       - uses: actions/checkout@v4
-      - name: Install build dependencies
-        run: apk add --no-cache perl nodejs tree-sitter-cli
-      - name: Install mdBook
+      - name: Prepare tree-sitter
         run: |
-          curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y
-          . "$HOME/.cargo/env"
-          rustup update
-          cargo install --version ${MDBOOK_VERSION} mdbook
-          make cargo-deps-nomdbook
           make -C treesitter init build
       - name: Build with mdBook
         run: |
-          . "$HOME/.cargo/env"
-          eval $(opam env)
           echo "Testing catala:"
           catala --version
           mdbook build
