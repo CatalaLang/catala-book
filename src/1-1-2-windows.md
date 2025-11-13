@@ -61,7 +61,7 @@ Windows. However, the Catala's lsp server bundles a subset of Catala
 which is fine. This may be installed with the following command
 
 ```console
-$ opam install catala.1.0.0~beta catala-lsp.1.0.0~beta
+$ opam install catala.1.0.0 catala-lsp.1.0.0
 ```
 ~~~admonish warning title="Ninja error"
 If the installation step fails to find the "ninja" tool, you may install it using winget.
