@@ -1,0 +1,110 @@
+# Corrigé du tutoriel
+
+## Article 1
+
+L'impôt sur le revenu pour un individu est défini comme un pourcentage fixe du
+revenu de l'individu sur une année.
+
+```catala
+déclaration structure Individu:
+  donnée revenu contenu argent
+  donnée nombre_enfants contenu entier
+
+
+déclaration champ d'application CalculImpôtRevenu:
+  entrée date_courante contenu date
+  entrée individu contenu Individu
+  entrée territoires_outre_mer contenu booléen
+  interne taux_imposition contenu décimal
+  résultat impôt_revenu contenu argent
+
+champ d'application CalculImpôtRevenu:
+  définition impôt_revenu égal à
+    individu.revenu * taux_imposition
+```
+
+## Article 2
+
+Le pourcentage fixe mentionné à l'article 1 est égal à 20 %.
+
+```catala
+champ d'application CalculImpôtRevenu:
+  étiquette article_2 définition taux_imposition
+  sous condition date_courante < |2000-01-01|
+  conséquence égal à 20 %
+
+  étiquette article_2 définition taux_imposition
+  sous condition date_courante >= |2000-01-01|
+  conséquence égal à 21 %
+```
+
+## Article 3
+
+Si l'individu a la charge de 2 enfants ou plus, alors le pourcentage fixe
+mentionné à l'article 1 est égal à 15 %.
+
+```catala
+champ d'application CalculImpôtRevenu:
+  étiquette article_3 exception article_2
+  définition taux_imposition
+  sous condition individu.nombre_enfants >= 2
+  conséquence égal à 15 %
+```
+
+## Article 4
+
+Les individus gagnant moins de 10 000 € sont exonérés de l'impôt sur le revenu mentionné
+à l'article 1.
+
+```catala
+champ d'application CalculImpôtRevenu:
+  étiquette article_4 exception article_3
+  définition taux_imposition
+  sous condition individu.revenu <= 10 000 €
+  conséquence égal à 0 %
+```
+
+## Article 5
+
+Les individus gagnant plus de 100 000 € sont soumis à un taux d'imposition de
+30%, quel que soit leur nombre d'enfants.
+
+```catala
+champ d'application CalculImpôtRevenu:
+  étiquette article_5 exception article_3
+  définition taux_imposition
+  sous condition individu.revenu > 100 000 €
+  conséquence égal à 30 %
+```
+
+## Article 6
+
+Dans les territoires d'outre-mer, le taux d'imposition pour les individus gagnant
+plus de 100 000 € spécifié à l'article 5 est réduit à 25 %.
+
+```catala
+champ d'application CalculImpôtRevenu:
+  étiquette article_6 exception article_5
+  définition taux_imposition
+  sous condition individu.revenu > 100 000 € et territoires_outre_mer
+  conséquence égal à 25 %
+```
+
+## Test
+
+```catala
+déclaration champ d'application Test:
+  résultat calcul contenu CalculImpôtRevenu
+
+champ d'application Test:
+  définition calcul égal à
+    résultat de CalculImpôtRevenu avec {
+      -- individu:
+        Individu {
+          -- revenu: 200 000 €
+          -- nombre_enfants: 3
+        }
+      -- territoires_outre_mer: faux
+      -- date_courante: |1999-01-01|
+    }
+```

@@ -2,5 +2,5 @@ book
 _build
 .#*
 **/#*#
-src/lib/
+src/**/lib/
 treesitter/tree-sitter-catala

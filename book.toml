@@ -1,9 +1,11 @@
 [book]
 authors = ["Denis Merigoux"]
 language = "en"
-multilingual = false
-src = "src"
+src = "src/en"
 title = "The Catala domain-specific programming language"
+
+[build]
+create-missing = false
 
 [output.html]
 smart-punctuation = true
@@ -38,4 +40,3 @@ theme_dir = "theme"
 block_marker_id = "tock"
 wing_marker_id = "tocw"
 base_url = "/"
-

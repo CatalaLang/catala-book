@@ -3,8 +3,8 @@
 <div id="tocw"></div>
 
 ~~~admonish tip title="French version"
-A french translated version is also available here: [French version](./5-7-fr-standard-library.md)
-Other languages currently need to use the following english version
+A French translated version is also available here: [French version](../fr/5-7-bibliotheque-standard.html)
+Other languages currently need to use the following English version.
 ~~~
 
 To avoid reinventing the wheel, Catala comes with a standard library containing
