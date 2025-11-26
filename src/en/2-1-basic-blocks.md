@@ -82,13 +82,15 @@ to dive into Catala as a programming language.
 # To create a block of Catala code in your file, bound it with Markdown-style
 # "```catala" and "```" delimiters. You can write comments in Catala code blocks
 # by prefixing lines with "#"
-
-# In the rest of the tutorial, when presenting Catala code snippets, it is
-# assumed implicitly that you should copy-paste them into your
-# tutorial.catala_en file inside a Catala code block enclosed between
-# "```catala" and "```" delimiters, and placed near the article of law that
-# it implements.
 ```
+
+~~~admonish warning title="Delineating code blocks"
+In the rest of the tutorial, when presenting Catala code snippets, it is
+assumed implicitly that you should copy-paste them into your
+`tutorial.catala_en` file inside a Catala code block enclosed between
+`` ```catala`` and `` ``` `` delimiters, and placed near the article of law that
+it implements.
+~~~
 
 ## Setting up data structures
 
@@ -480,6 +482,6 @@ For reference, here is the final version of the Catala code consolidated at
 the end of this section of the tutorial.
 
 ~~~catala-en
-{{#include ../examples/tutorial_end_2_1.catala_en}}
+{{#include ../../examples/tutorial_end_2_1.catala_en}}
 ~~~
 ~~~~~~

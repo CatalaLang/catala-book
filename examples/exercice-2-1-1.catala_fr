@@ -1,0 +1,127 @@
+<!-- fichier modèle pour 2-1-1-exercise.md -->
+# Livre Catala : Exercice 2-1-1
+
+```catala
+déclaration structure Individu:
+  donnée date_naissance contenu date
+  donnée date_décès contenu DateDécès
+
+déclaration énumération DateDécès:
+  -- Décédé contenu date
+  -- ToujoursVivant
+```
+
+# Question 1
+
+En vous basant sur la déclaration `test_personne1`, déclarez une `test_personne2`
+née le 21 décembre 1977 qui est toujours vivante.
+
+```catala
+# Déclaration et définition d'une valeur constante nommée test_personne1
+déclaration test_personne1 contenu Individu égal à
+  Individu {
+    -- date_naissance : |1981-10-05|
+      # Le format de date est |AAAA-MM-JJ|
+    -- date_décès : Décédé contenu |2012-05-12|
+  }
+
+déclaration test_personne2 contenu Individu égal à
+  test_personne1 # <= Supprimez cette ligne et remplacez-la par votre réponse
+```
+
+```catala
+déclaration champ d'application TuerPersonne:
+  entrée date_fatidique contenu date
+  entrée victime contenu Individu
+  résultat individu_tué contenu Individu
+```
+
+# Question 2
+
+Étant donné la déclaration du champ d'application `TuerPersonne`, définissez une
+variable de résultat `individu_tué` du champ d'application `TuerPersonne` qui
+utilise les variables d'entrée `date_fatidique` et `victime` pour créer un nouvel
+Individu qui est une copie de l'entrée `victime` mais avec sa `date_décès` mise
+à jour. Par souci de simplicité, nous ne vérifierons pas si nous tuons un
+individu déjà décédé.
+
+Vous pouvez tester votre solution en invoquant le champ d'application Catala
+TestTuerPersonne : `clerk run exercice-2-1-1.catala_fr --scope TestTuerPersonne`.
+
+```catala
+déclaration champ d'application TestTuerPersonne:
+  résultat calcul contenu TuerPersonne
+
+champ d'application TestTuerPersonne:
+  définition calcul égal à
+    résultat de TuerPersonne avec {
+      -- date_fatidique : |2025-01-20|
+      -- victime : test_personne2
+    }
+
+# Définissez votre champ d'application TuerPersonne ici
+
+# champ d'application TuerPersonne:
+#   ...
+```
+
+```catala
+déclaration structure Couple:
+  donnée revenu_annuel_foyer contenu argent
+  donnée personne_1 contenu Individu
+  donnée personne_2 contenu Individu
+
+# Définissez votre définition test_couple ici
+
+# déclaration test_couple contenu Couple égal à
+#   ...
+```
+
+```catala
+déclaration champ d'application CalculImpôt:
+  entrée date_traitement contenu date
+  entrée couple contenu Couple
+
+  interne personne1_décédée_avant_date_traitement contenu booléen
+  interne personne2_décédée_avant_date_traitement contenu booléen
+
+  résultat montant_impôt contenu argent
+
+champ d'application CalculImpôt:
+  définition montant_impôt égal à
+    si personne1_décédée_avant_date_traitement
+      ou personne2_décédée_avant_date_traitement alors
+     0 €
+   sinon
+     couple.revenu_annuel_foyer * 15 %
+```
+
+## Question 4
+
+Définissez une autre définition de champ d'application `CalculImpôt` qui définit
+les deux variables booléennes internes `personne1_décédée_avant_date_traitement`
+et `personne2_décédée_avant_date_traitement`.
+
+```catala
+# Définissez votre nouveau champ d'application CalculImpôt ici
+
+# champ d'application CalculImpôt:
+#   ...
+```
+
+## Question 5
+
+Enfin, nous devons définir un test pour notre calcul. En vous basant sur les
+tests définis précédemment, écrivez une définition du champ d'application de test
+`TestCalculImpôt`. Ensuite, ajustez les valeurs de test données pour vous assurer
+que votre implémentation est correcte.
+
+```catala
+déclaration champ d'application TestCalculImpôt:
+  résultat test_calcul_impôt contenu CalculImpôt
+
+# Définissez votre champ d'application TestCalculImpôt ici
+
+# champ d'application TestCalculImpôt:
+#   ...
+```

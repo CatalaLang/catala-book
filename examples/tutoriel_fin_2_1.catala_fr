@@ -1,0 +1,48 @@
+# Corrigé du tutoriel
+
+## Article 1
+
+L'impôt sur le revenu pour un individu est défini comme un pourcentage fixe du
+revenu de l'individu sur une année.
+
+```catala
+déclaration structure Individu:
+  donnée revenu contenu argent
+  donnée nombre_enfants contenu entier
+
+
+déclaration champ d'application CalculImpôtRevenu:
+  entrée individu contenu Individu
+  interne taux_imposition contenu décimal
+  résultat impôt_revenu contenu argent
+
+champ d'application CalculImpôtRevenu:
+  définition impôt_revenu égal à
+    individu.revenu * taux_imposition
+```
+
+## Article 2
+
+Le pourcentage fixe mentionné à l'article 1 est égal à 20 %.
+
+```catala
+champ d'application CalculImpôtRevenu:
+  définition taux_imposition égal à 20 %
+```
+
+## Test
+
+```catala
+déclaration champ d'application Test:
+  résultat calcul contenu CalculImpôtRevenu
+
+champ d'application Test:
+  définition calcul égal à
+    résultat de CalculImpôtRevenu avec {
+      -- individu:
+        Individu {
+          -- revenu: 20 000 €
+          -- nombre_enfants: 0
+        }
+    }
+```

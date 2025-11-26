@@ -14,7 +14,7 @@ and will reuse the same running example, but all the Catala code necessary
 to execute the example is included below for reference.
 
 ~~~catala-en
-{{#include ../examples/tutorial_end_2_1.catala_en}}
+{{#include ../../examples/tutorial_end_2_1.catala_en}}
 ~~~
 ~~~~~~
 
@@ -607,6 +607,6 @@ For reference, here is the final version of the Catala code consolidated at
 the end of this section of the tutorial.
 
 ~~~catala-en
-{{#include ../examples/tutorial_end_2_2.catala_en}}
+{{#include ../../examples/tutorial_end_2_2.catala_en}}
 ~~~
 ~~~~~~
