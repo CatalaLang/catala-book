@@ -82,6 +82,14 @@ interfaces.
 For styling (bold, italics), tables, links, etc., you can use all the Markdown
 features supported by [Pandoc](https://pandoc.org/MANUAL.html#pandocs-markdown).
 
+### Markdown file extension
+
+It is possible to suffix Catala files with the `.md` suffix:
+`foo.catala_en` is equivalent to `foo.catala_en.md`. In particular,
+this allows external tools to understand that this file can be handled
+as markdown. This allows Catala files to be properly displayed in web
+viewers, for example.
+
 ## Basic syntax principles
 
 ### Catala code blocks
