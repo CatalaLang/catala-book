@@ -11,9 +11,11 @@ build: treesit-prepare
 	mv book/site/en/html/* book/site/en/ && rm -rf book/site/en/html
 	# Build French version
 	rm -rf book/site/fr
+	# TEMP: Remove ADDITIONAL_JS and src/fr/fr-banner.js when translation stabilizes
 	MDBOOK_BOOK__LANGUAGE="fr" \
 	MDBOOK_BOOK__SRC="src/fr" \
 	MDBOOK_BOOK__TITLE="Le langage de programmation Catala" \
+	MDBOOK_OUTPUT__HTML__ADDITIONAL_JS='["fr-banner.js"]' \
 	mdbook build -d book/site/fr
 	# Move HTML content to root of language dir
 	mv book/site/fr/html/* book/site/fr/ && rm -rf book/site/fr/html
@@ -26,9 +28,11 @@ serve: treesit-prepare
 	mdbook serve -d book/site/en
 
 servefr: treesit-prepare
+	# TEMP: Remove ADDITIONAL_JS and src/fr/fr-banner.js when translation stabilizes
 	MDBOOK_BOOK__LANGUAGE="fr" \
 	MDBOOK_BOOK__SRC="src/fr" \
 	MDBOOK_BOOK__TITLE="Le langage de programmation Catala" \
+	MDBOOK_OUTPUT__HTML__ADDITIONAL_JS='["fr-banner.js"]' \
 	mdbook serve -d book/site/fr
 
 clean:
