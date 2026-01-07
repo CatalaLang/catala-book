@@ -365,7 +365,7 @@ champ d'application CalculImpôt:
 
   définition personne2_décédée_avant_date_traitement égal à
     # Une autre syntaxe possible pour tester les motifs
-    couple.personne_1.date_décès sous forme
+    couple.personne_2.date_décès sous forme
       Décédé contenu d et d < date_traitement
 ```
 ~~~
