@@ -367,7 +367,7 @@ scope TaxComputation:
 
   definition person2_dead_before_processing_date equals
     # Another possible syntax for testing patterns
-    couple.person_1.date_of_death with pattern
+    couple.person_2.date_of_death with pattern
       Deceased content d and d < processing_date
 ```
 ~~~
