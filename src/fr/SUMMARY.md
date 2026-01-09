@@ -41,6 +41,7 @@
     - [Fonctionnalités supplémentaires](./5-8-extra-features.md)
         - [Attributs](./5-8-1-attributes.md)
         - [Modules externes](./5-8-2-external-modules.md)
+        - [Support du JSON](./5-8-3-json-support.md)
 - [Clerk](./6-clerk.md)
     - [Configuration](./6-1-clerk-toml.md)
     - [Commandes](./6-2-commands-workflow.md)

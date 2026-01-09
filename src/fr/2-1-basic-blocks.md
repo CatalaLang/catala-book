@@ -404,7 +404,7 @@ Le test du code Catala se fait avec l'interpréteur à l'intérieur du compilate
 accessible avec la commande `interpret` et l'option `--scope` qui spécifie le
 champ d'application à interpréter.
 
-~~~admonish failure title="Pourquoi ne puis-je pas tester `CalculImpôtRevenu` directement ?" collapsible=true
+~~~admonish info title="Tester `CalculImpôtRevenu` directement ?" collapsible=true
 Le réflexe à ce stade est d'exécuter la commande suivante :
 ```console
 $ clerk run tutoriel.catala_fr --scope=CalculImpôtRevenu
@@ -421,11 +421,17 @@ $ clerk run tutoriel.catala_fr --scope=CalculImpôtRevenu
 ```
 
 Comme le dit le message d'erreur, essayer d'interpréter directement
-`CalculImpôtRevenu` revient à essayer de calculer les impôts de quelqu'un sans
-connaître le revenu de la personne ! Pour être exécuté, le champ d'application
-doit être appelé avec des valeurs concrètes pour le revenu et le nombre d'enfants
-de l'individu. Sinon, Catala se plaindra que les variables d'`entrée` du champ
-d'application manquent pour l'interprétation.
+`CalculImpôtRevenu` revient à essayer de calculer les impôts de
+quelqu'un sans connaître le revenu de la personne ! Pour être exécuté,
+le champ d'application doit être appelé avec des valeurs concrètes
+pour le revenu et le nombre d'enfants de l'individu. Sinon, Catala se
+plaindra que les variables d'`entrée` du champ d'application manquent
+pour l'interprétation. Toutefois, il est possible de fournir ces
+entrées sous forme de données JSON à l'aide de l'option `--input`.  La
+section [Support du JSON](./5-8-3-json-support.md) décrit la manière
+d'y parvenir.  Notez que, pour des raisons de robustesse du code, nous
+recommendons d'écrire vos tests directement en Catala lorsque cela est
+possible.
 ~~~
 
 Le modèle de test utilise des concepts qui seront vus [plus tard](./2-4-states-dynamic.md)

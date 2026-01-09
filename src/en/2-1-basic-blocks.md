@@ -387,8 +387,7 @@ The testing of Catala code is done with the interpreter inside the compiler,
 accessible with the `interpret` command and the `--scope` option that specifies
 the scope to be interpreted?
 
-
-~~~admonish failure title="Why can't I test `IncomeTaxComputation` directly?" collapsible=true
+~~~admonish info title="Testing `IncomeTaxComputation` directly?" collapsible=true
 The reflex at this point is to execute the following command:
 ```console
 $ clerk run tutorial.catala_en --scope=IncomeTaxComputation
@@ -404,11 +403,15 @@ $ clerk run tutorial.catala_en --scope=IncomeTaxComputation
 └─
 ```
 
-As the error message says, trying to interpret directly `IncomeTaxComputation` is like
-trying to compute the taxes of somebody without knowing the income of the person!
-To be executed, the scope needs to be called with concrete values for the income
-and the number of children of the individual. Otherwise, Catala will complain
-that `input` variables of the scope are missing for the interpretation.
+As the error message says, it does not make sense to interpret
+directly `IncomeTaxComputation`. To be executed, the scope needs to be
+called with concrete values for the income and the number of children
+of the individual. Otherwise, Catala will complain that `input`
+variables of the scope are missing for the interpretation. However, it
+is possible to execute this scope by providing input as JSON data
+using the `--input` option. The [JSON support section](./5-8-3-json-support.md)
+describes how to achieve that. Note that, for robustness sake, we still
+recommend writing pure Catala tests whenever possible.
 ~~~
 
 The pattern for testing make use of concepts that will be seen
