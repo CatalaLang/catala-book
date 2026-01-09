@@ -1,0 +1,22 @@
+name: PR Preview Build
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+
+  save-pr-metadata:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Save PR metadata
+        run: |
+          echo "${{ github.event.pull_request.number }}" > pr-number.txt
+
+      - name: Upload PR metadata
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-metadata
+          path: pr-number.txt
