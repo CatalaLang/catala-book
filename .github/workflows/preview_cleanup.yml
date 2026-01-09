@@ -17,4 +17,4 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           wranglerVersion: 4.21.0
-          command: delete catala-book-preview-pr-${{ github.event.pull_request.number }}
+          command: delete --name catala-book-preview-pr-${{ github.event.pull_request.number }}
