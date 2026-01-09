@@ -38,7 +38,7 @@ jobs:
         run: |
           cat > wrangler.jsonc <<'JSON'
           {
-            "name": "catala-book-preview",
+            "name": "catala-book-preview-pr-${{ github.event.pull_request.number }}",
             "compatibility_date": "2025-04-01",
             "workers_dev": true,
             "preview_urls": true,
