@@ -41,6 +41,7 @@
     - [Extra features](./5-8-extra-features.md)
       - [Attributes](./5-8-1-attributes.md)
       - [External modules](./5-8-2-external-modules.md)
+      - [JSON support](./5-8-3-json-support.md)
 - [The `clerk` build system](./6-clerk.md)
     - [Project configuration file](./6-1-clerk-toml.md)
     - [Commands and workflow](./6-2-commands-workflow.md)
