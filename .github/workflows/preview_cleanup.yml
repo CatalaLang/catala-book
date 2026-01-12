@@ -12,6 +12,7 @@ jobs:
 
     steps:
       - name: Delete preview worker
+        continue-on-error: true
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
