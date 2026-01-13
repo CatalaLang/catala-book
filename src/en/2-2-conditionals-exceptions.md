@@ -173,7 +173,9 @@ at article 1.
 ```catala-code-en
 scope IncomeTaxComputation:
   exception definition tax_rate
-  under condition individual.income < $10,000
+  under condition individual.income <= $10,000
+  # Notice the <= above, the wording in article 4 might suggest < but
+  # we always take the interpretation most favorable to the taxpayer!
   consequence equals 0 %
 ```
 ~~~
