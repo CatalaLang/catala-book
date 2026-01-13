@@ -18,15 +18,18 @@ née le 21 décembre 1977 qui est toujours vivante.
 
 ```catala
 # Déclaration et définition d'une valeur constante nommée test_personne1
-déclaration test_personne1 contenu Individu égal à
-  Individu {
-    -- date_naissance : |1981-10-05|
+déclaration test_personne1 contenu Individu
+  égal à
+    Individu {
+      -- date_naissance: |1981-10-05|
       # Le format de date est |AAAA-MM-JJ|
-    -- date_décès : Décédé contenu |2012-05-12|
-  }
+      -- date_décès: Décédé contenu |2012-05-12|
+    }
 
-déclaration test_personne2 contenu Individu égal à
-  test_personne1 # <= Supprimez cette ligne et remplacez-la par votre réponse
+déclaration test_personne2 contenu Individu
+  égal à
+    test_personne1
+# <= Supprimez cette ligne et remplacez-la par votre réponse
 ```
 
 ```catala
@@ -55,8 +58,8 @@ déclaration champ d'application TestTuerPersonne:
 champ d'application TestTuerPersonne:
   définition calcul égal à
     résultat de TuerPersonne avec {
-      -- date_fatidique : |2025-01-20|
-      -- victime : test_personne2
+      -- date_fatidique: |2025-01-20|
+      -- victime: test_personne2
     }
 
 # Définissez votre champ d'application TuerPersonne ici
@@ -89,11 +92,13 @@ déclaration champ d'application CalculImpôt:
 
 champ d'application CalculImpôt:
   définition montant_impôt égal à
-    si personne1_décédée_avant_date_traitement
-      ou personne2_décédée_avant_date_traitement alors
-     0 €
-   sinon
-     couple.revenu_annuel_foyer * 15 %
+    si
+      personne1_décédée_avant_date_traitement
+      ou personne2_décédée_avant_date_traitement
+    alors
+      0 €
+    sinon
+      couple.revenu_annuel_foyer * 15%
 ```
 
 ## Question 4

@@ -10,7 +10,6 @@ déclaration structure Individu:
   donnée revenu contenu argent
   donnée nombre_enfants contenu entier
 
-
 déclaration champ d'application CalculImpôtRevenu:
   entrée individu contenu Individu
   interne taux_imposition contenu décimal
@@ -27,7 +26,7 @@ Le pourcentage fixe mentionné à l'article 1 est égal à 20 %.
 
 ```catala
 champ d'application CalculImpôtRevenu:
-  définition taux_imposition égal à 20 %
+  définition taux_imposition égal à 20%
 ```
 
 ## Test

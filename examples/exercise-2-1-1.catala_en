@@ -18,15 +18,18 @@ on the 21st of December 1977 that is still alive.
 
 ```catala
 # Declaration and definition of a constant value named test_person1
-declaration test_person1 content Individual equals
-  Individual {
-    -- date_of_birth : |1981-10-05|
+declaration test_person1 content Individual
+  equals
+    Individual {
+      -- date_of_birth: |1981-10-05|
       # Date format is |YYYY-MM-DD|
-    -- date_of_death : Deceased content |2012-05-12|
-  }
+      -- date_of_death: Deceased content |2012-05-12|
+    }
 
-declaration test_person2 content Individual equals
-  test_person1 # <= Remove this line and replace it with your answer
+declaration test_person2 content Individual
+  equals
+    test_person1
+# <= Remove this line and replace it with your answer
 ```
 
 ```catala
@@ -55,8 +58,8 @@ declaration scope TestKillPerson:
 scope TestKillPerson:
   definition computation equals
     output of KillPerson with {
-      -- fateful_date : |2025-01-20|
-      -- victim : test_person2
+      -- fateful_date: |2025-01-20|
+      -- victim: test_person2
     }
 
 # Define your KillPerson scope here
@@ -89,11 +92,13 @@ declaration scope TaxComputation:
 
 scope TaxComputation:
   definition tax_amount equals
-    if person1_dead_before_processing_date
-      or person2_dead_before_processing_date then
-     $0
-   else
-     couple.household_yearly_income * 15%
+    if
+      person1_dead_before_processing_date
+      or person2_dead_before_processing_date
+    then
+      $0
+    else
+      couple.household_yearly_income * 15%
 ```
 
 ## Question 4

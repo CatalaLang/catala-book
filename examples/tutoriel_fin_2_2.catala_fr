@@ -10,7 +10,6 @@ déclaration structure Individu:
   donnée revenu contenu argent
   donnée nombre_enfants contenu entier
 
-
 déclaration champ d'application CalculImpôtRevenu:
   entrée date_courante contenu date
   entrée individu contenu Individu
@@ -29,13 +28,17 @@ Le pourcentage fixe mentionné à l'article 1 est égal à 20 %.
 
 ```catala
 champ d'application CalculImpôtRevenu:
-  étiquette article_2 définition taux_imposition
+  étiquette article_2
+  définition taux_imposition
   sous condition date_courante < |2000-01-01|
-  conséquence égal à 20 %
+  conséquence égal à
+    20%
 
-  étiquette article_2 définition taux_imposition
+  étiquette article_2
+  définition taux_imposition
   sous condition date_courante >= |2000-01-01|
-  conséquence égal à 21 %
+  conséquence égal à
+    21%
 ```
 
 ## Article 3
@@ -48,7 +51,8 @@ champ d'application CalculImpôtRevenu:
   étiquette article_3 exception article_2
   définition taux_imposition
   sous condition individu.nombre_enfants >= 2
-  conséquence égal à 15 %
+  conséquence égal à
+    15%
 ```
 
 ## Article 4
@@ -61,7 +65,8 @@ champ d'application CalculImpôtRevenu:
   étiquette article_4 exception article_3
   définition taux_imposition
   sous condition individu.revenu <= 10 000 €
-  conséquence égal à 0 %
+  conséquence égal à
+    0%
 ```
 
 ## Article 5
@@ -74,7 +79,8 @@ champ d'application CalculImpôtRevenu:
   étiquette article_5 exception article_3
   définition taux_imposition
   sous condition individu.revenu > 100 000 €
-  conséquence égal à 30 %
+  conséquence égal à
+    30%
 ```
 
 ## Article 6
@@ -87,7 +93,8 @@ champ d'application CalculImpôtRevenu:
   étiquette article_6 exception article_5
   définition taux_imposition
   sous condition individu.revenu > 100 000 € et territoires_outre_mer
-  conséquence égal à 25 %
+  conséquence égal à
+    25%
 ```
 
 ## Test
