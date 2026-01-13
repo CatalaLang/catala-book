@@ -75,9 +75,13 @@ $ clerk run tutorial.catala_en --scope=IncomeTaxComputation --input faulty-input
 │    $Individual: { "income": integer ∈ [-2^53, 2^53] || number || string,
 │                   "number_of_children": integer ∈ [-2^53, 2^53] || string }
 │    $date:
-│      /* Catala date
-│         Accepts JSON strings with the following format: YYYY-MM-DD, e.g., "1970-01-31" */
+│      /* Catala date */
 │      string
+│      /* Accepts strings with the following format: YYYY-MM-DD, e.g., "1970-01-31" */
+│      || { /* Accepts date objects: {"year":<int>, "month":<int>, "day":<int>} */
+│           "year": integer ∈ [0, 9999],
+│           "month": integer ∈ [1, 12],
+│           "day": integer ∈ [1, 31] }
 │
 └─
 ```
@@ -167,24 +171,24 @@ values can be encoded in several ways. For instance, integers can be
 either represented as direct JSON integers (accepting values up to
 2^53) or a string for an arbitrary precision.
 
-| Catala type | JSON data type | Catala Value Example    | Converted value in JSON |
-|-------------|----------------|-------------------------|-------------------------|
-| boolean     | boolean        | `true`                  | `true`                  |
-| integer     | integer        | `1`                     | `1`                     |
-| integer     | string         | `123`                   | `123`                   |
-| decimal     | integer        | `1.0`                   | `1`                     |
-| decimal     | number         | `1.5`                   | `1.5`                   |
-| decimal     | string         | `1/3`                   | `"1/3"`                 |
-| money       | integer        | `$1`                    | `1`                     |
-| money       | number         | `$1.23`                 | `1.23`                  |
-| money       | string         | `$1.23`                 | `"1.23"`                |
-| date        | string         | `\|2026-01-31\|`        | `"2026-01-31"`          |
-| duration    | string         | `1 year`                | `"1 years"`             |
-| list        | array          | `[ 1 ; 2 ; 3 ]`         | `[ 1, 2, 3 ]`           |
-| tuple       | array          | `(1, 3.0, false)`       | `[ 1, 3.0, false ]`     |
-| enumeration | string         | `A`                     | `"A"`                   |
-| enumeration | object         | `B content 3`           | `{ "B": 3 }`            |
-| structure   | object         | `{--x:1 --y:true}`      | `{ "x": 1, "y": true }` |
+| Catala type | JSON data type | Catala Value Example    | Converted value in JSON  |
+|-------------|----------------|-------------------------|--------------------------|
+| boolean     | boolean        | `true`                  | `true`                   |
+| integer     | integer        | `1`                     | `1`                      |
+| integer     | string         | `123`                   | `123`                    |
+| decimal     | integer        | `1.0`                   | `1`                      |
+| decimal     | number         | `1.5`                   | `1.5`                    |
+| decimal     | string         | `1/3`                   | `"1/3"`                  |
+| money       | integer        | `$1`                    | `1`                      |
+| money       | number         | `$1.23`                 | `1.23`                   |
+| money       | string         | `$1.23`                 | `"1.23"`                 |
+| date        | string         | `\|2026-01-31\|`        | `"2026-01-31"`           |
+| duration    | object         | `1 year + 2 month`      | `{"years":1,"months":2}` |
+| list        | array          | `[ 1 ; 2 ; 3 ]`         | `[ 1, 2, 3 ]`            |
+| tuple       | array          | `(1, 3.0, false)`       | `[ 1, 3.0, false ]`      |
+| enumeration | string         | `A`                     | `"A"`                    |
+| enumeration | object         | `B content 3`           | `{ "B": 3 }`             |
+| structure   | object         | `{--x:1 --y:true}`      | `{ "x": 1, "y": true }`  |
 
 ~~~admonish note title="JSON support in backends"
 Currently, JSON inputs and outputs are only supported in the Catala
