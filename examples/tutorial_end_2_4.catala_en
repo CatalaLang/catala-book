@@ -197,18 +197,6 @@ scope HouseholdTaxComputation:
     else household_tax - total_deduction
 ```
 
-## Article 9
-
-The deduction granted at article 8 is capped at $8,500 for the whole household.
-
-```catala
-scope HouseholdTaxComputation:
-  definition total_deduction
-    state capped
-  equals
-    if total_deduction > $8,500 then $8,500 else total_deduction
-```
-
 ## Test
 
 ```catala

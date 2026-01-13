@@ -182,18 +182,6 @@ champ d'application CalculImpôtFoyer:
     sinon impôt_foyer - déduction_totale
 ```
 
-## Article 9
-
-La déduction accordée à l'article 8 est plafonnée à 8 500 € pour l'ensemble du foyer.
-
-```catala
-champ d'application CalculImpôtFoyer:
-  définition déduction_totale
-    état plafonnée
-  égal à
-    si déduction_totale > 8 500 € alors 8 500 € sinon déduction_totale
-```
-
 ## Test
 
 ```catala
