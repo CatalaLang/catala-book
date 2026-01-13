@@ -80,9 +80,13 @@ $ clerk run tutoriel.catala_en --scope=CalculImpôtRevenu --input mauvaise-entre
 │    $Individu: { "revenu": integer ∈ [-2^53, 2^53] || number || string,
 │                 "nombre_enfants": integer ∈ [-2^53, 2^53] || string }
 │    $date:
-│      /* Catala date
-│         Accepts JSON strings with the following format: YYYY-MM-DD, e.g., "1970-01-31" */
+│      /* Catala date */
 │      string
+│      /* Accepts strings with the following format: YYYY-MM-DD, e.g., "1970-01-31" */
+│      || { /* Accepts date objects: {"year":<int>, "month":<int>, "day":<int>} */
+│           "year": integer ∈ [0, 9999],
+│           "month": integer ∈ [1, 12],
+│           "day": integer ∈ [1, 31] }
 │
 └─
 ```
@@ -177,24 +181,24 @@ façon. Par exemple, les entiers peuvent être représentés en JSON par
 des entiers JSON (jusqu'à 2^53) ou, pour une précision arbitraire, par
 une chaîne de caractère.
 
-| Type Catala | Type JSON      | Example de valeur Catala| Valeur convertie en JSON|
-|-------------|----------------|-------------------------|-------------------------|
-| booléen     | boolean        | `vrai`                  | `true`                  |
-| entier      | integer        | `1`                     | `1`                     |
-| entier      | string         | `123`                   | `123`                   |
-| décimal     | integer        | `1,0`                   | `1`                     |
-| décimal     | number         | `1,5`                   | `1.5`                   |
-| décimal     | string         | `1/3`                   | `"1/3"`                 |
-| argent      | integer        | `1€`                    | `1`                     |
-| argent      | number         | `1,23€`                 | `1.23`                  |
-| argent      | string         | `1,23€`                 | `"1.23"`                |
-| date        | string         | `\|2026-01-31\|`        | `"2026-01-31"`          |
-| durée       | string         | `1 an`                  | `"1 years"`             |
-| liste       | array          | `[ 1 ; 2 ; 3 ]`         | `[ 1, 2, 3 ]`           |
-| tuple       | array          | `(1, 3,0, faux)`        | `[ 1, 3.0, false ]`     |
-| énumeration | string         | `A`                     | `"A"`                   |
-| énumeration | object         | `B contenu 3`           | `{ "B": 3 }`            |
-| structure   | object         | `{--x:1 --y:vrai}`      | `{ "x": 1, "y": true }` |
+| Type Catala | Type JSON      | Example de valeur Catala| Valeur convertie en JSON |
+|-------------|----------------|-------------------------|--------------------------|
+| booléen     | boolean        | `vrai`                  | `true`                   |
+| entier      | integer        | `1`                     | `1`                      |
+| entier      | string         | `123`                   | `123`                    |
+| décimal     | integer        | `1,0`                   | `1`                      |
+| décimal     | number         | `1,5`                   | `1.5`                    |
+| décimal     | string         | `1/3`                   | `"1/3"`                  |
+| argent      | integer        | `1€`                    | `1`                      |
+| argent      | number         | `1,23€`                 | `1.23`                   |
+| argent      | string         | `1,23€`                 | `"1.23"`                 |
+| date        | string         | `\|2026-01-31\|`        | `"2026-01-31"`           |
+| durée       | string         | `1 an + 2 mois`         | `{"years":1,"months":2}` |
+| liste       | array          | `[ 1 ; 2 ; 3 ]`         | `[ 1, 2, 3 ]`            |
+| tuple       | array          | `(1, 3,0, faux)`        | `[ 1, 3.0, false ]`      |
+| énumeration | string         | `A`                     | `"A"`                    |
+| énumeration | object         | `B contenu 3`           | `{ "B": 3 }`             |
+| structure   | object         | `{--x:1 --y:vrai}`      | `{ "x": 1, "y": true }`  |
 
 ~~~admonish note title="Support du JSON dans les backends"
 Pour le moment, les entrées et sorties en JSON ne sont supportés que
