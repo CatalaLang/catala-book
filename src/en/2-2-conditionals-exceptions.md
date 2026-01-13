@@ -174,6 +174,8 @@ at article 1.
 scope IncomeTaxComputation:
   exception definition tax_rate
   under condition individual.income <= $10,000
+  # Notice the <= above, the wording in article 4 might suggest < but
+  # we always take the interpretation most favorable to the taxpayer!
   consequence equals 0 %
 ```
 ~~~
@@ -286,7 +288,7 @@ at article 1.
 scope IncomeTaxComputation:
   label article_4 exception article_3
   definition tax_rate
-  under condition individual.income <= $10,000
+  under condition individual.income < $10,000
   consequence equals 0 %
 ```
 ~~~
