@@ -95,3 +95,28 @@ implementation.
 In case of changes to the Catala interface (or upon update of the Catala
 compiler), you should re-run the `--gen-external` command and resolve
 discrepancies between your implementation and the new `.template` file.
+
+## External types
+
+When using external modules, it is sometimes useful to manipulate values that
+cannot be expressed as Catala types. This is possible through the definition of
+external types:
+
+~~~catala-code-en
+declaration type AbstractType: external
+~~~
+
+The resulting type, named `AbstractType` here, can be manipulated in Catala (be
+part of structures, inputs of scopes, etc.), but is _opaque_ to the Catala
+program, in the sense that its contents cannot be observed. The point is that
+the external module will provide the functions that can use it.
+
+Be wary, though, of the following caveats when using external types:
+- The actual implementation must follow the expectations from the corresponding
+  Catala backend (for example, in Java, the corresponding class must
+  implement `CatalaValue`)
+- As mentionned above, they must be kept functional. **Do not use mutable
+  types**: if a value can be updated in-place, expect weird bugs to happen. For
+  example, a function that adds an element to a collection encoded using an
+  external type should return a new collection with the element added, never
+  modify the collection it was given as argument.

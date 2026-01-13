@@ -102,3 +102,29 @@ En cas de changements dans l'interface Catala (ou lors de la mise à jour du
 compilateur Catala), vous devez réexécuter la commande `--gen-external` et
 résoudre les divergences entre votre implémentation et le nouveau fichier
 `.template`.
+
+## Types externes
+
+Il est parfois utile, lorsqu'on définit des modules externes, de manipuler des
+valeurs qui ne peuvent être définies en Catala pur. Les types externes le
+permettent:
+
+~~~catala-code-fr
+déclaration type TypeAbstrait: externe
+~~~
+
+Le type `TypeAbstrait` défini ici peut être manipulé en Catala (utilisé comme
+membre de structures, entrées de champ d'application, etc.) mais reste _opaque_
+pour le reste du programme: seules les fonctions définies à l'intérieur du
+module externe seront en mesure d'en observer le contenu.
+
+L'usage des types externes nécessite cependant des précautions particulières:
+- Suivant le backend utilisé, l'implémentation concrète du type doit se plier
+  aux règles de Catala pour ce backend. Par exemple, un type externe implémenté
+  en Java doit implémenter l'interface `CatalaValue`.
+- Comme mentionné ci-dessus, Catala est basé sur un modèle fonctionnel:
+  **n'utilisez pas de types mutables**. Les modifications en-place de valeurs
+  sont interdites. Supposons par exemple un type externe `Ensemble` qui permette
+  de stocker des collections de valeurs: la fonction ajoutant un élément à
+  l'ensemble devra renvoyer un nouvel ensemble comportant le nouvel élément, et
+  en aucun cas modifier l'ensemble passé en argument.
