@@ -49,7 +49,7 @@
 ;; upper level (only)
 
 ;; expression level
-[(OF) (CONTAINS) (SUM) (STATE) (DEFINED_AS) (MATCH) (WITH_PATT) (BUT_REPLACE) (IF) (THEN) (ELSE) (CONTENT) (WITH) (LET) (IN) (NOT) (TO) (OUTPUT)] @keyword
+[(OF) (CONTAINS) (SUM) (STATE) (DEFINED_AS) (MATCH) (WITH_PATT) (BUT_REPLACE) (IF) (THEN) (ELSE) (CONTENT) (WITH) (LET) (IN) (NOT) (TO) (OUTPUT) (ASSERTION)] @keyword
 
 
 

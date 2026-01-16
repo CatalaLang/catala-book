@@ -395,7 +395,7 @@ scope Foo:
   assertion bar + 2 = fizz * 4
 ```
 
-The `#[error.message]` [attribute](./5-8-1-attributes.md#error-messages) can be
+The `#[error.message]` [attribute](./5-8-1-attributes.md#errormessage) can be
 attached to an assertion in order to add information to the message displayed
 when it fails.
 
