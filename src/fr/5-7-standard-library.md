@@ -284,8 +284,6 @@ déclaration max
 déclaration depuis_année_mois_jour
   contenu date
   dépend de
-    #[implicit_position_argument]
-    pos contenu position_source,
     dannée contenu entier,
     dmois contenu entier,
     djour contenu entier

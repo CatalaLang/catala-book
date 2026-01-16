@@ -394,6 +394,10 @@ champ d'application Foo:
   assertion bar + 2 = fizz * 4
 ```
 
+Il est possible d'attacher un [attribut
+`#[error.message]`](./5-8-1-attributes.md#errormessage) à une assertion afin
+d'y ajouter un message qui sera affiché en cas d'échec.
+
 ## Mode d'arrondi des dates
 
 Pour définir le mode d'arrondi du calcul de date vers le haut ou vers le bas (voir la
