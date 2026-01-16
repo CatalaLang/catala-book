@@ -372,7 +372,7 @@ words, Catala is not a _lazy_ language). Therefore, `impossible` is not fit to
 initialise fields of structures, for example, even if those fields are never
 used.
 
-The `#[error.message]` [attribute](./5-8-1-attributes.md#error-messages) can be
+The `#[error.message]` [attribute](./5-8-1-attributes.md#errormessage) can be
 attached to an `impossible` in order to add information to the message displayed
 when it is triggered.
 
@@ -392,5 +392,5 @@ assertion foo > 0 in
 ```
 
 Like for scope-level assertions and `impossible`, the `#[error.message]`
-[attribute](./5-8-1-attributes.md#error-messages) can be attached to an
+[attribute](./5-8-1-attributes.md#errormessage) can be attached to an
 assertion to add a message that will be printed in case it fails.

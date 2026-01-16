@@ -34,6 +34,7 @@ Si vous êtes familier avec ce format, vous pouvez le lire ci-dessous :
     < + - * / et ou non ou bien > < >= <= == != > <expr> # Opérations binaires
   | si <expr 1> alors <expr 2> sinon <expr 3>         # Conditionnelles
   | soit <variable> égal à <expr 1> dans <expr 2>     # Liaison locale
+  | assertion <expr 1> dans <expr 2>                  # Assertion locale
   | ...                                               # Variable, littéraux,
                                                       # opérateurs de liste, ...
 ```
@@ -342,7 +343,7 @@ locale](./5-5-expressions.md#local-variables-and-let-bindings) et ensuite
 pour chaque variable de résultat.
 
 
-## Cas "impossibles"
+## Cas "impossible"
 
 Lorsque certains cas ne sont pas censés se produire dans le flux d'exécution normal d'un
 programme, ils peuvent être marqués comme `impossible`. Cela rend l'intention du
@@ -362,7 +363,32 @@ selon foo sous forme
    impossible # Nous savons que foo n'est sous aucune autre forme à ce stade car...
 ```
 
-Attention, toute valeur qui n'est pas gardée par des conditions peut être calculée,
+Attention, toute valeur qui n'est pas gardée par une condition ou un filtrage peut être calculée,
 même si elle n'est pas directement nécessaire pour calculer le résultat (en d'autres termes, Catala n'est pas
 un langage _paresseux_). Par conséquent, `impossible` n'est pas adapté pour initialiser des champs de
 structures, par exemple, même si ces champs ne sont jamais utilisés.
+
+Il est possible d'attacher un [attribut
+`#[error.message]`](./5-8-1-attributes.md#errormessage) à un `impossible` pour
+y ajouter un message qui sera affiché en cas de déclenchement.
+
+
+## Assertions
+
+Comme nous avons vu, des assertions peuvent être définies au niveau des
+[définitions](./5-4-definitions-exceptions.md#assertions) d'un champ
+d'application, afin de valider des invariants sur ses variables. Il est
+également possible, pour des contraintes plus locales, d'insérer des assertions
+portant sur les variables locales directement à l'intérieur d'une expression. La
+syntaxe à utiliser est `assertion ... dans ...`:
+
+```catala-expr-fr
+soit foo égal à ... dans
+assertion foo > 0 dans
+...
+```
+
+De même que pour les assertions au niveau du champ d'application, il est
+possible d'attacher un [attribut
+`#[error.message]`](./5-8-1-attributes.md#errormessage) à l'assertion
+locale afin d'y ajouter un message qui sera affiché en cas d'échec.

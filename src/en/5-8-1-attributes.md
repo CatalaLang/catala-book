@@ -32,7 +32,7 @@ arguments, the `#[doc = "documentation text"]` attribute can be used to document
 them. This information will be available to the users of the module and should
 explain the purpose and usage of its linked element.
 
-The alternative syntax `### documentation text` (a code comment starting with a
+The alternative syntax `## documentation text` (a code comment starting with a
 double `#` character) is available and preferred for readability. Like the
 attribute, it must be present just above its target.
 
@@ -68,4 +68,6 @@ the code position where the function was called from.
 
 This enables functions from libraries that can fail in some definite conditions
 to report the error where it happens in the user code, rather than point to the
-library.
+library. For example, it wouldn't be very helpful when calling
+`Utils.custom_division of 2, 0` to report the position of the `Utils` module
+where the `custom_division` function is defined.
