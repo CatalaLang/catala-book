@@ -40,9 +40,9 @@ constants. If you want to use module `Bar` inside module `Foo`, the top of
 > Using Bar
 ```
 
-You can then refer to types, scopes and constants like of `Bar` like `Fizz` with
-`Bar.Fizz` inside `Foo`. If you don't want to type in `Bar.` each time, you can
-give `Bar` an alias inside `Foo` with:
+You can then refer to types, scopes and constants defined in `Bar`, e.g. `Fizz`,
+by writing `Bar.Fizz` inside `Foo`. If you don't want to type in `Bar.` each time, you
+can give `Bar` an alias inside `Foo` with:
 
 ```catala-en
 > Module Foo
@@ -51,6 +51,19 @@ give `Bar` an alias inside `Foo` with:
 ```
 
 Then, `B.Fizz` will refer to `Bar.Fizz`.
+
+~~~admonish tip title="Principal module types"
+Some modules are dedicated to handling a certain type of data, like the module
+[`Period`](./5-7-standard-library.md#module-period) of the standard library.
+This module defines a structure `Period`, which would then need to be used
+under the qualified name `Period.Period`.
+
+As this is inconvenient, Catala detects when a type (structure, enumeration of
+external) is named after its module, and allows unqualified references to that
+type, so that for example you can refer to the type `Period` directly.
+
+This behaviour is disabled when the module name is aliased with `Using ... as`.
+~~~
 
 ## Inclusions
 
