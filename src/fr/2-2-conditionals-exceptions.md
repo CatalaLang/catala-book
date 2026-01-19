@@ -174,6 +174,9 @@ Les individus gagnant moins de 10 000 € sont exonérés de l'impôt sur le rev
 champ d'application CalculImpôtRevenu:
   exception définition taux_imposition
   sous condition individu.revenu <= 10 000 €
+  # Notez le <= au-dessus, la formulation de l'article 4 suggère d'utiliser <
+  # mais nous prenons toujours l'interprétation la plus favorable au
+  # contribuable !
   conséquence égal à 0 %
 ```
 ~~~
@@ -286,7 +289,7 @@ Les individus gagnant moins de 10 000 € sont exonérés de l'impôt sur le rev
 champ d'application CalculImpôtRevenu:
   étiquette article_4 exception article_3
   définition taux_imposition
-  sous condition individu.revenu <= 10 000 €
+  sous condition individu.revenu < 10 000 €
   conséquence égal à 0 %
 ```
 ~~~
