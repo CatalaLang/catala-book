@@ -109,31 +109,31 @@ déclaration champ d'application CalculImpôtFoyer:
   entrée territoires_outre_mer contenu booléen
   entrée date_courante contenu date
 
-  interne parts_impôt_foyer
-    contenu liste de CalculImpôtFoyerIndividuel
-  interne déduction_totale contenu argent
-    état base
-    état plafonnée
-
   résultat impôt_foyer contenu argent
-    état base
-    état déduction
+
+champ d'application CalculImpôtFoyerIndividuel:
+  définition calcul_impôt_revenu.individu égal à
+    individu
+  définition calcul_impôt_revenu.territoires_outre_mer égal à
+    territoires_outre_mer
+  définition calcul_impôt_revenu.date_courante égal à
+    date_courante
+
+  définition impôt_foyer égal à
+    10 000 € * (1,0 + individu.nombre_enfants / 2)
 
 champ d'application CalculImpôtFoyer:
-  définition parts_impôt_foyer égal à
-    transforme chaque individu parmi individus en
-      résultat de CalculImpôtFoyerIndividuel avec {
-        -- individu: individu
-        -- territoires_outre_mer: territoires_outre_mer
-        -- date_courante: date_courante
-      }
-
   définition impôt_foyer
-    état base
   égal à
     somme argent de
-      transforme chaque part_impôt_foyer parmi parts_impôt_foyer en
-        part_impôt_foyer.impôt_foyer
+      transforme chaque individu parmi individus en
+        (
+          résultat de CalculImpôtFoyerIndividuel avec {
+            -- individu: individu
+            -- territoires_outre_mer: territoires_outre_mer
+            -- date_courante: date_courante
+          }
+        ).impôt_foyer
 ```
 
 ## Article 8
@@ -153,45 +153,9 @@ déclaration champ d'application CalculImpôtFoyerIndividuel:
   résultat déduction contenu argent
 
 champ d'application CalculImpôtFoyerIndividuel:
-  définition calcul_impôt_revenu.individu égal à
-    individu
-  définition calcul_impôt_revenu.territoires_outre_mer égal à
-    territoires_outre_mer
-  définition calcul_impôt_revenu.date_courante égal à
-    date_courante
-
-  définition impôt_foyer égal à
-    10 000 € * (1,0 + individu.nombre_enfants / 2)
-
   définition déduction égal à
     si calcul_impôt_revenu.impôt_revenu > impôt_foyer alors impôt_foyer
     sinon calcul_impôt_revenu.impôt_revenu
-
-champ d'application CalculImpôtFoyer:
-  définition déduction_totale
-    état base
-  égal à
-    somme argent de
-      transforme chaque part_impôt_foyer parmi parts_impôt_foyer en
-        part_impôt_foyer.déduction
-
-  définition impôt_foyer
-    état déduction
-  égal à
-    si déduction_totale > impôt_foyer alors 0 €
-    sinon impôt_foyer - déduction_totale
-```
-
-## Article 9
-
-La déduction accordée à l'article 8 est plafonnée à 8 500 € pour l'ensemble du foyer.
-
-```catala
-champ d'application CalculImpôtFoyer:
-  définition déduction_totale
-    état plafonnée
-  égal à
-    si déduction_totale > 8 500 € alors 8 500 € sinon déduction_totale
 ```
 
 ## Test
