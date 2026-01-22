@@ -68,7 +68,7 @@ scope HouseholdTaxComputation:
   definition household_tax
     state base
   equals
-    sum money of
+    Money.sum of
       map each share_of_household_tax among shares_of_household_tax
       to share_of_household_tax.household_tax
 ```
@@ -95,7 +95,7 @@ scope HouseholdTaxComputation:
   definition total_deduction
     state base
   equals
-    sum money of
+    Money.sum of
       map each share_of_household_tax among shares_of_household_tax to
         share_of_household_tax.deduction
 

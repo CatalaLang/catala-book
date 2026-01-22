@@ -68,7 +68,7 @@ champ d'application CalculImpôtFoyer:
   définition impôt_foyer
     état base
   égal à
-    somme argent de
+    Argent.somme de
       transforme chaque part_impôt_foyer parmi parts_impôt_foyer
       en part_impôt_foyer.impôt_foyer
 ```
@@ -95,7 +95,7 @@ champ d'application CalculImpôtFoyer:
   définition déduction_totale
     état base
   égal à
-    somme argent de
+    Argent.somme de
       transforme chaque part_impôt_foyer parmi parts_impôt_foyer en
         part_impôt_foyer.déduction
 

@@ -316,7 +316,6 @@ Vous pouvez construire des valeurs de liste en utilisant la syntaxe suivante :
 | `liste de <var> parmi <liste> tel que <expr>` | liste | Crée une nouvelle liste avec seulement les éléments satisfaisant `<expr>` |
 | `transforme chaque <var> parmi <liste> tel que <expr1>` en <expr2>` | liste | Combine le filtrage et la transformation (voir deux dernières opérations) |
 | `<liste1> ++ <liste2>` | liste | Concaténer deux listes |
-| `somme <type> de <liste>` | `<type>` | Agrège le contenu (`argent`, `entier`, `décimal`) d'une liste |
 | `maximum de <liste> (ou si liste vide alors <expr>)` | type des éléments | Renvoie l'élément maximum de la liste (ou un défaut optionnel) |
 | `minimum de <liste> (ou si liste vide alors <expr>)` | type des éléments | Renvoie l'élément minimum de la liste (ou un défaut optionnel) |
 | `contenu de <var> parmi <liste> tel que <expr1> est maximum (ou si liste vide alors <expr2>)` | type des éléments | Renvoie l'élément arg-maximum de la liste (ou un défaut optionnel) |
