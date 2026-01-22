@@ -317,7 +317,6 @@ You can build list values using the following syntax:
 | `list of <var> among <list> such that <expr>`                | list             | Creates a new list with only the elements satisfying `<expr>`     |
 | `map each <var> among <list> such that <expr1>` to <expr2>`  | list             | Combines the filter and map (see two last operations)             |
 | `<list1> ++ <list2>`                               | list             | Concatenate two lists                                             |
-| `sum <type> of <list>`                             | `<type>`         | Aggregates the contents (`money`, `integer`, `decimal`) of a list |
 | `maximum of <list> (or if list empty then <expr>)` | type of elements | Returns the maximum element of the list (or an optional default)  |
 | `minimum of <list> (or if list empty then <expr>)` | type of elements | Returns the minimum element of the list (or an optional default)  |
 | `content of <var> among <list> such that <expr1> is maximum (or if list empty then <expr2>)` | type of elements | Returns the arg-maximum element of the list (or an optional default) |

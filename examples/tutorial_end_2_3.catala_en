@@ -140,7 +140,7 @@ scope HouseholdTaxComputation:
   definition household_tax equals
     let number_of_individuals equals number of individuals in
     let number_of_children equals
-      sum integer of
+      Integer.sum of
         map each individual among individuals to
           individual.number_of_children
     in

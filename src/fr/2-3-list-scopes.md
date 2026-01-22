@@ -94,8 +94,8 @@ peut être fait via la syntaxe `nombre de individus` (la syntaxe pour toutes les
 sur les listes peut être trouvée dans [l'aide-mémoire de la syntaxe](https://catalalang.github.io/catala/syntax.pdf)
 ou dans le [guide de référence](./5-catala.md)). Pour l'étape 2, nous
 devons agréger le nombre d'enfants pour tous les individus, ce qui peut être fait
-via la syntaxe `somme entier de transforme chaque individu
-parmi individus en individu.nombre_enfants`. Notez l'indication de type (`entier`) pour la `somme`, qui
+via la syntaxe `Entier.somme de transforme chaque individu
+parmi individus en individu.nombre_enfants`. Notez la version spécifique `Entier` de la fonction `somme`, qui
 indique que si la liste des individus est vide, alors l'entier `0` doit
 être renvoyé. Enfin, nous pouvons assembler les étapes 1 et 2 pour l'étape 3 qui calcule
 le montant de l'impôt :
@@ -106,7 +106,7 @@ champ d'application CalculImpôtFoyer:
   définition impôt_foyer égal à
     soit nombre_individus égal à nombre de individus dans
     soit nombre_enfants égal à
-      somme entier de
+      Entier.somme de
         transforme chaque individu parmi individus en individu.nombre_enfants
     dans
     10 000 €

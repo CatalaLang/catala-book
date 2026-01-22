@@ -149,7 +149,6 @@ The reserved keywords in Catala are :
 `date`
 `duration`
 `boolean`
-`sum`
 `fulfilled`
 `definition`
 `state`
