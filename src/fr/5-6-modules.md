@@ -40,8 +40,8 @@ constantes publics. Si vous voulez utiliser le module `Bar` à l'intérieur du m
 > Usage de Bar
 ```
 
-Vous pouvez alors faire référence aux types, champs d'application et constantes de `Bar` comme `Fizz` avec
-`Bar.Fizz` à l'intérieur de `Foo`. Si vous ne voulez pas taper `Bar.` à chaque fois, vous pouvez
+Vous pouvez alors faire référence aux types, champs d'application et constantes de `Bar`, par exemple `Fizz`, en écrivant
+`Bar.Fizz` dans le module `Foo`. Si vous ne voulez pas taper `Bar.` à chaque fois, vous pouvez
 donner à `Bar` un alias à l'intérieur de `Foo` avec :
 
 ```catala-fr
@@ -51,6 +51,23 @@ donner à `Bar` un alias à l'intérieur de `Foo` avec :
 ```
 
 Alors, `B.Fizz` fera référence à `Bar.Fizz`.
+
+
+~~~admonish tip title="Type principal d'un module"
+Certains modules ont vocation à gérer un type de données particulier, comme par
+exemple le module [`Période`](./5-7-standard-library.md#module-période). Ce
+module définit une structure `Période`, qu'on devra ensuite utiliser sous le nom
+qualifié `Période.Période`.
+
+Pour alléger cette syntaxe, Catala détecte lorsqu'un type (énumération,
+structure ou externe) a le même nom que le module qui le définit. Dans ce cas,
+le type devient accessible directement sans avoir à expliciter le module: on
+peut écrire simplement `Période` au lieu de `Période.Période`.
+
+Cette possibilité est désactivée si le nom du module a été aliasé (en utilisant
+`en tant que`).
+~~~
+
 
 ## Inclusions
 
