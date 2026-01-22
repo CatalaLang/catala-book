@@ -138,7 +138,7 @@ to article 7:
 ```catala-code-en
 scope HouseholdTaxComputation:
   definition household_tax equals
-    sum money of
+    Money.sum of
       map each individual among individuals to (
         # Below is the syntax for calling the sub-scope
         # "HouseholdTaxIndividualComputation" dynamically, on the spot.

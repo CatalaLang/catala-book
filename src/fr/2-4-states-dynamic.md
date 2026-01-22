@@ -139,7 +139,7 @@ de l'article 7 :
 ```catala-code-fr
 champ d'application CalculImpôtFoyer:
   définition impôt_foyer égal à
-    somme argent de
+    Argent.somme de
       transforme chaque individu parmi individus en (
         # Ci-dessous se trouve la syntaxe pour appeler le sous-champ d'application
         # "CalculImpôtFoyerIndividuel" dynamiquement, sur place.

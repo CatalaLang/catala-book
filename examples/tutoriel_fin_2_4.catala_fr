@@ -125,7 +125,7 @@ champ d'application CalculImpôtFoyerIndividuel:
 champ d'application CalculImpôtFoyer:
   définition impôt_foyer
   égal à
-    somme argent de
+    Argent.somme de
       transforme chaque individu parmi individus en
         (
           résultat de CalculImpôtFoyerIndividuel avec {

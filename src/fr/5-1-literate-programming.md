@@ -145,7 +145,6 @@ Les mots-clés réservés en Catala sont :
 `date`
 `durée`
 `booléen`
-`somme`
 `rempli`
 `définition`
 `état`
