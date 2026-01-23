@@ -18,7 +18,7 @@ files. Please refer to the [compilation and deployment](./3-2-compilation-deploy
 walkthrough for more examples about how to use `clerk build` and the resulting
 artifacts.
 
-```admonish info collapsible=true title="clerk build --help"
+```admonish info collapsible=true title="clerk build &dash;&dash;help"
 <pre>
 <!-- cmdrun clerk build --help=plain -->
 </pre>
@@ -196,7 +196,7 @@ systems and a standard code review will highlight the changes.
 output.
 ~~~
 
-```admonish info collapsible=true title="clerk test --help"
+```admonish info collapsible=true title="clerk test &dash;&dash;help"
 <pre>
 <!-- cmdrun clerk test --help=plain -->
 </pre>
@@ -212,7 +212,7 @@ execution of their tests against all their defined backend. This
 command is useful for the execution of continuous integrations (CIs)
 where all build and test actions are often meant to be executed.
 
-```admonish info collapsible=true title="clerk ci --help"
+```admonish info collapsible=true title="clerk ci &dash;&dash;help"
 <pre>
 <!-- cmdrun clerk ci --help=plain -->
 </pre>
@@ -231,7 +231,7 @@ not require inputs, so it is used to run test scopes.
 
 `$ clerk run tests/tests_allocations_familiales.catala_fr -s Test1`
 
-```admonish info collapsible=true title="clerk run --help"
+```admonish info collapsible=true title="clerk run &dash;&dash;help"
 <pre>
 <!-- cmdrun clerk run --help=plain -->
 </pre>
@@ -244,7 +244,7 @@ the `_build` and `_targets` directory. Useful to clean up the machine after
 a CI job or to make sure you're not including stale, old files in your build
 pipeline.
 
-```admonish info collapsible=true title="clerk clean --help"
+```admonish info collapsible=true title="clerk clean &dash;&dash;help"
 <pre>
 <!-- cmdrun clerk clean --help=plain -->
 </pre>

@@ -18,7 +18,7 @@ Catala. Veuillez vous référer au guide de [compilation et déploiement](./3-2-
 pour plus d'exemples sur la façon d'utiliser `clerk build` et les artefacts
 résultants.
 
-```admonish info collapsible=true title="clerk build --help"
+```admonish info collapsible=true title="clerk build &dash;&dash;help"
 <pre>
 <!-- cmdrun clerk build --help=plain -->
 </pre>
@@ -195,7 +195,7 @@ et une revue de code standard mettront en évidence les changements.
 section `` ```catala-test-cli`` qui ne fournit que la commande sans sortie attendue.
 ~~~
 
-```admonish info collapsible=true title="clerk test --help"
+```admonish info collapsible=true title="clerk test &dash;&dash;help"
 <pre>
 <!-- cmdrun clerk test --help=plain -->
 </pre>
@@ -211,7 +211,7 @@ l'exécution de leurs tests contre tous leurs backends définis. Cette
 commande est utile pour l'exécution d'intégrations continues (CIs)
 où toutes les actions de construction et de test sont souvent destinées à être exécutées.
 
-```admonish info collapsible=true title="clerk ci --help"
+```admonish info collapsible=true title="clerk ci &dash;&dash;help"
 <pre>
 <!-- cmdrun clerk ci --help=plain -->
 </pre>
@@ -230,7 +230,7 @@ nécessitent pas d'entrées, il est donc utilisé pour exécuter des tests de ch
 
 `$ clerk run tests/tests_allocations_familiales.catala_fr -s Test1`
 
-```admonish info collapsible=true title="clerk run --help"
+```admonish info collapsible=true title="clerk run &dash;&dash;help"
 <pre>
 <!-- cmdrun clerk run --help=plain -->
 </pre>
@@ -242,7 +242,7 @@ Supprime les fichiers et répertoires précédemment générés par `clerk`, not
 le répertoire `_build` et `_targets`. Utile pour nettoyer la machine après
 un travail CI ou pour s'assurer que vous n'incluez pas de fichiers périmés et anciens dans votre pipeline de construction.
 
-```admonish info collapsible=true title="clerk clean --help"
+```admonish info collapsible=true title="clerk clean &dash;&dash;help"
 <pre>
 <!-- cmdrun clerk clean --help=plain -->
 </pre>
