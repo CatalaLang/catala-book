@@ -3,7 +3,7 @@
 <div id="tocw"></div>
 
 ~~~admonish tip title="French version"
-A French translated version is also available here: [French version](../fr/5-7-bibliotheque-standard.html)
+A French translated version is also available here: [French version](../fr/5-7-standard-library.html)
 Other languages currently need to use the following English version.
 ~~~
 
