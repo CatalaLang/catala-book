@@ -1,0 +1,14 @@
+# Translation glossary for Catala documentation (EN <-> FR)
+#
+# This file is for prose conventions NOT already covered by the Catala keyword
+# mappings (which are parsed automatically from the tree-sitter grammar).
+#
+# Lines starting with # are comments.
+# Format: EN expression -> FR expression
+
+# Style
+# Use "vous" (formal) when addressing the reader
+
+# Prose terms (not Catala keywords)
+business test -> test métier
+
