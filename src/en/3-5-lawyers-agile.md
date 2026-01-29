@@ -9,9 +9,9 @@ should also set up a proper organisation and methodology to make sure that your
 translation efforts are as productive as possible, and lead to the code with the
 least amount of bugs on the first try. This section provides advice and
 justifications for some of the most important project decisions that you will
-have to have to make. Furthermore, it gives practical indications for how to
-adapt the [agile methodology](https://agilemanifesto.org/) of programming to the
-task of translating law into code, which requires a safety-first culture and
+have to make. Furthermore, it gives practical indications for how to adapt the
+[agile methodology](https://agilemanifesto.org/) of programming to the task of
+translating law into code, which requires a safety-first culture and
 organizational environment.
 
 ## Why you should avoid writing intermediate specification documents
