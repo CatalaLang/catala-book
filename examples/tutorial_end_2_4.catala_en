@@ -142,7 +142,7 @@ scope HouseholdTaxIndividualComputation:
 scope HouseholdTaxComputation:
   definition household_tax
   equals
-    sum money of
+    Money.sum of
       map each individual among individuals to
         (
           output of HouseholdTaxIndividualComputation with {

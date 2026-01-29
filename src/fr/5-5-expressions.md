@@ -91,7 +91,7 @@ variable locale plus légère qui n'affecte que l'expression courante. La syntax
 champ d'application Bar:
   définition baz égal à
     soit foo égal à [4; 6; 5; 1] dans
-    somme entier de foo - maximum de foo
+    Entier.somme de foo - maximum de foo
 ```
 
 ~~~admonish info title="N-uplets et liaisons locales"

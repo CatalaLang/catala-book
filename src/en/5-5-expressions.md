@@ -93,7 +93,7 @@ equals ... in ...`. For instance :
 scope Bar:
   definition baz equals
     let foo equals [4; 6; 5; 1] in
-    sum integer of foo - maximum of foo
+    Integer.sum of foo - maximum of foo
 ```
 
 ~~~admonish info title="Tuples and local let-bindings"
