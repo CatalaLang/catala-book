@@ -56,7 +56,7 @@ Catala supports OCaml versions from `4.14.0` up to `5.4.X`.
 Run the following commands to install the latest Catala version via `opam`:
 
 ```console
-$ opam update && opam install catala.1.0.0
+$ opam update && opam install catala.1.1.0
 ```
 
 Once this finishes, the Catala build system should
@@ -114,7 +114,7 @@ The VSCode extension requires the Catala's Language Server Protocol to be
 installed. This can be done by running:
 
 ```console
-$ opam install catala-lsp.1.0.0
+$ opam install catala-lsp.1.1.0
 ```
 
 ## Getting the VSCode extension
@@ -135,7 +135,7 @@ installed, you will need to load a WSL VSCode window by pressing F1
 
 Run the following command:
 ```shell
-$ opam install catala-format.1.0.0
+$ opam install catala-format.1.1.0
 ```
 
 ~~~admonish note
