@@ -385,7 +385,7 @@ integration system to prevent regressions.
 
 The testing of Catala code is done with the interpreter inside the compiler,
 accessible with the `interpret` command and the `--scope` option that specifies
-the scope to be interpreted?
+the scope to be interpreted.
 
 ~~~admonish info title="Testing `IncomeTaxComputation` directly?" collapsible=true
 The reflex at this point is to execute the following command:

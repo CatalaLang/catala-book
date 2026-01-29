@@ -48,7 +48,7 @@ Intuitively, this implies creating two scope variables in
 `HouseholdTaxIndividualComputation`, `household_tax_base` (for article 7) and
 `household_tax_with_deduction` (article 8). But really, this amounts to giving
 two consecutive states for the variable `household_tax`, and lawyers understand
-the code better this way! So Catala has a feature to let you exactly that:
+the code better this way! So Catala has a feature to let you do exactly that:
 
 ~~~admonish note title="Defining multiple states for the same variable"
 ```catala-code-en
@@ -197,7 +197,7 @@ scope TestHousehold:
 ```console
 $ clerk run tutorial.catala_en --scope=TestHousehold
 ┌─[RESULT]─
-│ computation = HouseholdTaxComputation { -- household_tax: $21,500.00 }
+│ computation = HouseholdTaxComputation { -- household_tax: $15,000.00 }
 └─
 ```
 ~~~
@@ -216,8 +216,8 @@ manually:
   income tax is $12,000;
 * The share of household tax for the second individual is $20,000, so the
   deduction for the second individual is the full $12,000$;
-* The total deduction is thus $15,000$, which is capped at $8,500 per article 9;
-* Applying the deduction to the base household tax yields $21,500.
+* The total deduction is thus $15,000; applying the deduction to the base
+  household tax yields $15,000.
 
 So far so good, the test result is correct. But it might have gotten to the
 right result by taking the wrong intermediate steps, so we'll want to
@@ -236,12 +236,12 @@ $ clerk run tutorial.catala_en --scope=TestHousehold -c--trace
       Test
 [LOG] →  HouseholdTaxComputation.direct
 [LOG]   ≔  HouseholdTaxComputation.direct.
-      input: HouseholdTaxComputation_in { -- individuals_in: [Individual { -- income: $15,000.00 -- number_of_children: 0 }; Individual { -- income: $80,000.00 -- number_of_children: 2 }] -- overseas_territories_in: false -- current_date_in: 1999-01-01 }
+      input: HouseholdTaxComputation_in { -- current_date_in: 1999-01-01 -- overseas_territories_in: false -- individuals_in: [Individual { -- income: $15,000.00 -- number_of_children: 0 }; Individual { -- income: $80,000.00 -- number_of_children: 2 }] }
 [LOG]   ☛ Definition applied:
         ─➤ tutorial.catala_en
             │
-            │   definition shares_of_household_tax equals
-            │              ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+            │   definition household_tax equals
+            │              ‾‾‾‾‾‾‾‾‾‾‾‾‾
         Article 7
 [LOG]   →  HouseholdTaxIndividualComputation.direct
 [LOG]     ≔  HouseholdTaxIndividualComputation.direct.
@@ -252,7 +252,7 @@ $ clerk run tutorial.catala_en --scope=TestHousehold -c--trace
               │   definition household_tax equals
               │              ‾‾‾‾‾‾‾‾‾‾‾‾‾
           Article 7
-[LOG]     ≔  HouseholdTaxIndividualComputation.household_tax: $10,000.00
+[LOG]     ≔  HouseholdTaxIndividualComputation.household_tax#base: $10,000.00
 [LOG]     →  IncomeTaxComputation.direct
 [LOG]       ☛ Definition applied:
             ─➤ tutorial.catala_en
@@ -294,34 +294,35 @@ $ clerk run tutorial.catala_en --scope=TestHousehold -c--trace
                 │   income_tax_computation scope IncomeTaxComputation
                 │   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
             Article 7
-[LOG]       ≔  IncomeTaxComputation.direct.
-      output: IncomeTaxComputation { -- income_tax: $3,000.00 }
+[LOG]       ≔  IncomeTaxComputation.direct.output: IncomeTaxComputation { -- income_tax: $3,000.00 }
 [LOG]     ←  IncomeTaxComputation.direct
-[LOG]     ≔  HouseholdTaxIndividualComputation.
-      income_tax_computation: IncomeTaxComputation { -- income_tax: $3,000.00 }
+[LOG]     ≔  HouseholdTaxIndividualComputation.income_tax_computation: IncomeTaxComputation { -- income_tax: $3,000.00 }
 [LOG]     ☛ Definition applied:
           ─➤ tutorial.catala_en
               │
-              │   definition deduction equals
-              │              ‾‾‾‾‾‾‾‾‾
+              │   definition household_tax equals
+              │              ‾‾‾‾‾‾‾‾‾‾‾‾‾
           Article 8
-[LOG]     ≔  HouseholdTaxIndividualComputation.deduction: $3,000.00
+[LOG]     ≔  HouseholdTaxIndividualComputation.household_tax#with_deduction: $7,000.00
 [LOG]     ☛ Definition applied:
           ─➤ tutorial.catala_en
               │
-              │       output of HouseholdTaxIndividualComputation with {
-              │       ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-              │         -- individual: individual
-              │         ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-              │         -- overseas_territories: overseas_territories
-              │         ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-              │         -- current_date: current_date
-              │         ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-              │       }
-              │       ‾
+              │         (
+              │         ‾
+              │           output of HouseholdTaxIndividualComputation with {
+              │           ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+              │             -- individual: individual
+              │             ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+              │             -- overseas_territories: overseas_territories
+              │             ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+              │             -- current_date: current_date
+              │             ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+              │           }
+              │           ‾
+              │         ).household_tax
+              │         ‾
           Article 7
-[LOG]     ≔  HouseholdTaxIndividualComputation.direct.
-      output: HouseholdTaxIndividualComputation { -- household_tax: $10,000.00 -- deduction: $3,000.00 }
+[LOG]     ≔  HouseholdTaxIndividualComputation.direct.output: HouseholdTaxIndividualComputation { -- household_tax: $7,000.00 }
 [LOG]   ←  HouseholdTaxIndividualComputation.direct
 [LOG]   →  HouseholdTaxIndividualComputation.direct
 [LOG]     ≔  HouseholdTaxIndividualComputation.direct.
@@ -329,10 +330,10 @@ $ clerk run tutorial.catala_en --scope=TestHousehold -c--trace
 [LOG]     ☛ Definition applied:
           ─➤ tutorial.catala_en
               │
-              │   definition household_tax equals
+              │   definition household_tax
               │              ‾‾‾‾‾‾‾‾‾‾‾‾‾
           Article 7
-[LOG]     ≔  HouseholdTaxIndividualComputation.household_tax: $20,000.00
+[LOG]     ≔  HouseholdTaxIndividualComputation.household_tax#base: $20,000.00
 [LOG]     →  IncomeTaxComputation.direct
 [LOG]       ☛ Definition applied:
             ─➤ tutorial.catala_en
@@ -374,65 +375,37 @@ $ clerk run tutorial.catala_en --scope=TestHousehold -c--trace
                 │   income_tax_computation scope IncomeTaxComputation
                 │   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
             Article 7
-[LOG]       ≔  IncomeTaxComputation.direct.
-      output: IncomeTaxComputation { -- income_tax: $12,000.00 }
+[LOG]       ≔  IncomeTaxComputation.direct.output: IncomeTaxComputation { -- income_tax: $12,000.00 }
 [LOG]     ←  IncomeTaxComputation.direct
-[LOG]     ≔  HouseholdTaxIndividualComputation.
-      income_tax_computation: IncomeTaxComputation { -- income_tax: $12,000.00 }
+[LOG]     ≔  HouseholdTaxIndividualComputation.income_tax_computation: IncomeTaxComputation { -- income_tax: $12,000.00 }
 [LOG]     ☛ Definition applied:
           ─➤ tutorial.catala_en
               │
-              │   definition deduction equals
-              │              ‾‾‾‾‾‾‾‾‾
+              │   definition household_tax
+              │              ‾‾‾‾‾‾‾‾‾‾‾‾‾
           Article 8
-[LOG]     ≔  HouseholdTaxIndividualComputation.deduction: $12,000.00
+[LOG]     ≔  HouseholdTaxIndividualComputation.household_tax#with_deduction: $8,000.00
 [LOG]     ☛ Definition applied:
           ─➤ tutorial.catala_en
               │
-              │       output of HouseholdTaxIndividualComputation with {
-              │       ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-              │         -- individual: individual
-              │         ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-              │         -- overseas_territories: overseas_territories
-              │         ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-              │         -- current_date: current_date
-              │         ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-              │       }
-              │       ‾
+              │         (
+              │         ‾
+              │           output of HouseholdTaxIndividualComputation with {
+              │           ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+              │             -- individual: individual
+              │             ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+              │             -- overseas_territories: overseas_territories
+              │             ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+              │             -- current_date: current_date
+              │             ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+              │           }
+              │           ‾
+              │         ).household_tax
+              │         ‾
           Article 7
-[LOG]     ≔  HouseholdTaxIndividualComputation.direct.
-      output: HouseholdTaxIndividualComputation { -- household_tax: $20,000.00 -- deduction: $12,000.00 }
+[LOG]     ≔  HouseholdTaxIndividualComputation.direct.output: HouseholdTaxIndividualComputation { -- household_tax: $8,000.00 }
 [LOG]   ←  HouseholdTaxIndividualComputation.direct
-[LOG]   ≔  HouseholdTaxComputation.
-      shares_of_household_tax: [HouseholdTaxIndividualComputation { -- household_tax: $10,000.00 -- deduction: $3,000.00 }; HouseholdTaxIndividualComputation { -- household_tax: $20,000.00 -- deduction: $12,000.00 }]
-[LOG]   ☛ Definition applied:
-        ─➤ tutorial.catala_en
-            │
-            │   definition household_tax
-            │              ‾‾‾‾‾‾‾‾‾‾‾‾‾
-        Article 7
-[LOG]   ≔  HouseholdTaxComputation.household_tax#base: $30,000.00
-[LOG]   ☛ Definition applied:
-        ─➤ tutorial.catala_en
-            │
-            │   definition total_deduction
-            │              ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-        Article 8
-[LOG]   ≔  HouseholdTaxComputation.total_deduction#base: $15,000.00
-[LOG]   ☛ Definition applied:
-        ─➤ tutorial.catala_en
-            │
-            │   definition total_deduction
-            │              ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-        Article 9
-[LOG]   ≔  HouseholdTaxComputation.total_deduction#capped: $8,500.00
-[LOG]   ☛ Definition applied:
-        ─➤ tutorial.catala_en
-            │
-            │   definition household_tax
-            │              ‾‾‾‾‾‾‾‾‾‾‾‾‾
-        Article 8
-[LOG]   ≔  HouseholdTaxComputation.household_tax#deduction: $21,500.00
+[LOG]   ≔  HouseholdTaxComputation.household_tax: $15,000.00
 [LOG]   ☛ Definition applied:
         ─➤ tutorial.catala_en
             │
@@ -440,33 +413,36 @@ $ clerk run tutorial.catala_en --scope=TestHousehold -c--trace
             │     ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
             │       -- individuals:
             │       ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-            │         [ Individual {
-            │         ‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+            │         [
+            │         ‾
+            │           Individual {
+            │           ‾‾‾‾‾‾‾‾‾‾‾‾
             │             -- income: $15,000
             │             ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
             │             -- number_of_children: 0
             │             ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-            │           } ;
-            │           ‾‾‾
+            │           };
+            │           ‾‾
             │           Individual {
             │           ‾‾‾‾‾‾‾‾‾‾‾‾
             │             -- income: $80,000
             │             ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
             │             -- number_of_children: 2
             │             ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-            │           } ]
-            │           ‾‾‾
-            │       -- overseas_territories: false
-            │       ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+            │           }
+            │           ‾
+            │         ]
+            │         ‾
             │       -- current_date: |1999-01-01|
             │       ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+            │       -- overseas_territories: false
+            │       ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
             │     }
             │     ‾
         Test
-[LOG]   ≔  HouseholdTaxComputation.direct.
-      output: HouseholdTaxComputation { -- household_tax: $21,500.00 }
+[LOG]   ≔  HouseholdTaxComputation.direct.output: HouseholdTaxComputation { -- household_tax: $15,000.00 }
 [LOG] ←  HouseholdTaxComputation.direct
-[LOG] ≔  TestHousehold.computation: HouseholdTaxComputation { -- household_tax: $21,500.00 }
+[LOG] ≔  TestHousehold.computation: HouseholdTaxComputation { -- household_tax: $15,000.00 }
 ```
 ~~~
 

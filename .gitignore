@@ -1,5 +1,6 @@
 book
 _build
+_targets
 .#*
 **/#*#
 src/**/lib/

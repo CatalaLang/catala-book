@@ -18,7 +18,7 @@ Catala; this tutorial is rather designed to ease you into the language and its
 common use patterns.
 ~~~
 
-There are three sections in the tutorial, that are designed to be complete
+There are four sections in the tutorial, that are designed to be complete
 in order as they cover increasingly difficult and advanced features of the
 language:
 * the [first section](./2-1-basic-blocks.md) is about the basic blocks of the language programs

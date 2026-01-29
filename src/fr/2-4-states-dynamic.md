@@ -217,8 +217,7 @@ manuellement :
   impôt sur le revenu est de 12 000 € ;
 * La part de l'impôt sur le foyer pour le deuxième individu est de 20 000 €, donc la
   déduction pour le deuxième individu est la totalité des 12 000 € ;
-* La déduction totale est donc de 15 000 €, qui est plafonnée à 8 500 € selon l'article 9 ;
-* Appliquer la déduction à l'impôt sur le foyer de base donne 21 500 €.
+* La déduction totale est donc de 15 000 €; et appliquer la déduction à l'impôt sur le foyer de base donne 15 000 €.
 
 Jusqu'ici tout va bien, le résultat du test est correct. Mais il aurait pu arriver au
 bon résultat en prenant les mauvaises étapes intermédiaires, donc nous voudrons
@@ -241,9 +240,10 @@ $ clerk run tutoriel.catala_fr --scope=TestFoyer -c--trace
 [LOG]   ☛ Definition applied:
         ─➤ tutoriel.catala_fr
             │
-            │   définition parts_impôt_foyer égal à
-            │              ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+            │   définition impôt_foyer égal à
+            │              ‾‾‾‾‾‾‾‾‾‾‾
         Article 7
+[LOG]     ≔  CalculImpôtFoyerIndividuel.impôt_foyer#base: 10 000,00 €
 [LOG]   →  CalculImpôtFoyerIndividuel.direct
 [LOG]     ≔  CalculImpôtFoyerIndividuel.direct.
       entrée: CalculImpôtFoyerIndividuel_in { -- individu_in: Individu { -- revenu: 15 000,00 € -- nombre_enfants: 0 } -- territoires_outre_mer_in: faux -- date_courante_in: 1999-01-01 }
@@ -295,18 +295,17 @@ $ clerk run tutoriel.catala_fr --scope=TestFoyer -c--trace
                 │   calcul_impôt_revenu champ d'application CalculImpôtRevenu
                 │   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
             Article 7
-[LOG]       ≔  CalculImpôtRevenu.direct.
-      résultat: CalculImpôtRevenu { -- impôt_revenu: 3 000,00 € }
+[LOG]       ≔  CalculImpôtRevenu.direct.résultat: CalculImpôtRevenu { -- impôt_revenu: 3 000,00 € }
 [LOG]     ←  CalculImpôtRevenu.direct
-[LOG]     ≔  CalculImpôtFoyerIndividuel.
-      calcul_impôt_revenu: CalculImpôtRevenu { -- impôt_revenu: 3 000,00 € }
+[LOG]     ≔  CalculImpôtFoyerIndividuel.calcul_impôt_revenu: CalculImpôtRevenu { -- impôt_revenu: 3 000,00 € }
 [LOG]     ☛ Definition applied:
           ─➤ tutoriel.catala_fr
               │
-              │   définition déduction égal à
-              │              ‾‾‾‾‾‾‾‾‾
+              │   définition impôt_foyer
+              │              ‾‾‾‾‾‾‾‾‾‾‾
           Article 8
-[LOG]     ≔  CalculImpôtFoyerIndividuel.déduction: 3 000,00 €
+[LOG]     ≔  HouseholdTaxIndividualComputation.
+               impôt_foyer#avec_déduction: 7 000,00 €
 [LOG]     ☛ Definition applied:
           ─➤ tutoriel.catala_fr
               │
@@ -322,15 +321,19 @@ $ clerk run tutoriel.catala_fr --scope=TestFoyer -c--trace
               │       ‾
           Article 7
 [LOG]     ≔  CalculImpôtFoyerIndividuel.direct.
-      résultat: CalculImpôtFoyerIndividuel { -- impôt_foyer: 10 000,00 € -- déduction: 3 000,00 € }
+      résultat: CalculImpôtFoyerIndividuel { -- impôt_foyer: 7 000,00 € }
 [LOG]   ←  CalculImpôtFoyerIndividuel.direct
 [LOG]   →  CalculImpôtFoyerIndividuel.direct
 [LOG]     ≔  CalculImpôtFoyerIndividuel.direct.
-      entrée: CalculImpôtFoyerIndividuel_in { -- individu_in: Individu { -- revenu: 80 000,00 € -- nombre_enfants: 2 } -- territoires_outre_mer_in: faux -- date_courante_in: 1999-01-01 }
+      entrée: CalculImpôtFoyerIndividuel_in {
+            -- individu_in: Individu {
+            -- revenu: 80 000,00 € -- nombre_enfants: 2 }
+            -- territoires_outre_mer_in: faux
+            -- date_courante_in: 1999-01-01 }
 [LOG]     ☛ Definition applied:
           ─➤ tutoriel.catala_fr
               │
-              │   définition impôt_foyer égal à
+              │   définition impôt_foyer
               │              ‾‾‾‾‾‾‾‾‾‾‾‾
           Article 7
 [LOG]     ≔  CalculImpôtFoyerIndividuel.impôt_foyer: 20 000,00 €
@@ -383,10 +386,11 @@ $ clerk run tutoriel.catala_fr --scope=TestFoyer -c--trace
 [LOG]     ☛ Definition applied:
           ─➤ tutoriel.catala_fr
               │
-              │   définition déduction égal à
+              │   définition impôt_foyer égal à
               │              ‾‾‾‾‾‾‾‾‾
           Article 8
-[LOG]     ≔  CalculImpôtFoyerIndividuel.déduction: 12 000,00 €
+[LOG]     ≔  HouseholdTaxIndividualComputation.
+              impôt_foyer#avec_déduction: 8 000,00 €
 [LOG]     ☛ Definition applied:
           ─➤ tutoriel.catala_fr
               │
@@ -402,38 +406,20 @@ $ clerk run tutoriel.catala_fr --scope=TestFoyer -c--trace
               │       ‾
           Article 7
 [LOG]     ≔  CalculImpôtFoyerIndividuel.direct.
-      résultat: CalculImpôtFoyerIndividuel { -- impôt_foyer: 20 000,00 € -- déduction: 12 000,00 € }
+      résultat: CalculImpôtFoyerIndividuel { -- impôt_foyer: 8 000,00 € }
 [LOG]   ←  CalculImpôtFoyerIndividuel.direct
 [LOG]   ≔  CalculImpôtFoyer.
-      parts_impôt_foyer: [CalculImpôtFoyerIndividuel { -- impôt_foyer: 10 000,00 € -- déduction: 3 000,00 € }; CalculImpôtFoyerIndividuel { -- impôt_foyer: 20 000,00 € -- déduction: 12 000,00 € }]
+      parts_impôt_foyer: [CalculImpôtFoyerIndividuel {
+        -- impôt_foyer: 7 000,00 € };
+        CalculImpôtFoyerIndividuel {
+        -- impôt_foyer: 8 000,00 € }]
 [LOG]   ☛ Definition applied:
         ─➤ tutoriel.catala_fr
             │
             │   définition impôt_foyer
             │              ‾‾‾‾‾‾‾‾‾‾‾‾
         Article 7
-[LOG]   ≔  CalculImpôtFoyer.impôt_foyer#base: 30 000,00 €
-[LOG]   ☛ Definition applied:
-        ─➤ tutoriel.catala_fr
-            │
-            │   définition déduction_totale
-            │              ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-        Article 8
-[LOG]   ≔  CalculImpôtFoyer.déduction_totale#base: 15 000,00 €
-[LOG]   ☛ Definition applied:
-        ─➤ tutoriel.catala_fr
-            │
-            │   définition déduction_totale
-            │              ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-        Article 9
-[LOG]   ≔  CalculImpôtFoyer.déduction_totale#plafonnée: 8 500,00 €
-[LOG]   ☛ Definition applied:
-        ─➤ tutoriel.catala_fr
-            │
-            │   définition impôt_foyer
-            │              ‾‾‾‾‾‾‾‾‾‾‾‾
-        Article 8
-[LOG]   ≔  CalculImpôtFoyer.impôt_foyer#déduction: 21 500,00 €
+[LOG]   ≔  CalculImpôtFoyer.impôt_foyer: 15 000,00 €
 [LOG]   ☛ Definition applied:
         ─➤ tutoriel.catala_fr
             │
@@ -465,9 +451,9 @@ $ clerk run tutoriel.catala_fr --scope=TestFoyer -c--trace
             │     ‾
         Test
 [LOG]   ≔  CalculImpôtFoyer.direct.
-      résultat: CalculImpôtFoyer { -- impôt_foyer: 21 500,00 € }
+      résultat: CalculImpôtFoyer { -- impôt_foyer: 15 000,00 € }
 [LOG] ←  CalculImpôtFoyer.direct
-[LOG] ≔  TestFoyer.calcul: CalculImpôtFoyer { -- impôt_foyer: 21 500,00 € }
+[LOG] ≔  TestFoyer.calcul: CalculImpôtFoyer { -- impôt_foyer: 15 000,00 € }
 ```
 ~~~
 

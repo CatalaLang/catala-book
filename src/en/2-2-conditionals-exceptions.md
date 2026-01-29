@@ -509,7 +509,7 @@ A5-->A6
 
 So far, we have seen how to define exception chains and mutually exclusive
 exception branches. But there is a very common pattern that introduces
-yet another exceptional shenanigan. Suppose than in the year 2000, a big tax
+yet another exceptional shenanigan. Suppose that in the year 2000, a big tax
 reform changes the base taxation rate of article 2 with a slight increase:
 
 ~~~admonish quote title="Article 2 (new version after 2000)"

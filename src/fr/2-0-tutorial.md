@@ -18,7 +18,7 @@ et des fonctionnalités de Catala ; ce tutoriel est plutôt conçu pour vous
 familiariser avec le langage et ses modèles d'utilisation courants.
 ~~~
 
-Le tutoriel comporte trois sections, conçues pour être complétées dans l'ordre
+Le tutoriel comporte quatre sections, conçues pour être complétées dans l'ordre
 car elles couvrent des fonctionnalités de plus en plus difficiles et avancées du
 langage :
 * la [première section](./2-1-basic-blocks.md) concerne les éléments de base des
