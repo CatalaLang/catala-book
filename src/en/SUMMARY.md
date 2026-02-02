@@ -22,7 +22,7 @@
     - [Directory structure and configuration](./3-1-directory-config.md)
     - [Project building and deployment](./3-2-compilation-deployment.md)
     - [Test and continuous integration workflow](./3-3-0-test-ci.md)
-      - [Test GUI](./3-3-1-test-gui.md)
+      - [Test tool (graphical user interface)](./3-3-1-test-gui.md)
     - [Agile development with lawyers and programmers](./3-5-lawyers-agile.md)
     <!-- - [External modules and compiler plugins](./3-4-external-plugins.md) -->
 - [FAQ: How to code the law?](./4-0-howto.md)
