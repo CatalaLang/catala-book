@@ -45,9 +45,8 @@ Although not all catala code needs to live in a module,
 all scopes exercised using the test tool **must** live in a module.
 ~~~
 
-### Defining input data
+### Defining input data and expected values
 
-### Defining expected values
 
 Asserting on expected values and reporting differences with the
 actual computation results is the whole point of a test.
@@ -58,7 +57,6 @@ actual computation results is the whole point of a test.
 ## Running a test / diff view
 
 
-
 ~~~admonish tip title="Should I check GUI tests in version control and add them in my continuous integration system?"
 Yes! While we provide a GUI for non-programmers to create
 business tests whithout writing Catala literals and assertions, good
@@ -66,3 +64,5 @@ software engineering practices still apply. We store tests as plain
 Catala files (with a few technical attributes) to help check them in
 and review diffs in the same manner as other test and program files.
 ~~~
+
+## Recap
