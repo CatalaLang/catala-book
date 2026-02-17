@@ -1,6 +1,18 @@
 <link rel="stylesheet" href="{{ path_to_root }}lib/toc.css"><script src="{{ path_to_root }}lib/toc.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+    // Notify parent (playground) when page loads for exercise auto-sync
+    if (window.parent !== window) {
+        var path = window.location.pathname;
+        // Match /en/chapter.html, /fr/chapter.html, or /chapter.html (local dev)
+        var match = path.match(/\/(?:(?:en|fr)\/)?([^\/]+)\.html$/);
+        if (match) {
+            window.parent.postMessage({
+                type: 'catala-book-navigation',
+                chapter: match[1]
+            }, '*');
+        }
+    }
     // 1. Find the location to insert the button (left part of the top bar)
     var leftButtons = document.querySelector('.left-buttons');
     if (!leftButtons) return;
