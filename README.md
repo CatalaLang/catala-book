@@ -18,5 +18,22 @@ command:
 
     mdbook serve --open
 
+## Building with Playground Integration
+
+The book includes an integrated interactive playground for tutorial chapters.
+To build the complete site with playground:
+
+    make build
+
+This creates `book/site/` with:
+- `/en/` - English book
+- `/fr/` - French book
+- `/playground/` - Interactive playground
+
+Tutorial chapters (2-1, 2-2, etc.) will show a floating "Try Tutorial" button
+that launches the integrated learning environment.
+
+## Documentation Framework
+
 This book attempts to incorporate the principles laid out in the
 [Diátaxis](https://diataxis.fr/) framework for writing good documentation.

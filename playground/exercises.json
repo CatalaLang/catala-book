@@ -1,0 +1,56 @@
+{
+  "en": {
+    "2-0-tutorial": { "redirectTo": "2-1-basic-blocks" },
+    "2-1-basic-blocks": {
+      "name": "2.1 - Basic Blocks",
+      "start": "tutorial_start_2_1.catala_en",
+      "end": "tutorial_end_2_1.catala_en"
+    },
+    "2-1-1-exercise": {
+      "name": "Exercise 2.1.1",
+      "start": "exercise-2-1-1.catala_en"
+    },
+    "2-2-conditionals-exceptions": {
+      "name": "2.2 - Conditionals & Exceptions",
+      "start": "tutorial_end_2_1.catala_en",
+      "end": "tutorial_end_2_2.catala_en"
+    },
+    "2-3-list-scopes": {
+      "name": "2.3 - Lists & Scopes",
+      "start": "tutorial_end_2_2.catala_en",
+      "end": "tutorial_end_2_3.catala_en"
+    },
+    "2-4-states-dynamic": {
+      "name": "2.4 - States & Dynamic",
+      "start": "tutorial_end_2_3.catala_en",
+      "end": "tutorial_end_2_4.catala_en"
+    }
+  },
+  "fr": {
+    "2-0-tutorial": { "redirectTo": "2-1-basic-blocks" },
+    "2-1-basic-blocks": {
+      "name": "2.1 - Blocs de base",
+      "start": "tutoriel_debut_2_1.catala_fr",
+      "end": "tutoriel_fin_2_1.catala_fr"
+    },
+    "2-1-1-exercise": {
+      "name": "Exercice 2.1.1",
+      "start": "exercice-2-1-1.catala_fr"
+    },
+    "2-2-conditionals-exceptions": {
+      "name": "2.2 - Conditions & Exceptions",
+      "start": "tutoriel_fin_2_1.catala_fr",
+      "end": "tutoriel_fin_2_2.catala_fr"
+    },
+    "2-3-list-scopes": {
+      "name": "2.3 - Listes & Scopes",
+      "start": "tutoriel_fin_2_2.catala_fr",
+      "end": "tutoriel_fin_2_3.catala_fr"
+    },
+    "2-4-states-dynamic": {
+      "name": "2.4 - États & Dynamique",
+      "start": "tutoriel_fin_2_3.catala_fr",
+      "end": "tutoriel_fin_2_4.catala_fr"
+    }
+  }
+}

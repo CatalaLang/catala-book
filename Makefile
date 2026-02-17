@@ -12,16 +12,34 @@ build: treesit-prepare
 	# Build French version
 	rm -rf book/site/fr
 	# TEMP: Remove ADDITIONAL_JS and src/fr/fr-banner.js when translation stabilizes
+	# Note: ADDITIONAL_JS env var replaces (not appends), so must include all base scripts
 	MDBOOK_BOOK__LANGUAGE="fr" \
 	MDBOOK_BOOK__SRC="src/fr" \
 	MDBOOK_BOOK__TITLE="Le langage de programmation Catala" \
-	MDBOOK_OUTPUT__HTML__ADDITIONAL_JS='["fr-banner.js"]' \
+	MDBOOK_OUTPUT__HTML__ADDITIONAL_JS='["mermaid.min.js", "mermaid-init.js", "playground-button.js", "fr-banner.js"]' \
 	mdbook build -d book/site/fr
 	# Move HTML content to root of language dir
 	mv book/site/fr/html/* book/site/fr/ && rm -rf book/site/fr/html
 	# Create root redirect to English
 	echo '<meta http-equiv="refresh" content="0; url=en/index.html">' > book/site/index.html
 	echo '<script>window.location.href = "en/index.html"</script>' >> book/site/index.html
+	# Integrate playground
+	./scripts/integrate-playground.sh book/site
+
+dev: treesit-prepare
+	@# Ensure interpreter is available
+	@if [ ! -f playground/catala_web_interpreter.js ]; then \
+		echo "Fetching interpreter from CDN..."; \
+		rm -f playground/catala_web_interpreter.js; \
+		curl -L -o playground/catala_web_interpreter.js \
+			https://assets.catala-lang.org/catala_web_interpreter.js; \
+	fi
+	@if [ ! -f playground/js/grammar.js ]; then \
+		$(MAKE) -C playground grammar; \
+	fi
+	$(MAKE) build
+	@echo "Serving at http://localhost:8000"
+	cd book/site && python3 -m http.server 8000
 
 serve: treesit-prepare
 	# Default: serve English version
