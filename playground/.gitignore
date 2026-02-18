@@ -1,3 +1,7 @@
 # Node modules
 node_modules/
 catala_web_interpreter.js
+
+# Test artifacts
+test-solution.html
+test-fixtures/
