@@ -58,7 +58,7 @@ jobs:
             "compatibility_date": "2025-04-01",
             "workers_dev": true,
             "preview_urls": true,
-            "assets": { "directory": "./book/site" }
+            "assets": { "directory": "./book/site", "html_handling": "none" }
           }
           JSON
 
