@@ -4,8 +4,8 @@ document.addEventListener("DOMContentLoaded", function() {
     // Notify parent (playground) when page loads for exercise auto-sync
     if (window.parent !== window) {
         var path = window.location.pathname;
-        // Match /en/chapter.html, /fr/chapter.html, or /chapter.html (local dev)
-        var match = path.match(/\/(?:(?:en|fr)\/)?([^\/]+)\.html$/);
+        // Match /en/chapter.html or /en/chapter (Cloudflare strips .html extension)
+        var match = path.match(/\/(?:(?:en|fr)\/)?([^\/]+?)(?:\.html)?$/);
         if (match) {
             window.parent.postMessage({
                 type: 'catala-book-navigation',
