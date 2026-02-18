@@ -21,18 +21,19 @@ From the repository root:
 ```bash
 # Full build + serve (auto-fetches interpreter and grammar if missing)
 make dev
-# Open http://localhost:8000/en/2-1-basic-blocks.html
-```
-
-For playground-only development:
-
-```bash
-cd playground
-make dev
-# Open http://localhost:8080
+# Playground: http://localhost:8000/playground/index.html
+# Tutorial:   http://localhost:8000/playground/learn.html
 ```
 
 The build runs `scripts/integrate-playground.sh` which copies playground files, examples, and creates symlinks for language directories. If the interpreter is missing locally, it is automatically fetched from the CDN.
+
+For faster iteration when only playground JS/CSS changed (skips full book rebuild):
+
+```bash
+./scripts/integrate-playground.sh book/site
+# then re-open http://localhost:8000/playground/index.html (server keeps running)
+```
+
 
 ## Dependencies
 

@@ -1,4 +1,4 @@
-.PHONY: typecheck grammar test dev lint fetch-interpreter link-interpreter
+.PHONY: typecheck grammar test lint fetch-interpreter link-interpreter
 
 # Type-check JavaScript modules
 typecheck:
@@ -23,14 +23,3 @@ fetch-interpreter:
 # For local dev: symlink to local catala build
 link-interpreter:
 	ln -sf ../../catala/_build/default/compiler/web/catala_web_interpreter.bc.js catala_web_interpreter.js
-
-# Check for missing files, then serve
-dev:
-	@if [ ! -f catala_web_interpreter.js ]; then \
-		echo "Fetching interpreter from CDN..."; \
-		rm -f catala_web_interpreter.js; \
-		$(MAKE) fetch-interpreter; \
-	fi
-	@if [ ! -f js/grammar.js ]; then $(MAKE) grammar; fi
-	@echo "Starting server at http://localhost:8080"
-	python3 -m http.server 8080
