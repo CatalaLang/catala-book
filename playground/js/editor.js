@@ -7,7 +7,7 @@
  */
 
 import { updateCurrentFile } from './files.js';
-import { t, } from './i18n.js';
+import { t } from './i18n.js';
 import { KEYWORDS } from './grammar.js';
 
 /** @type {IStandaloneCodeEditor | null} */

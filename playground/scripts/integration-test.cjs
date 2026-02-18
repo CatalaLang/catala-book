@@ -17,8 +17,12 @@ const { spawn } = require('child_process');
 const path = require('path');
 
 const PORT = 8081; // Use different port to avoid conflicts
-const PLAYGROUND_ROOT = path.join(__dirname, '..');
+const REPO_ROOT = path.join(__dirname, '..', '..');
 const TIMEOUT = 30000;
+
+// Serve from repo root so ../examples/ paths resolve correctly
+const SERVER_ROOT = REPO_ROOT;
+const PLAYGROUND_PREFIX = 'playground';
 
 const TEST_CODE = `
 \`\`\`catala
@@ -44,7 +48,7 @@ scope Helper:
 async function startServer() {
   return new Promise((resolve, reject) => {
     const server = spawn('python3', ['-m', 'http.server', String(PORT)], {
-      cwd: PLAYGROUND_ROOT,
+      cwd: SERVER_ROOT,
       stdio: ['ignore', 'pipe', 'pipe']
     });
 
@@ -71,7 +75,7 @@ async function runTest() {
 
     // Load playground
     console.log('Loading playground...');
-    await page.goto(`http://localhost:${PORT}/index.html`, { timeout: TIMEOUT });
+    await page.goto(`http://localhost:${PORT}/${PLAYGROUND_PREFIX}/index.html`, { timeout: TIMEOUT });
 
     // Wait for interpreter to be ready
     console.log('Waiting for interpreter...');
@@ -197,13 +201,41 @@ async function runTest() {
     console.log('✓ Editor shows main file content after deletion');
 
     // ========================================================================
+    // Test: Solution tab shows/hides correctly
+    // ========================================================================
+    console.log('\n--- Testing solution tab ---');
+
+    await page.goto(
+      `http://localhost:${PORT}/${PLAYGROUND_PREFIX}/index.html#codeUrl=../examples/tutorial_start_2_1.catala_en&solutionUrl=../examples/tutorial_end_2_1.catala_en&persist=false`,
+      { timeout: TIMEOUT }
+    );
+    await page.waitForSelector('.file-tab.solution', { timeout: TIMEOUT });
+    console.log('✓ Solution tab visible');
+
+    // Click solution tab — editor should hide, solution view should show
+    await page.click('.file-tab.solution');
+    await page.waitForTimeout(500);
+    const editorHidden = await page.$eval('#editor-container', el => el.style.display === 'none');
+    const solShown = await page.$eval('#solution-view', el => el.style.display !== 'none' && el.style.display !== '');
+    if (!editorHidden || !solShown) throw new Error('Solution view not shown after clicking solution tab');
+    console.log('✓ Solution tab shows solution view');
+
+    // Click back to file tab — editor should show, solution view should hide
+    await page.click('.file-tab:not(.solution)');
+    await page.waitForTimeout(200);
+    const editorShown = await page.$eval('#editor-container', el => el.style.display !== 'none');
+    const solHidden = await page.$eval('#solution-view', el => el.style.display === 'none');
+    if (!editorShown || !solHidden) throw new Error('Editor not restored after clicking file tab');
+    console.log('✓ Clicking file tab restores editor');
+
+    // ========================================================================
     // Test: Exercise loading from learn.html
     // ========================================================================
     console.log('\n--- Testing exercise loading from learn.html ---');
 
     // Navigate to learn.html
     console.log('Loading learn.html...');
-    await page.goto(`http://localhost:${PORT}/learn.html`, { timeout: TIMEOUT });
+    await page.goto(`http://localhost:${PORT}/${PLAYGROUND_PREFIX}/learn.html`, { timeout: TIMEOUT });
 
     // Wait for chapter select to be populated
     await page.waitForFunction(
