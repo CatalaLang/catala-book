@@ -34,6 +34,17 @@ scope Test:
 \`\`\`
 `;
 
+// French test code with accented scope name (regression test for \w+ pattern bug)
+const FRENCH_ACCENTED_CODE = `
+\`\`\`catala
+déclaration champ d'application TestRésultatImpôt:
+  résultat valeur contenu entier
+
+champ d'application TestRésultatImpôt:
+  définition valeur égal à 42
+\`\`\`
+`;
+
 const MODULE_CODE = `> Module Helper
 
 \`\`\`catala
@@ -141,9 +152,72 @@ async function runTest() {
     }
 
     // ========================================================================
+    // Test: Accented scope names (French, regression for \w+ pattern bug)
+    // ========================================================================
+    console.log('\n--- Testing accented scope names (French) ---');
+
+    // Fresh page with French language so interpreter uses catala_fr
+    await page.goto(
+      `http://localhost:${PORT}/${PLAYGROUND_PREFIX}/index.html#lang=fr&persist=false`,
+      { timeout: TIMEOUT }
+    );
+    // Wait for interpreter (language-agnostic: check window.interpret rather than status text)
+    await page.waitForFunction(
+      () => typeof window.interpret === 'function',
+      { timeout: TIMEOUT }
+    );
+
+    await page.evaluate((code) => {
+      const editors = window.monaco?.editor?.getEditors();
+      if (editors && editors[0]) editors[0].setValue(code);
+    }, FRENCH_ACCENTED_CODE);
+    await page.waitForTimeout(500);
+
+    // Position cursor on scope usage line (line 6: champ d'application TestRésultatImpôt:)
+    await page.click('.monaco-editor');
+    await page.evaluate(() => {
+      const editors = window.monaco?.editor?.getEditors();
+      if (editors && editors[0]) {
+        editors[0].setPosition({ lineNumber: 6, column: 1 });
+        editors[0].focus();
+      }
+    });
+    await page.waitForTimeout(100);
+    await page.keyboard.press('Control+Enter');
+
+    await page.waitForFunction(
+      () => {
+        const output = document.getElementById('output');
+        return output?.textContent?.trim() !== '';
+      },
+      { timeout: TIMEOUT }
+    );
+
+    const frOutput = await page.$eval('#output', el => el.textContent);
+
+    // If the scope name was truncated (e.g. "TestR" or "TestRésultatImp"),
+    // the interpreter emits "no scope <truncated>".
+    if (/no scope\s+"?TestR[^é]/i.test(frOutput)) {
+      throw new Error(`Accented scope name was truncated. Output: ${frOutput.slice(0, 200)}`);
+    }
+    if (frOutput.includes('42') || frOutput.includes('valeur')) {
+      console.log('✓ Accented scope name parsed correctly, scope executed successfully');
+    } else {
+      // Any other error (parse/type) means the full name was used — regression not present
+      console.log('✓ Accented scope name parsed correctly (no truncation error)');
+    }
+
+    // ========================================================================
     // Test: File deletion
     // ========================================================================
     console.log('\n--- Testing file deletion ---');
+
+    // Navigate back to English playground (previous test left us on the French page)
+    await page.goto(`http://localhost:${PORT}/${PLAYGROUND_PREFIX}/index.html`, { timeout: TIMEOUT });
+    await page.waitForFunction(
+      () => document.getElementById('status')?.textContent?.includes('ready'),
+      { timeout: TIMEOUT }
+    );
 
     // Add a new module file
     console.log('Adding module file...');

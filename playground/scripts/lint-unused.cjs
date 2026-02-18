@@ -97,6 +97,17 @@ function findUsedClasses() {
     for (const match of monacoClassMatches) {
       used.add(match[1]);
     }
+    // Array push with string literal: array.push('class-name')
+    const arrayPushMatches = content.matchAll(/\.push\(['"]([^'"]+)['"]\)/g);
+    for (const match of arrayPushMatches) {
+      match[1].split(/\s+/).forEach(c => used.add(c));
+    }
+    // Dynamic class prefixes in template literals: `ansi-c${code}` → mark ansi-c* as used
+    // We record the prefix and later match any CSS class starting with it
+    const dynamicPrefixMatches = content.matchAll(/[`'"]([a-zA-Z][a-zA-Z0-9_-]*)\$\{/g);
+    for (const match of dynamicPrefixMatches) {
+      used.add('__prefix__' + match[1]);
+    }
   }
 
   return used;
@@ -106,7 +117,10 @@ function findDefinedCSS() {
   const defined = new Map(); // selector -> line number
   const cssFile = path.join(ROOT, 'css', 'style.css');
   const content = fs.readFileSync(cssFile, 'utf8');
-  const lines = content.split('\n');
+
+  // Strip block comments before parsing to avoid false positives from comment text
+  const stripped = content.replace(/\/\*[\s\S]*?\*\//g, match => '\n'.repeat(match.split('\n').length - 1));
+  const lines = stripped.split('\n');
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
@@ -143,12 +157,18 @@ function checkUnusedCSS() {
   const defined = findDefinedCSS();
   const unused = [];
 
+  // Collect dynamic prefixes (e.g. 'ansi-c' from `ansi-c${code}`)
+  const dynamicPrefixes = [...used]
+    .filter(s => s.startsWith('__prefix__'))
+    .map(s => s.slice('__prefix__'.length));
+
   for (const [selector, line] of defined) {
     // Skip pseudo-classes and element selectors mixed in
     if (selector.includes(':')) continue;
-    if (!used.has(selector) && !used.has(selector.replace('#', ''))) {
-      unused.push({ selector, line });
-    }
+    if (used.has(selector) || used.has(selector.replace('#', ''))) continue;
+    // Skip if selector starts with a detected dynamic prefix
+    if (dynamicPrefixes.some(p => selector.startsWith(p))) continue;
+    unused.push({ selector, line });
   }
 
   return unused;
