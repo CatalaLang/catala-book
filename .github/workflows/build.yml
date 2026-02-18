@@ -113,6 +113,9 @@ jobs:
       - name: Typecheck
         working-directory: playground
         run: npm run typecheck
+      - name: Fetch Catala web interpreter
+        working-directory: playground
+        run: curl -L -o catala_web_interpreter.js https://assets.catala-lang.org/catala_web_interpreter.js
       - name: Install Playwright
         working-directory: playground
         run: npx playwright install chromium --with-deps

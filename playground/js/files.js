@@ -84,7 +84,7 @@ export function getProjectExtension() {
  * @returns {void}
  */
 export function switchToFile(filename, updateEditor) {
-  if (!files[filename]) return;
+  if (!(filename in files)) return;
   currentFile = filename;
   updateEditor(files[filename]);
 }

@@ -18,11 +18,16 @@ export function escapeHtml(text) {
 }
 
 /**
+ * @typedef {{ active: boolean, onShow: () => void, onHide: () => void }} SolutionTabConfig
+ */
+
+/**
  * Render file tabs
  * @param {(filename: string) => void} onSwitchFile - Callback when switching files
+ * @param {SolutionTabConfig} [solutionTab] - Optional solution tab config
  * @returns {void}
  */
-export function renderTabs(onSwitchFile) {
+export function renderTabs(onSwitchFile, solutionTab) {
   const tabsContainer = document.getElementById('fileTabs');
   if (!tabsContainer) return;
 
@@ -76,6 +81,14 @@ export function renderTabs(onSwitchFile) {
     onSwitchFile(result.filename);
   };
   tabsContainer.appendChild(addBtn);
+
+  if (solutionTab) {
+    const solTab = document.createElement('button');
+    solTab.className = 'file-tab solution' + (solutionTab.active ? ' active' : '');
+    solTab.textContent = t('solution');
+    solTab.onclick = () => solutionTab.active ? solutionTab.onHide() : solutionTab.onShow();
+    tabsContainer.appendChild(solTab);
+  }
 }
 
 /**

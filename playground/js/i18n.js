@@ -30,9 +30,9 @@ const STRINGS = {
     loadFailed: 'Failed to load: {error}',
 
     // Solution viewer
-    showSolution: 'Show solution',
-    hideSolution: 'Hide solution',
-    loadingSolution: 'Loading...',
+    solution: '💡 Solution',
+    viewingSolution: 'Viewing solution',
+    loadingSolution: 'Loading solution...',
     solutionFailed: 'Failed to load solution: {error}',
 
     // Editor
@@ -70,9 +70,9 @@ const STRINGS = {
     loadFailed: 'Échec du chargement : {error}',
 
     // Solution viewer
-    showSolution: 'Voir la solution',
-    hideSolution: 'Masquer la solution',
-    loadingSolution: 'Chargement...',
+    solution: '💡 Solution',
+    viewingSolution: 'Solution affichée',
+    loadingSolution: 'Chargement de la solution...',
     solutionFailed: 'Échec du chargement de la solution : {error}',
 
     // Editor

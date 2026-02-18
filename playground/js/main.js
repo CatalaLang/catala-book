@@ -134,12 +134,13 @@ function runScope(scopeName) {
  * @param {string} filename
  */
 function onSwitchFile(filename) {
+  if (viewingSolution) hideSolution();
   // Only save if current file still exists (may have been deleted)
   if (getFileNames().includes(getCurrentFile)) {
     updateCurrentFile(getEditorContent());
   }
   switchToFile(filename, setEditorContent);
-  renderTabs(onSwitchFile);
+  reRenderTabs();
 }
 
 // ============================================================================
@@ -161,7 +162,7 @@ async function resetToCheckpoint() {
     const result = await loadFromUrl(checkpointUrl);
     if (result.success) {
       setEditorContent(getCurrentFileContent());
-      renderTabs(onSwitchFile);
+      reRenderTabs();
       setStatus(t('resetComplete'), 'success');
     } else {
       setStatus(t('resetFailed', { error: result.error || '' }), 'error');
@@ -169,78 +170,94 @@ async function resetToCheckpoint() {
   } else {
     loadAllFiles({ files: { 'main.catala_en': '' }, currentFile: 'main.catala_en' });
     setEditorContent('');
-    renderTabs(onSwitchFile);
+    reRenderTabs();
     setStatus(t('resetComplete'), 'success');
   }
 }
 
 // ============================================================================
-// Solution viewer
+// Solution tab
 // ============================================================================
-
-/** @type {import('monaco-editor').editor.IStandaloneCodeEditor | null} */
-let solutionEditor = null;
 
 /** @type {string | null} */
 let solutionContent = null;
 
 /** @type {boolean} */
-let solutionVisible = false;
+let viewingSolution = false;
+
+/** @type {import('monaco-editor').editor.IStandaloneCodeEditor | null} */
+let solutionEditor = null;
 
 /**
- * Toggle solution visibility
+ * Show solution in a read-only Monaco editor (main editor is untouched)
  */
-async function toggleSolution() {
-  const container = document.getElementById('solutionContainer');
-  const toggle = document.getElementById('solutionToggle');
-  if (!container || !toggle || !solutionUrl) return;
-
-  if (solutionVisible) {
-    // Hide solution
-    container.style.display = 'none';
-    toggle.textContent = t('showSolution');
-    solutionVisible = false;
+async function showSolution() {
+  if (!solutionUrl) return;
+  if (!solutionContent) {
+    setStatus(t('loadingSolution'), 'info');
+    try {
+      const response = await fetch(solutionUrl);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      solutionContent = await response.text();
+    } catch (err) {
+      setStatus(t('solutionFailed', { error: String(err) }), 'error');
+      return;
+    }
+  }
+  // Create the solution Monaco editor lazily
+  if (!solutionEditor) {
+    // @ts-expect-error - Monaco loaded globally
+    const monaco = window.monaco;
+    solutionEditor = monaco.editor.create(document.getElementById('solution-editor'), {
+      value: solutionContent,
+      language: 'catala',
+      theme: 'catala-dark',
+      fontSize: 14,
+      minimap: { enabled: false },
+      lineNumbers: 'on',
+      scrollBeyondLastLine: false,
+      automaticLayout: true,
+      wordWrap: 'on',
+      readOnly: true,
+      codeLens: false,
+      padding: { top: 10 }
+    });
   } else {
-    // Show solution
-    if (!solutionContent) {
-      // Fetch solution on first open
-      toggle.textContent = t('loadingSolution');
-      try {
-        const response = await fetch(solutionUrl);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        solutionContent = await response.text();
-      } catch (err) {
-        setStatus(t('solutionFailed', { error: String(err) }), 'error');
-        toggle.textContent = t('showSolution');
-        return;
-      }
-    }
+    solutionEditor.setValue(solutionContent);
+  }
+  const editorEl = document.getElementById('editor-container');
+  const solutionEl = document.getElementById('solution-view');
+  if (editorEl) editorEl.style.display = 'none';
+  if (solutionEl) solutionEl.style.display = 'block';
+  viewingSolution = true;
+  reRenderTabs();
+  setStatus(t('viewingSolution'), 'info');
+}
 
-    container.style.display = 'block';
-    toggle.textContent = t('hideSolution');
-    solutionVisible = true;
+/**
+ * Hide solution and show the editor again
+ */
+function hideSolution() {
+  const editorEl = document.getElementById('editor-container');
+  const solutionEl = document.getElementById('solution-view');
+  if (solutionEl) solutionEl.style.display = 'none';
+  if (editorEl) editorEl.style.display = 'block';
+  viewingSolution = false;
+  setStatus(t('ready'), 'success');
+}
 
-    // Create read-only editor if needed
-    if (!solutionEditor) {
-      // @ts-expect-error - Monaco loaded globally
-      const monaco = window.monaco;
-      solutionEditor = monaco.editor.create(document.getElementById('solution-editor'), {
-        value: solutionContent,
-        language: 'catala',
-        theme: 'vs-dark',
-        fontSize: 14,
-        minimap: { enabled: false },
-        lineNumbers: 'on',
-        scrollBeyondLastLine: false,
-        automaticLayout: true,
-        wordWrap: 'on',
-        readOnly: true,
-        codeLens: false,
-        padding: { top: 10 }
-      });
-    } else {
-      solutionEditor.setValue(solutionContent);
-    }
+/**
+ * Re-render tabs (with solution tab when applicable)
+ */
+function reRenderTabs() {
+  if (solutionUrl) {
+    renderTabs(onSwitchFile, {
+      active: viewingSolution,
+      onShow: showSolution,
+      onHide: () => { hideSolution(); reRenderTabs(); }
+    });
+  } else {
+    renderTabs(onSwitchFile);
   }
 }
 
@@ -303,7 +320,7 @@ async function init() {
   );
 
   // Render initial tabs
-  renderTabs(onSwitchFile);
+  reRenderTabs();
 
   // Setup reset button
   const resetBtn = document.getElementById('resetBtn');
@@ -313,17 +330,6 @@ async function init() {
       resetBtn.addEventListener('click', resetToCheckpoint);
     } else {
       resetBtn.style.display = 'none';
-    }
-  }
-
-  // Setup solution toggle
-  const solutionSection = document.getElementById('solutionSection');
-  const solutionToggle = document.getElementById('solutionToggle');
-  if (solutionSection && solutionToggle) {
-    if (solutionUrl) {
-      solutionSection.style.display = 'block';
-      solutionToggle.textContent = t('showSolution');
-      solutionToggle.addEventListener('click', toggleSolution);
     }
   }
 

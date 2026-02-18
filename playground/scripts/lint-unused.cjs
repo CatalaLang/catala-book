@@ -34,6 +34,15 @@ function findUsedClasses() {
     for (const match of idMatches) {
       used.add('#' + match[1]);
     }
+    // Inline <script> blocks: apply classList.add/remove/toggle detection
+    const inlineScripts = content.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g);
+    for (const scriptMatch of inlineScripts) {
+      const scriptContent = scriptMatch[1];
+      const classListMatches = scriptContent.matchAll(/classList\.(add|remove|toggle)\(['"]([^'"]+)['"]\)/g);
+      for (const match of classListMatches) {
+        used.add(match[2]);
+      }
+    }
   }
 
   // Scan JS files for classList and getElementById
@@ -57,11 +66,12 @@ function findUsedClasses() {
     for (const match of templateConcatMatches) {
       match[1].split(/\s+/).forEach(c => used.add(c));
     }
-    // Capture conditional classes in ternary expressions: (cond ? ' active' : '')
-    // These appear as ` className` with leading space in the true branch
-    const ternaryClassMatches = content.matchAll(/\?\s*['"]\s+([a-zA-Z_-][a-zA-Z0-9_-]*)['"]\s*:/g);
+    // Capture both branches of string ternaries: cond ? 'trueClass' : 'falseClass'
+    // Also handles space-prefix style: cond ? ' active' : ''
+    const ternaryClassMatches = content.matchAll(/\?\s*['"]([^'"]*)['"]\s*:\s*['"]([^'"]*)['"]/g);
     for (const match of ternaryClassMatches) {
-      used.add(match[1]);
+      match[1].trim().split(/\s+/).forEach(c => c && used.add(c));
+      match[2].trim().split(/\s+/).forEach(c => c && used.add(c));
     }
     // getElementById('id')
     const idMatches = content.matchAll(/getElementById\(['"]([^'"]+)['"]\)/g);

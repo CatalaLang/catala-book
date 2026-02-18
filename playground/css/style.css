@@ -112,7 +112,6 @@ select {
 }
 
 .error { color: #f48771; }
-.warning { color: #cca700; }
 .success { color: #89d185; }
 
 /* Status bar at bottom of editor panel */
@@ -256,38 +255,27 @@ select {
   margin-left: 5px;
 }
 
-/* Solution accordion */
-.solution-section {
-  margin-top: 10px;
-}
-
-.solution-toggle {
-  padding: 8px 16px;
-  font-size: 13px;
-  background: #3d4455;
-  color: #c8c9db;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 100%;
-  text-align: left;
-}
-
-.solution-toggle:hover {
-  background: #5a4a6a;
-}
-
-.solution-container {
-  background: #1e2230;
-  border-radius: 0 0 8px 8px;
-  overflow: hidden;
-  margin-top: 4px;
+/* Solution view (shown instead of editor when viewing solution) */
+#solution-view {
+  flex: 1;
+  min-height: 0;
+  background: #161923;
 }
 
 #solution-editor {
-  height: 300px;
+  height: 100%;
   background: #161923;
 }
+
+/* Solution tab in tab bar */
+.file-tab.solution {
+  font-style: italic;
+  color: #b0a0d0;
+  margin-left: auto;
+}
+
+.file-tab.solution:hover { background: #2a2540; }
+.file-tab.solution.active { color: #d4c0f0; background: #2a2540; }
 
 /* Wide screen: side-by-side layout */
 @media (min-width: 1200px) {

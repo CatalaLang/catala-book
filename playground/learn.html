@@ -169,6 +169,7 @@
       chapterSelect.innerHTML = `<option value="">${tLearn('selectExercise')}</option>`;
 
       for (const [id, exercise] of Object.entries(EXERCISES[lang])) {
+        if (exercise.redirectTo) continue;
         const option = document.createElement('option');
         option.value = id;
         option.textContent = exercise.name;
