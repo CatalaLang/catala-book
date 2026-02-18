@@ -18,10 +18,9 @@
   }
 
   // Extract chapter ID from current page URL
-  // Examples: /en/2-1-basic-blocks.html -> 2-1-basic-blocks
-  //           /en/2-1-1-exercise.html -> 2-1-1-exercise
+  // Handles both /en/chapter.html (local/GitHub Pages) and /en/chapter (Cloudflare)
   function getCurrentChapter() {
-    const match = window.location.pathname.match(/\/([^/]+)\.html$/);
+    const match = window.location.pathname.match(/\/([^/]+?)(?:\.html)?$/);
     return match ? match[1] : null;
   }
 

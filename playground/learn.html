@@ -210,7 +210,7 @@
           // If language changed from what learn.html was loaded with, reload
           if (iframeLang !== lang) {
             // Get current chapter from iframe URL
-            const chapterMatch = iframePathname.match(/\/([^/]+)\.html$/);
+            const chapterMatch = iframePathname.match(/\/([^/]+?)(?:\.html)?$/);
             const currentChapter = chapterMatch ? chapterMatch[1] : initialChapter;
             // Reload learn.html with new language
             window.location.href = `/playground/learn.html?chapter=${currentChapter}&bookBase=/${iframeLang}`;
