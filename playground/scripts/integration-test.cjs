@@ -93,23 +93,25 @@ async function runTest() {
     // Clear editor and type test code
     console.log('Entering test code...');
     await page.evaluate((code) => {
-      // Access Monaco editor instance
       const editors = window.monaco?.editor?.getEditors();
       if (editors && editors[0]) {
-        const editor = editors[0];
-        editor.setValue(code);
-        // Position cursor inside the scope (line 7)
-        editor.setPosition({ lineNumber: 7, column: 1 });
-        editor.focus();
+        editors[0].setValue(code);
       }
     }, TEST_CODE);
 
     // Small delay for editor to process
     await page.waitForTimeout(500);
 
-    // Focus the editor container and trigger Ctrl+Enter
+    // Focus the editor, then position cursor inside the catala block (line 7)
     console.log('Running code (Ctrl+Enter)...');
     await page.click('.monaco-editor');
+    await page.evaluate(() => {
+      const editors = window.monaco?.editor?.getEditors();
+      if (editors && editors[0]) {
+        editors[0].setPosition({ lineNumber: 7, column: 1 });
+        editors[0].focus();
+      }
+    });
     await page.waitForTimeout(100);
     await page.keyboard.press('Control+Enter');
 
