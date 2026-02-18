@@ -344,7 +344,8 @@ export function initializeEditor(initialContent, onRunScope, onContentChange) {
         scrollBeyondLastLine: false,
         automaticLayout: true,
         wordWrap: 'on',
-        padding: { top: 10 }
+        padding: { top: 10 },
+        fixedOverflowWidgets: true
       });
 
       // Setup CodeLens and keybindings

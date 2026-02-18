@@ -115,13 +115,11 @@ const POS_PATTERN = /([\w][\w.-]*\.catala_(?:en|fr|pl)):(\d+)\.(\d+)-(\d+)\.(\d+
  * @returns {string}
  */
 export function renderErrorHtml(message) {
-  POS_PATTERN.lastIndex = 0;
   const parts = [];
   let lastIndex = 0;
-  let match;
-  while ((match = POS_PATTERN.exec(message)) !== null) {
-    parts.push(escapeHtml(message.slice(lastIndex, match.index)));
+  for (const match of message.matchAll(POS_PATTERN)) {
     const [full, filename, startLine, startCol] = match;
+    parts.push(escapeHtml(message.slice(lastIndex, match.index)));
     parts.push(
       `<button class="pos-link" data-file="${escapeHtml(filename)}" ` +
       `data-line="${startLine}" data-col="${startCol}">${escapeHtml(full)}</button>`
