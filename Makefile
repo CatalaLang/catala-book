@@ -38,7 +38,10 @@ dev: treesit-prepare
 		$(MAKE) -C playground grammar; \
 	fi
 	$(MAKE) build
-	@echo "Serving at http://localhost:8000"
+	@echo ""
+	@echo "  Playground: http://localhost:8000/playground/index.html"
+	@echo "  Tutorial:   http://localhost:8000/playground/learn.html"
+	@echo ""
 	cd book/site && python3 -m http.server 8000
 
 serve: treesit-prepare
