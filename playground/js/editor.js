@@ -9,6 +9,7 @@
 import { updateCurrentFile } from './files.js';
 import { t } from './i18n.js';
 import { KEYWORDS } from './grammar.js';
+import { setStatus } from './ui.js';
 
 /** @type {IStandaloneCodeEditor | null} */
 let editor = null;
@@ -87,6 +88,21 @@ function findScopeDeclLine(lines, scopeName) {
     }
   }
   return -1;
+}
+
+/**
+ * Check whether a line is inside a catala code fence
+ * @param {import('monaco-editor').editor.ITextModel} model
+ * @param {number} lineNumber
+ * @returns {boolean}
+ */
+function isInCatalaBlock(model, lineNumber) {
+  for (let line = lineNumber; line >= 1; line--) {
+    const text = model.getLineContent(line);
+    if (CATALA_FENCE_START.test(text)) return true;
+    if (FENCE_END.test(text)) return false;
+  }
+  return false;
 }
 
 /**
@@ -273,16 +289,18 @@ function registerKeybindings(monaco, ed, onRunScope) {
       const model = editor.getModel();
       if (!position || !model) return;
 
+      if (!isInCatalaBlock(model, position.lineNumber)) {
+        setStatus(t('noScopeAtCursor'), 'info');
+        return;
+      }
       const scopeName = findScopeAtLine(model, position.lineNumber);
       if (scopeName && canRunScope(model, scopeName)) {
         onRunScope(scopeName);
       } else if (scopeName) {
-        const status = document.getElementById('status');
-        if (status) {
-          status.textContent = t('scopeHasInputs');
-        }
+        setStatus(t('scopeHasInputs'), 'info');
+      } else {
+        setStatus(t('noScopeAtCursor'), 'info');
       }
-      // Silent no-op if no scope found
     }
   });
 }

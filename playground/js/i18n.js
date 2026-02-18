@@ -39,6 +39,7 @@ const STRINGS = {
     runScope: '▶ Run {scope}',
     runScopeAtCursor: 'Run Scope at Cursor',
     scopeHasInputs: 'Scope has inputs — use a Test scope to run it',
+    noScopeAtCursor: 'No runnable scope at cursor — move inside a scope block',
 
     // File management
     confirmDelete: 'Delete {filename}?',
@@ -79,6 +80,7 @@ const STRINGS = {
     runScope: '▶ Exécuter {scope}',
     runScopeAtCursor: 'Exécuter le champ d\'application',
     scopeHasInputs: 'Ce champ d\'application a des entrées — utilisez un scope Test',
+    noScopeAtCursor: 'Aucun champ d\'application exécutable ici — placez le curseur dans un bloc scope',
 
     // File management
     confirmDelete: 'Supprimer {filename} ?',
