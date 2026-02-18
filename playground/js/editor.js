@@ -438,3 +438,15 @@ export function markDiagnostics(diagnostics) {
 
   currentDecorations = editor.deltaDecorations(currentDecorations, decorations);
 }
+
+/**
+ * Navigate editor to a specific position
+ * @param {number} line - 1-based line number
+ * @param {number} col - 1-based column number
+ */
+export function navigateToPosition(line, col) {
+  if (!editor) return;
+  editor.revealPositionInCenter({ lineNumber: line, column: col });
+  editor.setPosition({ lineNumber: line, column: col });
+  editor.focus();
+}

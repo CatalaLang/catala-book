@@ -4,9 +4,9 @@
  */
 
 import { getCurrentFileContent, switchToFile, updateCurrentFile, loadFromUrl, loadAllFiles, getFileNames, currentFile as getCurrentFile, initializeDefaultFile } from './files.js';
-import { initializeEditor, setEditorContent, getEditorContent, clearErrorDecorations, markDiagnostics } from './editor.js';
+import { initializeEditor, setEditorContent, getEditorContent, clearErrorDecorations, markDiagnostics, navigateToPosition as editorNavigateTo } from './editor.js';
 import { loadInterpreter, runScope as executeScope, typecheck as runTypecheck, interpreterReady, getErrors, getWarnings } from './interpreter.js';
-import { renderTabs, displayOutput, clearOutputIfSource, setStatus, escapeHtml } from './ui.js';
+import { renderTabs, displayOutput, clearOutputIfSource, setStatus, escapeHtml, setNavigationCallback, renderErrorHtml } from './ui.js';
 import { initPersistence, scheduleSave, loadFromStorage, clearStorage } from './persistence.js';
 import { t, initLangFromHash, updateStaticText, getLang } from './i18n.js';
 
@@ -67,7 +67,7 @@ function performTypecheck() {
 
     // Display error messages in output panel
     const errorHtml = errors
-      .map(e => `<span class="error">${escapeHtml(e.message)}</span>`)
+      .map(e => `<span class="error">${renderErrorHtml(e.message)}</span>`)
       .join('\n');
     if (errorHtml) {
       displayOutput(errorHtml, 'typecheck');
@@ -116,7 +116,7 @@ function runScope(scopeName) {
       setStatus(t('ready'), 'success');
     } else {
       const errorHtml = errors
-        .map(e => `<span class="error">${escapeHtml(e.message)}</span>`)
+        .map(e => `<span class="error">${renderErrorHtml(e.message)}</span>`)
         .join('\n');
       displayOutput(errorHtml || `<span class="error">Unknown error</span>`, 'execution');
       setStatus(t('errorSeeOutput'), 'error');
@@ -318,6 +318,17 @@ async function init() {
       scheduleTypecheck();
     }
   );
+
+  // Wire up navigation callback for clickable error positions
+  setNavigationCallback((filename, line, col) => {
+    if (filename !== getCurrentFile && getFileNames().includes(filename)) {
+      onSwitchFile(filename);
+      // Wait one tick for the editor model to update before moving cursor
+      setTimeout(() => editorNavigateTo(line, col), 50);
+    } else {
+      editorNavigateTo(line, col);
+    }
+  });
 
   // Render initial tabs
   reRenderTabs();
