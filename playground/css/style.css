@@ -114,6 +114,22 @@ select {
 .error { color: #f48771; }
 .success { color: #89d185; }
 
+/* Clickable source position links in error output */
+.pos-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: #6b9bd1;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.pos-link:hover {
+  color: #79c0ff;
+}
+
 /* Status bar at bottom of editor panel */
 .status-bar {
   padding: 6px 12px;

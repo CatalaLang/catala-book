@@ -91,6 +91,62 @@ export function renderTabs(onSwitchFile, solutionTab) {
   }
 }
 
+// ============================================================================
+// Clickable source positions in error output
+// ============================================================================
+
+/** @type {((filename: string, line: number, col: number) => void) | null} */
+let navigationCallback = null;
+
+/**
+ * Register callback for navigating to a source position when clicked
+ * @param {(filename: string, line: number, col: number) => void} cb
+ */
+export function setNavigationCallback(cb) {
+  navigationCallback = cb;
+}
+
+/** Matches Catala source positions: filename.catala_en:startLine.startCol-endLine.endCol */
+const POS_PATTERN = /([\w][\w.-]*\.catala_(?:en|fr|pl)):(\d+)\.(\d+)-(\d+)\.(\d+)/g;
+
+/**
+ * Render an error message as HTML, turning source positions into clickable buttons
+ * @param {string} message
+ * @returns {string}
+ */
+export function renderErrorHtml(message) {
+  POS_PATTERN.lastIndex = 0;
+  const parts = [];
+  let lastIndex = 0;
+  let match;
+  while ((match = POS_PATTERN.exec(message)) !== null) {
+    parts.push(escapeHtml(message.slice(lastIndex, match.index)));
+    const [full, filename, startLine, startCol] = match;
+    parts.push(
+      `<button class="pos-link" data-file="${escapeHtml(filename)}" ` +
+      `data-line="${startLine}" data-col="${startCol}">${escapeHtml(full)}</button>`
+    );
+    lastIndex = match.index + full.length;
+  }
+  parts.push(escapeHtml(message.slice(lastIndex)));
+  return parts.join('');
+}
+
+// Delegated click handler for .pos-link buttons anywhere in the document
+document.addEventListener('click', (e) => {
+  const target = /** @type {HTMLElement} */ (e.target);
+  if (target.classList.contains('pos-link') && navigationCallback) {
+    const filename = target.dataset.file || '';
+    const line = parseInt(target.dataset.line || '1', 10);
+    const col = parseInt(target.dataset.col || '1', 10);
+    navigationCallback(filename, line, col);
+  }
+});
+
+// ============================================================================
+// Output panel
+// ============================================================================
+
 /**
  * Track the source of current output content
  * @type {'typecheck' | 'execution' | null}
