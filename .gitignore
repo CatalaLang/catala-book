@@ -1,6 +1,5 @@
 book
 _build
-.claude/
 **/__pycache__/
 _targets
 .#*
