@@ -9,7 +9,7 @@
 import { updateCurrentFile } from './files.js';
 import { t } from './i18n.js';
 import { KEYWORDS } from './grammar.js';
-import { setStatus } from './ui.js';
+import { setStatus, renderErrorHtml } from './ui.js';
 
 /** @type {IStandaloneCodeEditor | null} */
 let editor = null;
@@ -40,13 +40,17 @@ function debounce(fn, delay) {
 // Scope detection patterns and helpers
 // ============================================================================
 
+// Catala identifier: starts with letter/underscore (including accented chars), followed by
+// letters, digits, underscore, or apostrophe. Must cover both EN and FR identifiers.
+const CATALA_IDENT = '[a-zA-ZàâäéèêëïîôùûüÿçœæÀÂÄÉÈÊËÏÎÔÙÛÜŸÇŒÆ_][a-zA-ZàâäéèêëïîôùûüÿçœæÀÂÄÉÈÊËÏÎÔÙÛÜŸÇŒÆ_0-9\']*';
+
 const SCOPE_DECL_PATTERNS = [
-  /declaration\s+scope\s+(\w+)/i,
-  /déclaration\s+champ\s+d'application\s+(\w+)/i
+  new RegExp(`declaration\\s+scope\\s+(${CATALA_IDENT})`, 'i'),
+  new RegExp(`déclaration\\s+champ\\s+d'application\\s+(${CATALA_IDENT})`, 'i')
 ];
 const SCOPE_USE_PATTERNS = [
-  /^scope\s+(\w+)\s*:/i,
-  /^champ\s+d'application\s+(\w+)\s*:/i
+  new RegExp(`^scope\\s+(${CATALA_IDENT})\\s*:`, 'i'),
+  new RegExp(`^champ\\s+d'application\\s+(${CATALA_IDENT})\\s*:`, 'i')
 ];
 const INPUT_PATTERN = /^\s*(input|entrée)\s+/i;
 const END_BLOCK_PATTERN = /^(declaration|déclaration|scope|champ\s+d'application|```)/i;
@@ -430,9 +434,11 @@ export function markDiagnostics(diagnostics) {
     const glyphClass = isWarning ? 'warningGlyph' : 'errorGlyph';
 
     for (const pos of diag.positions) {
-      // Use markdown code block to preserve box-drawing alignment in hover
-      const hoverText = diag.message
-        ? '```\n' + diag.message + '\n```'
+      // Render ANSI-colored message as HTML for Monaco hover.
+      // Wrap in <pre> to preserve whitespace/newlines (HTML would collapse them).
+      // CSS classes (ansi-cNN) survive DOMPurify sanitization; inline styles do not.
+      const hoverHtml = diag.message
+        ? `<pre>${renderErrorHtml(diag.message)}</pre>`
         : (isWarning ? 'Warning' : 'Error');
       decorations.push({
         range: new monaco.Range(
@@ -443,7 +449,7 @@ export function markDiagnostics(diagnostics) {
         ),
         options: {
           inlineClassName: inlineClass,
-          hoverMessage: { value: hoverText },
+          hoverMessage: { value: hoverHtml, supportHtml: true },
           className: lineClass,
           glyphMarginClassName: glyphClass,
           overviewRuler: {
