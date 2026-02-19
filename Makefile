@@ -39,11 +39,11 @@ clean:
 	mdbook clean
 
 cargo-deps-nomdbook:
-	cargo install mdbook-admonish mdbook-mermaid mdbook-toc mdbook-tocjs mdbook-linkcheck mdbook-cmdrun
+	cargo install mdbook-admonish mdbook-mermaid@0.16.2 mdbook-toc@0.14.2 mdbook-tocjs@0.1.4 mdbook-linkcheck mdbook-cmdrun
 	cargo install mdbook-treesitter --git https://github.com/AltGr/mdbook-treesitter.git
 
 cargo-deps: cargo-deps-nomdbook
-	cargo install mdbook
+	cargo install mdbook@0.4.52
 
 treesitter/tree-sitter-catala/libtree-sitter-catala_expr_fr.so:
 	make -C treesitter build
