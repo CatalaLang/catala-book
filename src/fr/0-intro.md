@@ -1,5 +1,5 @@
 <center>
-<a href="https://catala-lang.org"><img style="max-width: 10em;max-height:10em;margin-left: .2em;" src="./logo.png"></a>
+<a href="https://catala-lang.org"><img style="max-width: 10em;max-height:10em;margin-top: 1em" src="./logo.png"></a>
 </br>
 <p>Développé avec ❤️ dans le cadre du <a href="https://apollo.inria.fr">programme Apollo</a>, piloté par
 <a href="https://inria.fr"><img style="max-width: 8em;max-height:8em;margin-left: .2em;" src="./inr_logo_rouge.svg"></a></p>
