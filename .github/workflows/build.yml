@@ -20,7 +20,7 @@ jobs:
       - name: Check SUMMARY structure consistency
         run: python3 scripts/check_struct_consistency.py
       - name: typecheck
-        run: clerk typecheck
+        run: opam --cli=2.1 exec -- clerk typecheck
 
   # Build job
   build:
