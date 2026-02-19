@@ -218,6 +218,12 @@ async function runTest() {
       () => document.getElementById('status')?.textContent?.includes('ready'),
       { timeout: TIMEOUT }
     );
+    // Re-enter test code so the "main file content" assertion below has something to check
+    await page.evaluate((code) => {
+      const editors = window.monaco?.editor?.getEditors();
+      if (editors && editors[0]) editors[0].setValue(code);
+    }, TEST_CODE);
+    await page.waitForTimeout(300);
 
     // Add a new module file
     console.log('Adding module file...');
