@@ -29,10 +29,10 @@
 
   function findMain() {
     return document.querySelector('main.content') ||
-           document.querySelector('main') ||
-           document.getElementById('content') ||
-           document.querySelector('.content') ||
-           document.body;
+      document.querySelector('main') ||
+      document.getElementById('content') ||
+      document.querySelector('.content') ||
+      document.body;
   }
 
   function insertBanner() {
@@ -49,11 +49,7 @@
       `<p>🚧 Cette version du guide de Catala a été principalement traduite automatiquement de l'anglais. Si vous rencontrez des erreurs ou inexactitudes, un <a href="https://github.com/CatalaLang/catala-book/issues">signalement</a> est le bienvenu !</p>`;
 
     const main = findMain();
-    if (main.firstElementChild) {
-      main.insertBefore(banner, main.firstElementChild);
-    } else {
-      main.prepend(banner);
-    }
+    main.append(banner);
   }
 
   if (document.readyState === 'loading') {

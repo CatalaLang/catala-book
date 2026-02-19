@@ -1,3 +1,19 @@
+<center>
+<a href="https://catala-lang.org"><img style="max-width: 10em;max-height:10em;margin-left: .2em;" src="./logo.png"></a>
+</br>
+<p>Développé avec ❤️ dans le cadre du <a href="https://apollo.inria.fr">programme Apollo</a>, piloté par
+<a href="https://inria.fr"><img style="max-width: 8em;max-height:8em;margin-left: .2em;" src="./inr_logo_rouge.svg"></a></p>
+<p>
+<a href="https://book.catala-lang.org">Le livre Catala</a> © 2025 par
+<a href="https://catala-lang.org/">l'équipe Catala</a> est diffusé sous licence
+<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+<img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt=""
+     style="max-width: 1em;max-height:1em;margin-left: .2em;">
+<img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt=""
+     style="max-width: 1em;max-height:1em;margin-left: .2em;">
+</p>
+</center>
+
 # Introduction
 
 Bienvenue sur le livre d'introduction au *langage de programmation dédié Catala* !
