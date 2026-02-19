@@ -6,22 +6,17 @@ on:
 jobs:
   # Test job
   test:
-    runs-on: ubuntu-latest
-    env:
-      CAMLLIB: /usr/lib/x86_64-linux-gnu/ocaml/5.3.0
+    runs-on: self-hosted
+    container:
+      image: registry.gitlab.inria.fr/catala/ci-images:latest-python
+      options: --user root
     steps:
-      - name: Get OCaml
-        uses: awalsh128/cache-apt-pkgs-action@latest
-        with:
-          packages: ocaml
-          version: 1.0
-      - name: Download catala
-        uses: wei/wget@v1
-        with:
-          args: https://github.com/CatalaLang/catala/releases/download/1.0.0/catala_1.0.0_amd64.deb -O catala.deb
-      - name: Install catala
-        run: sudo dpkg -i --force-all ./catala.deb
-      - uses: actions/checkout@v4
+      - name: Fix home
+        # Workaround Github actions issue, see
+        # https://github.com/actions/runner/issues/863
+        run: sudo sh -c "echo HOME=/home/ocaml >> ${GITHUB_ENV}"
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Check SUMMARY structure consistency
         run: python3 scripts/check_struct_consistency.py
       - name: typecheck
