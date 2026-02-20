@@ -107,7 +107,7 @@ function runScope(scopeName) {
 
     if (result.success) {
       let html = `<span class="success">Scope ${escapeHtml(scopeName)} executed successfully:\n\n</span>`;
-      html += escapeHtml(result.output || '');
+      html += renderErrorHtml(result.output || '');
       // Show warnings as squiggles in editor (no output panel clutter)
       if (warnings.length > 0) {
         markDiagnostics(warnings);

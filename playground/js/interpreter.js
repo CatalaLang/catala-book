@@ -80,7 +80,8 @@ export function typecheck() {
     return window.typecheck({
       files: files,
       language: lang,
-      main: currentFile
+      main: currentFile,
+      outputFormat: 'ansi'
     });
   } catch (e) {
     return {
@@ -111,7 +112,8 @@ export function runScope(scopeName) {
       files: files,
       scope: scopeName,
       language: lang,
-      main: currentFile
+      main: currentFile,
+      outputFormat: 'ansi'
     });
   } catch (e) {
     return {

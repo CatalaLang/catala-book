@@ -125,6 +125,18 @@ select {
   color: #79c0ff;
 }
 
+/* ANSI color classes (match ANSI_COLORS in ui.js) — used in Monaco hover where inline
+   styles are stripped by DOMPurify, so we need class-based fallbacks */
+.ansi-c30 { color: #888888; }
+.ansi-c31 { color: #f48771; }
+.ansi-c32 { color: #89d185; }
+.ansi-c33 { color: #e6b400; }
+.ansi-c34 { color: #6b9bd1; }
+.ansi-c35 { color: #c792ea; }
+.ansi-c36 { color: #56b6c2; }
+.ansi-c37 { color: #c8c9db; }
+.ansi-bold { font-weight: bold; }
+
 /* Status bar at bottom of editor panel */
 .status-bar {
   padding: 6px 12px;
