@@ -109,25 +109,96 @@ export function setNavigationCallback(cb) {
 /** Matches Catala source positions: filename.catala_en:startLine.startCol-endLine.endCol */
 const POS_PATTERN = /([\w][\w.-]*\.catala_(?:en|fr|pl)):(\d+)\.(\d+)-(\d+)\.(\d+)/g;
 
+/** ANSI SGR color code → CSS color (dark theme palette) */
+const ANSI_COLORS = /** @type {Record<number, string>} */ ({
+  30: '#888888',  // black → dark gray (log)
+  31: '#f48771',  // red (errors)
+  32: '#89d185',  // green (results)
+  33: '#e6b400',  // yellow (warnings)
+  34: '#6b9bd1',  // blue (box drawing)
+  35: '#c792ea',  // magenta (debug)
+  36: '#56b6c2',  // cyan
+  37: '#c8c9db',  // white
+});
+
 /**
- * Render an error message as HTML, turning source positions into clickable buttons
+ * Render an error message as HTML, converting ANSI color codes to styled spans
+ * and turning source positions into clickable buttons. Works for both plain and
+ * ANSI-colored messages.
  * @param {string} message
  * @returns {string}
  */
 export function renderErrorHtml(message) {
-  const parts = [];
-  let lastIndex = 0;
-  for (const match of message.matchAll(POS_PATTERN)) {
-    const [full, filename, startLine, startCol] = match;
-    parts.push(escapeHtml(message.slice(lastIndex, match.index)));
-    parts.push(
-      `<button class="pos-link" data-file="${escapeHtml(filename)}" ` +
-      `data-line="${startLine}" data-col="${startCol}">${escapeHtml(full)}</button>`
-    );
-    lastIndex = match.index + full.length;
+  /** @type {number | null} */
+  let currentColorCode = null;
+  let isBold = false;
+  let styleOpen = false;
+  let html = '';
+  let pos = 0;
+
+  const closeStyle = () => {
+    if (styleOpen) { html += '</span>'; styleOpen = false; }
+  };
+  const openStyle = () => {
+    if (currentColorCode !== null || isBold) {
+      // Monaco hover (supportHtml:true) sanitizes <span> attributes:
+      //   - style= is kept only if it matches exactly /^(color:#hex;)?(background-color:#hex;)?$/
+      //   - class= is kept only for "codicon codicon-*" patterns
+      // So: emit color as inline style with trailing semicolon (survives Monaco sanitizer),
+      // and bold only as a CSS class (works in the output panel, stripped in hover).
+      const classes = [];
+      let sty = '';
+      if (currentColorCode !== null) {
+        classes.push(`ansi-c${currentColorCode}`);
+        const hex = ANSI_COLORS[currentColorCode];
+        if (hex) sty = ` style="color:${hex};"`;
+      }
+      if (isBold) { classes.push('ansi-bold'); }
+      const cls = classes.length ? ` class="${classes.join(' ')}"` : '';
+      html += `<span${cls}${sty}>`;
+      styleOpen = true;
+    }
+  };
+
+  /** @param {string} str */
+  const emitText = (str) => {
+    let last = 0;
+    for (const m of str.matchAll(POS_PATTERN)) {
+      html += escapeHtml(str.slice(last, m.index));
+      const [full, filename, startLine, startCol] = m;
+      closeStyle();
+      html +=
+        `<button class="pos-link" data-file="${escapeHtml(filename)}" ` +
+        `data-line="${startLine}" data-col="${startCol}">${escapeHtml(full)}</button>`;
+      openStyle();
+      last = /** @type {number} */ (m.index) + full.length;
+    }
+    html += escapeHtml(str.slice(last));
+  };
+
+  while (pos < message.length) {
+    const escIdx = message.indexOf('\x1b[', pos);
+    if (escIdx === -1) { emitText(message.slice(pos)); break; }
+    if (escIdx > pos) emitText(message.slice(pos, escIdx));
+
+    const endIdx = message.indexOf('m', escIdx + 2);
+    if (endIdx === -1) { emitText(message.slice(escIdx)); break; }
+
+    const codes = message.slice(escIdx + 2, endIdx).split(';').map(Number);
+    pos = endIdx + 1;
+
+    let changed = false;
+    for (const code of codes) {
+      if (code === 0) { currentColorCode = null; isBold = false; changed = true; }
+      else if (code === 1) { isBold = true; changed = true; }
+      else if (code === 39) { currentColorCode = null; changed = true; }
+      else if (code >= 30 && code <= 37) { currentColorCode = code; changed = true; }
+    }
+    if (changed) { closeStyle(); openStyle(); }
   }
-  parts.push(escapeHtml(message.slice(lastIndex)));
-  return parts.join('');
+
+  closeStyle();
+  return html;
 }
 
 // Delegated click handler for .pos-link buttons anywhere in the document

@@ -51,6 +51,8 @@ export interface InterpretOptions {
   main?: string;
   /** Enable tracing (not typically used in web) */
   trace?: boolean;
+  /** Output format for diagnostic messages: "plain" (default) or "ansi" */
+  outputFormat?: 'plain' | 'ansi';
 }
 
 /**
@@ -75,6 +77,8 @@ export interface TypecheckOptions {
   language?: string;
   /** Override which file is the main entry point */
   main?: string;
+  /** Output format for diagnostic messages: "plain" (default) or "ansi" */
+  outputFormat?: 'plain' | 'ansi';
 }
 
 /**
