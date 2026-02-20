@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catala Playground</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="editor-container">
+      <div class="panel">
+        <div class="panel-header">
+          <span>Catala Code</span>
+          <span class="panel-header-buttons">
+            <button id="resetBtn" style="display: none;">↺ Reset</button>
+          </span>
+        </div>
+        <div class="file-tabs" id="fileTabs"></div>
+        <div id="editor-container"></div>
+        <div id="solution-view" style="display:none;"><div id="solution-editor"></div></div>
+        <div id="status" class="status-bar">Loading Catala interpreter...</div>
+      </div>
+
+      <div class="resize-handle" id="resizeHandle"></div>
+
+      <div class="panel output-panel">
+        <div class="panel-header">
+          <span>Output</span>
+        </div>
+        <div id="output"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js"></script>
+  <script type="module" src="js/main.js"></script>
+  <script>
+    (function() {
+      const handle = document.getElementById('resizeHandle');
+      const panels = document.querySelectorAll('.editor-container > .panel');
+      const editorPanel = panels[0];
+      const outputPanel = panels[1];
+      let dragging = false;
+      let startY, startEditorH, startOutputH;
+
+      handle.addEventListener('mousedown', function(e) {
+        e.preventDefault();
+        dragging = true;
+        startY = e.clientY;
+        startEditorH = editorPanel.offsetHeight;
+        startOutputH = outputPanel.offsetHeight;
+        handle.classList.add('dragging');
+        document.body.style.cursor = 'row-resize';
+        document.body.style.userSelect = 'none';
+      });
+
+      document.addEventListener('mousemove', function(e) {
+        if (!dragging) return;
+        const dy = e.clientY - startY;
+        const newEditorH = Math.max(100, startEditorH + dy);
+        const newOutputH = Math.max(60, startOutputH - dy);
+        editorPanel.style.flex = 'none';
+        outputPanel.style.flex = 'none';
+        editorPanel.style.height = newEditorH + 'px';
+        outputPanel.style.height = newOutputH + 'px';
+      });
+
+      document.addEventListener('mouseup', function() {
+        if (!dragging) return;
+        dragging = false;
+        handle.classList.remove('dragging');
+        document.body.style.cursor = '';
+        document.body.style.userSelect = '';
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -88,3 +88,32 @@ jobs:
         with:
           name: mdbook-site
           path: ./book/site
+
+  # Playground tests
+  playground:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: playground/package-lock.json
+      - name: Install dependencies
+        working-directory: playground
+        run: npm install
+      - name: Lint
+        working-directory: playground
+        run: npm run lint
+      - name: Typecheck
+        working-directory: playground
+        run: npm run typecheck
+      - name: Fetch Catala web interpreter
+        working-directory: playground
+        run: curl -L -o catala_web_interpreter.js https://assets.catala-lang.org/catala_web_interpreter.js
+      - name: Install Playwright
+        working-directory: playground
+        run: npx playwright install chromium --with-deps
+      - name: Integration tests
+        working-directory: playground
+        run: node scripts/integration-test.cjs

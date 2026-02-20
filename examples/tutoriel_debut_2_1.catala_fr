@@ -1,0 +1,43 @@
+# Bienvenue dans le tutoriel Catala !
+
+Ceci est votre espace de travail pour suivre la Section 2.1 - Blocs de base.
+
+En lisant le tutoriel sur la gauche, copiez les extraits de code ici pour
+construire votre premier programme Catala pas à pas.
+
+## Vos déclarations
+
+Commencez par déclarer vos structures de données ici :
+
+```catala
+# Déclarez votre structure Individu et votre énumération CréditImpôt ici
+# (voir "Configurer les structures de données" dans le tutoriel)
+
+```
+
+## Article 1
+
+L'impôt sur le revenu d'un individu est défini comme un pourcentage fixe
+du revenu de l'individu sur une année.
+
+```catala
+# Déclarez votre scope CalculImpôtRevenu et définissez impôt_revenu ici
+
+```
+
+## Article 2
+
+Le pourcentage fixe mentionné à l'article 1 est égal à 20 %.
+
+```catala
+# Définissez taux_impôt ici
+
+```
+
+## Testez votre code
+
+```catala
+# Écrivez un scope Test pour vérifier votre implémentation
+# (voir "Tester le code" dans le tutoriel)
+
+```

@@ -1,0 +1,22 @@
+{
+  "name": "catala-playground",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Web playground for Catala language",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --checkJs --noEmit",
+    "lint:css": "node scripts/purgecss-check.js",
+    "lint:i18n": "node scripts/lint-i18n.cjs",
+    "lint:assets": "npm run lint:css && npm run lint:i18n",
+    "lint": "biome lint js/ && npm run lint:assets",
+    "test": "node scripts/integration-test.cjs"
+  },
+  "devDependencies": {
+    "purgecss": "^7.0.2",
+    "@biomejs/biome": "2.3.14",
+    "monaco-editor": "^0.45.0",
+    "playwright": "^1.58.0",
+    "typescript": "^5.7.2"
+  }
+}

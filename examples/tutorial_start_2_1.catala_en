@@ -1,0 +1,43 @@
+# Welcome to the Catala Tutorial!
+
+This is your playground to follow along with Section 2.1 - Basic Blocks.
+
+As you read the tutorial on the left, copy the code snippets here to build
+your first Catala program step by step.
+
+## Your declarations
+
+Start by declaring your data structures here:
+
+```catala
+# Declare your Individual structure and TaxCredit enumeration here
+# (see "Setting up data structures" in the tutorial)
+
+```
+
+## Article 1
+
+The income tax for an individual is defined as a fixed percentage of the
+individual's income over a year.
+
+```catala
+# Declare your IncomeTaxComputation scope and define income_tax here
+
+```
+
+## Article 2
+
+The fixed percentage mentioned at article 1 is equal to 20 %.
+
+```catala
+# Define tax_rate here
+
+```
+
+## Test your code
+
+```catala
+# Write a Test scope to check your implementation
+# (see "Testing the code" in the tutorial)
+
+```

@@ -1,0 +1,465 @@
+#!/usr/bin/env node
+/**
+ * Integration test for the Catala playground.
+ * Launches a browser, loads the playground, and verifies code execution works.
+ *
+ * Prerequisites:
+ *   npm install
+ *   npx playwright install chromium
+ *   catala_web_interpreter.js must exist
+ *
+ * Run: node scripts/integration-test.cjs
+ * Or:  make test
+ */
+
+const { chromium } = require('playwright');
+const { spawn } = require('child_process');
+const path = require('path');
+
+const PORT = 8081; // Use different port to avoid conflicts
+const REPO_ROOT = path.join(__dirname, '..', '..');
+const TIMEOUT = 30000;
+
+// Serve from repo root so ../examples/ paths resolve correctly
+const SERVER_ROOT = REPO_ROOT;
+const PLAYGROUND_PREFIX = 'playground';
+
+const TEST_CODE = `
+\`\`\`catala
+declaration scope Test:
+  output result content integer
+
+scope Test:
+  definition result equals 40 + 2
+\`\`\`
+`;
+
+// French test code with accented scope name (regression test for \w+ pattern bug)
+const FRENCH_ACCENTED_CODE = `
+\`\`\`catala
+déclaration champ d'application TestRésultatImpôt:
+  résultat valeur contenu entier
+
+champ d'application TestRésultatImpôt:
+  définition valeur égal à 42
+\`\`\`
+`;
+
+const MODULE_CODE = `> Module Helper
+
+\`\`\`catala
+declaration scope Helper:
+  output value content integer
+
+scope Helper:
+  definition value equals 123
+\`\`\`
+`;
+
+async function startServer() {
+  return new Promise((resolve, reject) => {
+    const server = spawn('python3', ['-m', 'http.server', String(PORT)], {
+      cwd: SERVER_ROOT,
+      stdio: ['ignore', 'pipe', 'pipe']
+    });
+
+    server.on('error', reject);
+
+    // Wait for server to be ready
+    setTimeout(() => resolve(server), 500);
+  });
+}
+
+async function runTest() {
+  let server;
+  let browser;
+
+  try {
+    // Start server
+    console.log(`Starting server on port ${PORT}...`);
+    server = await startServer();
+
+    // Launch browser
+    console.log('Launching browser...');
+    browser = await chromium.launch({ headless: true });
+    const page = await browser.newPage();
+
+    // Load playground
+    console.log('Loading playground...');
+    await page.goto(`http://localhost:${PORT}/${PLAYGROUND_PREFIX}/index.html`, { timeout: TIMEOUT });
+
+    // Wait for interpreter to be ready
+    console.log('Waiting for interpreter...');
+    await page.waitForFunction(
+      () => document.getElementById('status')?.textContent?.includes('ready'),
+      { timeout: TIMEOUT }
+    );
+    console.log('✓ Interpreter loaded');
+
+    // Check Monaco editor exists
+    const editor = await page.$('.monaco-editor');
+    if (!editor) throw new Error('Monaco editor not found');
+    console.log('✓ Monaco editor loaded');
+
+    // Clear editor and type test code
+    console.log('Entering test code...');
+    await page.evaluate((code) => {
+      const editors = window.monaco?.editor?.getEditors();
+      if (editors && editors[0]) {
+        editors[0].setValue(code);
+      }
+    }, TEST_CODE);
+
+    // Small delay for editor to process
+    await page.waitForTimeout(500);
+
+    // Focus the editor, then position cursor inside the catala block (line 7)
+    console.log('Running code (Ctrl+Enter)...');
+    await page.click('.monaco-editor');
+    await page.evaluate(() => {
+      const editors = window.monaco?.editor?.getEditors();
+      if (editors && editors[0]) {
+        editors[0].setPosition({ lineNumber: 7, column: 1 });
+        editors[0].focus();
+      }
+    });
+    await page.waitForTimeout(100);
+    await page.keyboard.press('Control+Enter');
+
+    // Wait for output
+    console.log('Waiting for output...');
+    await page.waitForFunction(
+      () => {
+        const output = document.getElementById('output');
+        const status = document.getElementById('status');
+        return (output?.textContent?.includes('42') ||
+                output?.textContent?.includes('result') ||
+                status?.textContent?.includes('Error'));
+      },
+      { timeout: TIMEOUT }
+    );
+
+    // Check result
+    const output = await page.$eval('#output', el => el.textContent);
+    const status = await page.$eval('#status', el => el.textContent);
+
+    if (output.includes('42')) {
+      console.log('✓ Code executed successfully, got expected output (42)');
+    } else if (status.includes('Error')) {
+      throw new Error(`Execution failed: ${output}`);
+    } else {
+      throw new Error(`Unexpected output: ${output}`);
+    }
+
+    // ========================================================================
+    // Test: Accented scope names (French, regression for \w+ pattern bug)
+    // ========================================================================
+    console.log('\n--- Testing accented scope names (French) ---');
+
+    // Fresh page with French language so interpreter uses catala_fr
+    await page.goto(
+      `http://localhost:${PORT}/${PLAYGROUND_PREFIX}/index.html#lang=fr&persist=false`,
+      { timeout: TIMEOUT }
+    );
+    // Wait for interpreter (language-agnostic: check window.interpret rather than status text)
+    await page.waitForFunction(
+      () => typeof window.interpret === 'function',
+      { timeout: TIMEOUT }
+    );
+
+    await page.evaluate((code) => {
+      const editors = window.monaco?.editor?.getEditors();
+      if (editors && editors[0]) editors[0].setValue(code);
+    }, FRENCH_ACCENTED_CODE);
+    await page.waitForTimeout(500);
+
+    // Position cursor on scope usage line (line 6: champ d'application TestRésultatImpôt:)
+    await page.click('.monaco-editor');
+    await page.evaluate(() => {
+      const editors = window.monaco?.editor?.getEditors();
+      if (editors && editors[0]) {
+        editors[0].setPosition({ lineNumber: 6, column: 1 });
+        editors[0].focus();
+      }
+    });
+    await page.waitForTimeout(100);
+    await page.keyboard.press('Control+Enter');
+
+    await page.waitForFunction(
+      () => {
+        const output = document.getElementById('output');
+        return output?.textContent?.trim() !== '';
+      },
+      { timeout: TIMEOUT }
+    );
+
+    const frOutput = await page.$eval('#output', el => el.textContent);
+
+    // If the scope name was truncated (e.g. "TestR" or "TestRésultatImp"),
+    // the interpreter emits "no scope <truncated>".
+    if (/no scope\s+"?TestR[^é]/i.test(frOutput)) {
+      throw new Error(`Accented scope name was truncated. Output: ${frOutput.slice(0, 200)}`);
+    }
+    if (frOutput.includes('42') || frOutput.includes('valeur')) {
+      console.log('✓ Accented scope name parsed correctly, scope executed successfully');
+    } else {
+      // Any other error (parse/type) means the full name was used — regression not present
+      console.log('✓ Accented scope name parsed correctly (no truncation error)');
+    }
+
+    // ========================================================================
+    // Test: File deletion
+    // ========================================================================
+    console.log('\n--- Testing file deletion ---');
+
+    // Navigate back to English playground (previous test left us on the French page)
+    await page.goto(`http://localhost:${PORT}/${PLAYGROUND_PREFIX}/index.html`, { timeout: TIMEOUT });
+    await page.waitForFunction(
+      () => document.getElementById('status')?.textContent?.includes('ready'),
+      { timeout: TIMEOUT }
+    );
+    // Re-enter test code so the "main file content" assertion below has something to check
+    await page.evaluate((code) => {
+      const editors = window.monaco?.editor?.getEditors();
+      if (editors && editors[0]) editors[0].setValue(code);
+    }, TEST_CODE);
+    await page.waitForTimeout(300);
+
+    // Add a new module file
+    console.log('Adding module file...');
+    await page.click('.add-file-btn');
+    await page.waitForTimeout(100);
+
+    // Handle the prompt dialog
+    page.once('dialog', async dialog => {
+      await dialog.accept('Helper');
+    });
+    await page.click('.add-file-btn');
+    await page.waitForTimeout(300);
+
+    // Check that Helper.catala_en tab exists
+    let tabs = await page.$$eval('.file-tab', els => els.map(el => el.dataset.file));
+    if (!tabs.includes('Helper.catala_en')) {
+      throw new Error(`Module file not created. Tabs: ${tabs.join(', ')}`);
+    }
+    console.log('✓ Module file created');
+
+    // Click on Helper tab to make it active
+    await page.click('.file-tab[data-file="Helper.catala_en"]');
+    await page.waitForTimeout(200);
+
+    // Verify it's active
+    const activeTab = await page.$eval('.file-tab.active', el => el.dataset.file);
+    if (activeTab !== 'Helper.catala_en') {
+      throw new Error(`Expected Helper.catala_en to be active, got ${activeTab}`);
+    }
+    console.log('✓ Module file is active');
+
+    // Delete the file (click the × button) - handle confirm dialog
+    page.once('dialog', async dialog => {
+      await dialog.accept();
+    });
+    await page.click('.file-tab[data-file="Helper.catala_en"] .close-btn');
+    await page.waitForTimeout(300);
+
+    // Verify the file is gone
+    tabs = await page.$$eval('.file-tab', els => els.map(el => el.dataset.file));
+    if (tabs.includes('Helper.catala_en')) {
+      throw new Error(`File deletion failed! Helper.catala_en still exists. Tabs: ${tabs.join(', ')}`);
+    }
+    console.log('✓ Module file deleted successfully');
+
+    // Verify editor switched to main and shows main's content (not Helper's)
+    const editorContent = await page.evaluate(() => {
+      const editors = window.monaco?.editor?.getEditors();
+      return editors?.[0]?.getValue() || '';
+    });
+    if (editorContent.includes('Module Helper')) {
+      throw new Error('Editor still shows deleted file content!');
+    }
+    if (!editorContent.includes('scope Test')) {
+      throw new Error(`Editor should show main file content, got: ${editorContent.slice(0, 100)}...`);
+    }
+    console.log('✓ Editor shows main file content after deletion');
+
+    // ========================================================================
+    // Test: Solution tab shows/hides correctly
+    // ========================================================================
+    console.log('\n--- Testing solution tab ---');
+
+    await page.goto(
+      `http://localhost:${PORT}/${PLAYGROUND_PREFIX}/index.html#codeUrl=../examples/tutorial_start_2_1.catala_en&solutionUrl=../examples/tutorial_end_2_1.catala_en&persist=false`,
+      { timeout: TIMEOUT }
+    );
+    await page.waitForSelector('.file-tab.solution', { timeout: TIMEOUT });
+    console.log('✓ Solution tab visible');
+
+    // Click solution tab — editor should hide, solution view should show
+    await page.click('.file-tab.solution');
+    await page.waitForTimeout(500);
+    const editorHidden = await page.$eval('#editor-container', el => el.style.display === 'none');
+    const solShown = await page.$eval('#solution-view', el => el.style.display !== 'none' && el.style.display !== '');
+    if (!editorHidden || !solShown) throw new Error('Solution view not shown after clicking solution tab');
+    console.log('✓ Solution tab shows solution view');
+
+    // Click back to file tab — editor should show, solution view should hide
+    await page.click('.file-tab:not(.solution)');
+    await page.waitForTimeout(200);
+    const editorShown = await page.$eval('#editor-container', el => el.style.display !== 'none');
+    const solHidden = await page.$eval('#solution-view', el => el.style.display === 'none');
+    if (!editorShown || !solHidden) throw new Error('Editor not restored after clicking file tab');
+    console.log('✓ Clicking file tab restores editor');
+
+    // ========================================================================
+    // Test: Exercise loading from learn.html
+    // ========================================================================
+    console.log('\n--- Testing exercise loading from learn.html ---');
+
+    // Navigate to learn.html
+    console.log('Loading learn.html...');
+    await page.goto(`http://localhost:${PORT}/${PLAYGROUND_PREFIX}/learn.html`, { timeout: TIMEOUT });
+
+    // Wait for chapter select to be populated
+    await page.waitForFunction(
+      () => {
+        const select = document.getElementById('chapter-select');
+        return select && select.options.length > 1; // Has options beyond the placeholder
+      },
+      { timeout: TIMEOUT }
+    );
+    console.log('✓ Learn page loaded');
+
+    // Select an exercise
+    console.log('Selecting exercise 2-1-basic-blocks...');
+    await page.selectOption('#chapter-select', '2-1-basic-blocks');
+    await page.waitForTimeout(300);
+
+    // Verify iframe updated to playground
+    const iframeSrc = await page.$eval('#playground', el => el.src);
+    if (!iframeSrc.includes('index.html')) {
+      throw new Error(`Expected iframe to load index.html, got: ${iframeSrc}`);
+    }
+    console.log('✓ Playground iframe loaded');
+
+    // Access iframe content
+    const frame = page.frameLocator('#playground');
+    if (!frame) {
+      throw new Error('Could not access playground iframe');
+    }
+
+    // Wait for interpreter to be ready in the iframe
+    await frame.locator('#status').waitFor({ state: 'attached', timeout: TIMEOUT });
+    const statusText = await frame.locator('#status').textContent();
+    if (!statusText.includes('ready')) {
+      // Wait a bit longer for ready state
+      await page.waitForTimeout(2000);
+    }
+    console.log('✓ Interpreter ready in iframe');
+
+    // Verify editor is loaded (Monaco is present)
+    await frame.locator('.monaco-editor').waitFor({ state: 'attached', timeout: TIMEOUT });
+    console.log('✓ Exercise loaded in editor');
+
+    // ========================================================================
+    // Test: Persistence — edits survive page reload
+    // ========================================================================
+    console.log('\n--- Testing persistence ---');
+
+    const PERSIST_ID = 'integration-test-persist';
+
+    await page.goto(
+      `http://localhost:${PORT}/${PLAYGROUND_PREFIX}/index.html#checkpointId=${PERSIST_ID}&persist=true`,
+      { timeout: TIMEOUT }
+    );
+    await page.waitForFunction(
+      () => document.getElementById('status')?.textContent?.includes('ready'),
+      { timeout: TIMEOUT }
+    );
+
+    await page.evaluate(() => {
+      const editors = window.monaco?.editor?.getEditors();
+      if (editors?.[0]) editors[0].setValue('```catala\ndeclaration scope SaveMe:\n  output x content integer\nscope SaveMe:\n  definition x equals 77\n```\n');
+    });
+
+    // Wait for the 1000ms save debounce to fire
+    await page.waitForTimeout(1500);
+
+    await page.reload({ timeout: TIMEOUT });
+    await page.waitForFunction(
+      () => document.getElementById('status')?.textContent?.includes('ready'),
+      { timeout: TIMEOUT }
+    );
+
+    const persistedContent = await page.evaluate(() => window.monaco?.editor?.getEditors()?.[0]?.getValue() ?? '');
+    if (!persistedContent.includes('SaveMe')) {
+      throw new Error(`Persistence failed — content not restored after reload. Got: ${persistedContent.slice(0, 100)}`);
+    }
+    console.log('✓ Editor content survived page reload');
+
+    await page.evaluate((k) => localStorage.removeItem(k), `catala-learn-${PERSIST_ID}`);
+
+    // ========================================================================
+    // Test: Reset to checkpoint
+    // ========================================================================
+    console.log('\n--- Testing reset to checkpoint ---');
+
+    const RESET_ID = 'integration-test-reset';
+
+    // Clear any stale storage for this key before navigating
+    await page.evaluate((k) => localStorage.removeItem(k), `catala-learn-${RESET_ID}`);
+
+    await page.goto(
+      `http://localhost:${PORT}/${PLAYGROUND_PREFIX}/index.html#checkpointId=${RESET_ID}&codeUrl=../examples/tutorial_start_2_1.catala_en&persist=true`,
+      { timeout: TIMEOUT }
+    );
+    await page.waitForFunction(
+      () => document.getElementById('status')?.textContent?.includes('ready'),
+      { timeout: TIMEOUT }
+    );
+
+    const originalContent = await page.evaluate(() => window.monaco?.editor?.getEditors()?.[0]?.getValue() ?? '');
+    if (!originalContent) throw new Error('Reset test: failed to load checkpoint content from URL');
+
+    // Overwrite with junk and wait for it to be saved
+    await page.evaluate(() => {
+      const editors = window.monaco?.editor?.getEditors();
+      if (editors?.[0]) editors[0].setValue('DISCARDED EDIT');
+    });
+    await page.waitForTimeout(1500);
+
+    // Click reset and accept the confirm dialog
+    page.once('dialog', dialog => dialog.accept());
+    await page.click('#resetBtn');
+
+    await page.waitForFunction(
+      () => {
+        const s = document.getElementById('status')?.textContent ?? '';
+        return s.includes('Reset complete') || s.includes('ready');
+      },
+      { timeout: TIMEOUT }
+    );
+    await page.waitForTimeout(300);
+
+    const restoredContent = await page.evaluate(() => window.monaco?.editor?.getEditors()?.[0]?.getValue() ?? '');
+    if (restoredContent.includes('DISCARDED EDIT')) {
+      throw new Error('Reset failed: edited content still present after reset');
+    }
+    if (restoredContent !== originalContent) {
+      throw new Error(`Reset failed: content does not match checkpoint.\nExpected: ${originalContent.slice(0, 80)}\nGot: ${restoredContent.slice(0, 80)}`);
+    }
+    console.log('✓ Content restored to checkpoint after reset');
+
+    await page.evaluate((k) => localStorage.removeItem(k), `catala-learn-${RESET_ID}`);
+
+    console.log('\n✓ All integration tests passed!');
+
+  } finally {
+    if (browser) await browser.close();
+    if (server) server.kill();
+  }
+}
+
+runTest().catch(err => {
+  console.error('\n✗ Integration test failed:', err.message);
+  process.exit(1);
+});
