@@ -26,7 +26,7 @@ h1 {
 /* Draggable resize handle between editor and output */
 .resize-handle {
   height: 6px;
-  background: #252938;
+  background: #161923;
   cursor: row-resize;
   flex-shrink: 0;
   position: relative;
