@@ -360,6 +360,97 @@ async function runTest() {
     await frame.locator('.monaco-editor').waitFor({ state: 'attached', timeout: TIMEOUT });
     console.log('✓ Exercise loaded in editor');
 
+    // ========================================================================
+    // Test: Persistence — edits survive page reload
+    // ========================================================================
+    console.log('\n--- Testing persistence ---');
+
+    const PERSIST_ID = 'integration-test-persist';
+
+    await page.goto(
+      `http://localhost:${PORT}/${PLAYGROUND_PREFIX}/index.html#checkpointId=${PERSIST_ID}&persist=true`,
+      { timeout: TIMEOUT }
+    );
+    await page.waitForFunction(
+      () => document.getElementById('status')?.textContent?.includes('ready'),
+      { timeout: TIMEOUT }
+    );
+
+    await page.evaluate(() => {
+      const editors = window.monaco?.editor?.getEditors();
+      if (editors?.[0]) editors[0].setValue('```catala\ndeclaration scope SaveMe:\n  output x content integer\nscope SaveMe:\n  definition x equals 77\n```\n');
+    });
+
+    // Wait for the 1000ms save debounce to fire
+    await page.waitForTimeout(1500);
+
+    await page.reload({ timeout: TIMEOUT });
+    await page.waitForFunction(
+      () => document.getElementById('status')?.textContent?.includes('ready'),
+      { timeout: TIMEOUT }
+    );
+
+    const persistedContent = await page.evaluate(() => window.monaco?.editor?.getEditors()?.[0]?.getValue() ?? '');
+    if (!persistedContent.includes('SaveMe')) {
+      throw new Error(`Persistence failed — content not restored after reload. Got: ${persistedContent.slice(0, 100)}`);
+    }
+    console.log('✓ Editor content survived page reload');
+
+    await page.evaluate((k) => localStorage.removeItem(k), `catala-learn-${PERSIST_ID}`);
+
+    // ========================================================================
+    // Test: Reset to checkpoint
+    // ========================================================================
+    console.log('\n--- Testing reset to checkpoint ---');
+
+    const RESET_ID = 'integration-test-reset';
+
+    // Clear any stale storage for this key before navigating
+    await page.evaluate((k) => localStorage.removeItem(k), `catala-learn-${RESET_ID}`);
+
+    await page.goto(
+      `http://localhost:${PORT}/${PLAYGROUND_PREFIX}/index.html#checkpointId=${RESET_ID}&codeUrl=../examples/tutorial_start_2_1.catala_en&persist=true`,
+      { timeout: TIMEOUT }
+    );
+    await page.waitForFunction(
+      () => document.getElementById('status')?.textContent?.includes('ready'),
+      { timeout: TIMEOUT }
+    );
+
+    const originalContent = await page.evaluate(() => window.monaco?.editor?.getEditors()?.[0]?.getValue() ?? '');
+    if (!originalContent) throw new Error('Reset test: failed to load checkpoint content from URL');
+
+    // Overwrite with junk and wait for it to be saved
+    await page.evaluate(() => {
+      const editors = window.monaco?.editor?.getEditors();
+      if (editors?.[0]) editors[0].setValue('DISCARDED EDIT');
+    });
+    await page.waitForTimeout(1500);
+
+    // Click reset and accept the confirm dialog
+    page.once('dialog', dialog => dialog.accept());
+    await page.click('#resetBtn');
+
+    await page.waitForFunction(
+      () => {
+        const s = document.getElementById('status')?.textContent ?? '';
+        return s.includes('Reset complete') || s.includes('ready');
+      },
+      { timeout: TIMEOUT }
+    );
+    await page.waitForTimeout(300);
+
+    const restoredContent = await page.evaluate(() => window.monaco?.editor?.getEditors()?.[0]?.getValue() ?? '');
+    if (restoredContent.includes('DISCARDED EDIT')) {
+      throw new Error('Reset failed: edited content still present after reset');
+    }
+    if (restoredContent !== originalContent) {
+      throw new Error(`Reset failed: content does not match checkpoint.\nExpected: ${originalContent.slice(0, 80)}\nGot: ${restoredContent.slice(0, 80)}`);
+    }
+    console.log('✓ Content restored to checkpoint after reset');
+
+    await page.evaluate((k) => localStorage.removeItem(k), `catala-learn-${RESET_ID}`);
+
     console.log('\n✓ All integration tests passed!');
 
   } finally {

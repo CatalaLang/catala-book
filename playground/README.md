@@ -40,6 +40,17 @@ For faster iteration when only playground JS/CSS changed (skips full book rebuil
 - `catala_web_interpreter.js` - JSOO-compiled interpreter (symlink to catala repo build output, or auto-fetched from CDN)
 - Monaco editor - CDN with local fallback in `node_modules/`
 
+### Rebuilding the interpreter locally
+
+If `catala_web_interpreter.js` is a symlink to a local Catala build (typical dev setup), rebuild it with:
+
+```bash
+cd /path/to/catala
+dune build compiler/web/catala_web_interpreter.bc.js
+```
+
+The symlink then picks up the new build automatically. If you don't have a local Catala clone, delete the symlink and `make dev` will fetch the latest published version from the CDN instead.
+
 ## URL Parameters
 
 Hash parameters for `index.html` (e.g., `#lang=fr&codeUrl=...`):
