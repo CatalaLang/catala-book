@@ -7,11 +7,6 @@ body {
   background: #161923;
 }
 
-h1 {
-  margin: 0 0 20px 0;
-  color: #c8c9db;
-}
-
 .container {
   margin: 0 auto;
 }
@@ -153,17 +148,6 @@ select {
   flex-shrink: 0;
 }
 
-.status-bar.status-success::before {
-  background: #89d185;
-}
-
-.status-bar.status-error::before {
-  background: #f48771;
-}
-
-.status-bar.status-info::before {
-  background: #6b9bd1;
-}
 
 /* File tabs */
 .file-tabs {
