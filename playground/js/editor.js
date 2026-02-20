@@ -40,17 +40,16 @@ function debounce(fn, delay) {
 // Scope detection patterns and helpers
 // ============================================================================
 
-// Catala identifier: starts with letter/underscore (including accented chars), followed by
-// letters, digits, underscore, or apostrophe. Must cover both EN and FR identifiers.
-const CATALA_IDENT = '[a-zA-ZàâäéèêëïîôùûüÿçœæÀÂÄÉÈÊËÏÎÔÙÛÜŸÇŒÆ_][a-zA-ZàâäéèêëïîôùûüÿçœæÀÂÄÉÈÊËÏÎÔÙÛÜŸÇŒÆ_0-9\']*';
-
+// Scope names are UIDENT per the Catala grammar: uppercase-initial, then any
+// letters/digits/underscore/apostrophe. Using Unicode property escapes (\p{Lu},
+// \p{L}, \p{N}) with the `u` flag avoids hand-enumerating accented characters.
 const SCOPE_DECL_PATTERNS = [
-  new RegExp(`declaration\\s+scope\\s+(${CATALA_IDENT})`, 'i'),
-  new RegExp(`déclaration\\s+champ\\s+d'application\\s+(${CATALA_IDENT})`, 'i')
+  /declaration\s+scope\s+([\p{Lu}](?:\p{L}|\p{N}|[_'])*)/iu,
+  /déclaration\s+champ\s+d'application\s+([\p{Lu}](?:\p{L}|\p{N}|[_'])*)/iu,
 ];
 const SCOPE_USE_PATTERNS = [
-  new RegExp(`^scope\\s+(${CATALA_IDENT})\\s*:`, 'i'),
-  new RegExp(`^champ\\s+d'application\\s+(${CATALA_IDENT})\\s*:`, 'i')
+  /^scope\s+([\p{Lu}](?:\p{L}|\p{N}|[_'])*)\s*:/iu,
+  /^champ\s+d'application\s+([\p{Lu}](?:\p{L}|\p{N}|[_'])*)\s*:/iu,
 ];
 const INPUT_PATTERN = /^\s*(input|entrée)\s+/i;
 const END_BLOCK_PATTERN = /^(declaration|déclaration|scope|champ\s+d'application|```)/i;
@@ -171,9 +170,9 @@ function registerCatalaLanguage(monaco) {
   monaco.languages.register({ id: 'catala' });
 
   monaco.languages.setMonarchTokensProvider('catala', {
+    unicode: true,
     keywords: getAllKeywords(),
-    // Include accented characters for French support
-    wordPattern: /[a-zA-ZàâäéèêëïîôùûüÿçœæÀÂÄÉÈÊËÏÎÔÙÛÜŸÇŒÆ_][a-zA-ZàâäéèêëïîôùûüÿçœæÀÂÄÉÈÊËÏÎÔÙÛÜŸÇŒÆ_0-9']*/,
+    wordPattern: /[\p{L}_](?:\p{L}|\p{N}|[_'])*/u,
     tokenizer: {
       // Markdown mode (outside code fences)
       root: [
@@ -195,8 +194,8 @@ function registerCatalaLanguage(monaco) {
         [/\$[\d,._]+/, 'number.money'],
         [/\d+[\d,._]*/, 'number'],
         [/"[^"]*"/, 'string'],
-        [/[A-ZÀÂÄÉÈÊËÏÎÔÙÛÜŸÇŒÆ][a-zA-ZàâäéèêëïîôùûüÿçœæÀÂÄÉÈÊËÏÎÔÙÛÜŸÇŒÆ_0-9]*/, 'type.identifier'],
-        [/[a-zàâäéèêëïîôùûüÿçœæ_][a-zA-ZàâäéèêëïîôùûüÿçœæÀÂÄÉÈÊËÏÎÔÙÛÜŸÇŒÆ_0-9']*/, {
+        [/[\p{Lu}](?:\p{L}|\p{N}|[_'])*/u, 'type.identifier'],
+        [/[\p{Ll}_](?:\p{L}|\p{N}|[_'])*/u, {
           cases: {
             '@keywords': 'keyword',
             '@default': 'identifier'
