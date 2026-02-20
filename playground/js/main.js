@@ -3,7 +3,7 @@
  * Main entry point for Catala playground
  */
 
-import { getCurrentFileContent, switchToFile, updateCurrentFile, loadFromUrl, loadAllFiles, getFileNames, currentFile as getCurrentFile, initializeDefaultFile } from './files.js';
+import { getCurrentFileContent, switchToFile, updateCurrentFile, loadFromUrl, loadAllFiles, getFileNames, currentFile, initializeDefaultFile } from './files.js';
 import { initializeEditor, setEditorContent, getEditorContent, clearErrorDecorations, markDiagnostics, navigateToPosition as editorNavigateTo } from './editor.js';
 import { loadInterpreter, runScope as executeScope, typecheck as runTypecheck, interpreterReady, getErrors, getWarnings } from './interpreter.js';
 import { renderTabs, displayOutput, clearOutputIfSource, setStatus, escapeHtml, setNavigationCallback, renderErrorHtml } from './ui.js';
@@ -19,6 +19,9 @@ let typecheckTimeout;
 
 /** Delay before running typecheck after last keystroke (ms) */
 const TYPECHECK_DELAY = 1000;
+
+/** Whether the last typecheck produced an error (used to clear status on recovery) */
+let hadTypecheckError = false;
 
 /**
  * Schedule a typecheck after a delay (debounced)
@@ -48,10 +51,9 @@ function performTypecheck() {
   const warnings = getWarnings(result.diagnostics);
 
   if (result.success) {
-    // No errors - clear any error status (but don't overwrite other statuses)
-    const statusEl = document.getElementById('status');
-    if (statusEl && statusEl.textContent === t('typecheckError')) {
+    if (hadTypecheckError) {
       setStatus(t('ready'), 'success');
+      hadTypecheckError = false;
     }
     // Clear output only if it was from typecheck (preserve execution results)
     clearOutputIfSource('typecheck');
@@ -63,6 +65,7 @@ function performTypecheck() {
   } else {
     // Show all diagnostics (errors + warnings) in editor
     markDiagnostics(result.diagnostics);
+    hadTypecheckError = true;
     setStatus(t('typecheckError'), 'error');
 
     // Display error messages in output panel
@@ -100,13 +103,15 @@ function runScope(scopeName) {
 
   updateCurrentFile(getEditorContent());
 
+  // Defer one tick so the browser can paint the "Running..." status before the
+  // synchronous interpreter call blocks the main thread.
   setTimeout(() => {
     const result = executeScope(scopeName);
     const errors = getErrors(result.diagnostics);
     const warnings = getWarnings(result.diagnostics);
 
     if (result.success) {
-      let html = `<span class="success">Scope ${escapeHtml(scopeName)} executed successfully:\n\n</span>`;
+      let html = `<span class="success">${escapeHtml(t('scopeSuccess', { scope: scopeName }))}\n\n</span>`;
       html += renderErrorHtml(result.output || '');
       // Show warnings as squiggles in editor (no output panel clutter)
       if (warnings.length > 0) {
@@ -118,7 +123,7 @@ function runScope(scopeName) {
       const errorHtml = errors
         .map(e => `<span class="error">${renderErrorHtml(e.message)}</span>`)
         .join('\n');
-      displayOutput(errorHtml || `<span class="error">Unknown error</span>`, 'execution');
+      displayOutput(errorHtml || `<span class="error">${escapeHtml(t('unknownError'))}</span>`, 'execution');
       setStatus(t('errorSeeOutput'), 'error');
       markDiagnostics(result.diagnostics);
     }
@@ -136,7 +141,7 @@ function runScope(scopeName) {
 function onSwitchFile(filename) {
   if (viewingSolution) hideSolution();
   // Only save if current file still exists (may have been deleted)
-  if (getFileNames().includes(getCurrentFile)) {
+  if (getFileNames().includes(currentFile)) {
     updateCurrentFile(getEditorContent());
   }
   switchToFile(filename, setEditorContent);
@@ -321,7 +326,7 @@ async function init() {
 
   // Wire up navigation callback for clickable error positions
   setNavigationCallback((filename, line, col) => {
-    if (filename !== getCurrentFile && getFileNames().includes(filename)) {
+    if (filename !== currentFile && getFileNames().includes(filename)) {
       onSwitchFile(filename);
       // Wait one tick for the editor model to update before moving cursor
       setTimeout(() => editorNavigateTo(line, col), 50);

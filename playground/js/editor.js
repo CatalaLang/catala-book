@@ -438,7 +438,7 @@ export function markDiagnostics(diagnostics) {
       // CSS classes (ansi-cNN) survive DOMPurify sanitization; inline styles do not.
       const hoverHtml = diag.message
         ? `<pre>${renderErrorHtml(diag.message)}</pre>`
-        : (isWarning ? 'Warning' : 'Error');
+        : (isWarning ? t('diagnosticWarning') : t('diagnosticError'));
       decorations.push({
         range: new monaco.Range(
           pos.startLine,

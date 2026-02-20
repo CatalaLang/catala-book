@@ -40,6 +40,12 @@ const STRINGS = {
     runScopeAtCursor: 'Run Scope at Cursor',
     scopeHasInputs: 'Scope has inputs — use a Test scope to run it',
     noScopeAtCursor: 'No runnable scope at cursor — move inside a scope block',
+    diagnosticError: 'Error',
+    diagnosticWarning: 'Warning',
+
+    // Execution results
+    scopeSuccess: 'Scope {scope} executed successfully:',
+    unknownError: 'Unknown error',
 
     // File management
     confirmDelete: 'Delete {filename}?',
@@ -81,6 +87,12 @@ const STRINGS = {
     runScopeAtCursor: 'Exécuter le champ d\'application',
     scopeHasInputs: 'Ce champ d\'application a des entrées — utilisez un scope Test',
     noScopeAtCursor: 'Aucun champ d\'application exécutable ici — placez le curseur dans un bloc scope',
+    diagnosticError: 'Erreur',
+    diagnosticWarning: 'Avertissement',
+
+    // Execution results
+    scopeSuccess: 'Champ d\'application {scope} exécuté avec succès :',
+    unknownError: 'Erreur inconnue',
 
     // File management
     confirmDelete: 'Supprimer {filename} ?',

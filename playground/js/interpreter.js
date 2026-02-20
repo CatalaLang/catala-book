@@ -63,10 +63,12 @@ export function getPositions(diagnostics, level) {
 }
 
 /**
- * Typecheck the current files
- * @returns {TypecheckResult}
+ * Guard + error wrapper for interpreter calls
+ * @template T
+ * @param {() => T} fn
+ * @returns {T | {success: false, output: string, diagnostics: Diagnostic[]}}
  */
-export function typecheck() {
+function callInterpreter(fn) {
   if (!interpreterReady) {
     return {
       success: false,
@@ -74,15 +76,8 @@ export function typecheck() {
       diagnostics: [{ level: 'error', message: 'Interpreter not ready yet', positions: [] }]
     };
   }
-
   try {
-    const lang = getProjectLanguage();
-    return window.typecheck({
-      files: files,
-      language: lang,
-      main: currentFile,
-      outputFormat: 'ansi'
-    });
+    return fn();
   } catch (e) {
     return {
       success: false,
@@ -93,33 +88,24 @@ export function typecheck() {
 }
 
 /**
+ * Typecheck the current files
+ * @returns {TypecheckResult}
+ */
+export function typecheck() {
+  return /** @type {TypecheckResult} */ (callInterpreter(() => {
+    const lang = getProjectLanguage();
+    return window.typecheck({ files, language: lang, main: currentFile, outputFormat: 'ansi' });
+  }));
+}
+
+/**
  * Run a specific scope
  * @param {string} scopeName
  * @returns {InterpretResult}
  */
 export function runScope(scopeName) {
-  if (!interpreterReady) {
-    return {
-      success: false,
-      output: '',
-      diagnostics: [{ level: 'error', message: 'Interpreter not ready yet', positions: [] }]
-    };
-  }
-
-  try {
+  return /** @type {InterpretResult} */ (callInterpreter(() => {
     const lang = getProjectLanguage();
-    return window.interpret({
-      files: files,
-      scope: scopeName,
-      language: lang,
-      main: currentFile,
-      outputFormat: 'ansi'
-    });
-  } catch (e) {
-    return {
-      success: false,
-      output: '',
-      diagnostics: [{ level: 'error', message: (e instanceof Error ? e.message : String(e)), positions: [] }]
-    };
-  }
+    return window.interpret({ files, scope: scopeName, language: lang, main: currentFile, outputFormat: 'ansi' });
+  }));
 }

@@ -176,15 +176,18 @@ export function getAllFiles() {
   return { files: { ...files }, currentFile };
 }
 
+function clearFiles() {
+  for (const key of Object.keys(files)) {
+    delete files[key];
+  }
+}
+
 /**
  * Load all files from a serialized state
  * @param {{files: Record<string, string>, currentFile: string}} state
  */
 export function loadAllFiles(state) {
-  // Clear existing files
-  for (const key of Object.keys(files)) {
-    delete files[key];
-  }
+  clearFiles();
   // Load new files
   for (const [name, content] of Object.entries(state.files)) {
     files[name] = content;
@@ -221,9 +224,7 @@ export async function loadFromUrl(url, filename) {
     }
 
     // Clear existing files and load the new one
-    for (const key of Object.keys(files)) {
-      delete files[key];
-    }
+    clearFiles();
     files[filename] = content;
     currentFile = filename;
 
