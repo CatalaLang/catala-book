@@ -55,10 +55,14 @@ body {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.3);
   overflow: hidden;
-  flex: 1;
+  flex: 2;
   min-height: 0;
   display: flex;
   flex-direction: column;
+}
+
+.output-panel {
+  flex: 1;
 }
 
 .panel-header {
@@ -295,6 +299,8 @@ select {
     flex-direction: row;
     gap: 8px;
   }
+
+  .panel { flex: 1; }
 
   .resize-handle {
     display: none;
