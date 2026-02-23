@@ -38,6 +38,20 @@ export const files = {};
 export let currentFile = 'main.catala_en';
 
 /**
+ * Filename of the currently open solution file, or null if not open.
+ * NOTE: solution tab is designed for single-file exercises only; the solution
+ * file is run in isolation (not together with the user's other files).
+ *
+ * The solution file is kept entirely separate from `files` to avoid leaking
+ * into getFileNames(), persistence, or any other caller that iterates user files.
+ * @type {string | null}
+ */
+export let solutionFile = null;
+
+/** Current (possibly edited) content of the open solution file. */
+let solutionFileContent = /** @type {string | null} */ (null);
+
+/**
  * Initialize the first file with the appropriate language
  * @param {string} lang - Language code ("en" or "fr")
  */
@@ -84,6 +98,11 @@ export function getProjectExtension() {
  * @returns {void}
  */
 export function switchToFile(filename, updateEditor) {
+  if (filename === solutionFile) {
+    currentFile = filename;
+    updateEditor(solutionFileContent ?? '');
+    return;
+  }
   if (!(filename in files)) return;
   currentFile = filename;
   updateEditor(files[filename]);
@@ -95,7 +114,11 @@ export function switchToFile(filename, updateEditor) {
  * @returns {void}
  */
 export function updateCurrentFile(content) {
-  files[currentFile] = content;
+  if (currentFile === solutionFile) {
+    solutionFileContent = content;
+  } else {
+    files[currentFile] = content;
+  }
 }
 
 /**
@@ -169,17 +192,21 @@ export function getMainFile() {
 }
 
 /**
- * Get all files as a serializable object
+ * Get all files as a serializable object.
+ * The solution file is never in `files`, so no filtering is needed here.
  * @returns {{files: Record<string, string>, currentFile: string}}
  */
 export function getAllFiles() {
-  return { files: { ...files }, currentFile };
+  const savedCurrentFile = currentFile in files ? currentFile : getMainFile();
+  return { files: { ...files }, currentFile: savedCurrentFile };
 }
 
 function clearFiles() {
   for (const key of Object.keys(files)) {
     delete files[key];
   }
+  solutionFile = null;
+  solutionFileContent = null;
 }
 
 /**
@@ -200,7 +227,39 @@ export function loadAllFiles(state) {
  * @returns {string}
  */
 export function getCurrentFileContent() {
+  if (currentFile === solutionFile) return solutionFileContent ?? '';
   return files[currentFile];
+}
+
+/**
+ * Open the solution file (stored separately from user files).
+ * @param {string} filename
+ * @param {string} content
+ */
+export function setSolutionFile(filename, content) {
+  solutionFile = filename;
+  solutionFileContent = content;
+}
+
+/**
+ * Close/discard the solution file.
+ */
+export function removeSolutionFile() {
+  solutionFile = null;
+  solutionFileContent = null;
+}
+
+/**
+ * Get the files to pass to the interpreter.
+ * When the solution file is active it is run in isolation;
+ * otherwise only user files are passed (solution is not in `files`).
+ * @returns {Record<string, string>}
+ */
+export function getFilesForInterpreter() {
+  if (solutionFile !== null && currentFile === solutionFile) {
+    return { [solutionFile]: solutionFileContent ?? '' };
+  }
+  return files;
 }
 
 /**

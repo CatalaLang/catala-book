@@ -7,7 +7,7 @@
  * @typedef {import('./catala-jsoo').SourcePosition} SourcePosition
  */
 
-import { files, getProjectLanguage, currentFile } from './files.js';
+import { getFilesForInterpreter, getProjectLanguage, currentFile } from './files.js';
 
 /** @type {boolean} */
 export let interpreterReady = false;
@@ -94,7 +94,7 @@ function callInterpreter(fn) {
 export function typecheck() {
   return /** @type {TypecheckResult} */ (callInterpreter(() => {
     const lang = getProjectLanguage();
-    return window.typecheck({ files, language: lang, main: currentFile, outputFormat: 'ansi' });
+    return window.typecheck({ files: getFilesForInterpreter(), language: lang, main: currentFile, outputFormat: 'ansi' });
   }));
 }
 
@@ -106,6 +106,6 @@ export function typecheck() {
 export function runScope(scopeName) {
   return /** @type {InterpretResult} */ (callInterpreter(() => {
     const lang = getProjectLanguage();
-    return window.interpret({ files, scope: scopeName, language: lang, main: currentFile, outputFormat: 'ansi' });
+    return window.interpret({ files: getFilesForInterpreter(), scope: scopeName, language: lang, main: currentFile, outputFormat: 'ansi' });
   }));
 }

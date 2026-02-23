@@ -18,7 +18,10 @@ export function escapeHtml(text) {
 }
 
 /**
- * @typedef {{ active: boolean, onShow: () => void, onHide: () => void }} SolutionTabConfig
+ * @typedef {{ filename: string | null, onActivate: () => void, onClose: () => void }} SolutionTabConfig
+ * filename is null when the solution file has not been opened yet.
+ * onActivate: called by the persistent "Solution" button on the right (opens or resets).
+ * onClose: called by the × on the solution file tab.
  */
 
 /**
@@ -33,6 +36,7 @@ export function renderTabs(onSwitchFile, solutionTab) {
 
   tabsContainer.innerHTML = '';
 
+  // Regular user file tabs (solution file is never in getFileNames())
   getFileNames().forEach(filename => {
     const tab = document.createElement('button');
     tab.className = 'file-tab' + (filename === currentFile ? ' active' : '');
@@ -42,7 +46,6 @@ export function renderTabs(onSwitchFile, solutionTab) {
     nameSpan.textContent = filename;
     tab.appendChild(nameSpan);
 
-    // Add close button for non-main files
     if (filename !== getMainFile()) {
       const closeBtn = document.createElement('span');
       closeBtn.className = 'close-btn';
@@ -54,7 +57,7 @@ export function renderTabs(onSwitchFile, solutionTab) {
           if (currentFile === filename) {
             onSwitchFile(getMainFile());
           } else {
-            renderTabs(onSwitchFile);
+            renderTabs(onSwitchFile, solutionTab);
           }
         }
       };
@@ -64,6 +67,26 @@ export function renderTabs(onSwitchFile, solutionTab) {
     tab.onclick = () => onSwitchFile(filename);
     tabsContainer.appendChild(tab);
   });
+
+  // Solution file tab — rendered separately when open (never comes from getFileNames())
+  if (solutionTab && solutionTab.filename !== null) {
+    const solFilename = solutionTab.filename;
+    const solTab = document.createElement('button');
+    solTab.className = 'file-tab solution' + (currentFile === solFilename ? ' active' : '');
+
+    const nameSpan = document.createElement('span');
+    nameSpan.textContent = t('solution');
+    solTab.appendChild(nameSpan);
+
+    const closeBtn = document.createElement('span');
+    closeBtn.className = 'close-btn';
+    closeBtn.textContent = '×';
+    closeBtn.onclick = (e) => { e.stopPropagation(); solutionTab.onClose(); };
+    solTab.appendChild(closeBtn);
+
+    solTab.onclick = () => onSwitchFile(solFilename);
+    tabsContainer.appendChild(solTab);
+  }
 
   // Add button
   const addBtn = document.createElement('button');
@@ -82,12 +105,13 @@ export function renderTabs(onSwitchFile, solutionTab) {
   };
   tabsContainer.appendChild(addBtn);
 
+  // Persistent "Solution" button on the right — always visible when a solution exists
   if (solutionTab) {
-    const solTab = document.createElement('button');
-    solTab.className = 'file-tab solution' + (solutionTab.active ? ' active' : '');
-    solTab.textContent = t('solution');
-    solTab.onclick = () => solutionTab.active ? solutionTab.onHide() : solutionTab.onShow();
-    tabsContainer.appendChild(solTab);
+    const solBtn = document.createElement('button');
+    solBtn.className = 'solution-btn';
+    solBtn.textContent = t('solution');
+    solBtn.onclick = () => solutionTab.onActivate();
+    tabsContainer.appendChild(solBtn);
   }
 }
 

@@ -3,7 +3,7 @@
  * Main entry point for Catala playground
  */
 
-import { getCurrentFileContent, switchToFile, updateCurrentFile, loadFromUrl, loadAllFiles, getFileNames, currentFile, initializeDefaultFile } from './files.js';
+import { getCurrentFileContent, switchToFile, updateCurrentFile, loadFromUrl, loadAllFiles, getFileNames, getMainFile, currentFile, initializeDefaultFile, solutionFile, setSolutionFile, removeSolutionFile } from './files.js';
 import { initializeEditor, setEditorContent, getEditorContent, clearErrorDecorations, markDiagnostics, navigateToPosition as editorNavigateTo } from './editor.js';
 import { loadInterpreter, runScope as executeScope, typecheck as runTypecheck, interpreterReady, getErrors, getWarnings } from './interpreter.js';
 import { renderTabs, displayOutput, clearOutputIfSource, setStatus, escapeHtml, setNavigationCallback, renderErrorHtml } from './ui.js';
@@ -88,6 +88,9 @@ let checkpointUrl;
 /** @type {string | undefined} */
 let solutionUrl;
 
+/** @type {string | null} */
+let solutionFilename = null;
+
 // ============================================================================
 // Scope execution
 // ============================================================================
@@ -139,9 +142,8 @@ function runScope(scopeName) {
  * @param {string} filename
  */
 function onSwitchFile(filename) {
-  if (viewingSolution) hideSolution();
-  // Only save if current file still exists (may have been deleted)
-  if (getFileNames().includes(currentFile)) {
+  // Save if current file is a live user file or the open solution file
+  if (getFileNames().includes(currentFile) || currentFile === solutionFile) {
     updateCurrentFile(getEditorContent());
   }
   switchToFile(filename, setEditorContent);
@@ -187,17 +189,16 @@ async function resetToCheckpoint() {
 /** @type {string | null} */
 let solutionContent = null;
 
-/** @type {boolean} */
-let viewingSolution = false;
-
-/** @type {import('monaco-editor').editor.IStandaloneCodeEditor | null} */
-let solutionEditor = null;
+/** The user file that was active before the solution tab was opened. */
+let preSolutionFile = /** @type {string | null} */ (null);
 
 /**
- * Show solution in a read-only Monaco editor (main editor is untouched)
+ * Open (or reset) the solution tab: fetch content if not cached, then load it
+ * as an ephemeral file tab. Clicking the Solution tab always resets content so
+ * the user sees the canonical solution even if they edited it.
  */
 async function showSolution() {
-  if (!solutionUrl) return;
+  if (!solutionUrl || !solutionFilename) return;
   if (!solutionContent) {
     setStatus(t('loadingSolution'), 'info');
     try {
@@ -209,45 +210,23 @@ async function showSolution() {
       return;
     }
   }
-  // Create the solution Monaco editor lazily
-  if (!solutionEditor) {
-    // @ts-expect-error - Monaco loaded globally
-    const monaco = window.monaco;
-    solutionEditor = monaco.editor.create(document.getElementById('solution-editor'), {
-      value: solutionContent,
-      language: 'catala',
-      theme: 'catala-dark',
-      fontSize: 14,
-      minimap: { enabled: false },
-      lineNumbers: 'on',
-      scrollBeyondLastLine: false,
-      automaticLayout: true,
-      wordWrap: 'on',
-      readOnly: true,
-      codeLens: false,
-      padding: { top: 10 }
-    });
-  } else {
-    solutionEditor.setValue(solutionContent);
-  }
-  const editorEl = document.getElementById('editor-container');
-  const solutionEl = document.getElementById('solution-view');
-  if (editorEl) editorEl.style.display = 'none';
-  if (solutionEl) solutionEl.style.display = 'block';
-  viewingSolution = true;
+  // Remember where the user was so closing the solution returns them there
+  if (currentFile !== solutionFilename) preSolutionFile = currentFile;
+  setSolutionFile(solutionFilename, solutionContent);
+  switchToFile(solutionFilename, setEditorContent);
   reRenderTabs();
   setStatus(t('viewingSolution'), 'info');
 }
 
 /**
- * Hide solution and show the editor again
+ * Close and discard the solution tab (no confirmation).
  */
-function hideSolution() {
-  const editorEl = document.getElementById('editor-container');
-  const solutionEl = document.getElementById('solution-view');
-  if (solutionEl) solutionEl.style.display = 'none';
-  if (editorEl) editorEl.style.display = 'block';
-  viewingSolution = false;
+function closeSolution() {
+  const returnTo = preSolutionFile ?? getMainFile();
+  preSolutionFile = null;
+  removeSolutionFile();
+  switchToFile(returnTo, setEditorContent);
+  reRenderTabs();
   setStatus(t('ready'), 'success');
 }
 
@@ -257,9 +236,9 @@ function hideSolution() {
 function reRenderTabs() {
   if (solutionUrl) {
     renderTabs(onSwitchFile, {
-      active: viewingSolution,
-      onShow: showSolution,
-      onHide: () => { hideSolution(); reRenderTabs(); }
+      filename: solutionFile,
+      onActivate: showSolution,
+      onClose: closeSolution
     });
   } else {
     renderTabs(onSwitchFile);
@@ -292,6 +271,9 @@ async function init() {
   const codeUrl = hashParams.get('codeUrl') || undefined;
   const checkpointId = hashParams.get('checkpointId') || undefined;
   solutionUrl = hashParams.get('solutionUrl') || undefined;
+  solutionFilename = solutionUrl
+    ? (solutionUrl.split('/').pop()?.split('?')[0] || null)
+    : null;
   checkpointUrl = codeUrl;
 
   const persistEnabled = hashParams.get('persist') !== 'false';

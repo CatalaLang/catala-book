@@ -283,7 +283,7 @@ async function runTest() {
     console.log('✓ Editor shows main file content after deletion');
 
     // ========================================================================
-    // Test: Solution tab shows/hides correctly
+    // Test: Solution tab opens as ephemeral file tab
     // ========================================================================
     console.log('\n--- Testing solution tab ---');
 
@@ -291,24 +291,39 @@ async function runTest() {
       `http://localhost:${PORT}/${PLAYGROUND_PREFIX}/index.html#codeUrl=../examples/tutorial_start_2_1.catala_en&solutionUrl=../examples/tutorial_end_2_1.catala_en&persist=false`,
       { timeout: TIMEOUT }
     );
-    await page.waitForSelector('.file-tab.solution', { timeout: TIMEOUT });
-    console.log('✓ Solution tab visible');
+    // The persistent Solution button (not a tab) should always be visible
+    await page.waitForSelector('.solution-btn', { timeout: TIMEOUT });
+    console.log('✓ Solution button visible');
 
-    // Click solution tab — editor should hide, solution view should show
-    await page.click('.file-tab.solution');
+    // Click Solution button — solution file tab should open and become active
+    await page.click('.solution-btn');
     await page.waitForTimeout(500);
-    const editorHidden = await page.$eval('#editor-container', el => el.style.display === 'none');
-    const solShown = await page.$eval('#solution-view', el => el.style.display !== 'none' && el.style.display !== '');
-    if (!editorHidden || !solShown) throw new Error('Solution view not shown after clicking solution tab');
-    console.log('✓ Solution tab shows solution view');
+    const editorStillVisible = await page.$eval('#editor-container', el => el.style.display !== 'none');
+    if (!editorStillVisible) throw new Error('Editor should remain visible in solution mode');
+    await page.waitForSelector('.file-tab.solution', { timeout: TIMEOUT });
+    const solTabActive = await page.$eval('.file-tab.solution', el => el.classList.contains('active'));
+    if (!solTabActive) throw new Error('Solution file tab should be active after clicking Solution button');
+    console.log('✓ Solution button opens solution file tab, editor remains visible');
 
-    // Click back to file tab — editor should show, solution view should hide
+    // Solution file tab should have a close (×) button
+    await page.waitForSelector('.file-tab.solution .close-btn', { timeout: TIMEOUT });
+    console.log('✓ Solution file tab shows close button');
+
+    // Click a regular file tab — solution file tab should no longer be active
     await page.click('.file-tab:not(.solution)');
     await page.waitForTimeout(200);
-    const editorShown = await page.$eval('#editor-container', el => el.style.display !== 'none');
-    const solHidden = await page.$eval('#solution-view', el => el.style.display === 'none');
-    if (!editorShown || !solHidden) throw new Error('Editor not restored after clicking file tab');
-    console.log('✓ Clicking file tab restores editor');
+    const solTabInactive = await page.$eval('.file-tab.solution', el => !el.classList.contains('active'));
+    if (!solTabInactive) throw new Error('Solution file tab should be inactive after switching away');
+    console.log('✓ Clicking file tab deactivates solution file tab');
+
+    // Close solution file tab via × — it should disappear; Solution button stays
+    await page.click('.file-tab.solution .close-btn');
+    await page.waitForTimeout(200);
+    const solFileTabGone = await page.$('.file-tab.solution');
+    if (solFileTabGone) throw new Error('Solution file tab should be gone after closing');
+    const solBtnStillThere = await page.$('.solution-btn');
+    if (!solBtnStillThere) throw new Error('Solution button should remain after closing solution file tab');
+    console.log('✓ Closing solution file tab removes it; Solution button remains');
 
     // ========================================================================
     // Test: Exercise loading from learn.html

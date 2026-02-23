@@ -194,6 +194,8 @@ select {
 .file-tab.active {
   background: #161923;
   color: #c8c9db;
+  border-bottom: 2px solid #6b5fc8;
+  padding-bottom: 6px;
 }
 
 .file-tab .close-btn {
@@ -271,27 +273,30 @@ select {
   margin-left: 5px;
 }
 
-/* Solution view (shown instead of editor when viewing solution) */
-#solution-view {
-  flex: 1;
-  min-height: 0;
-  background: #161923;
-}
+/* Solution file tab — same shape as regular tabs, distinct background */
+.file-tab.solution { background: #1e1b2e; }
+.file-tab.solution:hover { background: #262240; }
+.file-tab.solution.active { background: #14121e; }
 
-#solution-editor {
-  height: 100%;
-  background: #161923;
-}
-
-/* Solution tab in tab bar */
-.file-tab.solution {
-  font-style: italic;
-  color: #b0a0d0;
+/* Persistent "Solution" button — sits on the right of the tab bar */
+.solution-btn {
   margin-left: auto;
+  padding: 4px 10px;
+  background: #2a2540;
+  color: #b0a0d0;
+  border: 1px solid #3d3560;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  align-self: center;
+  margin-right: 6px;
+  white-space: nowrap;
 }
 
-.file-tab.solution:hover { background: #2a2540; }
-.file-tab.solution.active { color: #d4c0f0; background: #2a2540; }
+.solution-btn:hover {
+  background: #352d55;
+  color: #d4c0f0;
+}
 
 /* Wide screen: side-by-side layout */
 @media (min-width: 1200px) {
