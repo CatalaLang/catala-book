@@ -26,14 +26,6 @@ export function initPersistence(checkpointId, persistEnabled, lang = 'en') {
 }
 
 /**
- * Get the current storage key
- * @returns {string | undefined}
- */
-export function getStorageKey() {
-  return storageKey;
-}
-
-/**
  * Schedule a debounced save to localStorage
  * @param {() => string} getEditorContent - Function to get current editor content
  * @param {(content: string) => void} updateCurrentFile - Function to update file state
@@ -80,18 +72,14 @@ export function loadFromStorage() {
 }
 
 /**
- * Clear the current checkpoint's localStorage entry
+ * Clear the current checkpoint's localStorage entry and cancel any pending save
  */
 export function clearStorage() {
+  if (saveTimeout) {
+    clearTimeout(saveTimeout);
+    saveTimeout = undefined;
+  }
   if (storageKey) {
     localStorage.removeItem(storageKey);
   }
-}
-
-/**
- * Check if persistence is enabled
- * @returns {boolean}
- */
-export function isEnabled() {
-  return enabled;
 }
