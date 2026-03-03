@@ -85,8 +85,8 @@ const STRINGS = {
     // Editor
     runScope: '▶ Exécuter {scope}',
     runScopeAtCursor: 'Exécuter le champ d\'application',
-    scopeHasInputs: 'Ce champ d\'application a des entrées — utilisez un scope Test',
-    noScopeAtCursor: 'Aucun champ d\'application exécutable ici — placez le curseur dans un bloc scope',
+    scopeHasInputs: 'Ce champ d\'application a des entrées — utilisez un champ d\'application de test pour l\'exécuter',
+    noScopeAtCursor: 'Aucun champ d\'application exécutable ici — placez le curseur dans un champ d\'application',
     diagnosticError: 'Erreur',
     diagnosticWarning: 'Avertissement',
 
