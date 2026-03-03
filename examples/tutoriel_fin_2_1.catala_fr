@@ -1,9 +1,3 @@
-# Corrigé du tutoriel
-
-## Article 1
-
-L'impôt sur le revenu pour un individu est défini comme un pourcentage fixe du
-revenu de l'individu sur une année.
 
 ```catala
 déclaration structure Individu:
@@ -19,6 +13,11 @@ champ d'application CalculImpôtRevenu:
   définition impôt_revenu égal à
     individu.revenu * taux_imposition
 ```
+
+## Article 1
+
+L'impôt sur le revenu pour un individu est défini comme un pourcentage fixe du
+revenu de l'individu sur une année.
 
 ## Article 2
 
