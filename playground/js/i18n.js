@@ -57,6 +57,9 @@ const STRINGS = {
     shareCopied: 'Link copied to clipboard!',
     shareFailed: 'Failed to copy link to clipboard',
     shareTooLarge: 'Workspace too large to share ({size} KB compressed; max 64 KB)',
+
+    // Download (Ctrl+S)
+    downloaded: 'Downloaded {filename}',
   },
   fr: {
     // index.html static text
@@ -110,6 +113,9 @@ const STRINGS = {
     shareCopied: 'Lien copié dans le presse-papiers !',
     shareFailed: 'Échec de la copie du lien',
     shareTooLarge: 'Espace de travail trop grand pour partager ({size} Ko compressé ; max 64 Ko)',
+
+    // Download (Ctrl+S)
+    downloaded: 'Téléchargé {filename}',
   }
 };
 
