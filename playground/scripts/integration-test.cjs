@@ -15,6 +15,7 @@
 const { chromium } = require('playwright');
 const { spawn } = require('child_process');
 const path = require('path');
+const zlib = require('zlib');
 
 const PORT = 8081; // Use different port to avoid conflicts
 const REPO_ROOT = path.join(__dirname, '..', '..');
@@ -55,6 +56,20 @@ scope Helper:
   definition value equals 123
 \`\`\`
 `;
+
+/**
+ * Encode a workspace state to a base64url string using Node.js zlib.
+ * Uses raw DEFLATE (no zlib/gzip header) to match the browser's
+ * CompressionStream('deflate-raw') / DecompressionStream('deflate-raw').
+ * @param {{files: Record<string, string>, currentFile: string}} state
+ * @returns {string}
+ */
+function encodeWorkspaceNode(state) {
+  const json = JSON.stringify(state);
+  const compressed = zlib.deflateRawSync(Buffer.from(json, 'utf8'));
+  return compressed.toString('base64')
+    .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+}
 
 async function startServer() {
   return new Promise((resolve, reject) => {
@@ -465,6 +480,215 @@ async function runTest() {
     console.log('✓ Content restored to checkpoint after reset');
 
     await page.evaluate((k) => localStorage.removeItem(k), `catala-learn-${RESET_ID}`);
+
+    // ========================================================================
+    // Test: Share — loading a workspace from a #shared= URL
+    // ========================================================================
+    console.log('\n--- Testing share: loading from #shared= URL ---');
+
+    // Encode a known workspace with zlib (compatible with browser DecompressionStream)
+    const SHARE_STATE = {
+      files: { 'main.catala_en': TEST_CODE },
+      currentFile: 'main.catala_en'
+    };
+    const shareEncoded = encodeWorkspaceNode(SHARE_STATE);
+
+    await page.goto(
+      `http://localhost:${PORT}/${PLAYGROUND_PREFIX}/index.html#shared=${shareEncoded}&lang=en`,
+      { timeout: TIMEOUT }
+    );
+    await page.waitForFunction(
+      () => document.getElementById('status')?.textContent?.includes('ready'),
+      { timeout: TIMEOUT }
+    );
+
+    // Editor must show the shared workspace content
+    const sharedEditorContent = await page.evaluate(
+      () => window.monaco?.editor?.getEditors()?.[0]?.getValue() ?? ''
+    );
+    if (!sharedEditorContent.includes('scope Test')) {
+      throw new Error(`Share load failed: editor does not show shared content. Got: ${sharedEditorContent.slice(0, 100)}`);
+    }
+    console.log('✓ Shared workspace loaded correctly into editor');
+
+    // Share button must be auto-shown when landing on a #shared= URL (no explicit shareEnabled needed)
+    const shareBtnVisible = await page.$eval('#shareBtn', el => el.style.display !== 'none');
+    if (!shareBtnVisible) throw new Error('Share button should be visible (index.html calls showShare() on load)');
+    console.log('✓ Share button visible (enabled by index.html)');
+
+    // Persistence invariant: localStorage must NOT be written when #shared= is present.
+    // The URL hash IS the persistent state; writing localStorage would create an ambiguous
+    // conflict on reload (which source wins?).
+    // Clear any pre-existing value first (earlier tests may have written it), then wait
+    // past the 1000ms save debounce to confirm nothing new is written.
+    await page.evaluate(() => localStorage.removeItem('catala-playground-en'));
+    await page.waitForTimeout(1500);
+    const storedSharedKey = await page.evaluate(() => localStorage.getItem('catala-playground-en'));
+    if (storedSharedKey !== null) {
+      throw new Error('Persistence invariant violated: localStorage was written despite #shared= being present');
+    }
+    console.log('✓ localStorage not written (persistence disabled for shared URLs)');
+
+    // ========================================================================
+    // Test: Share — share button copies a decodable URL to clipboard
+    // ========================================================================
+    console.log('\n--- Testing share: share button copies URL to clipboard ---');
+
+    // Use a fresh context so clipboard permission can be granted
+    const shareCtx = await browser.newContext({ permissions: ['clipboard-read', 'clipboard-write'] });
+    const sharePage = await shareCtx.newPage();
+    await sharePage.goto(
+      `http://localhost:${PORT}/${PLAYGROUND_PREFIX}/index.html#persist=false`,
+      { timeout: TIMEOUT }
+    );
+    await sharePage.waitForFunction(
+      () => document.getElementById('status')?.textContent?.includes('ready'),
+      { timeout: TIMEOUT }
+    );
+
+    await sharePage.evaluate((code) => {
+      const editors = window.monaco?.editor?.getEditors();
+      if (editors?.[0]) editors[0].setValue(code);
+    }, TEST_CODE);
+    await sharePage.waitForTimeout(300);
+
+    await sharePage.click('#shareBtn');
+    await sharePage.waitForFunction(
+      () => {
+        const s = document.getElementById('status')?.textContent ?? '';
+        return s.includes('copied') || s.includes('Lien') || s.includes('large') || s.includes('grand') || s.includes('Failed');
+      },
+      { timeout: 5000 }
+    );
+
+    const shareStatus = await sharePage.$eval('#status', el => el.textContent);
+    if (shareStatus.includes('large') || shareStatus.includes('grand')) {
+      throw new Error(`Share: workspace unexpectedly too large. Status: ${shareStatus}`);
+    }
+    if (shareStatus.includes('Failed') || shareStatus.includes('Échec')) {
+      throw new Error(`Share: clipboard write failed. Status: ${shareStatus}`);
+    }
+    console.log('✓ Share button reported success');
+
+    // The clipboard URL must contain #shared= and lang= params
+    const clipboardUrl = await sharePage.evaluate(() => navigator.clipboard.readText());
+    if (!clipboardUrl.includes('#shared=')) {
+      throw new Error(`Clipboard URL missing #shared= param: ${clipboardUrl.slice(0, 150)}`);
+    }
+    if (!clipboardUrl.includes('lang=')) {
+      throw new Error(`Clipboard URL missing lang= param: ${clipboardUrl.slice(0, 150)}`);
+    }
+    console.log('✓ Clipboard contains valid share URL');
+
+    // The shared URL must be self-consistent: loading it must restore the same content
+    await sharePage.goto(clipboardUrl, { timeout: TIMEOUT });
+    await sharePage.waitForFunction(
+      () => document.getElementById('status')?.textContent?.includes('ready'),
+      { timeout: TIMEOUT }
+    );
+    const roundtripContent = await sharePage.evaluate(
+      () => window.monaco?.editor?.getEditors()?.[0]?.getValue() ?? ''
+    );
+    if (!roundtripContent.includes('scope Test')) {
+      throw new Error(`Round-trip share failed: content not restored. Got: ${roundtripContent.slice(0, 100)}`);
+    }
+    console.log('✓ Round-trip: shared URL restores the original workspace');
+
+    await shareCtx.close();
+
+    // ========================================================================
+    // Test: Ctrl+S downloads the workspace
+    // ========================================================================
+    console.log('\n--- Testing Ctrl+S download ---');
+
+    // Single-file case
+    const dlCtx = await browser.newContext({ acceptDownloads: true });
+    const dlPage = await dlCtx.newPage();
+    await dlPage.goto(
+      `http://localhost:${PORT}/${PLAYGROUND_PREFIX}/index.html#persist=false`,
+      { timeout: TIMEOUT }
+    );
+    await dlPage.waitForFunction(
+      () => document.getElementById('status')?.textContent?.includes('ready'),
+      { timeout: TIMEOUT }
+    );
+    await dlPage.evaluate((code) => {
+      const editors = window.monaco?.editor?.getEditors();
+      if (editors?.[0]) editors[0].setValue(code);
+    }, TEST_CODE);
+    await dlPage.waitForTimeout(200);
+
+    // Focus the editor before sending the shortcut
+    await dlPage.click('.monaco-editor');
+    await dlPage.waitForTimeout(100);
+
+    // Trigger download and capture it
+    const [singleDownload] = await Promise.all([
+      dlPage.waitForEvent('download', { timeout: 5000 }),
+      dlPage.keyboard.press('Control+s')
+    ]);
+    const singleFilename = singleDownload.suggestedFilename();
+    if (!singleFilename.endsWith('.catala_en')) {
+      throw new Error(`Single-file download: expected .catala_en filename, got "${singleFilename}"`);
+    }
+    const singleContent = await singleDownload.createReadStream().then(stream =>
+      new Promise((resolve, reject) => {
+        let data = '';
+        stream.on('data', chunk => { data += chunk; });
+        stream.on('end', () => resolve(data));
+        stream.on('error', reject);
+      })
+    );
+    if (!singleContent.includes('scope Test')) {
+      throw new Error(`Single-file download: content missing expected code. Got: ${String(singleContent).slice(0, 100)}`);
+    }
+    console.log(`✓ Single-file download: "${singleFilename}" with correct content`);
+
+    // Status bar should confirm the download
+    const dlStatus = await dlPage.$eval('#status', el => el.textContent);
+    if (!dlStatus.includes(singleFilename)) {
+      throw new Error(`Status bar should mention downloaded filename. Got: "${dlStatus}"`);
+    }
+    console.log('✓ Status bar confirms download filename');
+
+    // Multi-file case: add a module file, then Ctrl+S → should produce a .zip
+    dlPage.once('dialog', async dialog => { await dialog.accept('Helper'); });
+    await dlPage.click('.add-file-btn');
+    await dlPage.waitForTimeout(300);
+
+    const dlTabs = await dlPage.$$eval('.file-tab', els => els.map(el => el.dataset.file));
+    if (dlTabs.includes('Helper.catala_en')) {
+      // Re-focus the editor before sending the shortcut
+      await dlPage.click('.monaco-editor');
+      await dlPage.waitForTimeout(100);
+
+      const [zipDownload] = await Promise.all([
+        dlPage.waitForEvent('download', { timeout: 5000 }),
+        dlPage.keyboard.press('Control+s')
+      ]);
+      const zipFilename = zipDownload.suggestedFilename();
+      if (!zipFilename.endsWith('.zip')) {
+        throw new Error(`Multi-file download: expected .zip filename, got "${zipFilename}"`);
+      }
+      // Verify the ZIP is non-empty and starts with the PK signature
+      const zipBuffer = await zipDownload.createReadStream().then(stream =>
+        new Promise((resolve, reject) => {
+          /** @type {Buffer[]} */
+          const chunks = [];
+          stream.on('data', c => chunks.push(c));
+          stream.on('end', () => resolve(Buffer.concat(chunks)));
+          stream.on('error', reject);
+        })
+      );
+      if (zipBuffer[0] !== 0x50 || zipBuffer[1] !== 0x4B) {
+        throw new Error('Multi-file download: file does not start with ZIP PK signature');
+      }
+      console.log(`✓ Multi-file download: "${zipFilename}" with valid ZIP signature`);
+    } else {
+      console.log('  (skipping multi-file zip test: module file not created)');
+    }
+
+    await dlCtx.close();
 
     console.log('\n✓ All integration tests passed!');
 
