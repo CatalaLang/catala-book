@@ -13,6 +13,7 @@
         <div class="panel-header">
           <span>Catala Code</span>
           <span class="panel-header-buttons">
+            <button id="shareBtn" style="display: none;">🔗 Share</button>
             <button id="resetBtn" style="display: none;">↺ Reset</button>
           </span>
         </div>
@@ -34,6 +35,12 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js"></script>
   <script type="module" src="js/main.js"></script>
+  <script>
+    // Enable the share button for the standalone playground.
+    // Module scripts are deferred, so we use the load event to call into the
+    // playground API after main.js has set up window.playground.
+    window.addEventListener('load', () => window.playground?.showShare());
+  </script>
   <script>
     (function() {
       const handle = document.getElementById('resizeHandle');

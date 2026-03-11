@@ -241,6 +241,21 @@ select {
   background: #5a4a6a;
 }
 
+#shareBtn {
+  padding: 5px 10px;
+  font-size: 12px;
+  background: #1e3a52;
+  color: #6b9bd1;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#shareBtn:hover {
+  background: #2a4f6e;
+  color: #a0c4e8;
+}
+
 /* Error highlighting */
 .errorHighlight {
   background-color: rgba(255, 0, 0, 0.2);
