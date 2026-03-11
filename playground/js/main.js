@@ -3,7 +3,8 @@
  * Main entry point for Catala playground
  */
 
-import { getCurrentFileContent, switchToFile, updateCurrentFile, loadFromUrl, loadAllFiles, getFileNames, getMainFile, currentFile, initializeDefaultFile, solutionFile, setSolutionFile, removeSolutionFile } from './files.js';
+import { getCurrentFileContent, switchToFile, updateCurrentFile, loadFromUrl, loadAllFiles, getAllFiles, getFileNames, getMainFile, currentFile, initializeDefaultFile, solutionFile, setSolutionFile, removeSolutionFile } from './files.js';
+import { encodeWorkspace, decodeWorkspace } from './share.js';
 import { initializeEditor, setEditorContent, getEditorContent, clearErrorDecorations, markDiagnostics, navigateToPosition as editorNavigateTo } from './editor.js';
 import { loadInterpreter, runScope as executeScope, typecheck as runTypecheck, interpreterReady, getErrors, getWarnings } from './interpreter.js';
 import { renderTabs, displayOutput, clearOutputIfSource, setStatus, escapeHtml, setNavigationCallback, renderErrorHtml } from './ui.js';
@@ -276,7 +277,17 @@ async function init() {
     : null;
   checkpointUrl = codeUrl;
 
-  const persistEnabled = hashParams.get('persist') !== 'false';
+  // shared= param: base64url-encoded deflate-compressed workspace snapshot.
+  // When present it takes absolute priority over localStorage and codeUrl.
+  const sharedData = hashParams.get('shared') || undefined;
+
+  // Share button shown by default. Embedders (e.g. learn.html) can hide it by calling
+  // window.playground.hideShare() after the iframe loads — see the API exposed below.
+
+  // Invariant: shared= and localStorage are mutually exclusive — the URL hash IS
+  // the persistent state when shared= is present.
+  const persistEnabled = hashParams.get('persist') !== 'false' && !sharedData;
+  console.assert(!sharedData || !persistEnabled, 'shared state implies no localStorage persistence');
 
   // Initialize default file with correct language before loading from storage
   initializeDefaultFile(getLang());
@@ -284,15 +295,26 @@ async function init() {
   // Initialize persistence (include lang for standalone playground storage key)
   initPersistence(checkpointId, persistEnabled, getLang());
 
-  // Try to load from localStorage first
-  const loadedFromStorage = loadFromStorage();
-
-  // If no saved state, load from URL (or start empty)
-  if (!loadedFromStorage && codeUrl) {
+  // Priority: shared > localStorage > codeUrl > empty
+  if (sharedData) {
     setStatus(t('loadingCode'), 'success');
-    const result = await loadFromUrl(codeUrl);
-    if (!result.success) {
-      setStatus(t('loadFailed', { error: result.error || '' }), 'error');
+    try {
+      const state = await decodeWorkspace(sharedData);
+      loadAllFiles(state);
+    } catch (err) {
+      setStatus(t('loadFailed', { error: String(err) }), 'error');
+    }
+  } else {
+    // Try to load from localStorage first
+    const loadedFromStorage = loadFromStorage();
+
+    // If no saved state, load from URL (or start empty)
+    if (!loadedFromStorage && codeUrl) {
+      setStatus(t('loadingCode'), 'success');
+      const result = await loadFromUrl(codeUrl);
+      if (!result.success) {
+        setStatus(t('loadFailed', { error: result.error || '' }), 'error');
+      }
     }
   }
 
@@ -320,6 +342,31 @@ async function init() {
   // Render initial tabs
   reRenderTabs();
 
+  // Setup share button (hidden by default; embedders call window.playground.showShare()
+  // to enable it — see index.html which does this for the standalone playground)
+  const shareBtn = document.getElementById('shareBtn');
+  if (shareBtn) {
+    shareBtn.addEventListener('click', async () => {
+      updateCurrentFile(getEditorContent());
+      const state = getAllFiles();
+      try {
+        const encoded = await encodeWorkspace(state);
+        const url = `${window.location.origin}${window.location.pathname}#shared=${encoded}&lang=${getLang()}`;
+        await navigator.clipboard.writeText(url);
+        setStatus(t('shareCopied'), 'success');
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
+        if (msg.startsWith('workspace_too_large:')) {
+          const bytes = parseInt(msg.split(':')[1], 10);
+          const kb = Math.ceil(bytes / 1024);
+          setStatus(t('shareTooLarge', { size: String(kb) }), 'error');
+        } else {
+          setStatus(t('shareFailed'), 'error');
+        }
+      }
+    });
+  }
+
   // Setup reset button
   const resetBtn = document.getElementById('resetBtn');
   if (resetBtn) {
@@ -342,6 +389,25 @@ async function init() {
   });
 
 }
+
+// ============================================================================
+// Public JS API for embedders
+// ============================================================================
+
+// Exposed synchronously (before init()) so same-origin embedders like learn.html
+// can call these in an iframe load event without worrying about async timing.
+window.playground = {
+  /** Hide the share button (called by learn.html to suppress sharing in tutorial mode) */
+  hideShare() {
+    const btn = document.getElementById('shareBtn');
+    if (btn) btn.style.display = 'none';
+  },
+  /** Show the share button (restores default visibility) */
+  showShare() {
+    const btn = document.getElementById('shareBtn');
+    if (btn) btn.style.display = 'inline-block';
+  }
+};
 
 // Start when DOM is ready
 if (document.readyState === 'loading') {
