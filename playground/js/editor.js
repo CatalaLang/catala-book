@@ -277,12 +277,13 @@ function registerCodeLens(monaco, onRunScope) {
 // ============================================================================
 
 /**
- * Register editor keybindings (Ctrl+Enter to run scope)
+ * Register editor keybindings
  * @param {typeof import('monaco-editor')} monaco
  * @param {IStandaloneCodeEditor} ed
  * @param {(scopeName: string) => void} onRunScope
+ * @param {() => void} onDownload
  */
-function registerKeybindings(monaco, ed, onRunScope) {
+function registerKeybindings(monaco, ed, onRunScope, onDownload) {
   ed.addAction({
     id: 'catala.runScopeAtCursor',
     label: t('runScopeAtCursor'),
@@ -306,6 +307,14 @@ function registerKeybindings(monaco, ed, onRunScope) {
       }
     }
   });
+
+  // Bind Ctrl+S at document level so it works regardless of focus
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+      e.preventDefault();
+      onDownload();
+    }
+  });
 }
 
 // ============================================================================
@@ -317,9 +326,10 @@ function registerKeybindings(monaco, ed, onRunScope) {
  * @param {string} initialContent
  * @param {(scopeName: string) => void} onRunScope - Callback to run a scope
  * @param {() => void} onContentChange - Callback when content changes
+ * @param {() => void} onDownload - Callback for Ctrl+S download
  * @returns {Promise<void>}
  */
-export function initializeEditor(initialContent, onRunScope, onContentChange) {
+export function initializeEditor(initialContent, onRunScope, onContentChange, onDownload) {
   return new Promise((resolve) => {
     // @ts-expect-error - AMD require loaded by Monaco
     globalThis.require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs' } });
@@ -371,7 +381,7 @@ export function initializeEditor(initialContent, onRunScope, onContentChange) {
 
       // Setup CodeLens and keybindings
       registerCodeLens(monaco, onRunScope);
-      registerKeybindings(monaco, editor, onRunScope);
+      registerKeybindings(monaco, editor, onRunScope, onDownload);
 
       // Track content changes
       editor.onDidChangeModelContent(/** @type {any} */ (debounce(() => {

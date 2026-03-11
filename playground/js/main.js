@@ -5,6 +5,7 @@
 
 import { getCurrentFileContent, switchToFile, updateCurrentFile, loadFromUrl, loadAllFiles, getAllFiles, getFileNames, getMainFile, currentFile, initializeDefaultFile, solutionFile, setSolutionFile, removeSolutionFile } from './files.js';
 import { encodeWorkspace, decodeWorkspace } from './share.js';
+import { downloadWorkspace } from './download.js';
 import { initializeEditor, setEditorContent, getEditorContent, clearErrorDecorations, markDiagnostics, navigateToPosition as editorNavigateTo } from './editor.js';
 import { loadInterpreter, runScope as executeScope, typecheck as runTypecheck, interpreterReady, getErrors, getWarnings } from './interpreter.js';
 import { renderTabs, displayOutput, clearOutputIfSource, setStatus, escapeHtml, setNavigationCallback, renderErrorHtml } from './ui.js';
@@ -325,6 +326,11 @@ async function init() {
     () => {
       scheduleSave(getEditorContent, updateCurrentFile);
       scheduleTypecheck();
+    },
+    () => {
+      updateCurrentFile(getEditorContent());
+      const filename = downloadWorkspace(getAllFiles().files);
+      setStatus(t('downloaded', { filename }), 'success');
     }
   );
 
@@ -396,7 +402,7 @@ async function init() {
 
 // Exposed synchronously (before init()) so same-origin embedders like learn.html
 // can call these in an iframe load event without worrying about async timing.
-window.playground = {
+/** @type {any} */ (window).playground = {
   /** Hide the share button (called by learn.html to suppress sharing in tutorial mode) */
   hideShare() {
     const btn = document.getElementById('shareBtn');
