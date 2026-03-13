@@ -30,6 +30,7 @@ Voici un résumé de tous les modules disponibles de la bibliothèque standard:
 - [`Entier`](#module-entier) -- Fonctions arithmétiques sur les valeurs de type `entier`
 - [`Décimal`](#module-décimal) -- Fonctions arithmétiques sur les valeurs de type `décimal`
 - [`Argent`](#module-argent) -- Fonctions arithmétiques et financières sur le type `argent`
+- [`Durée`](#module-durée) -- Fonctions utilitaires sur le type `durée`
 - [`Date`](#module-date) -- Fonctions de représentation et de manipulation du type `date`
 - [`MoisAnnée`](#module-moisannée) -- Structure et fonctions sur les mois d'année spécifiques
 - [`Période`](#module-période) -- Période de temps et utilitaires pour les manipuler
@@ -86,6 +87,11 @@ déclaration plancher
 déclaration positif
   contenu entier
   dépend de variable contenu entier
+
+## Calcule la somme des éléments d'une liste d'entiers.
+déclaration somme
+  contenu entier
+  dépend de l contenu liste de entier
 ```
 
 ## Module `Décimal`
@@ -160,6 +166,11 @@ déclaration arrondi_à_la_décimale
   dépend de
     d contenu décimal,
     nième_décimale contenu entier
+
+## Calcule la somme des éléments d'une liste de décimaux.
+déclaration somme
+  contenu décimal
+  dépend de l contenu liste de décimal
 ```
 
 ## Module `Argent`
@@ -234,6 +245,11 @@ déclaration arrondi_à_la_décimale
   dépend de
     a contenu argent,
     nième_décimale contenu entier
+
+## Calcule la somme des éléments d'une liste de montants d'argent.
+déclaration somme
+  contenu argent
+  dépend de l contenu liste de argent
 ```
 
 ### Opérations financières
@@ -254,6 +270,24 @@ déclaration en_défaut
   dépend de
     a contenu argent,
     référence contenu argent
+```
+
+## Module `Durée`
+
+La comparaison de deux durées est susceptible d'échouer (par exemple, il n'y a
+pas de bonne réponse à `30 jour < 1 mois`). Pour cette raison, les opérations
+habituelles `min`, `max`, etc. ne sont pas proposées dans ce module.
+
+```catala-code-fr
+## Renvoie l'argument s'il est positif, 0 sinon.
+déclaration positif
+  contenu durée
+  dépend de d contenu durée
+
+## Calcule la somme des éléments d'une liste de durées.
+déclaration somme
+  contenu durée
+  dépend de l contenu liste de durée
 ```
 
 ## Module `Date`

@@ -32,6 +32,7 @@ Here is a summary of all the available modules in the standard library:
 - [`Integer`](#module-integer) -- Advanced arithmetic functions on `integers` type
 - [`Decimal`](#module-decimal) -- Advanced arithmetic functions on `decimal` type
 - [`Money`](#module-money) -- Arithmetic and financial operations on `money` type
+- [`Duration`](#module-duration) -- Helper functions on `duration` type
 - [`Date`](#module-date) -- Date utility functions and representations for `date` type
 - [`MonthYear`](#module-monthyear) -- Structure and functions for months of specific years
 - [`Period`](#module-period) -- Periods of time and utility functions to manipulate them
@@ -87,6 +88,11 @@ declaration floor
 declaration positive
   content integer
   depends on n content integer
+
+## Sums the elements of a list of integers.
+declaration sum
+  content integer
+  depends on l content list of integer
 ```
 
 ## Module `Decimal`
@@ -160,6 +166,11 @@ declaration round_to_decimal
   depends on
     d content decimal,
     nth_decimal content integer
+
+## Sums the elements of a list of decimals.
+declaration sum
+  content decimal
+  depends on l content list of decimal
 ```
 
 ## Module `Money`
@@ -233,6 +244,11 @@ declaration round_to_decimal
   depends on
     m content money,
     nth_decimal content integer
+
+## Sums the elements of a list of money amounts.
+declaration sum
+  content money
+  depends on l content list of money
 ```
 
 ### Financial operations
@@ -253,6 +269,24 @@ declaration in_default
   depends on
     m content money,
     reference content money
+```
+
+## Module `Duration`
+
+Comparisons on durations can fail (e.g. there is no good answer to `30 day < 1
+month`). This is why the common `min`, `max` etc. functions are not provided for
+this module.
+
+```catala-code-en
+## Returns the argument if it is positive, 0 otherwise.
+declaration positive
+  content duration
+  depends on d content duration
+
+## Sums the elements of a list of durations.
+declaration sum
+  content duration
+  depends on l content list of duration
 ```
 
 ## Module `Date`
