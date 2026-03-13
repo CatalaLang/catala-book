@@ -30,6 +30,7 @@ Voici un résumé de tous les modules disponibles de la bibliothèque standard:
 - [`Entier`](#module-entier) -- Fonctions arithmétiques sur les valeurs de type `entier`
 - [`Décimal`](#module-décimal) -- Fonctions arithmétiques sur les valeurs de type `décimal`
 - [`Argent`](#module-argent) -- Fonctions arithmétiques et financières sur le type `argent`
+- [`Durée`](#module-durée) -- Fonctions utilitaires sur le type `durée`
 - [`Date`](#module-date) -- Fonctions de représentation et de manipulation du type `date`
 - [`MoisAnnée`](#module-moisannée) -- Structure et fonctions sur les mois d'année spécifiques
 - [`Période`](#module-période) -- Période de temps et utilitaires pour les manipuler
@@ -86,6 +87,14 @@ déclaration plancher
 déclaration positif
   contenu entier
   dépend de variable contenu entier
+
+## Calcule la somme des éléments d'une liste d'entiers. Renvoie 0 pour une liste vide.
+## **Exemples:**
+## - `Entier.somme de [1; 2; 3; 4] = 10`
+## - `Entier.somme de [] = 0`
+déclaration somme
+  contenu entier
+  dépend de l contenu liste de entier
 ```
 
 ## Module `Décimal`
@@ -160,6 +169,14 @@ déclaration arrondi_à_la_décimale
   dépend de
     d contenu décimal,
     nième_décimale contenu entier
+
+## Calcule la somme des éléments d'une liste de décimaux. Renvoie 0,0 pour une liste vide.
+## **Exemples:**
+## - `Décimal.somme de [1,5; 2,5; 0,5] = 4,5`
+## - `Décimal.somme de [] = 0,0`
+déclaration somme
+  contenu décimal
+  dépend de l contenu liste de décimal
 ```
 
 ## Module `Argent`
@@ -234,6 +251,14 @@ déclaration arrondi_à_la_décimale
   dépend de
     a contenu argent,
     nième_décimale contenu entier
+
+## Calcule la somme des éléments d'une liste de montants d'argent. Renvoie 0€ pour une liste vide.
+## **Exemples:**
+## - `Argent.somme de [10€; 25€; 5€] = 40€`
+## - `Argent.somme de [] = 0€`
+déclaration somme
+  contenu argent
+  dépend de l contenu liste de argent
 ```
 
 ### Opérations financières
@@ -254,6 +279,27 @@ déclaration en_défaut
   dépend de
     a contenu argent,
     référence contenu argent
+```
+
+## Module `Durée`
+
+La comparaison de deux durées est susceptible d'échouer (par exemple, il n'y a
+pas de bonne réponse à `30 jour < 1 mois`). Pour cette raison, les opérations
+habituelles `min`, `max`, etc. ne sont pas proposées dans ce module.
+
+```catala-code-fr
+## Renvoie l'argument s'il est positif, 0 sinon.
+déclaration positif
+  contenu durée
+  dépend de d contenu durée
+
+## Calcule la somme des éléments d'une liste de durées. Renvoie 0 jour pour une liste vide.
+## **Exemples:**
+## - `Durée.somme de [1 jour; 2 jour; 3 jour] = 6 jour`
+## - `Durée.somme de [] = 0 jour`
+déclaration somme
+  contenu durée
+  dépend de l contenu liste de durée
 ```
 
 ## Module `Date`
@@ -425,6 +471,27 @@ déclaration est_assez_jeune_arrondi_supérieur
     date_de_naissance contenu date,
     âge contenu durée,
     à_date contenu date
+```
+
+### Jours de la semaine
+
+```catala-code-fr
+déclaration énumération Jour_de_la_semaine:
+  -- Lundi
+  -- Mardi
+  -- Mercredi
+  -- Jeudi
+  -- Vendredi
+  -- Samedi
+  -- Dimanche
+
+## Renvoie le jour de la semaine correspondant à la `date_donnée`.
+## **Exemples:**
+## - `jour_de_la_semaine de |2025-12-31| = Mercredi`
+## - `jour_de_la_semaine de |2026-01-01| = Jeudi`
+déclaration jour_de_la_semaine
+  contenu Jour_de_la_semaine
+  dépend de date_donnée contenu date
 ```
 
 ## Module `MoisAnnée`
