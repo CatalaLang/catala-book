@@ -89,7 +89,10 @@ declaration positive
   content integer
   depends on n content integer
 
-## Sums the elements of a list of integers.
+## Sums the elements of a list of integers. Returns 0 for an empty list.
+## **Examples:**
+## - `Integer.sum of [1; 2; 3; 4] = 10`
+## - `Integer.sum of [] = 0`
 declaration sum
   content integer
   depends on l content list of integer
@@ -167,7 +170,10 @@ declaration round_to_decimal
     d content decimal,
     nth_decimal content integer
 
-## Sums the elements of a list of decimals.
+## Sums the elements of a list of decimals. Returns 0.0 for an empty list.
+## **Examples:**
+## - `Decimal.sum of [1.5; 2.5; 0.5] = 4.5`
+## - `Decimal.sum of [] = 0.0`
 declaration sum
   content decimal
   depends on l content list of decimal
@@ -245,7 +251,10 @@ declaration round_to_decimal
     m content money,
     nth_decimal content integer
 
-## Sums the elements of a list of money amounts.
+## Sums the elements of a list of money amounts. Returns $0 for an empty list.
+## **Examples:**
+## - `Money.sum of [$10; $25; $5] = $40`
+## - `Money.sum of [] = $0`
 declaration sum
   content money
   depends on l content list of money
@@ -283,7 +292,10 @@ declaration positive
   content duration
   depends on d content duration
 
-## Sums the elements of a list of durations.
+## Sums the elements of a list of durations. Returns 0 day for an empty list.
+## **Examples:**
+## - `Duration.sum of [1 day; 2 day; 3 day] = 6 day`
+## - `Duration.sum of [] = 0 day`
 declaration sum
   content duration
   depends on l content list of duration

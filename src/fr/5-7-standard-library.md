@@ -88,7 +88,10 @@ déclaration positif
   contenu entier
   dépend de variable contenu entier
 
-## Calcule la somme des éléments d'une liste d'entiers.
+## Calcule la somme des éléments d'une liste d'entiers. Renvoie 0 pour une liste vide.
+## **Exemples:**
+## - `Entier.somme de [1; 2; 3; 4] = 10`
+## - `Entier.somme de [] = 0`
 déclaration somme
   contenu entier
   dépend de l contenu liste de entier
@@ -167,7 +170,10 @@ déclaration arrondi_à_la_décimale
     d contenu décimal,
     nième_décimale contenu entier
 
-## Calcule la somme des éléments d'une liste de décimaux.
+## Calcule la somme des éléments d'une liste de décimaux. Renvoie 0,0 pour une liste vide.
+## **Exemples:**
+## - `Décimal.somme de [1,5; 2,5; 0,5] = 4,5`
+## - `Décimal.somme de [] = 0,0`
 déclaration somme
   contenu décimal
   dépend de l contenu liste de décimal
@@ -246,7 +252,10 @@ déclaration arrondi_à_la_décimale
     a contenu argent,
     nième_décimale contenu entier
 
-## Calcule la somme des éléments d'une liste de montants d'argent.
+## Calcule la somme des éléments d'une liste de montants d'argent. Renvoie 0€ pour une liste vide.
+## **Exemples:**
+## - `Argent.somme de [10€; 25€; 5€] = 40€`
+## - `Argent.somme de [] = 0€`
 déclaration somme
   contenu argent
   dépend de l contenu liste de argent
@@ -284,7 +293,10 @@ déclaration positif
   contenu durée
   dépend de d contenu durée
 
-## Calcule la somme des éléments d'une liste de durées.
+## Calcule la somme des éléments d'une liste de durées. Renvoie 0 jour pour une liste vide.
+## **Exemples:**
+## - `Durée.somme de [1 jour; 2 jour; 3 jour] = 6 jour`
+## - `Durée.somme de [] = 0 jour`
 déclaration somme
   contenu durée
   dépend de l contenu liste de durée
