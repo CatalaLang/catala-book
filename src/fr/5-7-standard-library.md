@@ -461,6 +461,27 @@ déclaration est_assez_jeune_arrondi_supérieur
     à_date contenu date
 ```
 
+### Jours de la semaine
+
+```catala-code-fr
+déclaration énumération Jour_de_la_semaine:
+  -- Lundi
+  -- Mardi
+  -- Mercredi
+  -- Jeudi
+  -- Vendredi
+  -- Samedi
+  -- Dimanche
+
+## Renvoie le jour de la semaine correspondant à la `date_donnée`.
+## **Exemples:**
+## - `jour_de_la_semaine de |2025-12-31| = Mercredi`
+## - `jour_de_la_semaine de |2026-01-01| = Jeudi`
+déclaration jour_de_la_semaine
+  contenu Jour_de_la_semaine
+  dépend de date_donnée contenu date
+```
+
 ## Module `MoisAnnée`
 
 ```catala-code-fr

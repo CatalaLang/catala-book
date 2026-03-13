@@ -467,6 +467,27 @@ declaration is_young_enough_rounding_up
     at_date content date
 ```
 
+### Days of the week
+
+```catala-code-en
+declaration enumeration Day_of_week:
+  -- Monday
+  -- Tuesday
+  -- Wednesday
+  -- Thursday
+  -- Friday
+  -- Saturday
+  -- Sunday
+
+## Returns the day of the week corresponding to the `given_date`.
+## **Examples:**
+## - `day_of_week of |2025-12-31| = Wednesday`
+## - `day_of_week of |2026-01-01| = Thursday`
+declaration day_of_week
+  content Day_of_week
+  depends on given_date content date
+```
+
 ## Module `MonthYear`
 
 ```catala-code-en
