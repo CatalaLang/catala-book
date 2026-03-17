@@ -198,7 +198,7 @@ champ d'application TestFoyer:
 ```console
 $ clerk run tutoriel.catala_fr --scope=TestFoyer
 ┌─[RESULT]─
-│ calcul = CalculImpôtFoyer { -- impôt_foyer: 21 500,00 € }
+│ calcul = CalculImpôtFoyer { -- impôt_foyer: 15 000,00 € }
 └─
 ```
 ~~~

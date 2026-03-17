@@ -129,6 +129,8 @@ anymore):
 ```catala-code-en
 declaration scope HouseholdTaxComputation:
   input individuals content list of Individual
+  input overseas_territories content boolean
+  input current_date content date
   output household_tax content money
 ```
 

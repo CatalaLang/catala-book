@@ -9,7 +9,7 @@ impliquant des exceptions, et être capable de structurer des groupes de défini
 de variables selon leur statut exceptionnel et leur priorité relative.
 
 ~~~~~~admonish info collapsible=true title="Récapitulatif de la section précédente"
-Cette section du tutoriel s'appuie sur la [précédente](./2-1-blocs-de-base.md),
+Cette section du tutoriel s'appuie sur la [précédente](./2-1-basic-blocks.md),
 et réutilisera le même exemple fil rouge, mais tout le code Catala nécessaire
 pour exécuter l'exemple est inclus ci-dessous pour référence.
 
