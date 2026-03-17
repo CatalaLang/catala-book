@@ -9,16 +9,18 @@ déclaration champ d'application CalculImpôtRevenu:
   entrée territoires_outre_mer contenu booléen
   interne taux_imposition contenu décimal
   résultat impôt_revenu contenu argent
-
-champ d'application CalculImpôtRevenu:
-  définition impôt_revenu égal à
-    personne.revenu * taux_imposition
 ```
 
 ## Article 1
 
 L'impôt sur le revenu pour un personne est défini comme un pourcentage fixe du
 revenu de la personne sur une année.
+
+```catala
+champ d'application CalculImpôtRevenu:
+  définition impôt_revenu égal à
+    personne.revenu * taux_imposition
+```
 
 ## Article 2
 
@@ -109,16 +111,24 @@ déclaration champ d'application CalculImpôtFoyer:
 
   résultat impôt_foyer contenu argent
 
-champ d'application CalculImpôtFoyerIndividuel:
-  définition calcul_impôt_revenu.personne égal à
-    personne
-  définition calcul_impôt_revenu.territoires_outre_mer égal à
-    territoires_outre_mer
-  définition calcul_impôt_revenu.date_courante égal à
-    date_courante
+déclaration champ d'application CalculImpôtFoyerIndividuel:
+  entrée personne contenu Personne
+  entrée territoires_outre_mer contenu booléen
+  entrée date_courante contenu date
 
-  définition impôt_foyer égal à
-    10 000 € * (1,0 + personne.nombre_enfants / 2)
+  calcul_impôt_revenu champ d'application CalculImpôtRevenu
+
+  résultat impôt_foyer contenu argent
+    état base
+    état avec_déduction
+```
+
+```catala
+champ d'application CalculImpôtFoyerIndividuel:
+  définition impôt_foyer
+    état base
+  égal à
+    10 000 € * (1,0 + décimal de personne.nombre_enfants / 2,0)
 
 champ d'application CalculImpôtFoyer:
   définition impôt_foyer
@@ -140,25 +150,40 @@ Le montant de l'impôt sur le revenu payé par chaque personne peut être dédui
 part de l'impôt sur le foyer due par cet personne.
 
 ```catala
-déclaration champ d'application CalculImpôtFoyerIndividuel:
-  entrée personne contenu Personne
-  entrée territoires_outre_mer contenu booléen
-  entrée date_courante contenu date
-
-  calcul_impôt_revenu champ d'application CalculImpôtRevenu
-
-  résultat impôt_foyer contenu argent
-  résultat déduction contenu argent
-
 champ d'application CalculImpôtFoyerIndividuel:
-  définition déduction égal à
-    si calcul_impôt_revenu.impôt_revenu > impôt_foyer alors impôt_foyer
-    sinon calcul_impôt_revenu.impôt_revenu
+  définition calcul_impôt_revenu.personne égal à
+    personne
+  définition calcul_impôt_revenu.territoires_outre_mer égal à
+    territoires_outre_mer
+  définition calcul_impôt_revenu.date_courante égal à
+    date_courante
+
+  définition impôt_foyer
+    état avec_déduction
+  égal à
+    si calcul_impôt_revenu.impôt_revenu > impôt_foyer alors 0 €
+    sinon
+      impôt_foyer - calcul_impôt_revenu.impôt_revenu
 ```
 
 ## Test
 
 ```catala
+déclaration champ d'application Test:
+  résultat calcul contenu CalculImpôtRevenu
+
+champ d'application Test:
+  définition calcul égal à
+    résultat de CalculImpôtRevenu avec {
+      -- personne:
+        Personne {
+          -- revenu: 20 000 €
+          -- nombre_enfants: 0
+        }
+      -- territoires_outre_mer: faux
+      -- date_courante: |1999-01-01|
+    }
+
 déclaration champ d'application TestFoyer:
   résultat calcul contenu CalculImpôtFoyer
 
