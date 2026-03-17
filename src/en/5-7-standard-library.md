@@ -32,6 +32,7 @@ Here is a summary of all the available modules in the standard library:
 - [`Integer`](#module-integer) -- Advanced arithmetic functions on `integers` type
 - [`Decimal`](#module-decimal) -- Advanced arithmetic functions on `decimal` type
 - [`Money`](#module-money) -- Arithmetic and financial operations on `money` type
+- [`Duration`](#module-duration) -- Helper functions on `duration` type
 - [`Date`](#module-date) -- Date utility functions and representations for `date` type
 - [`MonthYear`](#module-monthyear) -- Structure and functions for months of specific years
 - [`Period`](#module-period) -- Periods of time and utility functions to manipulate them
@@ -87,6 +88,14 @@ declaration floor
 declaration positive
   content integer
   depends on n content integer
+
+## Sums the elements of a list of integers. Returns 0 for an empty list.
+## **Examples:**
+## - `Integer.sum of [1; 2; 3; 4] = 10`
+## - `Integer.sum of [] = 0`
+declaration sum
+  content integer
+  depends on l content list of integer
 ```
 
 ## Module `Decimal`
@@ -160,6 +169,14 @@ declaration round_to_decimal
   depends on
     d content decimal,
     nth_decimal content integer
+
+## Sums the elements of a list of decimals. Returns 0.0 for an empty list.
+## **Examples:**
+## - `Decimal.sum of [1.5; 2.5; 0.5] = 4.5`
+## - `Decimal.sum of [] = 0.0`
+declaration sum
+  content decimal
+  depends on l content list of decimal
 ```
 
 ## Module `Money`
@@ -233,6 +250,14 @@ declaration round_to_decimal
   depends on
     m content money,
     nth_decimal content integer
+
+## Sums the elements of a list of money amounts. Returns $0 for an empty list.
+## **Examples:**
+## - `Money.sum of [$10; $25; $5] = $40`
+## - `Money.sum of [] = $0`
+declaration sum
+  content money
+  depends on l content list of money
 ```
 
 ### Financial operations
@@ -253,6 +278,27 @@ declaration in_default
   depends on
     m content money,
     reference content money
+```
+
+## Module `Duration`
+
+Comparisons on durations can fail (e.g. there is no good answer to `30 day < 1
+month`). This is why the common `min`, `max` etc. functions are not provided for
+this module.
+
+```catala-code-en
+## Returns the argument if it is positive, 0 otherwise.
+declaration positive
+  content duration
+  depends on d content duration
+
+## Sums the elements of a list of durations. Returns 0 day for an empty list.
+## **Examples:**
+## - `Duration.sum of [1 day; 2 day; 3 day] = 6 day`
+## - `Duration.sum of [] = 0 day`
+declaration sum
+  content duration
+  depends on l content list of duration
 ```
 
 ## Module `Date`
@@ -431,6 +477,27 @@ declaration is_young_enough_rounding_up
     birth_date content date,
     age content duration,
     at_date content date
+```
+
+### Days of the week
+
+```catala-code-en
+declaration enumeration Day_of_week:
+  -- Monday
+  -- Tuesday
+  -- Wednesday
+  -- Thursday
+  -- Friday
+  -- Saturday
+  -- Sunday
+
+## Returns the day of the week corresponding to the `given_date`.
+## **Examples:**
+## - `day_of_week of |2025-12-31| = Wednesday`
+## - `day_of_week of |2026-01-01| = Thursday`
+declaration day_of_week
+  content Day_of_week
+  depends on given_date content date
 ```
 
 ## Module `MonthYear`
