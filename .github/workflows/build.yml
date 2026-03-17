@@ -6,7 +6,7 @@ on:
 jobs:
   # Test job
   test:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     container:
       image: registry.gitlab.inria.fr/catala/ci-images:latest-python
       options: --user root
