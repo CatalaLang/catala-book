@@ -2,56 +2,53 @@
 
 <div id="tocw"></div>
 
-Dans cette section, le tutoriel présente les éléments de base d'un programme Catala :
-la différence entre la loi et le code, les structures de données, les champs
-d'application, les variables et les formules. À la fin de la section, vous
-devriez être capable d'écrire un programme Catala simple équivalent à une seule
-fonction avec des variables locales dont les définitions peuvent se référer les
-unes aux autres.
+Cette partie présente les éléments de base d'un programme Catala : la séparation
+entre la loi et le code, les structures de données, les champs d'application,
+les variables et les formules. En la terminant, vous serez en mesure d'écrire un
+programme Catala simple, qui calcule l'équivalent d'une seule fonction
+comportant plusieurs variables locales interdépendantes.
 
-~~~admonish info title="Corrigé du tutoriel"
-Un récapitulatif de la section du tutoriel avec le code complet attendu dans
-votre fichier compagnon `tutoriel.catala_fr` est joint à la fin de cette page.
+~~~admonish info title="↑↑↓↓←→←→BA (cheat code)"
+Un résumé de cette partie, ainsi que le code attendu, sont fournis en bas de
+cette page.
 
-Veuillez vous y référer si vous vous sentez perdu pendant la lecture et
-souhaitez vérifier si vous êtes sur la bonne voie pour compléter votre fichier
-`tutoriel.catala_fr`.
+Si vous vous sentez perdu, ou si vous voulez simplement vérifier que vous êtes
+sur la bonne voie, jetez-y un œil. On ne dira rien!
 ~~~
 
 ## "Tisser" la loi et le code
 
-Catala est un langage conçu autour du concept de *programmation littéraire*,
-c'est-à-dire le mélange (ou tissage -- de l'anglais *weaving*) entre
-le code informatique et sa spécification dans un
-seul document. Pourquoi la programmation littéraire ? Parce qu'elle permet une
-correspondance fine entre la spécification et le code. Chaque fois que la
-spécification est mise à jour, savoir où mettre à jour le code est trivial avec
-la programmation littéraire. C'est absolument crucial pour permettre la
-maintenance à long terme de programmes complexes et de haute assurance comme le
-calcul des impôts ou des prestations sociales.
+Le concept de *programmation littéraire* est central en Catala. On entend par là
+que le code informatique et sa spécification sont entrelacés au sein d'un unique
+document. De la sorte, on peut obtenir une correspondance à la fois précise et
+extrêmement directe entre les deux. En outre, il devient excessivement simple de
+propager au code les mises à jour de la spécification, puisque la section du
+code à modifier est déjà connue. Dans le cas de programmes complexes et
+critiques tels que le calcul des impôts ou des aides sociales, la maintenance
+peut vite devenir inextricable sans cet outil.
 
-Ainsi, un fichier de code source Catala ressemble à un document Markdown
-classique, avec la spécification écrite et formatée comme du texte Markdown,
-et le code Catala présent uniquement dans des blocs de code Catala bien délimités
-introduits par une ligne avec `` ```catala `` et terminés par une ligne avec `` ``` ``.
+En pratique, un fichier source Catala suit le format Markdown. La spécification
+y figure sous forme de texte, et peut utiliser le formattage Markdown, par
+exemple pour `# Les titres`. Les fragments de code catala y sont insérés dans
+des blocs délimités par une ligne `` ```catala `` et une ligne `` ``` ``.
 
-Avant d'écrire du code Catala, nous devons introduire la spécification du code
-pour ce tutoriel. Cette spécification sera basée sur un Code des Impôts fictif
-définissant un impôt sur le revenu simple. Mais en général, n'importe quoi peut
-être utilisé comme spécification pour un programme Catala : lois, décrets,
-motivations de décisions de justice, doctrine juridique, instructions internes,
-spécifications techniques, etc. Ces sources peuvent être mélangées pour former
-un programme Catala complet qui s'appuie sur ces multiples sources. Concrètement,
-incorporer une source juridique de spécification dans le programme Catala revient
-à copier-coller le texte et à le formater en syntaxe Markdown à l'intérieur du
-fichier de code source.
+Dans ce tutoriel, nous allons donc devoir commencer par introduire une
+spécification de ce que nous allons calculer. Nous imaginerons ici un Code des
+Impôts définissant un impôt sur le revenu (très) simplifié. En pratique, toutes
+sortes de textes peuvent tenir lieu de spécification: lois, décrets, motivations
+de décisions de justice, doctrine juridique, instructions internes,
+spécifications techniques, etc. Il est en outre possible d'utiliser
+conjointement plusieurs types de sources pour former un unique programme Catala:
+concrètement, il s'agit simplement de recopier le texte d'origine de la source
+juridique et de l'ajuster à la syntaxe Markdown.
 
-Voici le premier paragraphe de spécification pour notre
-impôt sur le revenu fictif, l'article 1 du CITC (Code des Impôts du Tutoriel Catala) :
+Assez de préambules, attaquons la spécification de notre impôt sur le revenu
+fictif, par l'article 1 du CITC (Code des Impôts du Tutoriel Catala):
+
 
 ```admonish quote title="Article 1"
-L'impôt sur le revenu pour un individu est défini comme un pourcentage fixe du
-revenu de l'individu sur une année.
+L'impôt sur le revenu d'une personne est un pourcentage fixe du revenu de la
+personne sur une année.
 ```
 
 ~~~admonish note title="Formater le texte juridique en Catala"
@@ -63,250 +60,242 @@ mettez le texte en dessous, comme ceci :
 ```catala-fr
 ## Article 1
 
-L'impôt sur le revenu pour un individu est défini comme un pourcentage fixe du
-revenu de l'individu sur une année.
+L'impôt sur le revenu d'une personne est un pourcentage fixe du revenu de la
+personne sur une année.
 ```
 ~~~
 
-L'esprit de l'écriture de code en Catala est de coller à la spécification à tout
-moment afin de placer les extraits de code là où ils doivent être. Par conséquent,
-nous introduirons ci-dessous les extraits de code Catala qui traduisent l'article 1,
-qui doivent être placés juste en dessous de l'article 1 dans le fichier de code
-source Catala.
+Collez toujours au plus près à la spécification: les fragments de code doivent
+être le plus près possible des phrases auxquelles ils correspondent. Ici, les
+fragments correspondant à l'article 1 seront logiquement immédiatement
+en-dessous.
 
-Ces extraits de code doivent décrire le programme qui calcule l'impôt sur le
-revenu, et contenir la règle le définissant comme une multiplication du revenu
-par un taux. Il est temps de plonger dans Catala en tant que langage de
-programmation.
+Dans ces fragments, nous allons décrire le programme qui calcule l'impôt sur le
+revenu, et écrire les règles qui en définissent la valeur en tant que
+multiplication entre le revenu et un taux donné. Voyons ce que cela donne en
+pratique:
 
 ```catala-code-fr
-# Nous apprendrons bientôt quoi écrire ici pour traduire le sens de l'article 1
-# en code Catala.
+# Nous verrons bientôt comment traduire ici le sens de l'article 1 en code
+# Catala.
 
-# Pour créer un bloc de code Catala dans votre fichier, délimitez-le avec les
-# balises de style Markdown "```catala" et "```". Vous pouvez écrire des
-# commentaires dans les blocs de code Catala en préfixant les lignes par "#"
+# Pour créer un bloc de code Catala, délimitez-le avec les balises
+# Markdown "```catala" et "```".
+# Tout ce qui suit un caractère "#" dans une ligne de code est ignoré, ce qui
+# permet d'écrire des commentaires informatifs (comme celui-ici)
 ```
 
 ~~~admonish warning title="Délimitation des blocs de code"
-Dans la suite du tutoriel, lors de la présentation d'extraits de code Catala,
-il est implicitement supposé que vous devez les copier-coller dans votre
-fichier `tutoriel.catala_fr` à l'intérieur d'un bloc de code Catala délimité
-par `` ```catala`` et `` ``` ``, et placé près de l'article de loi qu'il implémente.
+Dans la suite du tutoriel, vous pourrez supposer que les extraits de code donnés
+sont à recopier dans votre fichier `tutoriel.catala_fr` à l'intérieur d'un bloc
+de code `` ```catala `` suivant directemet l'article de loi qu'il transcrit.
 ~~~
 
-## Mettre en place les structures de données
+## Mise en place des structures de données
 
-Le contenu de l'article 1 suppose beaucoup de contexte implicite : il existe un
-individu avec un revenu, ainsi qu'un impôt sur le revenu que l'individu doit
-payer chaque année. Même si ce contexte implicite n'est pas verbatim dans la loi,
-nous devons l'expliciter dans le code informatique, sous la forme de structures
-de données et de signatures de fonctions.
+Tout un contexte implicite est supposé connu dans l'article 1: il existe une
+personne, cette personne a un revenu, et il existe un impôt sur le revenu que
+cette personne doit payer chaque année. Programmer cet article nous demande
+d'expliciter ce contexte, ce que nous allons ferme à l'aide de structure de
+données et de signatures de fonctions.
 
-Catala est un langage [fortement typé](https://blog.merigoux.ovh/en/2017/07/19/static-or-dynamic.html)
-et compilé statiquement, donc toutes les structures de données et signatures de
-fonctions doivent être explicitement déclarées. Nous commençons donc par déclarer
-les informations de type pour l'individu, le contribuable qui sera le sujet du
-calcul de l'impôt. Cet individu a un revenu et un nombre d'enfants, deux
-informations qui seront nécessaires à des fins fiscales :
+Catala est un langage [fortement
+typé](https://blog.merigoux.ovh/en/2017/07/19/static-or-dynamic.html) et compilé
+statiquement, ce qui demande que toutes les structures de données et toutes les
+signatures de fonctions soient déclarées explicitement. Commençons par la
+personne — le contribuable sujet à ce calcul d'imposition. Les informations dont
+nous aurons besoin sur elle sont ses revenus, et le nombre de ses enfants:
 
-~~~admonish note title="Déclarer une structure"
+~~~admonish note title="Déclaration d'une structure"
 ```catala-code-fr
-# Les déclarations de structures de données et généralement toute déclaration
-# en Catala ne correspondent souvent à aucun article de loi spécifique. Ainsi,
-# vous pouvez mettre toutes les déclarations en haut de votre fichier
-# tutoriel.catala_fr, avant l'article 1.
+# Aucun article de loi spécifique ne correspond, généralement, aux déclarations.
+# Pour cette raison, vous pouvez les mettre en "préambule", en haut du
+# fichier "tutoriel.catala_fr", avant l'article 1.
 
-# Le nom de la structure, "Individu", doit commencer par une majuscule :
-# c'est la convention CamelCase.
-déclaration structure Individu:
-  # Dans cette ligne, "revenu" est le nom du champ de la structure et
+# Le nom de la structure, "Personne", doit commencer par une majuscule :
+# c'est la convention "CamelCase".
+déclaration structure Personne:
+  # Dans la ligne qui suit, "revenu" est le nom du champ de la structure et
   # "argent" est le type de ce qui est stocké dans ce champ.
   # Les types disponibles incluent : "entier", "décimal", "argent", "date",
   # "durée", et toute autre structure ou énumération que vous déclarez.
   donnée revenu contenu argent
   # Les noms de champs "revenu" et "nombre_enfants" commencent par une
-  # minuscule, ils suivent la convention snake_case.
+  # minuscule, ils suivent la convention "snake_case".
   donnée nombre_enfants contenu entier
 ```
 ~~~
 
 Cette structure contient deux champs de données, `revenu` et `nombre_enfants`.
-Les structures sont utiles pour regrouper des données qui vont ensemble.
-Généralement, vous obtenez une structure par objet concret sur lequel la loi
-s'applique (comme l'individu). C'est à vous de décider comment regrouper les
-données, mais nous vous conseillons de viser l'optimisation de la lisibilité du
-code.
+Les structures servent à regrouper des données qui forment un tout. Vous aurez
+généralement une structure par objet concret sur lequel appliquer la loi (comme
+ici la `Personne`). Le critère le plus important à retenir lorsque l'on choisit
+comment les données seront regroupées est la lisibilité du code qui va en
+résulter.
 
 ~~~admonish tip title="Déclarer une énumération"
-Parfois, la loi donne une énumération de différentes situations. Ces
-énumérations sont modélisées en Catala à l'aide d'un type énumération, comme :
+Certaines lois énumérent un certain nombre de situations possibles. Ces
+possibilités sont modélisées en Catala à l'aide d'un type énumération:
 
 ```catala-code-fr
-# Le nom "CréditImpôt" est également écrit en CamelCase.
+# Le nom "CréditImpôt" est également écrit en "CamelCase".
 déclaration énumération CréditImpôt:
-  # La ligne ci-dessous dit que "CréditImpôt" peut être une situation
-  # "PasDeCréditImpôt".
+  # La ligne ci-dessous indique qu'une des situations de "CréditImpôt"
+  # est "PasDeCréditImpôt"
   -- PasDeCréditImpôt
-  # La ligne ci-dessous dit qu'alternativement, "CréditImpôt" peut être une
-  # situation "CréditImpôtEnfants". Cette situation porte un contenu de type
-  # entier correspondant au nombre d'enfants concernés par le crédit d'impôt.
-  # Cela signifie que si vous êtes dans la situation "CréditImpôtEnfants",
-  # vous aurez également accès à ce nombre d'enfants.
+  # Alternativement, "CréditImpôt" peut être en situation "CréditImpôtEnfants".
+  # Cette situation porte un contenu de type "entier"
+  # qui renseigne le nombre d'enfants concernés par le crédit d'impôt.
+  # Cela signifie que lorsqu'on rencotre la situation "CréditImpôtEnfants",
+  # le nombre d'enfants sera une information supplémentaire accessible.
   -- CréditImpôtEnfants contenu entier
 ```
 
-En termes informatiques, une telle énumération est appelée un "type somme" ou
-simplement une enum. La combinaison de structures et d'énumérations permet au
-programmeur Catala de déclarer toutes les formes possibles de données, car elles
-sont équivalentes à la puissante notion de [types de données algébriques](https://fr.wikipedia.org/wiki/Type_alg%C3%A9brique_de_donn%C3%A9es).
+En termes de programmation, ce type d'énumération est appelée un "type somme" ou
+simplement une "enum". La combinaison de structures et d'énumérations forme la
+base de la notion de [types
+algébriques](https://fr.wikipedia.org/wiki/Type_algébrique_de_données). Retenez
+que cela permet de décrire toutes les configurations de données possibles.
 ~~~
 
-Notez que ces structures de données que nous avons déclarées ne peuvent pas
-toujours être rattachées naturellement à un morceau particulier du texte de
-spécification. Alors, où mettre ces déclarations dans votre fichier de
-programmation littéraire ? Puisque vous reviendrez souvent à ces déclarations de
-structures de données pendant la programmation, nous vous conseillons de les
-regrouper dans une sorte de prélude dans votre fichier de code source.
-Concrètement, cette section de prélude contenant la déclaration des structures
-de données sera votre point de référence unique pour essayer de comprendre les
-données manipulées par les règles ailleurs dans le fichier de code source.
+Ces déclarations de structures de données ne s'attachent naturellement à aucun
+article du le texte de spécification, puisqu'il s'agit d'un contexte implicite.
+Où les placer ? Il sera nécessaire de s'y référer souvent, nous suggérons donc
+de les regrouper, par commodité dans un "prélude" en tête du fichier.
 
-## Les champs d'application comme blocs de calcul de base
 
-Nous avons défini et typé les données que le programme manipulera. Maintenant,
-nous devons définir le contexte logique dans lequel ces données évolueront.
-Parce que Catala est un langage de [programmation fonctionnelle](https://fr.wikipedia.org/wiki/Programmation_fonctionnelle),
-tout code existe au sein d'une fonction. Et l'équivalent d'une fonction en
-Catala est appelé un *champ d'application* (scope). Un champ d'application est
-composé de :
-* un nom,
-* des variables d'entrée (similaires aux arguments de fonction),
-* des variables internes (similaires aux variables locales),
-* des variables de résultat (qui forment ensemble le type de retour de la fonction).
+## Le "champ d'application": unité de calcul élémentaire
 
-Par exemple, l'article 1 déclare un champ d'application pour calculer l'impôt
-sur le revenu :
+Maintenant que nous avons défini les données que le programme devra manipuler
+ainsi que leurs types, nous allons nous occuper du contexte logique dans lequel
+elles vont évoluer. Catala étant un langage de programmation
+[fonctionnel](https://fr.wikipedia.org/wiki/Programmation_fonctionnelle), tout
+calcul s'effectue au sein d'une *fonction*. L'équivalent d'une fonction, en
+Catala, est appelé `champ d'application` et se constitue de :
+- un nom
+- des variables d'`entrée` (~ les arguments de la fonction)
+- des variables `interne`s (~ variables locales aux corps de la fonction)
+- des variables de `résultat` (regroupées en une structure qui forme la valeur
+  de retour de la fonction)
 
-~~~admonish note title="Déclarer un champ d'application"
+Revenons à notre article 1, et déclarons le champ d'application correspondant:
+
+~~~admonish note title="Déclaration d'un champ d'application"
 ```catala-code-fr
 # Les noms de champs d'application utilisent la convention de nommage CamelCase,
 # comme les noms de structures ou d'énums. Les variables de champ d'application,
 # en revanche, utilisent la convention de nommage snake_case, comme les champs
-# de structure.
+# de structure
 déclaration champ d'application CalculImpôtRevenu:
-  # La ligne suivante déclare une variable d'entrée du champ d'application,
-  # ce qui s'apparente à un paramètre de fonction en termes informatiques.
+  # La ligne qui suit déclare une variable d'entrée du champ d'application,
+  # ce qui s'apparente à un paramètre de fonction en termes de programmation.
   # C'est la donnée sur laquelle le champ d'application va opérer.
-  entrée individu contenu Individu
+  entrée personne contenu Personne
   interne taux_imposition contenu décimal
   résultat impôt_revenu contenu argent
 ```
 ~~~
 
-Le champ d'application est l'unité d'abstraction de base dans les programmes
-Catala, et les champs d'application peuvent être composés. Puisqu'une fonction
-peut appeler d'autres fonctions, les champs d'application peuvent aussi appeler
-d'autres champs d'application. Nous verrons plus tard comment faire cela, mais
-concentrons-nous d'abord sur les entrées et les sorties des champs d'application.
+Le champ d'application est la brique de base des programmes Catala. Les champs
+d'application peuvent se composer: de la même façon qu'une fonction peut appeler
+d'autres fonctions, un champ d'application peut en appeler d'autres au cours de
+ses calculs. Mais nous y reviendrons plus tard.
 
-La déclaration du champ d'application s'apparente à une signature de fonction :
-elle contient une liste de tous les arguments avec leurs types. Mais en Catala,
-les variables de champ d'application peuvent être `entrée`, `interne` ou
-`résultat`. `entrée` signifie que la variable doit être fournie chaque fois que
-le champ d'application est appelé, et ne peut pas être définie à l'intérieur du
-champ d'application. `interne` signifie que la variable est définie à l'intérieur
-du champ d'application et ne peut pas être vue de l'extérieur ; elle ne fait pas
-partie de la valeur de retour du champ d'application. `résultat` signifie qu'un
-appelant peut récupérer la valeur calculée de la variable. Notez qu'une variable
-peut être simultanément une entrée et un résultat du champ d'application, dans
-ce cas elle doit être annotée avec `entrée résultat`.
+Une déclaration de champ d'application s'apparente à une signature de fonction:
+une liste d'arguments, avec leurs types attendus. En Catala, les variables
+peuvent être qualifiées d'`entrée`, `interne` ou `résultat`. Une variable
+`entrée` devra obligatoirement être fournie lors de l'appel du champ
+d'application, et il est impossible de la redéfinir à l'intérieur du champ
+d'applicaton. Une variable `interne` doit être définie, mais ne pourra jamais
+être vue depuis l'extérieur. Enfin, une variable `résultat` devra également être
+définie, mais sera rendue accessible à l'appelant. Il est également possible de
+combiner en déclarant une variable comme `entrée résultat`, auquel cas elle
+devra être spécifiée par l'appelant, et lui sera retournée sans modification.
 
-Une fois le champ d'application déclaré, nous pouvons l'utiliser pour définir
-nos règles de calcul et enfin coder l'article 1 !
+Cette déclaration effectuée, nous allons enfin pouvoir définir le calcul à
+effectuer !
+
 
 ## Définir des variables et des formules
 
-L'article 1 donne en fait la formule pour définir la variable `impôt_revenu` du
-champ d'application `CalculImpôtRevenu`, ce qui se traduit par le code Catala
-suivant :
+L'article 1 nous fournit directement la formule à utiliser pour définir la
+variable `impôt_revenu` du champ d'application `CalculImpôtRevenu`.
+Traduisons-la en Catala:
 
 ~~~admonish quote title="Article 1"
-L'impôt sur le revenu pour un individu est défini comme un pourcentage fixe du
-revenu de l'individu sur une année.
+L'impôt sur le revenu d'une personne est un pourcentage fixe du revenu de la
+personne sur une année.
 ~~~
 
 ~~~admonish note title="Définir une variable"
 ```catala-code-fr
 champ d'application CalculImpôtRevenu:
   définition impôt_revenu égal à
-    individu.revenu * taux_imposition
+    personne.revenu * taux_imposition
 ```
 ~~~
 
-Décortiquons le code ci-dessus. Chaque `définition` d'une variable (ici,
+Décortiquons le code ci-dessus. Toute `définition` d'une variable (ici,
 `impôt_revenu`) est rattachée à un champ d'application qui la déclare (ici,
-`CalculImpôtRevenu`). Après `égal à`, nous avons l'expression réelle pour la
-variable : `individu.revenu * taux_imposition`. La syntaxe des formules utilise
-les opérateurs arithmétiques classiques. Ici, `*` signifie multiplier un montant
-d'`argent` par un `décimal`, renvoyant un nouveau montant d'`argent`. Le
-comportement exact de chaque opérateur dépend des types de valeurs sur lesquels
-il est appliqué. Par exemple, ici, parce qu'une valeur de type `argent` est
-toujours un nombre entier de centimes, `*` arrondit le résultat de la
-multiplication au centime le plus proche pour fournir la valeur finale de type
-`argent` (voir [la FAQ](./4-2-catala-specific.md) pour plus d'informations sur
-l'arrondi en Catala). Concernant `individu.revenu`, nous voyons que la notation
-`.` nous permet d'accéder au champ `revenu` de `individu`, qui est en fait une
-structure de type `Individu`.
+`CalculImpôtRevenu`). L'expression donnant sa valeur à la variable suit le
+`égal à` : elle a la forme `personne.revenu * taux_imposition`.
 
-~~~admonish tip title="Utiliser des énumérations"
-De manière similaire à l'accès aux champs de structure, Catala vous permet
-d'inspecter le contenu d'une valeur d'énumération avec le filtrage par motif
-(pattern matching), comme il est d'usage dans les langages de programmation
-fonctionnelle. Concrètement, si `crédit_impôt` est une variable dont le type est
-`CréditImpôt` tel que déclaré ci-dessus, alors vous pouvez définir le montant
-d'un crédit d'impôt qui dépend d'un nombre d'enfants éligibles avec le filtrage
-par motif suivant :
+La syntaxe des formules utilise les opérateurs arithmétiques classiques. Ici,
+`*` indique la multiplication d'un montant d'`argent` par un `décimal`, ce qui
+retourne un montant d'`argent`. Le comportement exact de chaque opérateur dépend
+des types des valeurs sur lesquels il est appliqué. Par exemple, ici, parce
+qu'une valeur de type `argent` est toujours un nombre entier de centimes, `*`
+arrondit le résultat de la multiplication au centime le plus proche, donnant un
+résultat de type `argent` (voir [la FAQ](./4-2-catala-specific.md) pour
+plus d'informations sur l'arrondi en Catala).
+
+Concernant `personne.revenu`, la notation `.` nous permet d'accéder au champ
+`revenu` de la variable d'entrée `personne`, qui est une structure de type
+`Personne`.
+
+~~~admonish tip title="Utiliser les énumérations"
+Pour inspecter le contenu d'une valeur d'un type énumération, la notation `.` ne
+convient pas: il faut utiliser le «filtrage par motif», qui est commun dans les
+langages fonctionnels. Supposons une variable `crédit_impôt` du type énumération
+`CréditImpôt` que nous avons déclaré ci-dessus, et que nous voulions définir la
+valeur du crédit en fonction du nombre d'enfants éligibles
 
 ```catala-expr-fr
 selon crédit_impôt sous forme
 -- PasDeCréditImpôt: 0 €
 -- CréditImpôtEnfants contenu nombre_enfants_éligibles:
-  10 000 € * nombre_enfants_éligibles
+   10 000 € * nombre_enfants_éligibles
 ```
 
-Dans la branche `-- CréditImpôtEnfants contenu nombre_enfants_éligibles:`, vous
-savez que `crédit_impôt` est dans la variante `CréditImpôtEnfants`, et
-`nombre_enfants_éligibles` vous permet de lier le contenu `entier` de la
-variante. Comme dans un langage de programmation fonctionnelle classique, vous
-pouvez donner le nom que vous voulez à `nombre_enfants_éligibles`, ce qui est
-utile si vous imbriquez des filtrages par motif et souhaitez différencier le
-contenus de deux variantes différentes.
+Le fitrage a ici deux branches, pour gérer les deux cas possibles de la variable
+`crédit_impôt`. Dans la seconde branche (`-- CréditImpôtEnfants`), le nom
+`nombre_enfants_éligibles` définit une nouvelle variable, locale à cette
+branche, qui contiendra la valeur de type `entier` qui avait été encapsulée dans
+l'énumération. Cette variable peut ensuite être utilisée normalement dans la
+formule de calcul.
 ~~~
 
-Maintenant, revenons à notre champ d'application `CalculImpôtRevenu`. À ce stade,
-il nous manque encore la définition de `taux_imposition`. C'est un schéma courant
-lors du codage de la loi : les définitions des différentes variables sont
-dispersées dans différents articles. Heureusement, le compilateur Catala
-collecte automatiquement toutes les définitions pour chaque champ d'application
-et les met dans le bon ordre. Ici, même si nous définissons `taux_imposition`
-après `impôt_revenu` dans notre code source, le compilateur Catala inversera
-l'ordre des définitions en interne car `taux_imposition` est utilisé dans la
-définition de `impôt_revenu`. Plus généralement, l'ordre des définitions et
-déclarations de haut niveau dans les fichiers de code source Catala n'a pas
-d'importance, et vous pouvez remanier le code librement sans avoir à vous soucier
-de l'ordre des dépendances.
+Revenons maintenant à notre champ d'application `CalculImpôtRevenu`. Nous avons
+utilisé la variable `taux_imposition`, mais elle n'est encore définie nulle
+part! Nous avons pourtant été fidèle au texte de loi, mais c'est courant: les
+définitions des variables sont souvent dispersées dans différents articles. Ce
+cas est donc prévu, et le compilateur Catala se chargera de rassembler toutes
+les définitions de chaque champ d'application, et de les ordonner comme il
+faudra. Peu importe donc ici, si `taux_imposition` est défini après
+`impôt_revenu` dans notre code. En règle générale, l'ordre des déclarations et
+définitions dans les sources Catala importe peu pour le calcul: c'est la
+structure de la spécification qui doit primer.
 
-Dans ce tutoriel, nous supposerons que notre spécification CITC fictive définit
-le pourcentage dans l'article suivant. Le code Catala ci-dessous ne devrait pas
-vous surprendre à ce stade.
+Le CITC définit justement le pourcentage qui nous manquait dans son article 2
+suivant. La définition en Catala de la variable `taux_imposition` ne devrait
+plus vous surprendre.
 
 ~~~admonish quote title="Article 2"
 Le pourcentage fixe mentionné à l'article 1 est égal à 20 %.
 
 ```catala-code-fr
 champ d'application CalculImpôtRevenu:
-  # Écrire 20% est juste une alternative pour le décimal "0,20".
+  # "20 %" est une écriture alternative du décimal "0,20".
   définition taux_imposition égal à 20 %
 ```
 ~~~
@@ -328,7 +317,7 @@ mathématique commune que l'on peut associer aux calculs arithmétiques de base
 (`+`, `-`, `*`, `/`).
 
 En particulier, cela signifie que les valeurs `entier` sont illimitées et ne
-peuvent jamais [déborder](https://fr.wikipedia.org/wiki/D%C3%A9passement_d%27entier).
+peuvent jamais [déborder](https://fr.wikipedia.org/wiki/Dépassement_d'entier).
 De même, les valeurs `décimal` peuvent être arbitrairement précises (bien
 qu'elles soient toujours rationnelles, appartenant à ℚ) et ne souffrent pas des
 imprécisions de la virgule flottante. Pour `argent`, le langage prend une
@@ -339,7 +328,7 @@ Ces choix ont plusieurs conséquences :
 * `entier` divisé par `entier` donne un `décimal` ;
 * `argent` ne peut pas être multiplié par `argent` (multipliez plutôt `argent` par `décimal`) ;
 * `argent` multiplié (ou divisé) par `décimal` arrondit le résultat au centime le plus proche ;
-* `argent` divisé par `argent` donne un `décimal` (qui n'est absolument pas arrondi).
+* `argent` divisé par `argent` donne un `décimal` (qui n'est pas arrondi).
 
 ~~~admonish example title="Types, valeurs et opérations"
 Concrètement, cela donne :
@@ -415,7 +404,7 @@ $ clerk run tutoriel.catala_fr --scope=CalculImpôtRevenu
 │
 ├─➤ tutoriel.catala_fr:41.9-41.19:
 │    │
-│ 41 │   entrée individu contenu Individu
+│ 41 │   entrée personne contenu Personne
 │    │          ‾‾‾‾‾‾‾‾
 └─
 ```
@@ -424,7 +413,7 @@ Comme le dit le message d'erreur, essayer d'interpréter directement
 `CalculImpôtRevenu` revient à essayer de calculer les impôts de
 quelqu'un sans connaître le revenu de la personne ! Pour être exécuté,
 le champ d'application doit être appelé avec des valeurs concrètes
-pour le revenu et le nombre d'enfants de l'individu. Sinon, Catala se
+pour le revenu et le nombre d'enfants de la personne. Sinon, Catala se
 plaindra que les variables d'`entrée` du champ d'application manquent
 pour l'interprétation. Toutefois, il est possible de fournir ces
 entrées sous forme de données JSON à l'aide de l'option `--input`.  La
@@ -451,10 +440,10 @@ champ d'application Test:
     # La ligne suivante est mystérieuse pour l'instant
     résultat de CalculImpôtRevenu avec {
       # Ci-dessous, nous passons les variables d'entrée pour "CalculImpôtRevenu"
-      -- individu:
-        # "individu" a un type structure, nous devons donc construire la
-        # structure "Individu" avec la syntaxe suivante
-        Individu {
+      -- personne:
+        # "personne" a un type structure, nous devons donc construire la
+        # structure "Personne" avec la syntaxe suivante
+        Personne {
           # "revenu" et "nombre_enfants" sont les champs de la structure ;
           # nous leur donnons les valeurs que nous voulons pour notre test
           -- revenu: 20 000 €
@@ -494,16 +483,16 @@ $ clerk typecheck tutoriel.catala_fr
 
 ## Récapitulons
 
-Ceci conclut la première section du tutoriel. En mettant en place des structures
+Ceci conclut la première partie du tutoriel. En mettant en place des structures
 de données comme `structure` et `énumération`, en représentant les types des
 variables de `champ d'application`, et la `définition` de formules pour ces
 variables, vous devriez maintenant être capable de coder en Catala l'équivalent
 de programmes à fonction unique qui effectuent des opérations arithmétiques
 courantes et définissent des variables locales.
 
-~~~~~~admonish info collapsible=true title="Récapitulatif de la section actuelle"
+~~~~~~admonish info collapsible=true title="Récapitulatif de la partie actuelle"
 Pour référence, voici la version finale du code Catala consolidé à la fin de
-cette section du tutoriel.
+cette partie du tutoriel.
 
 ~~~catala-fr
 {{#include ../../examples/tutoriel_fin_2_1.catala_fr}}

@@ -11,7 +11,7 @@ suivant dans un fichier catala ; vous pouvez le nommer `exercice-2-1-1.catala_fr
 # Livre Catala : Exercice 2-1-1
 
 ```catala
-déclaration structure Individu:
+déclaration structure Personne:
   donnée date_naissance contenu date
   donnée date_décès contenu DateDécès
 
@@ -27,32 +27,32 @@ née le 21 décembre 1977 qui est toujours vivante.
 
 ```catala
 # Déclaration et définition d'une valeur constante nommée test_personne1
-déclaration test_personne1 contenu Individu égal à
-  Individu {
+déclaration test_personne1 contenu Personne égal à
+  Personne {
     -- date_naissance: |1981-10-05|
       # Le format de date est |AAAA-MM-JJ|
     -- date_décès: Décédé contenu |2012-05-12|
   }
 
-déclaration test_personne2 contenu Individu égal à
+déclaration test_personne2 contenu Personne égal à
   test_personne1 # <= Supprimez cette ligne et remplacez-la par votre réponse
 ```
 
 ```catala
 déclaration champ d'application TuerPersonne:
   entrée date_fatidique contenu date
-  entrée victime contenu Individu
-  résultat individu_tué contenu Individu
+  entrée victime contenu Personne
+  résultat personne_tué contenu Personne
 ```
 
 # Question 2
 
 Étant donné la déclaration du champ d'application `TuerPersonne`, définissez une
-variable de résultat `individu_tué` du champ d'application `TuerPersonne` qui
+variable de résultat `personne_tué` du champ d'application `TuerPersonne` qui
 utilise les variables d'entrée `date_fatidique` et `victime` pour créer un nouvel
-Individu qui est une copie de l'entrée `victime` mais avec sa `date_décès` mise
+Personne qui est une copie de l'entrée `victime` mais avec sa `date_décès` mise
 à jour. Par souci de simplicité, nous ne vérifierons pas si nous tuons un
-individu déjà décédé.
+personne déjà décédé.
 
 Vous pouvez tester votre solution en invoquant le champ d'application Catala
 TestTuerPersonne : `clerk run exercice-2-1-1.catala_fr --scope TestTuerPersonne`.
@@ -77,8 +77,8 @@ champ d'application TestTuerPersonne:
 ```catala
 déclaration structure Couple:
   donnée revenu_annuel_foyer contenu argent
-  donnée personne_1 contenu Individu
-  donnée personne_2 contenu Individu
+  donnée personne_1 contenu Personne
+  donnée personne_2 contenu Personne
 
 # Définissez votre définition test_couple ici
 
@@ -148,18 +148,18 @@ En particulier si vous avez du mal avec les constructions syntaxiques du langage
 
 Dans cet exercice, nous voulons définir (encore un autre !) calcul d'impôt.
 Cette fois, le montant de l'impôt qu'un foyer doit payer dépend de si les
-individus sont toujours vivants ou non. Afin de modéliser un tel mécanisme, nous
-introduisons les structures Catala suivantes représentant les individus.
+personnes sont toujours vivants ou non. Afin de modéliser un tel mécanisme, nous
+introduisons les structures Catala suivantes représentant les personnes.
 
-Un individu est référencé en utilisant seulement deux informations : sa date de
-naissance et sa **possible** date de décès. Si un individu est toujours vivant,
+Un personne est référencé en utilisant seulement deux informations : sa date de
+naissance et sa **possible** date de décès. Si un personne est toujours vivant,
 il n'a pas de date de décès. Exprimer cette possibilité peut se faire en
-utilisant une énumération : si l'individu est toujours vivant, son entrée
+utilisant une énumération : si la personne est toujours vivant, son entrée
 `date_décès` sera `ToujoursVivant` sinon ce sera `Décédé` qui doit être
 accompagné d'une valeur de date comme spécifié dans la déclaration suivante.
 
 ```catala-code-fr
-déclaration structure Individu:
+déclaration structure Personne:
   donnée date_naissance contenu date
   donnée date_décès contenu DateDécès
 
@@ -168,8 +168,8 @@ déclaration énumération DateDécès:
   -- ToujoursVivant
 
 # Déclaration et définition d'une valeur constante nommée test_personne1
-déclaration test_personne1 contenu Individu égal à
-  Individu {
+déclaration test_personne1 contenu Personne égal à
+  Personne {
     -- date_naissance: |1981-10-05|
       # Le format de date est |AAAA-MM-JJ|
     -- date_décès: Décédé contenu |2012-05-12|
@@ -187,8 +187,8 @@ Réponse :
 
 ```catala-code-fr
 
-déclaration test_personne2 contenu Individu égal à
-  Individu {
+déclaration test_personne2 contenu Personne égal à
+  Personne {
     -- date_naissance: |1977-12-21|
     -- date_décès: ToujoursVivant
   }
@@ -205,18 +205,18 @@ dont la déclaration est :
 ```catala-code-fr
 déclaration champ d'application TuerPersonne:
   entrée date_fatidique contenu date
-  entrée victime contenu Individu
-  résultat individu_tué contenu Individu
+  entrée victime contenu Personne
+  résultat personne_tué contenu Personne
 ```
 
 ## Question 2
 
 Étant donné la déclaration du champ d'application `TuerPersonne`, définissez une
-variable de résultat `individu_tué` du champ d'application `TuerPersonne` qui
+variable de résultat `personne_tué` du champ d'application `TuerPersonne` qui
 utilise les variables d'entrée `date_fatidique` et `victime` pour créer un nouvel
-Individu qui est une copie de l'entrée `victime` mais avec sa `date_décès` mise
+Personne qui est une copie de l'entrée `victime` mais avec sa `date_décès` mise
 à jour. Par souci de simplicité, nous ne vérifierons pas si nous tuons un
-individu déjà décédé.
+personne déjà décédé.
 
 Vous pouvez tester votre solution en utilisant le champ d'application
 TestTuerPersonne suivant en invoquant cette commande dans une console :
@@ -239,8 +239,8 @@ champ d'application TestTuerPersonne:
 ~~~admonish example title="Solution de la Question 2" collapsible=true
 ```catala-code-fr
 champ d'application TuerPersonne:
-  définition individu_tué égal à
-    Individu {
+  définition personne_tué égal à
+    Personne {
       -- date_naissance: victime.date_naissance
       -- date_décès: Décédé contenu date_fatidique
     }
@@ -256,27 +256,27 @@ beaucoup de champs !
 
 ```catala-code-fr
 champ d'application TuerPersonne:
-  définition individu_tué égal à
+  définition personne_tué égal à
     victime mais en remplaçant { -- date_décès: Décédé contenu date_fatidique }
 ```
 ~~~
 
 Nous définissons maintenant une structure `Couple` qui représente un foyer
 simple. Cette structure a trois entrées différentes :
-- Deux individus : `personne_1` et `personne_2` ;
+- Deux personnes : `personne_1` et `personne_2` ;
 - Et leur `revenu_annuel_foyer` combiné.
 
 ```catala-code-fr
 déclaration structure Couple:
-  donnée personne_1 contenu Individu
-  donnée personne_2 contenu Individu
+  donnée personne_1 contenu Personne
+  donnée personne_2 contenu Personne
   donnée revenu_annuel_foyer contenu argent
 ```
 
 ## Question 3
 
 Encore une fois, définissez une valeur de test nommée `test_couple` qui réutilise
-les individus précédemment définis (à savoir `test_personne_1` et
+les personnes précédemment définis (à savoir `test_personne_1` et
 `test_personne_2`) et fixe leur `revenu_annuel_foyer` à `80 000 €`.
 
 
@@ -298,7 +298,7 @@ définition très simple :
 
 ```admonish quote title="Article : Calcul de l'Impôt"
 L'impôt sur le revenu pour le foyer d'un couple est défini comme 15% de leur
-revenu annuel, sauf si l'un (ou les deux) des individus est décédé avant la
+revenu annuel, sauf si l'un (ou les deux) des personnes est décédé avant la
 date de traitement du dossier.
 ```
 
@@ -346,10 +346,10 @@ utiliser la construction de _filtrage par motif_ (pattern matching). Par exemple
 le _filtrage par motif_ d'une énumération `DateDécès` ressemble à ceci :
 ```catala-code-fr
 champ d'application CalculImpôt:
-  définition âge_individu égal à
-    selon individu.date_décès sous forme
-    -- ToujoursVivant: date_courante - individu.date_naissance
-    -- Décédé contenu date_décès: date_décès - individu.date_naissance
+  définition âge_personne égal à
+    selon personne.date_décès sous forme
+    -- ToujoursVivant: date_courante - personne.date_naissance
+    -- Décédé contenu date_décès: date_décès - personne.date_naissance
 ```
 *Nota bene* : toutes les différentes branches d'un _filtrage par motif_ doivent
 contenir des expressions du même type de données.

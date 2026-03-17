@@ -24,18 +24,18 @@ pour exécuter l'exemple est inclus ci-dessous pour référence.
 ~~~
 ~~~~~~
 
-## Créer un foyer à partir d'une liste d'individus
+## Créer un foyer à partir d'une liste d'personnes
 
 Précédemment, le Code des Impôts du Tutoriel Catala (CITC) a défini un impôt sur le revenu pour
-chaque individu et ses enfants. Mais maintenant, le CITC devient plus gourmand car une
+chaque personne et ses enfants. Mais maintenant, le CITC devient plus gourmand car une
 nouvelle taxe distincte similaire à la tristement célèbre [poll tax](https://fr.wikipedia.org/wiki/Poll_tax)
 de Thatcher est introduite. À sa création,
-l'impôt sur le foyer est tel que chaque individu d'un foyer est taxé d'une somme fixe,
+l'impôt sur le foyer est tel que chaque personne d'un foyer est taxé d'une somme fixe,
 avec un taux réduit pour les enfants :
 
 ~~~admonish quote title="Article 7"
-Lorsque plusieurs individus vivent ensemble, ils sont collectivement soumis à
-l'impôt sur le foyer. L'impôt sur le foyer dû est de 10 000 € par individu du foyer,
+Lorsque plusieurs personnes vivent ensemble, ils sont collectivement soumis à
+l'impôt sur le foyer. L'impôt sur le foyer dû est de 10 000 € par personne du foyer,
 et la moitié de ce montant par enfant.
 ~~~
 
@@ -43,7 +43,7 @@ Maintenant, implémenter cela en Catala nécessite d'aller au-delà du
 champ d'application `CalculImpôtRevenu` que nous avons utilisé plus tôt. En effet, cette nouvelle taxe nécessite
 un nouveau champ d'application, `CalculImpôtFoyer` ! Bien qu'il soit assez évident que le
 `résultat` de ce nouveau champ d'application devrait être `impôt_foyer`, son `entrée` est la
-collection d'individus qui composent le foyer.
+collection d'personnes qui composent le foyer.
 
 Heureusement, Catala possède un type intégré pour les collections de choses, appelé `liste`,
 même s'il se comporte plus comme un tableau dans le jargon informatique traditionnel.
@@ -53,14 +53,14 @@ même s'il se comporte plus comme un tableau dans le jargon informatique traditi
 déclaration champ d'application CalculImpôtFoyer:
   # La syntaxe "liste de <X>" désigne le type dont les valeurs sont des listes d'
   # éléments de type <X>.
-  entrée individus contenu liste de Individu
+  entrée personnes contenu liste de Personne
   résultat impôt_foyer contenu argent
 ```
 ~~~
 
 Pour définir `impôt_foyer`, nous devons maintenant :
-1. compter le nombre d'individus dans `individus` ;
-2. compter le nombre d'enfants de chaque individu et additionner ces comptes ;
+1. compter le nombre d'personnes dans `personnes` ;
+2. compter le nombre d'enfants de chaque personne et additionner ces comptes ;
 3. multiplier ces comptes par le bon montant d'impôt.
 
 Nous effectuerons chacune de ces étapes dans le corps de la `définition` de
@@ -89,14 +89,14 @@ x + 2
 ```
 ~~~
 
-Pour l'étape 1, nous avons simplement besoin d'obtenir la longueur de la liste `individus`, ce qui
-peut être fait via la syntaxe `nombre de individus` (la syntaxe pour toutes les opérations
+Pour l'étape 1, nous avons simplement besoin d'obtenir la longueur de la liste `personnes`, ce qui
+peut être fait via la syntaxe `nombre de personnes` (la syntaxe pour toutes les opérations
 sur les listes peut être trouvée dans [l'aide-mémoire de la syntaxe](https://catalalang.github.io/catala/syntax.pdf)
 ou dans le [guide de référence](./5-catala.md)). Pour l'étape 2, nous
-devons agréger le nombre d'enfants pour tous les individus, ce qui peut être fait
-via la syntaxe `Entier.somme de transforme chaque individu
-parmi individus en individu.nombre_enfants`. Notez la version spécifique `Entier` de la fonction `somme`, qui
-indique que si la liste des individus est vide, alors l'entier `0` doit
+devons agréger le nombre d'enfants pour tous les personnes, ce qui peut être fait
+via la syntaxe `Entier.somme de transforme chaque personne
+parmi personnes en personne.nombre_enfants`. Notez la version spécifique `Entier` de la fonction `somme`, qui
+indique que si la liste des personnes est vide, alors l'entier `0` doit
 être renvoyé. Enfin, nous pouvons assembler les étapes 1 et 2 pour l'étape 3 qui calcule
 le montant de l'impôt :
 
@@ -104,17 +104,17 @@ le montant de l'impôt :
 ```catala-code-fr
 champ d'application CalculImpôtFoyer:
   définition impôt_foyer égal à
-    soit nombre_individus égal à nombre de individus dans
+    soit nombre_personnes égal à nombre de personnes dans
     soit nombre_enfants égal à
       Entier.somme de
-        transforme chaque individu parmi individus en individu.nombre_enfants
+        transforme chaque personne parmi personnes en personne.nombre_enfants
     dans
     10 000 €
     * (
-      # "nombre_individus" est un entier, mais le résultat de la division
+      # "nombre_personnes" est un entier, mais le résultat de la division
       # est un décimal, et nous ne pouvons pas ajouter un entier et un décimal sans d'abord
       # convertir l'un d'eux
-      décimal de nombre_individus + nombre_enfants / 2
+      décimal de nombre_personnes + nombre_enfants / 2
     )
 ```
 ~~~
@@ -122,7 +122,7 @@ champ d'application CalculImpôtFoyer:
 Cette implémentation de l'article 7 est assez directe et concise. Elle fonctionne,
 mais notez un décalage subtil entre le texte de l'article 7 et son implémentation
 Catala : plutôt que d'agréger séparément la contribution de chaque
-individu et de ses enfants à l'impôt sur le foyer, nous comptons tous les individus
+personne et de ses enfants à l'impôt sur le foyer, nous comptons tous les personnes
 d'un côté, et tous les enfants de l'autre. L'addition est commutative
 et associative donc ce décalage donne le même résultat. Cependant, ne pas suivre
 l'esprit de la loi dans l'implémentation pourrait ne pas être pérenne, comme nous le
@@ -140,14 +140,14 @@ déclaration champ d'application TestFoyer:
 champ d'application TestFoyer:
   définition calcul égal à
     résultat de CalculImpôtFoyer avec {
-      -- individus:
-        # Le champ d'application attend une liste d'individus. En Catala, une liste est construite
+      -- personnes:
+        # Le champ d'application attend une liste d'personnes. En Catala, une liste est construite
         # avec la syntaxe "[<élément 1>; <élément 2>; ...]".
-        [ Individu {
+        [ Personne {
             -- revenu: 15 000 €
             -- nombre_enfants: 0
           } ;
-          Individu {
+          Personne {
             -- revenu: 80 000 €
             -- nombre_enfants: 2
           } ]
@@ -163,7 +163,7 @@ $ clerk run tutoriel.catala_fr --scope=TestFoyer
 └─
 ```
 
-Nous avons deux individus et deux enfants donc 2 x 10 000 € + 2 x 5 000 € = 30 000 €.
+Nous avons deux personnes et deux enfants donc 2 x 10 000 € + 2 x 5 000 € = 30 000 €.
 ~~~
 
 ## Refactoriser pour tenir compte de l'évolution des exigences
@@ -175,22 +175,22 @@ Code des Impôts du Tutoriel Catala (CITC) sera dur avec nous, avec l'article fa
 suivant :
 
 ~~~admonish quote title="Article 8"
-Le montant de l'impôt sur le revenu payé par chaque individu peut être déduit de la
-part de l'impôt sur le foyer due par cet individu.
+Le montant de l'impôt sur le revenu payé par chaque personne peut être déduit de la
+part de l'impôt sur le foyer due par cet personne.
 ~~~
 
 Maintenant, il existe plusieurs stratégies pour implémenter l'article 8, mais toutes ne sont pas
 juridiquement correctes. Une stratégie pourrait être de calculer le montant total de l'impôt sur le revenu
-dû par tous les individus du foyer, et de soustraire ce montant total d'
+dû par tous les personnes du foyer, et de soustraire ce montant total d'
 impôt sur le revenu du montant total de l'impôt sur le foyer pour effectuer la déduction.
 Cependant, cette stratégie est incorrecte, car la déduction de l'impôt sur le foyer pour un
-individu est implicitement plafonnée par le montant de l'impôt sur le foyer dû pour cet
-individu ! Ce plafonnement introduit une non-linéarité dans la formule qui empêche
+personne est implicitement plafonnée par le montant de l'impôt sur le foyer dû pour cet
+personne ! Ce plafonnement introduit une non-linéarité dans la formule qui empêche
 de réorganiser les additions et les soustractions tout en gardant les mêmes résultats dans
 toutes les configurations.
 
 ~~~admonish danger title="Attention à la non-linéarité de l'article 8 !"
-Supposons que vous ayez deux individus, `A` et `B`, sans enfants, dans un foyer
+Supposons que vous ayez deux personnes, `A` et `B`, sans enfants, dans un foyer
 qui n'est pas situé dans un territoire d'outre-mer, avant l'an 2000.
 
 Supposons aussi que le revenu de `A` est de 20 000 €, tandis que le revenu de `B` est de 200 000 €.
@@ -202,7 +202,7 @@ D'autre part, l'impôt sur le foyer dû par ce foyer est de
 10 000 € + 10 000 € = 20 000 €. Comment appliquer l'article 8 dans cette situation ?
 Soustraire naïvement l'impôt sur le revenu total (64 000 €) de l'impôt sur le foyer
 total (20 000 €) donne un impôt sur le foyer révisé de 0 €, mais ce n'est pas le montant
-légal. En effet, la déduction ne peut avoir lieu qu'au niveau individuel.
+légal. En effet, la déduction ne peut avoir lieu qu'au niveau personneel.
 
 `A` peut déduire 4 000 € de sa part de 10 000 € d'impôt sur le foyer, donc il doit
 6 000 € d'impôt sur le foyer. Mais `B` ne peut déduire que 10 000 € de sa part de 10 000 €
@@ -214,8 +214,8 @@ Donc au total, le montant total correct d'impôt sur le foyer à payer ici est d
 ~~~
 
 Nous sommes donc contraints de décomposer explicitement le calcul de l'impôt sur le foyer en
-deux étapes : d'abord, calculer la part de l'impôt sur le foyer due par chaque individu,
-puis agréger le résultat de la première étape pour tous les individus du
+deux étapes : d'abord, calculer la part de l'impôt sur le foyer due par chaque personne,
+puis agréger le résultat de la première étape pour tous les personnes du
 foyer. Naturellement, le champ d'application existant `CalculImpôtFoyer` est l'endroit où la
 deuxième étape aura lieu. Mais où mettre la première étape ? Une refactorisation est nécessaire !
 
@@ -231,7 +231,7 @@ la [deuxième section du tutoriel](./2-2-conditionals-exceptions.md).
 Mais l'ajout d'exceptions n'est pas la seule chose que les nouveaux articles peuvent introduire.
 Dans ce cas, nous voyons que l'article 8 rend explicite une étape de calcul
 qui était implicite ou cachée dans l'article 7 (à savoir, le calcul de la
-part de l'impôt sur le foyer pour chaque individu). Rendre cette étape de calcul explicite
+part de l'impôt sur le foyer pour chaque personne). Rendre cette étape de calcul explicite
 implique de lui donner un statut de premier ordre avec un concept Catala (une variable,
 un champ d'application, etc.), ce qui n'était peut-être pas le cas dans le code Catala écrit auparavant.
 Par conséquent, il est normal de refactoriser le code antérieur pour coder le nouvel article 8.
@@ -247,14 +247,14 @@ calcul supplémentaire. Le champ d'application est lisible par les juristes et p
 pratiques pour ajouter des paramètres d'entrée et de sortie, définir des exceptions pour ses variables locales, etc.
 
 Par conséquent, nous opterons pour la création d'un tout nouveau champ d'application pour calculer la part de
-l'impôt sur le foyer due par un individu, `CalculImpôtFoyerIndividuel`.
+l'impôt sur le foyer due par un personne, `CalculImpôtFoyerIndividuel`.
 
-## Le champ d'application manquant : calcul de l'impôt sur le foyer pour l'individu
+## Le champ d'application manquant : calcul de l'impôt sur le foyer pour la personne
 
 Le nouveau champ d'application, `CalculImpôtFoyerIndividuel`, aura comme entrée un
-individu et renverra comme résultat le montant de l'impôt sur le foyer détenu. Cependant,
+personne et renverra comme résultat le montant de l'impôt sur le foyer détenu. Cependant,
 à cause de l'article 8, le champ d'application devra également calculer le montant de l'impôt sur le
-revenu dû par l'individu, pour le déduire de l'impôt sur le foyer. Le graphe d'appel
+revenu dû par la personne, pour le déduire de l'impôt sur le foyer. Le graphe d'appel
 entre les champs d'application sera alors le suivant :
 
 ```mermaid
@@ -276,7 +276,7 @@ du tutoriel](./2-2-conditionals-exceptions.md) : `territoires_outre_mer` et
 ~~~admonish quote title="Déclaration initiale de `CalculImpôtFoyerIndividuel`"
 ```catala-code-fr
 déclaration champ d'application CalculImpôtFoyerIndividuel:
-  entrée individu contenu Individu
+  entrée personne contenu Personne
   entrée territoires_outre_mer contenu booléen
   entrée date_courante contenu date
 
@@ -294,7 +294,7 @@ pour la lisibilité par les juristes pour faire exactement cela en Catala !
 # déclaré dans "CalculImpôtFoyerIndividuel", nous répétons donc la
 # déclaration du champ d'application ici avec une nouvelle ligne.
 déclaration champ d'application CalculImpôtFoyerIndividuel:
-  entrée individu contenu Individu
+  entrée personne contenu Personne
   entrée territoires_outre_mer contenu booléen
   entrée date_courante contenu date
 
@@ -306,12 +306,12 @@ déclaration champ d'application CalculImpôtFoyerIndividuel:
 
 champ d'application CalculImpôtFoyerIndividuel:
   # À l'intérieur d'un bloc "champ d'application", nous devons définir les arguments de l'appel au sous-champ d'application
-  # "calcul_impôt_revenu" : "individu", "territoires_outre_mer" et
+  # "calcul_impôt_revenu" : "personne", "territoires_outre_mer" et
   # "territoires_outre_mer".
-  définition calcul_impôt_revenu.individu égal à
-    individu
-  # L'"individu" donné comme argument à "calcul_impôt_revenu",
-  # qui est l'appel à "CalculImpôtRevenu", est le même "individu"
+  définition calcul_impôt_revenu.personne égal à
+    personne
+  # L'"personne" donné comme argument à "calcul_impôt_revenu",
+  # qui est l'appel à "CalculImpôtRevenu", est le même "personne"
   # qui est l'entrée de "CalculImpôtFoyerIndividuel".
   définition calcul_impôt_revenu.territoires_outre_mer égal à
     territoires_outre_mer
@@ -338,16 +338,16 @@ est maintenant accessible à `calcul_impôt_revenu.impôt_revenu`, puisque
 champ d'application CalculImpôtFoyerIndividuel:
   définition impôt_foyer égal à
     soit impôt égal à
-      10 000 € * (1,0 + individu.nombre_enfants / 2)
+      10 000 € * (1,0 + personne.nombre_enfants / 2)
     dans
     soit déduction égal à calcul_impôt_revenu.impôt_revenu dans
     # N'oubliez pas de plafonner la déduction !
     si déduction > impôt alors 0 € sinon impôt - déduction
 ```
 
-~~~admonish success title="Tester l'impôt sur le foyer individuel"
+~~~admonish success title="Tester l'impôt sur le foyer personneel"
 Pour tester ce qui se passe lorsque la règle des articles 7 et 8 est en jeu
-vous pouvez tester le programme avec un individu :
+vous pouvez tester le programme avec un personne :
 
 ```catala-code-fr
 déclaration champ d'application TestFoyerIndividuel:
@@ -356,8 +356,8 @@ déclaration champ d'application TestFoyerIndividuel:
 champ d'application TestFoyerIndividuel:
   définition calcul égal à
     résultat de CalculImpôtFoyerIndividuel avec {
-      -- individu:
-        Individu {
+      -- personne:
+        Personne {
           -- revenu: 15 000 €
           -- nombre_enfants: 0
         }
@@ -375,7 +375,7 @@ $ clerk run tutoriel.catala_fr --scope=TestFoyerIndividuel
 └─
 ```
 
-L'impôt sur le foyer dû par un individu sans enfants est de 10 000 €, mais
+L'impôt sur le foyer dû par un personne sans enfants est de 10 000 €, mais
 nous devons déduire son impôt sur le revenu. Avec un revenu de 15 000 €, avant 2000 et
 pas dans un territoire d'outre-mer, le taux d'impôt sur le revenu est de 20% selon l'article 2,
 donc 3 000 € d'impôt sur le revenu. Par conséquent, l'impôt sur le foyer correct dû avec
@@ -386,7 +386,7 @@ déduction est de 7 000 €.
 
 Dans cette section du tutoriel, nous avons vu qu'en Catala, les listes d'éléments
 sont représentées comme des valeurs avec leur propre type comme `liste de argent` ou
-`liste de Individu`. Vous pouvez manipuler des listes avec des opérateurs
+`liste de Personne`. Vous pouvez manipuler des listes avec des opérateurs
 comme longueur, comptage, agrégation, mais aussi transformer, filtrer, etc. Veuillez vous référer
 au [guide de référence](./5-catala.md) pour des informations sur tous les
 opérateurs de liste disponibles en Catala. De plus, nous avons également vu dans
@@ -398,7 +398,7 @@ modulaire qui peut être refactorisée pour tenir compte de l'évolution des exi
 
 Cependant, pour l'instant, notre implémentation des articles 7 et 8 n'est pas complète, car
 il nous manque l'étape où `CalculImpôtFoyer` appelle
-`CalculImpôtFoyerIndividuel` sur chaque individu du foyer pour
+`CalculImpôtFoyerIndividuel` sur chaque personne du foyer pour
 compléter le calcul de l'impôt sur le foyer avec la déduction correcte. Ce sera
 le sujet de la [prochaine et dernière section du
 tutoriel](./2-4-states-dynamic.md).

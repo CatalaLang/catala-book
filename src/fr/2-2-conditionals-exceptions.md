@@ -27,13 +27,13 @@ définie précédemment, mais avec une particularité dans une certaine situatio
 Par exemple, l'article 3 du CITC :
 
 ~~~admonish quote title="Article 3"
-Si l'individu a la charge de 2 enfants ou plus, alors le pourcentage fixe
+Si la personne a la charge de 2 enfants ou plus, alors le pourcentage fixe
 mentionné à l'article 1 est égal à 15 %.
 ~~~
 
 Cet article donne en fait une autre définition pour le pourcentage fixe, qui
 était déjà défini à l'article 2. Cependant, l'article 3 définit le pourcentage
-conditionnellement au fait que l'individu ait plus de 2 enfants. Comment redéfinir
+conditionnellement au fait que la personne ait plus de 2 enfants. Comment redéfinir
 `taux_imposition` ? Catala vous permet précisément de redéfinir une variable sous une
 condition avec la syntaxe `sous condition ... conséquence` entre le nom
 de la variable définie et le mot-clé `égal à` :
@@ -42,12 +42,12 @@ de la variable définie et le mot-clé `égal à` :
 ```catala-code-fr
 champ d'application CalculImpôtRevenu:
   définition taux_imposition
-  sous condition individu.nombre_enfants >= 2
+  sous condition personne.nombre_enfants >= 2
   conséquence égal à 15 %
 ```
 ~~~
 
-Qu'est-ce que cela signifie ? Si l'individu a plus de deux enfants, alors
+Qu'est-ce que cela signifie ? Si la personne a plus de deux enfants, alors
 `taux_imposition` sera de `15 %`. Les définitions conditionnelles vous permettent de définir
 vos variables par morceaux, un cas à la fois ; le compilateur Catala assemble
 le tout pour l'exécution. Plus précisément, à l'exécution, nous regardons
@@ -64,8 +64,8 @@ champ d'application `Test` comme suit :
 champ d'application Test:
   définition calcul égal à
     résultat de CalculImpôtRevenu avec {
-      -- individu:
-        Individu {
+      -- personne:
+        Personne {
           -- revenu: 20 000 €
           -- nombre_enfants: 3
         }
@@ -107,7 +107,7 @@ sur une autre. C'est aussi simple que d'ajouter `exception` avant la définition
 Par exemple, voici une version plus correcte du code pour l'article 3 :
 
 ~~~admonish quote title="Article 3"
-Si l'individu a la charge de 2 enfants ou plus, alors le pourcentage fixe
+Si la personne a la charge de 2 enfants ou plus, alors le pourcentage fixe
 mentionné à l'article 1 est égal à 15 %.
 ~~~
 
@@ -115,13 +115,13 @@ mentionné à l'article 1 est égal à 15 %.
 ```catala-code-fr
 champ d'application CalculImpôtRevenu:
   exception définition taux_imposition
-  sous condition individu.nombre_enfants >= 2
+  sous condition personne.nombre_enfants >= 2
   conséquence égal à 15 %
 ```
 ~~~
 
 Avec `exception`, la définition conditionnelle de l'article 3 sera choisie par rapport
-au cas de base de l'article 1 lorsque l'individu a deux enfants ou plus. Ce
+au cas de base de l'article 1 lorsque la personne a deux enfants ou plus. Ce
 mécanisme d'`exception` est calqué sur la logique de la rédaction juridique : c'est le mécanisme clé
 qui nous permet de diviser notre définition de variables pour correspondre à la structure de
 la spécification. Sans `exception`, il n'est pas possible d'utiliser le style de
@@ -161,19 +161,19 @@ même variable. Explorons ce mécanisme sur un exemple plus complexe.
 Il est fréquent dans les textes juridiques qu'un article établissant une règle générale soit
 suivi de plusieurs articles définissant des exceptions à la règle de base. En plus
 de l'article 3 et du taux d'imposition réduit pour les familles nombreuses, le CITC (Code des Impôts du Tutoriel Catala)
-définit en effet une exonération fiscale pour les individus à faible revenu,
+définit en effet une exonération fiscale pour les personnes à faible revenu,
 que nous pouvons coder comme une autre exception à la définition du taux d'imposition de
 l'article 2 :
 
 
 ~~~admonish quote title="Article 4"
-Les individus gagnant moins de 10 000 € sont exonérés de l'impôt sur le revenu mentionné
+Les personnes gagnant moins de 10 000 € sont exonérés de l'impôt sur le revenu mentionné
 à l'article 1.
 
 ```catala-code-fr
 champ d'application CalculImpôtRevenu:
   exception définition taux_imposition
-  sous condition individu.revenu <= 10 000 €
+  sous condition personne.revenu <= 10 000 €
   # Notez le <= au-dessus, la formulation de l'article 4 suggère d'utiliser <
   # mais nous prenons toujours l'interprétation la plus favorable au
   # contribuable !
@@ -181,7 +181,7 @@ champ d'application CalculImpôtRevenu:
 ```
 ~~~
 
-Mais alors, que se passe-t-il lors du test du code avec un individu qui gagne
+Mais alors, que se passe-t-il lors du test du code avec un personne qui gagne
 moins de 10 000 € et a plus de 2 enfants ?
 
 
@@ -194,8 +194,8 @@ inférieur à 10 000 € en modifiant le champ d'application `Test` comme suit :
 champ d'application Test:
   définition calcul égal à
     résultat de CalculImpôtRevenu avec {
-      -- individu:
-        Individu {
+      -- personne:
+        Personne {
           -- revenu: 5 000 €
           -- nombre_enfants: 3
         }
@@ -266,7 +266,7 @@ champ d'application CalculImpôtRevenu:
 
 #### Article 3
 
-Si l'individu a la charge de 2 enfants ou plus, alors le pourcentage fixe
+Si la personne a la charge de 2 enfants ou plus, alors le pourcentage fixe
 mentionné à l'article 1 est égal à 15 %.
 
 ```catala-code-fr
@@ -276,20 +276,20 @@ champ d'application CalculImpôtRevenu:
   # * cette définition est une exception à la définition étiquetée "article_2".
   étiquette article_3 exception article_2
   définition taux_imposition
-  sous condition individu.nombre_enfants >= 2
+  sous condition personne.nombre_enfants >= 2
   conséquence égal à 15 %
 ```
 
 #### Article 4
 
-Les individus gagnant moins de 10 000 € sont exonérés de l'impôt sur le revenu mentionné
+Les personnes gagnant moins de 10 000 € sont exonérés de l'impôt sur le revenu mentionné
 à l'article 1.
 
 ```catala-code-fr
 champ d'application CalculImpôtRevenu:
   étiquette article_4 exception article_3
   définition taux_imposition
-  sous condition individu.revenu < 10 000 €
+  sous condition personne.revenu < 10 000 €
   conséquence égal à 0 %
 ```
 ~~~
@@ -318,14 +318,14 @@ Il peut être difficile de voir pourquoi certaines situations juridiques peuvent
 branches d'exceptions. Donnons un exemple avec un nouvel article du CITC :
 
 ~~~admonish quote title="Article 5"
-Les individus gagnant plus de 100 000 € sont soumis à un taux d'imposition de
+Les personnes gagnant plus de 100 000 € sont soumis à un taux d'imposition de
 30%, quel que soit leur nombre d'enfants.
 
 ```catala-code-fr
 champ d'application CalculImpôtRevenu:
   étiquette article_5 exception article_3
   définition taux_imposition
-  sous condition individu.revenu > 100 000 €
+  sous condition personne.revenu > 100 000 €
   conséquence égal à 30 %
 ```
 ~~~
@@ -407,8 +407,8 @@ supérieur à 100 000 € en modifiant le champ d'application `Test` comme suit 
 champ d'application Test:
   définition calcul égal à
     résultat de CalculImpôtRevenu avec {
-      -- individu:
-        Individu {
+      -- personne:
+        Personne {
           -- revenu: 200 000 €
           -- nombre_enfants: 3
         }
@@ -432,7 +432,7 @@ Il est alors possible d'étendre ces branches
 séparément, par exemple avec un nouvel article du CITC :
 
 ~~~admonish quote title="Article 6"
-Dans les territoires d'outre-mer, le taux d'imposition pour les individus gagnant
+Dans les territoires d'outre-mer, le taux d'imposition pour les personnes gagnant
 plus de 100 000 € spécifié à l'article 5 est réduit à 25 %.
 ~~~
 
@@ -443,7 +443,7 @@ champ d'application `CalculImpôtRevenu`, conduisant à une déclaration de cham
 ~~~admonish quote title="Déclaration de champ d'application révisée"
 ```catala-code-fr
 déclaration champ d'application CalculImpôtRevenu:
-   entrée individu contenu Individu
+   entrée personne contenu Personne
    entrée territoires_outre_mer contenu booléen
    interne taux_imposition contenu décimal
    résultat impôt_revenu contenu argent
@@ -456,13 +456,13 @@ Avec cette nouvelle variable d'entrée, le code pour l'article 6 est le suivant 
 champ d'application CalculImpôtRevenu:
   étiquette article_6 exception article_5
   définition taux_imposition
-  sous condition individu.revenu > 100 000 € et territoires_outre_mer
+  sous condition personne.revenu > 100 000 € et territoires_outre_mer
   conséquence égal à 25 %
 ```
 
 ~~~admonish danger title="Les exceptions n'héritent pas des conditions de leur cas de base"
 Notez que dans la condition pour définir `taux_imposition` à l'article 6, nous
-avons répété la condition `individu.revenu > 100 000 €` en conjonction
+avons répété la condition `personne.revenu > 100 000 €` en conjonction
 avec la nouvelle clause `territoires_outre_mer`. Dans notre CITC fictif, le texte
 de l'article 6 est gentiment formulé et nous rappelle explicitement que cette exception
 à l'article 5 ne s'applique que dans les situations qui déclenchent également l'article 5 (où
@@ -482,7 +482,7 @@ champ d'application CalculImpôtRevenu:
 ```
 
 Avec ce code, la définition de l'article 6 se serait appliquée dans les territoires
-d'outre-mer pour tous les individus, y compris ceux gagnant moins de 100 000 € !
+d'outre-mer pour tous les personnes, y compris ceux gagnant moins de 100 000 € !
 En effet, les définitions exceptionnelles en Catala n'héritent pas des conditions de
 leur cas de base : la condition de l'article 6 n'hérite pas de la condition
 de l'article 5, nous devons la répéter à l'article 6 si nous voulons avoir le bon
@@ -527,7 +527,7 @@ date courante comme une nouvelle entrée du champ d'application `CalculImpôtRev
 ```catala-code-fr
 déclaration champ d'application CalculImpôtRevenu:
    entrée date_courante contenu date
-   entrée individu contenu Individu
+   entrée personne contenu Personne
    entrée territoires_outre_mer contenu booléen
    interne taux_imposition contenu décimal
    résultat impôt_revenu contenu argent

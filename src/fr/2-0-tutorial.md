@@ -1,48 +1,49 @@
 # Tutoriel : calculer vos impôts
 
-Bienvenue dans ce tutoriel, dont l'objectif est de vous guider à travers les
-fonctionnalités du langage Catala et de vous apprendre à annoter un texte
-législatif simple en utilisant le langage, pour obtenir un programme exécutable
-qui calcule vos impôts !
+Ce tutoriel va vous guider à travers les fonctionnalités du langage Catala et
+vous montrer comment, en ajoutant des annotations à un texte législatif simple,
+vous pouvez obtenir un programme qui calcule vos impôts. Bienvenue !
 
-Ce tutoriel ne couvre pas l'installation de Catala. Pour plus d'informations à
-ce sujet, veuillez vous référer à la [section d'installation](./1-0-getting_started.md).
-Si vous souhaitez suivre ce tutoriel localement, lisez la [section sur la création de votre premier programme](./1-2-first.md)
-et copiez-collez simplement les extraits de code du tutoriel dans votre fichier
-de programme Catala.
+L'installation de Catala n'est pas couverte par ce tutoriel: réferrez-vous à la
+section [Installation](./1-0-getting_started.md) si nécessaire. Pour faire ce
+tutoriel directement sur votre machine, consultez la section [Créer votre
+premier programme](./1-2-first.md), et copiez-collez les fragments de code dans
+vos fichiers Catala. Il vous est aussi possible de faire les exercices
+directement en ligne en utilisant le bouton «Essayer le tutoriel» ci-contre.
 
-~~~admonish info title="Besoin de plus d'informations ?"
-À tout moment, n'hésitez pas à consulter [l'aide-mémoire de la syntaxe Catala](https://catalalang.github.io/catala/syntax.pdf)
-ou le [guide de référence](./5-catala.md) pour une vue exhaustive de la syntaxe
-et des fonctionnalités de Catala ; ce tutoriel est plutôt conçu pour vous
-familiariser avec le langage et ses modèles d'utilisation courants.
+~~~admonish info title="Pour plus d'information"
+N'hésitez pas à consulter [l'aide-mémoire bilingue
+Catala](https://catalalang.github.io/catala/syntax.pdf) ainsi que le [Guide de
+référence](./5-catala.md) à tout moment: la syntaxe et tous les traits du
+langages y sont documentés plus en détail. Ce tutoriel a vocation à être une
+entrée en matière plus douce, et vous orientera quant à lui vers les motifs les
+plus courants.
 ~~~
 
-Le tutoriel comporte quatre sections, conçues pour être complétées dans l'ordre
-car elles couvrent des fonctionnalités de plus en plus difficiles et avancées du
-langage :
-* la [première section](./2-1-basic-blocks.md) concerne les éléments de base des
-  programmes du langage avec un flux de données simple ;
-* la [deuxième section](./2-2-conditionals-exceptions.md) porte sur ce qui
-  rend Catala unique : sa gestion de premier ordre des définitions conditionnelles
-  et des exceptions ;
-* la [troisième section](./2-3-list-scopes.md) traite de la montée en charge
-  de la base de code avec des listes d'éléments et de multiples champs d'application ;
-* la [quatrième section](./2-4-states-dynamic.md) termine avec les états de
-  variables et l'appel dynamique de champs d'application.
+Ce tutoriel est en quatre parties de complexité croissante, à suivre dans
+l'ordre:
+* la [première partie](./2-1-basic-blocks.md) couvre les structures générales
+  d'un programme suivant une ligne d'exécution directe
+* la [deuxième section](./2-2-conditionals-exceptions.md) s'attarde sur une
+  caractéristique unique de Catala: la gestion des définitions conditionnelles
+  et des exceptions
+* la [troisième section](./2-3-list-scopes.md) explique comment utiliser les
+  listes et les champs d'application multiples, pour gérer les programmes qui
+  commencent à gagner en taille
+* et la [quatrième section](./2-4-states-dynamic.md) présente des fonctions plus
+  avancées: les variables à états, l'appel dynamique de champs
+  d'application.
 
-~~~admonish note title="Pratiquer le tutoriel"
-Ce tutoriel est conçu pour être une expérience interactive. Tout en lisant le
-texte des différentes sections, nous vous encourageons à créer un fichier texte
-vide `tutoriel.catala_fr` et à le remplir en copiant-collant les extraits de
-code présentés. Grâce à ce fichier compagnon, vous pourrez voir directement
-comment le vérificateur de types et l'interpréteur Catala se comportent sur les
-différents exemples, et même faire vos propres expériences en modifiant le code
-vous-même.
+~ ~~admonish note title="Apprendre par la pratique"
 
-De plus, après chaque section, des exercices pratiques vous permettront de
-mettre à l'épreuve ce que vous avez appris. Nous vous encourageons à terminer
-ces exercices avant de passer à la section suivante.
+Le tutoriel est conçu pour être interactif: vous êtes encouragé à créer un
+fichier texte `tutoriel.catala_fr` et à y reporter les fragments de code donnés.
+Cela vous permettra d'expérimenter l'utilisation du type-checker et de
+l'interpréteur et leurs réactions à vos changements.
+
+Chaque partie se termine en outre par des exercices pratiques qui devraient vous
+aider à confirmer ce que vous y avez appris. Il est recommandé de s'y atteler
+avant d'attaquer la partie suivante!
 ~~~
 
-Vous devriez être prêt à commencer maintenant. Bonne chance !
+Vous pouvez commencer. Bonne chance!

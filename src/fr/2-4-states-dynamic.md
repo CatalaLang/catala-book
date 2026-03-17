@@ -6,8 +6,8 @@
 
 Dans cette section, le tutoriel reprend là où la section précédente s'est arrêtée,
 c'est-à-dire l'implémentation du calcul de l'impôt sur le foyer pour
-un individu. Maintenant, nous devons encore agréger les calculs
-pour les individus au niveau du foyer pour générer l'impôt total sur le foyer.
+un personne. Maintenant, nous devons encore agréger les calculs
+pour les personnes au niveau du foyer pour générer l'impôt total sur le foyer.
 
 Faire cette agrégation nécessitera d'appeler le champ d'application `CalculImpôtFoyerIndividuel`
 plusieurs fois pour une agrégation de liste à l'intérieur de `CalculImpôtFoyer`. Nous
@@ -33,7 +33,7 @@ Rappelez-vous que nous avons défini `impôt_foyer` en un seul passage
 champ d'application CalculImpôtFoyerIndividuel:
   définition impôt_foyer égal à
     soit impôt égal à
-      10 000 € * (1,0 + individu.nombre_enfants / 2)
+      10 000 € * (1,0 + personne.nombre_enfants / 2)
     dans
     soit déduction égal à calcul_impôt_revenu.impôt_revenu dans
     # N'oubliez pas de plafonner la déduction !
@@ -53,7 +53,7 @@ mieux le code de cette façon ! Donc Catala a une fonctionnalité pour vous perm
 ~~~admonish note title="Définir plusieurs états pour la même variable"
 ```catala-code-fr
 déclaration champ d'application CalculImpôtFoyerIndividuel:
-  entrée individu contenu Individu
+  entrée personne contenu Personne
   entrée territoires_outre_mer contenu booléen
   entrée date_courante contenu date
 
@@ -71,20 +71,20 @@ Avec nos deux états `base` et `avec_déduction`, nous pouvons coder les article
 
 #### Article 7
 
-Lorsque plusieurs individus vivent ensemble, ils sont collectivement soumis à
-l'impôt sur le foyer. L'impôt sur le foyer dû est de 10 000 € par individu du foyer,
+Lorsque plusieurs personnes vivent ensemble, ils sont collectivement soumis à
+l'impôt sur le foyer. L'impôt sur le foyer dû est de 10 000 € par personne du foyer,
 et la moitié de ce montant par enfant.
 
 ```catala-code-fr
 champ d'application CalculImpôtFoyerIndividuel:
   définition impôt_foyer état base égal à
-    10 000 € * (1,0 + individu.nombre_enfants / 2)
+    10 000 € * (1,0 + personne.nombre_enfants / 2)
 ```
 
 #### Article 8
 
-Le montant de l'impôt sur le revenu payé par chaque individu peut être déduit de la
-part de l'impôt sur le foyer due par cet individu.
+Le montant de l'impôt sur le revenu payé par chaque personne peut être déduit de la
+part de l'impôt sur le foyer due par cet personne.
 
 ```catala-code-fr
 champ d'application CalculImpôtFoyerIndividuel:
@@ -106,19 +106,19 @@ correspondant à la convention implicite habituelle dans les textes juridiques.
 
 Ceci complète notre implémentation de `CalculImpôtFoyerIndividuel` ! Sa
 variable de résultat `impôt_foyer` contient maintenant la part de l'impôt sur le foyer due par
-chaque individu du foyer, avec la déduction correcte de l'impôt sur le revenu.
+chaque personne du foyer, avec la déduction correcte de l'impôt sur le revenu.
 Nous pouvons maintenant l'utiliser dans le calcul de l'impôt global sur le foyer dans
 `CalculImpôtFoyer`.
 
 ## Relier les champs d'application ensemble via la transformation de liste
 
 Nous pouvons maintenant finir de coder l'article 7 en additionnant chaque part de l'
-impôt sur le foyer détenue par tous les individus du foyer. Nous ferons
+impôt sur le foyer détenue par tous les personnes du foyer. Nous ferons
 cela via l'agrégation de liste, comme précédemment, mais les éléments de la liste à
 agréger sont maintenant le résultat de l'appel de `CalculImpôtFoyerIndividuel`
-sur chaque individu. Précédemment, nous avons montré comment appeler un sous-champ d'application
+sur chaque personne. Précédemment, nous avons montré comment appeler un sous-champ d'application
 statiquement et exactement une fois. Mais ici, ce n'est pas ce que nous voulons : nous voulons
-appeler le sous-champ d'application autant de fois qu'il y a d'individus dans le foyer.
+appeler le sous-champ d'application autant de fois qu'il y a d'personnes dans le foyer.
 Nous devons alors utiliser une méthode différente pour appeler le sous-champ d'application :
 
 ~~~admonish note title="Appeler un sous-champ d'application dynamiquement"
@@ -127,7 +127,7 @@ peut être simplifiée (nous n'avons plus besoin de la variable de fonction `par
 
 ```catala-code-fr
 déclaration champ d'application CalculImpôtFoyer:
-  entrée individus contenu liste de Individu
+  entrée personnes contenu liste de Personne
   entrée territoires_outre_mer contenu booléen
   entrée date_courante contenu date
   résultat impôt_foyer contenu argent
@@ -140,7 +140,7 @@ de l'article 7 :
 champ d'application CalculImpôtFoyer:
   définition impôt_foyer égal à
     Argent.somme de
-      transforme chaque individu parmi individus en (
+      transforme chaque personne parmi personnes en (
         # Ci-dessous se trouve la syntaxe pour appeler le sous-champ d'application
         # "CalculImpôtFoyerIndividuel" dynamiquement, sur place.
         # après "avec" se trouve la liste des entrées du champ d'application.
@@ -149,7 +149,7 @@ champ d'application CalculImpôtFoyer:
           # les noms des paramètres et les noms des variables de champ d'application
           # sont identiques, mais les valeurs des paramètres d'appel de champ d'application peuvent être
           # arbitrairement complexes !
-          -- individu: individu # <- ce dernier "individu" est la variable de transformation
+          -- personne: personne # <- ce dernier "personne" est la variable de transformation
           -- territoires_outre_mer: territoires_outre_mer
           -- date_courante: date_courante
         }
@@ -181,12 +181,12 @@ déclaration champ d'application TestFoyer:
 champ d'application TestFoyer:
   définition calcul égal à
     résultat de CalculImpôtFoyer avec {
-      -- individus:
-        [ Individu {
+      -- personnes:
+        [ Personne {
             -- revenu: 15 000 €
             -- nombre_enfants: 0
           } ;
-          Individu {
+          Personne {
             -- revenu: 80 000 €
             -- nombre_enfants: 2
           } ]
@@ -205,18 +205,18 @@ $ clerk run tutoriel.catala_fr --scope=TestFoyer
 
 Le résultat du test est-il correct ? Voyons cela en déroulant le calcul
 manuellement :
-* L'impôt sur le foyer pour deux individus et deux enfants est `2 * 10 000 € + 2 *
+* L'impôt sur le foyer pour deux personnes et deux enfants est `2 * 10 000 € + 2 *
   5 000 €`, soit 30 000 € ;
-* Le premier individu gagne plus de 10 000 €, moins de 100 000 €, n'a pas
+* Le premier personne gagne plus de 10 000 €, moins de 100 000 €, n'a pas
   d'enfants et nous sommes avant l'an 2000, donc le taux d'impôt sur le revenu est de 20 %
   selon l'article 2 et son impôt sur le revenu est de 3 000 € ;
-* La part de l'impôt sur le foyer pour le premier individu est de 10 000 €, donc la déduction
-  pour le premier individu est la totalité des 3 000 € ;
-* Le deuxième individu gagne plus de 10 000 €, moins de 100 000 €, mais a
+* La part de l'impôt sur le foyer pour le premier personne est de 10 000 €, donc la déduction
+  pour le premier personne est la totalité des 3 000 € ;
+* Le deuxième personne gagne plus de 10 000 €, moins de 100 000 €, mais a
   deux enfants donc le taux d'impôt sur le revenu est de 15 % selon l'article 3 et son
   impôt sur le revenu est de 12 000 € ;
-* La part de l'impôt sur le foyer pour le deuxième individu est de 20 000 €, donc la
-  déduction pour le deuxième individu est la totalité des 12 000 € ;
+* La part de l'impôt sur le foyer pour le deuxième personne est de 20 000 €, donc la
+  déduction pour le deuxième personne est la totalité des 12 000 € ;
 * La déduction totale est donc de 15 000 €; et appliquer la déduction à l'impôt sur le foyer de base donne 15 000 €.
 
 Jusqu'ici tout va bien, le résultat du test est correct. Mais il aurait pu arriver au
@@ -236,7 +236,7 @@ $ clerk run tutoriel.catala_fr --scope=TestFoyer -c--trace
       Test
 [LOG] →  CalculImpôtFoyer.direct
 [LOG]   ≔  CalculImpôtFoyer.direct.
-      entrée: CalculImpôtFoyer_in { -- individus_in: [Individu { -- revenu: 15 000,00 € -- nombre_enfants: 0 }; Individu { -- revenu: 80 000,00 € -- nombre_enfants: 2 }] -- territoires_outre_mer_in: faux -- date_courante_in: 1999-01-01 }
+      entrée: CalculImpôtFoyer_in { -- personnes_in: [Personne { -- revenu: 15 000,00 € -- nombre_enfants: 0 }; Personne { -- revenu: 80 000,00 € -- nombre_enfants: 2 }] -- territoires_outre_mer_in: faux -- date_courante_in: 1999-01-01 }
 [LOG]   ☛ Definition applied:
         ─➤ tutoriel.catala_fr
             │
@@ -246,7 +246,7 @@ $ clerk run tutoriel.catala_fr --scope=TestFoyer -c--trace
 [LOG]     ≔  CalculImpôtFoyerIndividuel.impôt_foyer#base: 10 000,00 €
 [LOG]   →  CalculImpôtFoyerIndividuel.direct
 [LOG]     ≔  CalculImpôtFoyerIndividuel.direct.
-      entrée: CalculImpôtFoyerIndividuel_in { -- individu_in: Individu { -- revenu: 15 000,00 € -- nombre_enfants: 0 } -- territoires_outre_mer_in: faux -- date_courante_in: 1999-01-01 }
+      entrée: CalculImpôtFoyerIndividuel_in { -- personne_in: Personne { -- revenu: 15 000,00 € -- nombre_enfants: 0 } -- territoires_outre_mer_in: faux -- date_courante_in: 1999-01-01 }
 [LOG]     ☛ Definition applied:
           ─➤ tutoriel.catala_fr
               │
@@ -264,7 +264,7 @@ $ clerk run tutoriel.catala_fr --scope=TestFoyer -c--trace
 [LOG]       ☛ Definition applied:
             ─➤ tutoriel.catala_fr
                 │
-                │   définition calcul_impôt_revenu.individu égal à
+                │   définition calcul_impôt_revenu.personne égal à
                 │              ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
             Article 8
 [LOG]       ☛ Definition applied:
@@ -274,7 +274,7 @@ $ clerk run tutoriel.catala_fr --scope=TestFoyer -c--trace
                 │              ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
             Article 8
 [LOG]       ≔  CalculImpôtRevenu.direct.
-      entrée: CalculImpôtRevenu_in { -- date_courante_in: 1999-01-01 -- individu_in: Individu { -- revenu: 15 000,00 € -- nombre_enfants: 0 } -- territoires_outre_mer_in: faux }
+      entrée: CalculImpôtRevenu_in { -- date_courante_in: 1999-01-01 -- personne_in: Personne { -- revenu: 15 000,00 € -- nombre_enfants: 0 } -- territoires_outre_mer_in: faux }
 [LOG]       ☛ Definition applied:
             ─➤ tutoriel.catala_fr
                │
@@ -304,14 +304,14 @@ $ clerk run tutoriel.catala_fr --scope=TestFoyer -c--trace
               │   définition impôt_foyer
               │              ‾‾‾‾‾‾‾‾‾‾‾
           Article 8
-[LOG]     ≔  HouseholdTaxIndividualComputation.
+[LOG]     ≔  HouseholdTaxPersonnealComputation.
                impôt_foyer#avec_déduction: 7 000,00 €
 [LOG]     ☛ Definition applied:
           ─➤ tutoriel.catala_fr
               │
               │       résultat de CalculImpôtFoyerIndividuel avec {
               │       ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-              │         -- individu: individu
+              │         -- personne: personne
               │         ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
               │         -- territoires_outre_mer: territoires_outre_mer
               │         ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
@@ -326,7 +326,7 @@ $ clerk run tutoriel.catala_fr --scope=TestFoyer -c--trace
 [LOG]   →  CalculImpôtFoyerIndividuel.direct
 [LOG]     ≔  CalculImpôtFoyerIndividuel.direct.
       entrée: CalculImpôtFoyerIndividuel_in {
-            -- individu_in: Individu {
+            -- personne_in: Personne {
             -- revenu: 80 000,00 € -- nombre_enfants: 2 }
             -- territoires_outre_mer_in: faux
             -- date_courante_in: 1999-01-01 }
@@ -347,7 +347,7 @@ $ clerk run tutoriel.catala_fr --scope=TestFoyer -c--trace
 [LOG]       ☛ Definition applied:
             ─➤ tutoriel.catala_fr
                 │
-                │   définition calcul_impôt_revenu.individu égal à
+                │   définition calcul_impôt_revenu.personne égal à
                 │              ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
             Article 8
 [LOG]       ☛ Definition applied:
@@ -357,11 +357,11 @@ $ clerk run tutoriel.catala_fr --scope=TestFoyer -c--trace
                 │              ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
             Article 8
 [LOG]       ≔  CalculImpôtRevenu.direct.
-      entrée: CalculImpôtRevenu_in { -- date_courante_in: 1999-01-01 -- individu_in: Individu { -- revenu: 80 000,00 € -- nombre_enfants: 2 } -- territoires_outre_mer_in: faux }
+      entrée: CalculImpôtRevenu_in { -- date_courante_in: 1999-01-01 -- personne_in: Personne { -- revenu: 80 000,00 € -- nombre_enfants: 2 } -- territoires_outre_mer_in: faux }
 [LOG]       ☛ Definition applied:
             ─➤ tutoriel.catala_fr
                │
-               │     individu.nombre_enfants >= 2
+               │     personne.nombre_enfants >= 2
                │     ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
             Article 3
 [LOG]       ≔  CalculImpôtRevenu.taux_imposition: 0,15
@@ -389,14 +389,14 @@ $ clerk run tutoriel.catala_fr --scope=TestFoyer -c--trace
               │   définition impôt_foyer égal à
               │              ‾‾‾‾‾‾‾‾‾
           Article 8
-[LOG]     ≔  HouseholdTaxIndividualComputation.
+[LOG]     ≔  HouseholdTaxPersonnealComputation.
               impôt_foyer#avec_déduction: 8 000,00 €
 [LOG]     ☛ Definition applied:
           ─➤ tutoriel.catala_fr
               │
               │       résultat de CalculImpôtFoyerIndividuel avec {
               │       ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-              │         -- individu: individu
+              │         -- personne: personne
               │         ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
               │         -- territoires_outre_mer: territoires_outre_mer
               │         ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
@@ -425,9 +425,9 @@ $ clerk run tutoriel.catala_fr --scope=TestFoyer -c--trace
             │
             │     résultat de CalculImpôtFoyer avec {
             │     ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-            │       -- individus:
+            │       -- personnes:
             │       ‾‾‾‾‾‾‾‾‾‾‾‾‾
-            │         [ Individu {
+            │         [ Personne {
             │         ‾‾‾‾‾‾‾‾‾‾‾‾
             │             -- revenu: 15 000 €
             │             ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
@@ -435,7 +435,7 @@ $ clerk run tutoriel.catala_fr --scope=TestFoyer -c--trace
             │             ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
             │           } ;
             │           ‾‾‾
-            │           Individu {
+            │           Personne {
             │           ‾‾‾‾‾‾‾‾‾‾
             │             -- revenu: 80 000 €
             │             ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾

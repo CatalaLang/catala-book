@@ -15,7 +15,7 @@ La déduction accordée à l'article 8 est plafonnée à 8 500 € pour l'ensemb
 ~~~admonish example title="Solution d'implémentation pour les articles 7, 8 et 9" collapsible=true
 ```catala-code-fr
 déclaration champ d'application CalculImpôtFoyer:
-  entrée individus contenu liste de Individu
+  entrée personnes contenu liste de Personne
   entrée territoires_outre_mer contenu booléen
   entrée date_courante contenu date
 
@@ -33,7 +33,7 @@ déclaration champ d'application CalculImpôtFoyer:
     état déduction
 
 déclaration champ d'application CalculImpôtFoyerIndividuel:
-  entrée individu contenu Individu
+  entrée personne contenu Personne
   entrée territoires_outre_mer contenu booléen
   entrée date_courante contenu date
 
@@ -45,21 +45,21 @@ déclaration champ d'application CalculImpôtFoyerIndividuel:
 
 #### Article 7
 
-Lorsque plusieurs individus vivent ensemble, ils sont collectivement soumis à
-l'impôt sur le foyer. L'impôt sur le foyer dû est de 10 000 € par individu du foyer,
+Lorsque plusieurs personnes vivent ensemble, ils sont collectivement soumis à
+l'impôt sur le foyer. L'impôt sur le foyer dû est de 10 000 € par personne du foyer,
 et la moitié de ce montant par enfant.
 
 
 ```catala-code-fr
 champ d'application CalculImpôtFoyerIndividuel:
   définition impôt_foyer égal à
-    10 000 € * (1,0 + individu.nombre_enfants / 2)
+    10 000 € * (1,0 + personne.nombre_enfants / 2)
 
 champ d'application CalculImpôtFoyer:
   définition parts_impôt_foyer égal à
-    transforme chaque individu parmi individus en
+    transforme chaque personne parmi personnes en
       résultat de CalculImpôtFoyerIndividuel avec {
-        -- individu: individu
+        -- personne: personne
         -- territoires_outre_mer: territoires_outre_mer
         -- date_courante: date_courante
       }
@@ -75,13 +75,13 @@ champ d'application CalculImpôtFoyer:
 
 #### Article 8
 
-Le montant de l'impôt sur le revenu payé par chaque individu peut être déduit de la
-part de l'impôt sur le foyer due par cet individu.
+Le montant de l'impôt sur le revenu payé par chaque personne peut être déduit de la
+part de l'impôt sur le foyer due par cet personne.
 
 ```catala-code-fr
 champ d'application CalculImpôtFoyerIndividuel:
-  définition calcul_impôt_revenu.individu égal à
-    individu
+  définition calcul_impôt_revenu.personne égal à
+    personne
   définition calcul_impôt_revenu.territoires_outre_mer égal à
     territoires_outre_mer
   définition calcul_impôt_revenu.date_courante égal à
