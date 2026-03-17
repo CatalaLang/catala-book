@@ -155,6 +155,42 @@ champ d'application CalculImpôtFoyerIndividuel:
 ## Test
 
 ```catala
+déclaration champ d'application Test:
+  résultat calcul contenu CalculImpôtRevenu
+
+champ d'application Test:
+  définition calcul égal à
+    résultat de CalculImpôtRevenu avec {
+      -- individu:
+        Individu {
+          -- revenu: 20 000 €
+          -- nombre_enfants: 0
+        }
+      -- territoires_outre_mer: faux
+      -- date_courante: |1999-01-01|
+    }
+
+déclaration champ d'application TestFoyer:
+  résultat calcul contenu CalculImpôtFoyer
+
+champ d'application TestFoyer:
+  définition calcul égal à
+    résultat de CalculImpôtFoyer avec {
+      -- individus:
+        [
+          Individu {
+            -- revenu: 15 000 €
+            -- nombre_enfants: 0
+          };
+          Individu {
+            -- revenu: 80 000 €
+            -- nombre_enfants: 2
+          }
+        ]
+      -- territoires_outre_mer: faux
+      -- date_courante: |1999-01-01|
+    }
+
 déclaration champ d'application TestFoyerIndividuel:
   résultat calcul contenu CalculImpôtFoyerIndividuel
 
