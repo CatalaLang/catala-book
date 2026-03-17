@@ -9,16 +9,18 @@ déclaration champ d'application CalculImpôtRevenu:
   entrée territoires_outre_mer contenu booléen
   interne taux_imposition contenu décimal
   résultat impôt_revenu contenu argent
-
-champ d'application CalculImpôtRevenu:
-  définition impôt_revenu égal à
-    personne.revenu * taux_imposition
 ```
 
 ## Article 1
 
 L'impôt sur le revenu pour un personne est défini comme un pourcentage fixe du
 revenu de la personne sur une année.
+
+```catala
+champ d'application CalculImpôtRevenu:
+  définition impôt_revenu égal à
+    personne.revenu * taux_imposition
+```
 
 ## Article 2
 
@@ -104,29 +106,9 @@ et la moitié de ce montant par enfant.
 ```catala
 déclaration champ d'application CalculImpôtFoyer:
   entrée personnes contenu liste de Personne
-  entrée territoires_outre_mer contenu booléen
-  entrée date_courante contenu date
+
   résultat impôt_foyer contenu argent
 
-champ d'application CalculImpôtFoyer:
-  définition impôt_foyer égal à
-    Argent.somme de
-      transforme chaque personne parmi personnes en
-        (
-          résultat de CalculImpôtFoyerIndividuel avec {
-            -- personne: personne
-            -- territoires_outre_mer: territoires_outre_mer
-            -- date_courante: date_courante
-          }
-        ).impôt_foyer
-```
-
-## Article 8
-
-Le montant de l'impôt sur le revenu payé par chaque personne peut être déduit de la
-part de l'impôt sur le foyer due par cet personne.
-
-```catala
 déclaration champ d'application CalculImpôtFoyerIndividuel:
   entrée personne contenu Personne
   entrée territoires_outre_mer contenu booléen
@@ -135,7 +117,37 @@ déclaration champ d'application CalculImpôtFoyerIndividuel:
   calcul_impôt_revenu champ d'application CalculImpôtRevenu
 
   résultat impôt_foyer contenu argent
+```
 
+```catala
+# champ d'application CalculImpôtFoyerIndividuel:
+#   # Cette définition est désactivée car remplacée par celle de l'article 8.
+#   définition impôt_foyer égal à
+#     10 000 € * (1,0 + décimal de personne.nombre_enfants / 2,0)
+
+# La définition de l'impôt sur le foyer pour l'ensemble du foyer ci-dessous est incorrecte et
+# sera refactorisée dans la prochaine section.
+champ d'application CalculImpôtFoyer:
+  définition impôt_foyer égal à
+    soit nombre_personnes égal à nombre de personnes dans
+    soit nombre_enfants égal à
+      Entier.somme de
+        transforme chaque personne parmi personnes en
+          personne.nombre_enfants
+    dans
+    10 000 €
+    * (
+      décimal de nombre_personnes
+      + décimal de nombre_enfants / 2,0
+    )
+```
+
+## Article 8
+
+Le montant de l'impôt sur le revenu payé par chaque personne peut être déduit de la
+part de l'impôt sur le foyer due par cet personne.
+
+```catala
 champ d'application CalculImpôtFoyerIndividuel:
   définition calcul_impôt_revenu.personne égal à
     personne
@@ -149,6 +161,7 @@ champ d'application CalculImpôtFoyerIndividuel:
       10 000 € * (1,0 + personne.nombre_enfants / 2)
     dans
     soit déduction égal à calcul_impôt_revenu.impôt_revenu dans
+    # N'oubliez pas de plafonner la déduction !
     si déduction > impôt alors 0 € sinon impôt - déduction
 ```
 
@@ -161,8 +174,8 @@ déclaration champ d'application Test:
 champ d'application Test:
   définition calcul égal à
     résultat de CalculImpôtRevenu avec {
-      -- individu:
-        Individu {
+      -- personne:
+        Personne {
           -- revenu: 20 000 €
           -- nombre_enfants: 0
         }
@@ -176,19 +189,17 @@ déclaration champ d'application TestFoyer:
 champ d'application TestFoyer:
   définition calcul égal à
     résultat de CalculImpôtFoyer avec {
-      -- individus:
+      -- personnes:
         [
-          Individu {
+          Personne {
             -- revenu: 15 000 €
             -- nombre_enfants: 0
           };
-          Individu {
+          Personne {
             -- revenu: 80 000 €
             -- nombre_enfants: 2
           }
         ]
-      -- territoires_outre_mer: faux
-      -- date_courante: |1999-01-01|
     }
 
 déclaration champ d'application TestFoyerIndividuel:
