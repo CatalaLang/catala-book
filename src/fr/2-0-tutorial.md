@@ -34,7 +34,7 @@ l'ordre:
   avancées: les variables à états, l'appel dynamique de champs
   d'application.
 
-~ ~~admonish note title="Apprendre par la pratique"
+~~~admonish note title="Apprendre par la pratique"
 
 Le tutoriel est conçu pour être interactif: vous êtes encouragé à créer un
 fichier texte `tutoriel.catala_fr` et à y reporter les fragments de code donnés.
