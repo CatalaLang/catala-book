@@ -96,7 +96,7 @@ de code `` ```catala `` suivant directemet l'article de loi qu'il transcrit.
 Tout un contexte implicite est supposé connu dans l'article 1: il existe une
 personne, cette personne a un revenu, et il existe un impôt sur le revenu que
 cette personne doit payer chaque année. Programmer cet article nous demande
-d'expliciter ce contexte, ce que nous allons ferme à l'aide de structure de
+d'expliciter ce contexte, ce que nous allons faire à l'aide de structure de
 données et de signatures de fonctions.
 
 Catala est un langage [fortement
