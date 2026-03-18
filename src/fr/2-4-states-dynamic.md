@@ -118,7 +118,7 @@ cela via l'agrégation de liste, comme précédemment, mais les éléments de la
 agréger sont maintenant le résultat de l'appel de `CalculImpôtFoyerIndividuel`
 sur chaque personne. Précédemment, nous avons montré comment appeler un sous-champ d'application
 statiquement et exactement une fois. Mais ici, ce n'est pas ce que nous voulons : nous voulons
-appeler le sous-champ d'application autant de fois qu'il y a d'personnes dans le foyer.
+appeler le sous-champ d'application autant de fois qu'il y a de personnes dans le foyer.
 Nous devons alors utiliser une méthode différente pour appeler le sous-champ d'application :
 
 ~~~admonish note title="Appeler un sous-champ d'application dynamiquement"

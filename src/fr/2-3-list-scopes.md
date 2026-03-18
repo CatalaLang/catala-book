@@ -24,7 +24,7 @@ pour exécuter l'exemple est inclus ci-dessous pour référence.
 ~~~
 ~~~~~~
 
-## Créer un foyer à partir d'une liste d'personnes
+## Créer un foyer à partir d'une liste de personnes
 
 Précédemment, le Code des Impôts du Tutoriel Catala (CITC) a défini un impôt sur le revenu pour
 chaque personne et ses enfants. Mais maintenant, le CITC devient plus gourmand car une
@@ -43,7 +43,7 @@ Maintenant, implémenter cela en Catala nécessite d'aller au-delà du
 champ d'application `CalculImpôtRevenu` que nous avons utilisé plus tôt. En effet, cette nouvelle taxe nécessite
 un nouveau champ d'application, `CalculImpôtFoyer` ! Bien qu'il soit assez évident que le
 `résultat` de ce nouveau champ d'application devrait être `impôt_foyer`, son `entrée` est la
-collection d'personnes qui composent le foyer.
+collection de personnes qui composent le foyer.
 
 Heureusement, Catala possède un type intégré pour les collections de choses, appelé `liste`,
 même s'il se comporte plus comme un tableau dans le jargon informatique traditionnel.
@@ -59,7 +59,7 @@ déclaration champ d'application CalculImpôtFoyer:
 ~~~
 
 Pour définir `impôt_foyer`, nous devons maintenant :
-1. compter le nombre d'personnes dans `personnes` ;
+1. compter le nombre de personnes dans `personnes` ;
 2. compter le nombre d'enfants de chaque personne et additionner ces comptes ;
 3. multiplier ces comptes par le bon montant d'impôt.
 
@@ -141,7 +141,7 @@ champ d'application TestFoyer:
   définition calcul égal à
     résultat de CalculImpôtFoyer avec {
       -- personnes:
-        # Le champ d'application attend une liste d'personnes. En Catala, une liste est construite
+        # Le champ d'application attend une liste de personnes. En Catala, une liste est construite
         # avec la syntaxe "[<élément 1>; <élément 2>; ...]".
         [ Personne {
             -- revenu: 15 000 €

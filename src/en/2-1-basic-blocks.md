@@ -153,7 +153,7 @@ declaration enumeration TaxCredit:
 ```
 
 In computer science terms, such an enumeration is called a "sum type" or simply
-an enum. The combination of structures and enumerations allow the Catala
+an enum. The combination of structures and enumerations allows the Catala
 programmer to declare all possible shapes of data, as they are equivalent to
 the powerful notion of [algebraic data types](https://en.wikipedia.org/wiki/Algebraic_data_type).
 ~~~

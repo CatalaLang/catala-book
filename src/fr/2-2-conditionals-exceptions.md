@@ -482,7 +482,7 @@ champ d'application CalculImpôtRevenu:
 ```
 
 Avec ce code, la définition de l'article 6 se serait appliquée dans les territoires
-d'outre-mer pour tous les personnes, y compris ceux gagnant moins de 100 000 € !
+d'outre-mer pour toutes les personnes, y compris ceux gagnant moins de 100 000 € !
 En effet, les définitions exceptionnelles en Catala n'héritent pas des conditions de
 leur cas de base : la condition de l'article 6 n'hérite pas de la condition
 de l'article 5, nous devons la répéter à l'article 6 si nous voulons avoir le bon
