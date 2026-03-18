@@ -10,15 +10,15 @@ construire votre premier programme Catala pas à pas.
 Commencez par déclarer vos structures de données ici :
 
 ```catala
-# Déclarez votre structure Individu et votre énumération CréditImpôt ici
+# Déclarez votre structure Personne et votre énumération CréditImpôt ici
 # (voir "Configurer les structures de données" dans le tutoriel)
 
 ```
 
 ## Article 1
 
-L'impôt sur le revenu d'un individu est défini comme un pourcentage fixe
-du revenu de l'individu sur une année.
+L'impôt sur le revenu d'un personne est défini comme un pourcentage fixe
+du revenu de la personne sur une année.
 
 ```catala
 # Déclarez votre scope CalculImpôtRevenu et définissez impôt_revenu ici

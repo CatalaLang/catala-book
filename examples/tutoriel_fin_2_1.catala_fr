@@ -1,23 +1,23 @@
 
 ```catala
-déclaration structure Individu:
+déclaration structure Personne:
   donnée revenu contenu argent
   donnée nombre_enfants contenu entier
 
 déclaration champ d'application CalculImpôtRevenu:
-  entrée individu contenu Individu
+  entrée personne contenu Personne
   interne taux_imposition contenu décimal
   résultat impôt_revenu contenu argent
 
 champ d'application CalculImpôtRevenu:
   définition impôt_revenu égal à
-    individu.revenu * taux_imposition
+    personne.revenu * taux_imposition
 ```
 
 ## Article 1
 
-L'impôt sur le revenu pour un individu est défini comme un pourcentage fixe du
-revenu de l'individu sur une année.
+L'impôt sur le revenu pour un personne est défini comme un pourcentage fixe du
+revenu de la personne sur une année.
 
 ## Article 2
 
@@ -37,8 +37,8 @@ déclaration champ d'application Test:
 champ d'application Test:
   définition calcul égal à
     résultat de CalculImpôtRevenu avec {
-      -- individu:
-        Individu {
+      -- personne:
+        Personne {
           -- revenu: 20 000 €
           -- nombre_enfants: 0
         }
