@@ -390,7 +390,7 @@ sont représentées comme des valeurs avec leur propre type comme `liste de arge
 comme longueur, comptage, agrégation, mais aussi transformer, filtrer, etc. Veuillez vous référer
 au [guide de référence](./5-catala.md) pour des informations sur tous les
 opérateurs de liste disponibles en Catala. De plus, nous avons également vu dans
-cette section du tutoriel que plutôt que d'programmer toutes les règles pour traiter
+cette section du tutoriel que plutôt que de programmer toutes les règles pour traiter
 les éléments dans les listes à l'intérieur des opérateurs de liste, il est préférable de créer
 un nouveau champ d'application pour écrire toutes les règles qui s'appliquent aux éléments de la liste. Cela nous a
 permis de voir comment les champs d'application peuvent s'appeler les uns les autres et permettre une base de code
