@@ -8,7 +8,7 @@ les variables et les formules. En la terminant, vous serez en mesure d'écrire u
 programme Catala simple, qui calcule l'équivalent d'une seule fonction
 comportant plusieurs variables locales interdépendantes.
 
-~~~admonish info title="↑↑↓↓←→←→BA (cheat code)"
+~~~admonish info title="Cheat code"
 Un résumé de cette partie, ainsi que le code attendu, sont fournis en bas de
 cette page.
 
