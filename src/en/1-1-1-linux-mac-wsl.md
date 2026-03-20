@@ -36,7 +36,7 @@ all the packages that we'll install later will be compiled and stored. To
 initialize `opam` and create this first switch, enter the following:
 
 ```console
-$ opam init -c 4.14.2
+$ opam init -c 4.14.2 --shell-setup
 $ eval $(opam env)
 ```
 
