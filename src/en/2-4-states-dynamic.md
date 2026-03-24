@@ -50,7 +50,7 @@ Intuitively, this implies creating two scope variables in
 two consecutive states for the variable `household_tax`, and lawyers understand
 the code better this way! So Catala has a feature to let you do exactly that:
 
-~~~admonish note title="Defining multiple states for the same variable"
+~~~admonish example title="Defining multiple states for the same variable" collapsible=true
 ```catala-code-en
 declaration scope HouseholdTaxIndividualComputation:
   input individual content Individual
@@ -121,7 +121,7 @@ statically and exactly one time. But here, this is not what we want: we want
 to call the sub-scope as many times as there are individuals in the household.
 We then have to use a different method for calling the sub-scope:
 
-~~~admonish note title="Calling a sub-scope dynamically"
+~~~admonish example title="Calling a sub-scope dynamically" collapsible=true
 With all our refactorings, the declaration of the scope `HouseholdTaxComputation`
 can be simplified (we don't need the function variable `share_household_tax`
 anymore):

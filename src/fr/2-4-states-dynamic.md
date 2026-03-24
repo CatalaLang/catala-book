@@ -50,7 +50,7 @@ Intuitivement, cela implique de créer deux variables de champ d'application dan
 deux états consécutifs pour la variable `impôt_foyer`, et les juristes comprennent
 mieux le code de cette façon ! Donc Catala a une fonctionnalité pour vous permettre de faire exactement cela :
 
-~~~admonish note title="Définir plusieurs états pour la même variable"
+~~~admonish example title="Définir plusieurs états pour la même variable" collapsible=true
 ```catala-code-fr
 déclaration champ d'application CalculImpôtFoyerIndividuel:
   entrée personne contenu Personne
@@ -121,7 +121,7 @@ statiquement et exactement une fois. Mais ici, ce n'est pas ce que nous voulons 
 appeler le sous-champ d'application autant de fois qu'il y a de personnes dans le foyer.
 Nous devons alors utiliser une méthode différente pour appeler le sous-champ d'application :
 
-~~~admonish note title="Appeler un sous-champ d'application dynamiquement"
+~~~admonish example title="Appeler un sous-champ d'application dynamiquement" collapsible=true
 Avec toutes nos refactorisations, la déclaration du champ d'application `CalculImpôtFoyer`
 peut être simplifiée (nous n'avons plus besoin de la variable de fonction `part_impôt_foyer`) :
 

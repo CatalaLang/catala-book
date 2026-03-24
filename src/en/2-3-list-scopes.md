@@ -276,7 +276,7 @@ inputs necessary for the `IncomeTaxComputation` scope of the [previous section
 of the tutorial](./2-2-conditionals-exceptions.md): `overseas_territory` and
 `current_date` This gives the following scope declaration:
 
-~~~admonish quote title="Initial declaration of `HouseholdTaxIndividualComputation`"
+~~~admonish example title="Initial declaration of `HouseholdTaxIndividualComputation`" collapsible=true
 ```catala-code-en
 declaration scope HouseholdTaxIndividualComputation:
   input individual content Individual
@@ -291,7 +291,7 @@ Now, we know that we'll need to call `IncomeTaxComputation` exactly one time to
 compute the deduction for `household_tax`. There is a bespoke method designed
 for lawyer-readbility to do exactly that in Catala!
 
-~~~admonish note title="Declaring a static sub-scope call and defining the sub-scope call's inputs"
+~~~admonish example title="Declaring a static sub-scope call and defining the sub-scope call's inputs" collapsible=true
 ```catala-code-en
 # The single, static sub-scope call to "IncomeTaxComputation" has to be
 # declared in "HouseholdTaxIndividualComputation", so we repeat the
@@ -337,6 +337,7 @@ is now accessible at `income_tax_computation.income_tax`, since
 At this point, it is easy to define `household_tax` in a single sweep
 inside `HouseholdTaxIndividualComputation`:
 
+~~~admonish example title="Catala code for `household_tax`" collapsible=true
 ```catala-code-en
 scope HouseholdTaxIndividualComputation:
   definition household_tax equals
@@ -347,6 +348,7 @@ scope HouseholdTaxIndividualComputation:
     # Don't forget to cap the deduction!
     if deduction > tax then $0 else tax - deduction
 ```
+~~~
 
 ~~~admonish success title="Testing the individual household tax"
 To test what happens when the rule for articles 7 and 8 are at play

@@ -273,7 +273,7 @@ entrées nécessaires pour le champ d'application `CalculImpôtRevenu` de la [se
 du tutoriel](./2-2-conditionals-exceptions.md) : `territoires_outre_mer` et
 `date_courante`. Cela donne la déclaration de champ d'application suivante :
 
-~~~admonish quote title="Déclaration initiale de `CalculImpôtFoyerIndividuel`"
+~~~admonish example title="Déclaration initiale de `CalculImpôtFoyerIndividuel`" collapsible=true
 ```catala-code-fr
 déclaration champ d'application CalculImpôtFoyerIndividuel:
   entrée personne contenu Personne
@@ -288,7 +288,7 @@ Maintenant, nous savons que nous devrons appeler `CalculImpôtRevenu` exactement
 calculer la déduction pour `impôt_foyer`. Il existe une méthode sur mesure conçue
 pour la lisibilité par les juristes pour faire exactement cela en Catala !
 
-~~~admonish note title="Déclarer un appel de sous-champ d'application statique et définir les entrées de l'appel de sous-champ d'application"
+~~~admonish example title="Déclarer un appel de sous-champ d'application statique et définir les entrées de l'appel de sous-champ d'application" collapsible=true
 ```catala-code-fr
 # L'appel unique et statique au sous-champ d'application "CalculImpôtRevenu" doit être
 # déclaré dans "CalculImpôtFoyerIndividuel", nous répétons donc la
@@ -334,6 +334,7 @@ est maintenant accessible à `calcul_impôt_revenu.impôt_revenu`, puisque
 À ce stade, il est facile de définir `impôt_foyer` en un seul passage
 à l'intérieur de `CalculImpôtFoyerIndividuel` :
 
+~~~admonish example title="Code Catala pour `impôt_foyer`" collapsible=true
 ```catala-code-fr
 champ d'application CalculImpôtFoyerIndividuel:
   définition impôt_foyer égal à
@@ -344,6 +345,7 @@ champ d'application CalculImpôtFoyerIndividuel:
     # N'oubliez pas de plafonner la déduction !
     si déduction > impôt alors 0 € sinon impôt - déduction
 ```
+~~~
 
 ~~~admonish success title="Tester l'impôt sur le foyer personneel"
 Pour tester ce qui se passe lorsque la règle des articles 7 et 8 est en jeu

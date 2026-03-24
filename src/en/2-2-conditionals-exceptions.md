@@ -169,7 +169,9 @@ article 2:
 ~~~admonish quote title="Article 4"
 Individuals earning less than $10,000 are exempted of the income tax mentioned
 at article 1.
+~~~
 
+~~~admonish example title="Catala code for Article 4" collapsible=true
 ```catala-code-en
 scope IncomeTaxComputation:
   exception definition tax_rate
@@ -251,7 +253,7 @@ the exception of article 4, we need to give the definitions of `tax_rate` at
 articles 2 and 3 an explicit `label` so that the `exception` keywords in article
 3 and 4 can refer to those labels:
 
-~~~admonish note title="Pointing exceptions to specific labels"
+~~~admonish example title="Pointing exceptions to specific labels" collapsible=true
 #### Article 2
 
 The fixed percentage mentioned at article 1 is equal to 20 %.
@@ -319,7 +321,9 @@ branches of exceptions. Let us provide an example with a new article of the CTTC
 ~~~admonish quote title="Article 5"
 Individuals earning more than $100,000 are subjects to a tax rate of
 30%, regardless of their number of children.
+~~~
 
+~~~admonish example title="Catala code for Article 5" collapsible=true
 ```catala-code-en
 scope IncomeTaxComputation:
   label article_5 exception article_3
@@ -439,7 +443,7 @@ This article introduces a new bit of information about the tax computation:
 are we in an overseas territory or not? We can model it with a new input to the
 scope `IncomeTaxComputation`, leading to a revised scope declaration:
 
-~~~admonish quote title="Revised scope declaration"
+~~~admonish example title="Catala code for the revised scope declaration" collapsible=true
 ```catala-code-en
 declaration scope IncomeTaxComputation:
    input individual content Individual
@@ -451,6 +455,7 @@ declaration scope IncomeTaxComputation:
 
 With this new input variable, the code for article 6 is as follows:
 
+~~~admonish example title="Catala code for Article 6" collapsible=true
 ```catala-code-en
 scope IncomeTaxComputation:
   label article_6 exception article_5
@@ -458,6 +463,7 @@ scope IncomeTaxComputation:
   under condition individual.income > $100,000 and overseas_territories
   consequence equals 25 %
 ```
+~~~
 
 ~~~admonish danger title="Exceptions do not inherit conditionals from their base case"
 Note that in the condition for defining `tax_rate` in article 6, we
@@ -522,7 +528,7 @@ we'll suppose that we want both versions of the law (before and after 2000)
 to coexist in the same Catala program. This choice leads us to introduce the
 current date as a new input of the scope `IncomeTaxComputation`:
 
-~~~admonish quote title="Revised scope declaration"
+~~~admonish example title="Catala code for the revised scope declaration" collapsible=true
 ```catala-code-en
 declaration scope IncomeTaxComputation:
    input current_date content date
@@ -566,7 +572,7 @@ the two conditional definitions to article 2. Indeed, since article 3
 is an exception to the label `article_2`, it suffices to give the same label
 `article_2` to the two conditional definitions of the two versions of `article_2`:
 
-~~~admonish note title="Grouping mutually exclusive conditional definitions"
+~~~admonish example title="Grouping mutually exclusive conditional definitions" collapsible=true
 #### Article 2 (old version before 2000)
 
 The fixed percentage mentioned at article 1 is equal to 20 %.

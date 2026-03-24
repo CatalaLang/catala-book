@@ -288,7 +288,9 @@ you at this point.
 
 ~~~admonish quote title="Article 2"
 The fixed percentage mentioned at article 1 is equal to 20 %.
+~~~
 
+~~~admonish example title="Catala code for Article 2" collapsible=true
 ```catala-code-en
 scope IncomeTaxComputation:
   # Writing 20% is just an alternative for the decimal "0.20".
