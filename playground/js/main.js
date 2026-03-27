@@ -282,8 +282,7 @@ async function init() {
   // When present it takes absolute priority over localStorage and codeUrl.
   const sharedData = hashParams.get('shared') || undefined;
 
-  // Share button shown by default. Embedders (e.g. learn.html) can hide it by calling
-  // window.playground.hideShare() after the iframe loads — see the API exposed below.
+  // Share button: shown unless share=false is passed in the hash params.
 
   // Invariant: shared= and localStorage are mutually exclusive — the URL hash IS
   // the persistent state when shared= is present.
@@ -348,10 +347,10 @@ async function init() {
   // Render initial tabs
   reRenderTabs();
 
-  // Setup share button (hidden by default; embedders call window.playground.showShare()
-  // to enable it — see index.html which does this for the standalone playground)
+  // Setup share button. Shown by default; pass share=false in hash to hide (e.g. learn.html).
   const shareBtn = document.getElementById('shareBtn');
   if (shareBtn) {
+    if (hashParams.get('share') !== 'false') shareBtn.style.display = 'inline-block';
     shareBtn.addEventListener('click', async () => {
       updateCurrentFile(getEditorContent());
       const state = getAllFiles();
