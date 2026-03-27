@@ -129,6 +129,7 @@
       const exercise = EXERCISES[lang]?.[chapterId];
       const hashParams = new URLSearchParams();
       hashParams.set('lang', lang);
+      hashParams.set('share', 'false');
 
       if (exercise) {
         hashParams.set('checkpointId', `${lang}-${chapterId}`);
