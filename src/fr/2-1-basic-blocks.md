@@ -292,7 +292,9 @@ plus vous surprendre.
 
 ~~~admonish quote title="Article 2"
 Le pourcentage fixe mentionné à l'article 1 est égal à 20 %.
+~~~
 
+~~~admonish example title="Code Catala de l'Article 2" collapsible=true
 ```catala-code-fr
 champ d'application CalculImpôtRevenu:
   # "20 %" est une écriture alternative du décimal "0,20".

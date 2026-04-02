@@ -169,7 +169,9 @@ l'article 2 :
 ~~~admonish quote title="Article 4"
 Les personnes gagnant moins de 10 000 € sont exonérés de l'impôt sur le revenu mentionné
 à l'article 1.
+~~~
 
+~~~admonish example title="Code Catala de l'Article 4" collapsible=true
 ```catala-code-fr
 champ d'application CalculImpôtRevenu:
   exception définition taux_imposition
@@ -252,7 +254,7 @@ l'exception de l'article 4, nous devons donner aux définitions de `taux_imposit
 articles 2 et 3 une `étiquette` explicite afin que les mots-clés `exception` dans les articles
 3 et 4 puissent faire référence à ces étiquettes :
 
-~~~admonish note title="Pointer les exceptions vers des étiquettes spécifiques"
+~~~admonish example title="Pointer les exceptions vers des étiquettes spécifiques" collapsible=true
 #### Article 2
 
 Le pourcentage fixe mentionné à l'article 1 est égal à 20 %.
@@ -320,7 +322,9 @@ branches d'exceptions. Donnons un exemple avec un nouvel article du CITC :
 ~~~admonish quote title="Article 5"
 Les personnes gagnant plus de 100 000 € sont soumis à un taux d'imposition de
 30%, quel que soit leur nombre d'enfants.
+~~~
 
+~~~admonish example title="Code Catala de l'Article 5" collapsible=true
 ```catala-code-fr
 champ d'application CalculImpôtRevenu:
   étiquette article_5 exception article_3
@@ -440,7 +444,7 @@ Cet article introduit une nouvelle information sur le calcul de l'impôt :
 sommes-nous dans un territoire d'outre-mer ou non ? Nous pouvons le modéliser avec une nouvelle entrée dans le
 champ d'application `CalculImpôtRevenu`, conduisant à une déclaration de champ d'application révisée :
 
-~~~admonish quote title="Déclaration de champ d'application révisée"
+~~~admonish example title="Code Catala de la déclaration de champ d'application révisée" collapsible=true
 ```catala-code-fr
 déclaration champ d'application CalculImpôtRevenu:
    entrée personne contenu Personne
@@ -452,6 +456,7 @@ déclaration champ d'application CalculImpôtRevenu:
 
 Avec cette nouvelle variable d'entrée, le code pour l'article 6 est le suivant :
 
+~~~admonish example title="Code Catala de l'Article 6" collapsible=true
 ```catala-code-fr
 champ d'application CalculImpôtRevenu:
   étiquette article_6 exception article_5
@@ -459,6 +464,7 @@ champ d'application CalculImpôtRevenu:
   sous condition personne.revenu > 100 000 € et territoires_outre_mer
   conséquence égal à 25 %
 ```
+~~~
 
 ~~~admonish danger title="Les exceptions n'héritent pas des conditions de leur cas de base"
 Notez que dans la condition pour définir `taux_imposition` à l'article 6, nous
@@ -523,7 +529,7 @@ nous supposerons que nous voulons que les deux versions de la loi (avant et apr�
 coexistent dans le même programme Catala. Ce choix nous amène à introduire la
 date courante comme une nouvelle entrée du champ d'application `CalculImpôtRevenu` :
 
-~~~admonish quote title="Déclaration de champ d'application révisée"
+~~~admonish example title="Code Catala de la déclaration de champ d'application révisée" collapsible=true
 ```catala-code-fr
 déclaration champ d'application CalculImpôtRevenu:
    entrée date_courante contenu date
@@ -567,7 +573,7 @@ les deux définitions conditionnelles de l'article 2. En effet, puisque l'articl
 est une exception à l'étiquette `article_2`, il suffit de donner la même étiquette
 `article_2` aux deux définitions conditionnelles des deux versions de `article_2` :
 
-~~~admonish note title="Regrouper des définitions conditionnelles mutuellement exclusives"
+~~~admonish example title="Regrouper des définitions conditionnelles mutuellement exclusives" collapsible=true
 #### Article 2 (ancienne version avant 2000)
 
 Le pourcentage fixe mentionné à l'article 1 est égal à 20 %.
