@@ -74,39 +74,6 @@ $ opam upgrade catala
 Cette méthode fonctionne également pour les autres paquets `opam` présentés
 ci-dessous : remplacez simplement `upgrade catala` par `upgrade catala-lsp`, etc.
 
-~~~admonish danger collapsible=true title="À la pointe : obtenir les versions de développement"
-
-Si vous vous sentez l'âme aventurière, vous pouvez récupérer la dernière version
-de développement de l'outillage Catala au lieu des versions stables éprouvées.
-Pour ce faire, vous devez [épingler](https://opam.ocaml.org/doc/Usage.html#opam-pin)
-les paquets opam `catala`, `catala-lsp` et `catala-format` dans votre switch
-vers une version `dev` pointant vers les dépôts git de l'outillage Catala. Voici
-la commande à invoquer :
-
-```console
-$ opam pin catala.dev --dev-repo
-$ opam pin catala-lsp.dev --dev-repo
-$ opam pin catala-format.dev --dev-repo
-```
-
-Si vous êtes fatigué d'être à la pointe et souhaitez revenir aux versions
-normales, désépinglez simplement les versions de développement :
-
-```console
-$ opam unpin catala.dev
-$ opam unpin catala-lsp.dev
-$ opam unpin catala-format.dev
-```
-
-Et réinstallez Catala :
-
-```console
-$ opam reinstall catala
-$ opam reinstall catala-lsp
-$ opam reinstall catala-format
-```
-~~~
-
 ## Obtenir le serveur LSP (nécessaire pour l'extension VSCode)
 
 L'extension VSCode nécessite que le protocole de serveur de langage (LSP) de

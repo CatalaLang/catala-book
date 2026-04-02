@@ -9,31 +9,6 @@ for the OCaml software toolchain](https://ocaml.org/docs/ocaml-on-windows) dates
 from the early 2020s. If possible, use WSL (Windows Subsystem for Linux) instead.
 ~~~
 
-## Binary installer
-
-You can download and install Catala using this binary installer - you
-might need administrator privileges:
-
-- [Catala x86_64 Windows binary installer](https://gitlab.inria.fr/verifisc/docker-catala/-/raw/catala-windows-installer/Catala.msi)
-
-~~~admonish warning title="This is an incomplete version of Catala"
-Currently, this installer provides the basic Catala compiler with the LSP
-server used by the VS Code extension along with the Catala code
-formatter. This is handy for experimenting with the language but this
-does not include the full compilation toolchain and the Catala build
-system required to use modules. To get those, you will need to
-[install from the sources directly](#installing-from-sources).
-~~~
-
-Once this Catala setup file is installed, you might need to restart
-VS Code if it was previously launched. To make sure everything was
-properly installed, you can open a VS Code terminal and type `$ catala
---version`. If this does not display an error, everything should be
-properly setup.
-
-To install the Catala VS Code extension, please refer to this
-[section](#getting-the-vs-code-extension).
-
 ## Installing from sources
 
 ### Getting Opam
@@ -92,3 +67,29 @@ install the [`Catala` extension](https://marketplace.visualstudio.com/items?item
 ### Getting the Catala code formatter
 
 Currently, the code formatter is not yet available on Windows.
+
+## Binary installer
+
+You can download and install Catala using this binary installer - you
+might need administrator privileges:
+
+- [Catala x86_64 Windows binary installer](https://gitlab.inria.fr/catala/ci-images/-/raw/catala-windows-installer/Catala.msi)
+
+~~~admonish warning title="This is an incomplete and old version of Catala"
+Currently, this installer provides the basic Catala compiler with the LSP
+server used by the VS Code extension along with the Catala code
+formatter. However, this is an old version from March 2025 (pre 1.0.0).
+This is handy for experimenting with the language but this
+does not include the full compilation toolchain and the Catala build
+system required to use modules. To get those, you will need to
+[install from the sources directly](#installing-from-sources).
+~~~
+
+Once this Catala setup file is installed, you might need to restart
+VS Code if it was previously launched. To make sure everything was
+properly installed, you can open a VS Code terminal and type `$ catala
+--version`. If this does not display an error, everything should be
+properly setup.
+
+To install the Catala VS Code extension, please refer to this
+[section](#getting-the-vs-code-extension).

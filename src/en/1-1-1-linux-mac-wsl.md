@@ -65,6 +65,7 @@ be installed. You should be able to succesfully call `$ clerk
 eval $(opam env)` before.
 
 ### Upgrading Catala
+
 At any time, you can retrieve the latest Catala release using
 these simple commands:
 ```console
@@ -74,39 +75,6 @@ $ opam upgrade catala
 
 This method also works for the other `opam` packages presented below:
 just replace `upgrade catala` by `upgrade catala-lsp`, etc.
-
-~~~admonish danger collapsible=true title="Bleeding edge: getting development snapshots"
-
-If you feel adventurous, you can retrive the latest development version of
-the Catala tooling instead of the tried and tested releases. To do so,
-you need to [pin](https://opam.ocaml.org/doc/Usage.html#opam-pin) the `catala`,
-`catala-lsp` and `catala-format` opam packages in your switch to a `dev`
-version pointing to the git repositories of the Catala tooling. Here is the
-command to invoke:
-
-```console
-$ opam pin catala.dev --dev-repo
-$ opam pin catala-lsp.dev --dev-repo
-$ opam pin catala-format.dev --dev-repo
-```
-
-If you're tired of the bleeding edge and want to go back to the normal releases,
-simply unpin the development versions:
-
-```console
-$ opam unpin catala.dev
-$ opam unpin catala-lsp.dev
-$ opam unpin catala-format.dev
-```
-
-And reinstall Catala:
-
-```console
-$ opam reinstall catala
-$ opam reinstall catala-lsp
-$ opam reinstall catala-format
-```
-~~~
 
 ## Getting the LSP server (needed by the VSCode extension)
 

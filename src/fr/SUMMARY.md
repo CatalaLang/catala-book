@@ -8,6 +8,7 @@
     - [Installation](./1-1-0-installing.md)
         - [Linux, macOS, WSL](./1-1-1-linux-mac-wsl.md)
         - [Windows](./1-1-2-windows.md)
+        - [Installations nightly et de développement](./1-1-3-nightly-dev.md)
     - [Premier programme](./1-2-first.md)
 - [Tutoriel](./2-0-tutorial.md)
     - [Éléments de base](./2-1-basic-blocks.md)
