@@ -8,6 +8,7 @@
     - [Installing Catala on your machine](./1-1-0-installing.md)
         - [Linux/Mac/WSL](./1-1-1-linux-mac-wsl.md)
         - [Windows](./1-1-2-windows.md)
+        - [Nightly and development installations](./1-1-3-nightly-dev.md)
     - [Creating your first Catala program](./1-2-first.md)
 - [Tutorial : computing your taxes](./2-0-tutorial.md)
     - [Basic blocks of a Catala program](2-1-basic-blocks.md)

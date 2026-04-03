@@ -2,12 +2,6 @@
 
 <div id="tocw"></div>
 
-~~~admonish warning title="Avertissement"
-Actuellement, Catala n'est disponible que via la compilation depuis les sources.
-L'équipe Catala prévoit de distribuer Catala sous forme binaire à l'avenir, ce
-qui facilitera grandement le processus d'installation.
-~~~
-
 Catala est un langage de programmation principalement conçu pour être installé
 sur votre machine et exécuté localement dans votre environnement de
 développement préféré. Concrètement, Catala est composé de plusieurs exécutables
@@ -47,3 +41,11 @@ Pendant les étapes d'installation, plusieurs invites peuvent apparaître. Chois
 l'option par défaut (en appuyant sur Entrée à chaque fois) ou répondre oui (en
 tapant `y` puis Entrée) est suffisant.
 ~~~
+
+Les deux guides d'installation (systèmes compatibles Unix et Windows) supposent
+que vous voulez installer la dernière *release* communautaire de Catala, hébergée
+sur le principal [dépôt public de
+opam](https://github.com/ocaml/opam-repository/). Si vous voulez installer une
+version *nightly* ou de de développement, tournez-vous vers le [guide
+d'installation des version *nightly* et de
+développement](./1-1-3-nightly-dev.md).
