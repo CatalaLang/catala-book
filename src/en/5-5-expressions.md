@@ -24,6 +24,7 @@ If you're familiar with this format, you can read it below:
   | match <expr> with pattern                         # Pattern matching
     -- <enum variant 1>: <expr 1>
     -- <enum variant 2> of <variable>: <expr 2>
+    -- <enum variant 2> of (<variable 1>, <variable 2>, ...) : <expr 3>
   | <expr> with pattern <enum variant>                # Pattern variant test
   | <expr> with pattern <enum variant> of <variable>  # Ditto with content binding
       and <expr>                                      #   and test on the variable

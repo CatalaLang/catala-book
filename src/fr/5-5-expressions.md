@@ -24,6 +24,7 @@ Si vous êtes familier avec ce format, vous pouvez le lire ci-dessous :
   | selon <expr> sous forme                           # Filtrage par motif
     -- <variante énum 1>: <expr 1>
     -- <variante énum 2> contenu <variable>: <expr 2>
+    -- <variante énum 3> contenu (<variable 1>, <variable 2>, ...): <expr 3>
   | <expr> sous forme <variante énum>                 # Test variante motif
   | <expr> sous forme <variante énum> contenu <variable> # Idem avec liaison contenu
       et <expr>                                       #   et test sur la variable
