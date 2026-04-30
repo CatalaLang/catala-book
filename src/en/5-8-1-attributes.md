@@ -71,3 +71,8 @@ to report the error where it happens in the user code, rather than point to the
 library. For example, it wouldn't be very helpful when calling
 `Utils.custom_division of 2, 0` to report the position of the `Utils` module
 where the `custom_division` function is defined.
+
+### `#[json]`
+
+Used to supply constants of [external
+types](./5-8-2-external-modules.md#external-types).

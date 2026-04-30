@@ -188,6 +188,10 @@ The reserved keywords in Catala are :
 `minimum`
 `is`
 `or if list empty`
+`sort`
+`in increasing order`
+`in decreasing order`
+`and then`
 `but replace`
 `initially`
 `number`

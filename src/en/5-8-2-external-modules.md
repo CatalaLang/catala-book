@@ -113,10 +113,24 @@ the external module will provide the functions that can use it.
 
 Be wary, though, of the following caveats when using external types:
 - The actual implementation must follow the expectations from the corresponding
-  Catala backend (for example, in Java, the corresponding class must
-  implement `CatalaValue`)
+  Catala backend (for example, in Java, the corresponding class must implement
+  `CatalaValue`. The templates generated using the `--gen-external` flag should
+  provide the proper guidance). It is required, in particular, to implement the
+  `from_json` method or function.
 - As mentionned above, they must be kept functional. **Do not use mutable
   types**: if a value can be updated in-place, expect weird bugs to happen. For
   example, a function that adds an element to a collection encoded using an
   external type should return a new collection with the element added, never
   modify the collection it was given as argument.
+
+External types will normally be passed to the Catala program when used as a
+library in the chosen backend. It is possible, however, to write external
+constants directly in the Catala source, using the `#[json]`
+[attribute](./5-8-1-attributes.md) with the following syntax:
+
+```catala-expr-en
+#[json = "<json object as string>"] AbstractType
+```
+
+where, as above, `AbstractType` is the name of your external type. This is
+useful in particular when writing unit tests.
