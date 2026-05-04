@@ -319,9 +319,14 @@ You can build list values using the following syntax:
 | `<list1> ++ <list2>`                               | list             | Concatenate two lists                                             |
 | `maximum of <list> (or if list empty then <expr>)` | type of elements | Returns the maximum element of the list (or an optional default)  |
 | `minimum of <list> (or if list empty then <expr>)` | type of elements | Returns the minimum element of the list (or an optional default)  |
+| `content of <var> among <list> such that <expr>`  | optional(type of elements) | Returns the first element of the list that satisfies `<expr>` |
 | `content of <var> among <list> such that <expr1> is maximum (or if list empty then <expr2>)` | type of elements | Returns the arg-maximum element of the list (or an optional default) |
 | `content of <var> among <list> such that <expr1> is minimum (or if list empty then <expr2>)` | type of elements | Returns the arg-minimum element of the list (or an optional default) |
 | `combine all <var> among <list> in <acc> initially <expr1> with <expr2>` | type of elements | [Folds](https://en.wikipedia.org/wiki/Fold_(higher-order_function)) `<list>`, starting with `<expr1>` and accumulating with `<expr2>` |
+| `sort <list> in increasing order`                            | list             | Uses the default ordering on the list elements                    |
+| `sort <list> in decreasing order`                            | list             | Uses the default ordering on the list elements                    |
+| `sort all <var> among <list> in increasing order of <expr1> (and then <expr2>...)` | list | Uses the default ordering on the results of `<expr1>`, etc.  |
+| `sort all <var> among <list> in decreasing order of <expr1> (and then <expr2>...)` | list | Uses the default ordering on the results of `<expr1>`, etc.  |
 
 ~~~admonish tip title="Iterating on multiple lists at the same time"
 These list operations mirror the contents of a [basic list library for a functional
