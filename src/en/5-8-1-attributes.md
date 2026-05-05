@@ -6,19 +6,36 @@
 The language can be extended with attributes, enabling a variety of extensions.
 An attribute is of the form `#[key.of.extension]` or `#[key.of.extension = VALUE]`,
 where `VALUE` can be of the form `"STRING"`, or an expression in Catala syntax.
-An attribute is always bound to the element directly following it: an extension
-could for example make use of them to retrieve labels to the input fields of a
-scope in order to generate a web form:
+An attribute is always bound to the element directly following it, for instance,
+the following binds the `doc` attribute to the `input` variable `children_of_age`
+in scope `SomeComputation`:
 
 ```catala-code-en
 declaration scope SomeComputation:
-  #[form.label = "Enter the number of children satisfying the condition XXX"]
+  #[doc = "Enter the number of children satisfying the condition XXX"]
   input children_of_age content integer
 ```
 
 ## Built-in attributes
 
-Some attributes affect the Catala compiler itself and have built-in support.
+Some attributes affect the Catala tooling and have built-in support;
+they are all listed below. The table lists which attribute has an effect
+on which part of the Catala tooling.
+
+| Attribute                               | Attached to               | Interpreter | Generated code | Test editor UI | JSON Schema |
+|-----------------------------------------|---------------------------|:-----------:|:--------------:|:--------------:|:-----------:|
+| `#[test]`                               | Scope declarations        | ✅          |                | ✅             |             |
+| `#[doc = "..."]` or `##`                | Anything                  |             |                |                | ✅          |
+| `#[error.message = "..."]`              | `impossible`, `assertion` | ✅          | ✅             |                |             |
+| `#[debug.print = "..."]`                | Any expression            | ✅          |                |                |             |
+| `#[implicit_position_argument]`         | Function declarations     |             | ✅             |                |             |
+| `#[json = "..."]`                       | External expression       | ✅          | ✅             |                |             |
+| `#[testcase.testui]`                    | Test scope declaration    |             |                | ✅             |             |
+| `#[testcase.test_description = "..."]`  | Test scope declaration    |             |                | ✅             |             |
+| `#[testcase.test_title = "..."]`        | Test scope declaration    |             |                | ✅             |             |
+| `#[testcase.uid = "..."]`               | Any expression            |             |                | ✅             |             |
+| `#[testcase.array_item_label = "..."]`  | Array items               |             |                | ✅             |             |
+
 
 ### `#[test]`
 
@@ -35,6 +52,10 @@ explain the purpose and usage of its linked element.
 The alternative syntax `## documentation text` (a code comment starting with a
 double `#` character) is available and preferred for readability. Like the
 attribute, it must be present just above its target.
+
+The documentation items attached to type or scope items declarations are
+passed down in the generated [JSON Schema](./5-8-3-json-support.md) in
+the `description` property of the objects.
 
 ### `#[error.message]`
 
@@ -76,3 +97,52 @@ where the `custom_division` function is defined.
 
 Used to supply constants of [external
 types](./5-8-2-external-modules.md#external-types).
+
+### `#[testcase.*]`
+
+These attributes are used by the test case editor UI. They should be attached
+to scope declarations used for tests, and usually also marked with `#[test]`.
+
+A test scope declaration produced by the test case editor UI will thus look like
+this:
+
+```catala-code-en
+#[test]
+#[testcase.testui]
+#[testcase.test_title = "Some computation"]
+#[testcase.test_description = "This is a very important test"]
+declaration scope SomeComputation:
+  input children_of_age content integer
+  ...
+```
+
+#### `#[testcase.testui]`
+
+Signals to the test case editor UI that this scope declaration is a test
+that should be displayed in the UI. Must always be accompanied by a
+`#[test]` since UI test cases shoudl always also be regular tests.
+
+#### `#[testcase.test_title]`
+
+Displays a title for the test, distinct from the scope name, in the test
+case editor UI.
+
+#### `#[testcase.test_description]`
+
+Displays a textual description of the test in the UI.
+
+#### `#[testcase.uid]`
+
+This attribute stores the unique identifier used in React applications
+to identify React components in a list. It's a technical stub used
+by the test case editor UI.
+
+#### `#[testcase.array_item_label]`
+
+Displays a name for the the array item in the test case editor UI.
+
+## Plugin-supplied attributes
+
+The attribute system of Catala is extensible, and each compiler plugin <!--[compiler plugin](./6-3-compiler-plugins.md)-->
+can define an array of attributes which can be parsed and passed to the plugin,
+on top of giving new meaning and actions to built-in attributes.
