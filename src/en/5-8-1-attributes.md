@@ -24,7 +24,7 @@ on which part of the Catala tooling.
 
 | Attribute                               | Attached to               | Interpreter | Generated code | Test editor UI | JSON Schema |
 |-----------------------------------------|---------------------------|:-----------:|:--------------:|:--------------:|:-----------:|
-| `#[test]`                               | Scope declarations        |             |                |                |             |
+| `#[test]`                               | Scope declarations        | ✅          |                | ✅             |             |
 | `#[doc = "..."]` or `##`                | Anything                  |             |                |                | ✅          |
 | `#[error.message = "..."]`              | `impossible`, `assertion` | ✅          | ✅             |                |             |
 | `#[debug.print = "..."]`                | Any expression            | ✅          |                |                |             |
@@ -33,6 +33,8 @@ on which part of the Catala tooling.
 | `#[testcase.testui]`                    | Test scope declaration    |             |                | ✅             |             |
 | `#[testcase.test_description = "..."]`  | Test scope declaration    |             |                | ✅             |             |
 | `#[testcase.test_title = "..."]`        | Test scope declaration    |             |                | ✅             |             |
+| `#[testcase.uid = "..."]`               | Any expression            |             |                | ✅             |             |
+| `#[testcase.array_item_label = "..."]`  | Array items               |             |                | ✅             |             |
 
 
 ### `#[test]`
@@ -117,7 +119,8 @@ declaration scope SomeComputation:
 #### `#[testcase.testui]`
 
 Signals to the test case editor UI that this scope declaration is a test
-that should be displayed in the UI.
+that should be displayed in the UI. Must always be accompanied by a
+`#[test]` since UI test cases shoudl always also be regular tests.
 
 #### `#[testcase.test_title]`
 
@@ -127,6 +130,16 @@ case editor UI.
 #### `#[testcase.test_description]`
 
 Displays a textual description of the test in the UI.
+
+#### `#[testcase.uid]`
+
+This attribute stores the unique identifier used in React applications
+to identify React components in a list. It's a technical stub used
+by the test case editor UI.
+
+#### `#[testcase.array_item_label]`
+
+Displays a name for the the array item in the test case editor UI.
 
 ## Plugin-supplied attributes
 
