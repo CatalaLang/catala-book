@@ -46,6 +46,6 @@
 - [Clerk](./6-clerk.md)
     - [Configuration](./6-1-clerk-toml.md)
     - [Commandes](./6-2-commands-workflow.md)
-    <!-- - [Plugins du compilateur](./6-4-compiler-plugins.md) -->
+    <!-- - [Plugins du compilateur](./6-3-compiler-plugins.md) -->
 - [Plugin VS code](./7-vscode-plugin.md)
     - [Éditeur de cas de test](./7-1-test-gui.md)
