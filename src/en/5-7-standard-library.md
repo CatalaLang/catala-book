@@ -319,6 +319,51 @@ declaration max
   depends on
     d1 content date,
     d2 content date
+
+## Adds a duration to a date, rounding to the previous day when ambiguous.
+## Note: this is the behaviour of "`+`" in scopes where `date round down` is set
+## **Examples:**
+## - `add_round_down of |2026-05-31|, 1 month = |2026-06-30|`
+## - `add_round_down of |2000-02-29|, 1 year = |2001-02-28|`
+declaration add_round_down
+  content date
+  depends on
+    t content date,
+    dt content duration
+
+## Adds a duration to a date, rounding to the next day when ambiguous.
+## Note: this is the behaviour of "`+`" in scopes where `date round up` is set
+## **Examples:**
+## - `add_round_up of |2026-05-31|, 1 month = |2026-07-01|`
+## - `add_round_up of |2000-02-29|, 1 year = |2001-03-01|`
+declaration add_round_up
+  content date
+  depends on
+    t content date,
+    dt content duration
+
+## Subtracts a duration from a date, rounding to the previous day when
+## ambiguous.
+## Note: this is the behaviour of "`-`" in scopes where `date round down` is set
+## **Examples:**
+## - `sub_round_down of |2026-05-31|, 1 month = |2026-04-30|`
+## - `sub_round_down of |2000-02-29|, 1 year = |1999-02-28|`
+declaration sub_round_down
+  content date
+  depends on
+    t content date,
+    dt content duration
+
+## Subtracts a duration from a date, rounding to the next day when ambiguous.
+## Note: this is the behaviour of "`-`" in scopes where `date round up` is set
+## **Examples:**
+## - `sub_round_up of |2026-05-31|, 1 month = |2026-05-01|`
+## - `sub_round_up of |2000-02-29|, 1 year = |1999-03-01|`
+declaration sub_round_up
+  content date
+  depends on
+    t content date,
+    dt content duration
 ```
 
 ### Dates and years, months and days
