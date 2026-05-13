@@ -57,6 +57,7 @@ servefr: treesit-prepare
 	mdbook serve -d book/site/fr
 
 clean:
+	$(MAKE) -C treesitter clean
 	mdbook clean
 
 cargo-deps-nomdbook:

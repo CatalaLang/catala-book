@@ -1,5 +1,8 @@
 build: tree-sitter-catala/libtree-sitter-catala_expr_fr.so
 
+clean:
+	rm -f tree-sitter-catala/libtree-sitter-catala_*.so
+
 tree-sitter-catala/libtree-sitter-catala_expr_fr.so:
 	@if ! [ -e tree-sitter-catala ]; then \
 	  echo ">> Please run 'make -C treesitter init' or 'make -C treesitter link' first." >&2; \

@@ -7,10 +7,10 @@ A French translated version is also available here: [French version](../fr/5-7-s
 Other languages currently need to use the following English version.
 ~~~
 
-To avoid reinventing the wheel, Catala comes with a standard library containing
-helpful functions on basic types.
-We include below a listing of the function prototypes in the standard library, classified by
-modules. To use a function of the standard library, simply type:
+Catala comes with a standard library containing helpful functions on basic
+types. We include below a listing of the function prototypes in the standard
+library, classified by modules. To use a function of the standard library,
+simply type:
 
 ```text
 <module name>.<function name> of <arguments>
@@ -663,6 +663,9 @@ declaration find_period
 ```catala-code-en
 ## Sorts the given periods by starting day.
 ## if two periods start on the same day, their order in the list is preserved
+## **deprecated**: use the new `sort` built-in instead: this is equivalent to
+## `sort all (p, x) among lst in increasing order of p.begin`. This function
+## will be removed in the next release.
 declaration sort_by_date
   content list of (Period, anything of type t)
   depends on l content list of (Period, anything of type t)
