@@ -31,9 +31,19 @@ The type `boolean` has only two values, `true` and `false`.
 
 | Symbol          | Type of first argument                  | Type of second argument | Type of result | Semantic                                          |
 |-----------------|-----------------------------------------|-------------------------|----------------|---------------------------------------------------|
-| `=, !=`         | anything but functions                  | same as first argument  | boolean        | Structural (in)equality                           |
-| `>, >=, <, <=`  | integer, decimal, money, date           | same as first argument  | boolean        | Usual comparison                                  |
-| `>, >=, <, <=`  | duration                                | duration                | boolean        | Usual comparison if same unit, else runtime error |
+| `=`, `!=`       | anything but functions                  | same as first argument  | boolean        | Structural equality                           |
+| `>`, `>=`, `<`, `<=` | anything but functions             | same as first argument  | boolean        | Usual comparison                                  |
+
+* Comparing durations in different units leads to runtime errors (because, for
+  example, `1 month > 30 day` is undefined)
+* Comparing structures is done lexicographically, in the order in which the
+  fields were declared. That is, the first fields of the two structures is
+  compared ; if it is equal, we go on to comparing the next field ; and so on.
+* Comparing enumerations is done as follows:
+  - if the two values have the same constructor, their payloads are compared
+  - if not, the value with the constructor that appeared earlier in the
+    declaration of the enumeration is always smaller
+* Comparing functions is always a runtime error
 
 ### Integer operations
 
@@ -44,7 +54,7 @@ more readable.
 | Symbol       | Type of first argument | Type of second argument | Type of result | Semantic                   |
 |--------------|------------------------|-------------------------|----------------|----------------------------|
 | `+`          | integer                | integer                 | integer        | Integer addition           |
-| `-`          | integer                | integer                 | integer        | Integer subtraction       |
+| `-`          | integer                | integer                 | integer        | Integer subtraction        |
 | `-`          | integer                |                         | integer        | Integer negation           |
 | `*`          | integer                | integer                 | integer        | Integer multiplication     |
 | `/`          | integer                | integer                 | decimal        | Rational division          |
@@ -95,7 +105,7 @@ symbol, like `$12.36` or `-$871,84.1`.
 | Symbol     | Type of first argument | Type of second argument | Type of result | Semantic                        |
 |------------|------------------------|-------------------------|----------------|---------------------------------|
 | `+`        | money                  | money                   | money          | Money addition                  |
-| `-`        | money                  | money                   | money          | Money subtraction              |
+| `-`        | money                  | money                   | money          | Money subtraction               |
 | `-`        | money                  |                         | money          | Money negation                  |
 | `/`        | money                  | money                   | decimal        | Rational division               |
 | `round of` | money                  |                         | money          | Round to nearest unit           |
