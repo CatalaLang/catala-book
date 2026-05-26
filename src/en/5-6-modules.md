@@ -30,7 +30,16 @@ you will not be able to call functions of this file from other modules.
 
 ## Imports
 
-Modules can "use" other modules to import their **public** types, scopes and constants. If you want to use module `Bar` inside module `Foo`, the top of
+Modules can "use" other modules to import their **public** types, scopes and
+constants.
+
+~~~admonish bug title="Catala pretends it doesn't know the types I'm importing, what to do?"
+Often, this kind of error messages comes from the fact that you are trying
+to import a private type from an external module. See [Public and private objects](./5-6-modules.md#public-and-private-objects)
+below to know how to make your types public and usable as imports.
+~~~
+
+If you want to use module `Bar` inside module `Foo`, the top of
 `foo.catala_en` should look like:
 
 ```catala-en
