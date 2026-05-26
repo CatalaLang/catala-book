@@ -7,10 +7,10 @@ A French translated version is also available here: [French version](../fr/5-7-s
 Other languages currently need to use the following English version.
 ~~~
 
-To avoid reinventing the wheel, Catala comes with a standard library containing
-helpful functions on basic types.
-We include below a listing of the function prototypes in the standard library, classified by
-modules. To use a function of the standard library, simply type:
+Catala comes with a standard library containing helpful functions on basic
+types. We include below a listing of the function prototypes in the standard
+library, classified by modules. To use a function of the standard library,
+simply type:
 
 ```text
 <module name>.<function name> of <arguments>
@@ -319,6 +319,51 @@ declaration max
   depends on
     d1 content date,
     d2 content date
+
+## Adds a duration to a date, rounding to the previous day when ambiguous.
+## Note: this is the behaviour of "`+`" in scopes where `date round down` is set
+## **Examples:**
+## - `add_round_down of |2026-05-31|, 1 month = |2026-06-30|`
+## - `add_round_down of |2000-02-29|, 1 year = |2001-02-28|`
+declaration add_round_down
+  content date
+  depends on
+    t content date,
+    dt content duration
+
+## Adds a duration to a date, rounding to the next day when ambiguous.
+## Note: this is the behaviour of "`+`" in scopes where `date round up` is set
+## **Examples:**
+## - `add_round_up of |2026-05-31|, 1 month = |2026-07-01|`
+## - `add_round_up of |2000-02-29|, 1 year = |2001-03-01|`
+declaration add_round_up
+  content date
+  depends on
+    t content date,
+    dt content duration
+
+## Subtracts a duration from a date, rounding to the previous day when
+## ambiguous.
+## Note: this is the behaviour of "`-`" in scopes where `date round down` is set
+## **Examples:**
+## - `sub_round_down of |2026-05-31|, 1 month = |2026-04-30|`
+## - `sub_round_down of |2000-02-29|, 1 year = |1999-02-28|`
+declaration sub_round_down
+  content date
+  depends on
+    t content date,
+    dt content duration
+
+## Subtracts a duration from a date, rounding to the next day when ambiguous.
+## Note: this is the behaviour of "`-`" in scopes where `date round up` is set
+## **Examples:**
+## - `sub_round_up of |2026-05-31|, 1 month = |2026-05-01|`
+## - `sub_round_up of |2000-02-29|, 1 year = |1999-03-01|`
+declaration sub_round_up
+  content date
+  depends on
+    t content date,
+    dt content duration
 ```
 
 ### Dates and years, months and days
@@ -663,6 +708,9 @@ declaration find_period
 ```catala-code-en
 ## Sorts the given periods by starting day.
 ## if two periods start on the same day, their order in the list is preserved
+## **deprecated**: use the new `sort` built-in instead: this is equivalent to
+## `sort all (p, x) among lst in increasing order of p.begin`. This function
+## will be removed in the next release.
 declaration sort_by_date
   content list of (Period, anything of type t)
   depends on l content list of (Period, anything of type t)

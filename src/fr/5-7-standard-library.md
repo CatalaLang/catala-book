@@ -320,6 +320,58 @@ déclaration max
   dépend de
     d1 contenu date,
     d2 contenu date
+
+## Ajoute une durée à une date, en arrondissant au jour précédent en cas
+## d'ambiguïté.
+## Note: Cela correspond au comportement de "`+`" dans les champs d'application
+## où `date arrondi inférieur` a été sélectionné.
+## **Exemples:**
+## - `ajout_arrondi_inférieur de |2026-05-31|, 1 mois = |2026-06-30|`
+## - `ajout_arrondi_inférieur de |2000-02-29|, 1 an = |2001-02-28|`
+déclaration ajout_arrondi_inférieur
+  contenu date
+  dépend de
+    t contenu date,
+    dt contenu durée
+
+## Ajoute une durée à une date, en arrondissant au jour suivant en cas
+## d'ambiguïté.
+## Note: Cela correspond au comportement de "`+`" dans les champs d'application
+## où `date arrondi supérieur` a été sélectionné.
+## **Exemples:**
+## - `ajout_arrondi_supérieur de |2026-05-31|, 1 mois = |2026-07-01|`
+## - `ajout_arrondi_supérieur de |2000-02-29|, 1 an = |2001-03-01|`
+déclaration ajout_arrondi_supérieur
+  contenu date
+  dépend de
+    t contenu date,
+    dt contenu durée
+
+## Retire une durée d'une date, en arrondissant au jour précédent en cas
+## d'ambiguïté.
+## Note: Cela correspond au comportement de "`-`" dans les champs d'application
+## où `date arrondi inférieur` a été sélectionné.
+## **Exemples:**
+## - `soustraction_arrondi_inférieur de |2026-05-31|, 1 mois = |2026-04-30|`
+## - `soustraction_arrondi_inférieur de |2000-02-29|, 1 an = |1999-02-28|`
+déclaration soustraction_arrondi_inférieur
+  contenu date
+  dépend de
+    t contenu date,
+    dt contenu durée
+
+## Soustrait une durée d'une date, en arrondissant au jour suivant en cas
+## d'ambiguïté.
+## Note: Cela correspond au comportement de "`-`" dans les champs d'application
+## où `date arrondi supérieur` a été sélectionné.
+## **Exemples:**
+## - `soustraction_arrondi_supérieur de |2026-05-31|, 1 mois = |2026-05-01|`
+## - `soustraction_arrondi_supérieur de |2000-02-29|, 1 an = |1999-03-01|`
+déclaration soustraction_arrondi_supérieur
+  contenu date
+  dépend de
+    t contenu date,
+    dt contenu durée
 ```
 
 ### Dates et années, mois et jours
@@ -660,6 +712,9 @@ déclaration trouve_période
 ## Trie la liste de périodes en fonction de la date de début.
 ## Si deux périodes commencent le même jour, leur ordre dans la liste est
 ## préservé
+## **Déprécié:** utilisez la nouvelle construction `trie` à la place. Cette
+## fonction est équivalente à `trie tout (p, x) parmi lst par ordre croissant
+## de p.début`. Elle sera retirée dans la prochaîne version de Catala.
 déclaration tri_par_date
   contenu liste de (Période, n'importe quel de type t)
   dépend de l contenu liste de (Période, n'importe quel de type t)

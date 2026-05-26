@@ -31,9 +31,22 @@ Le type `booléen` n'a que deux valeurs, `vrai` et `faux`.
 
 | Symbole | Type du premier argument | Type du second argument | Type du résultat | Sémantique |
 |---|---|---|---|---|
-| `=, !=` | tout sauf fonctions | même que le premier argument | booléen | (In)égalité structurelle |
-| `>, >=, <, <=` | entier, décimal, argent, date | même que le premier argument | booléen | Comparaison usuelle |
-| `>, >=, <, <=` | durée | durée | booléen | Comparaison usuelle si même unité, sinon erreur d'exécution |
+| `=`, `!=` | tout sauf fonctions | même que le premier argument | booléen | Égalité structurelle |
+| `>`, `>=`, `<`, `<=` | tout sauf fonctions | même que le premier argument | booléen | Comparaison usuelle |
+
+* La comparaison de durées d'unités différentes déclenche une erreur à
+  l'exécution (en raison de cas tels que `1 mois > 30 jour` pour lesquels on ne
+  peut pas définir de réponse)
+* La comparaison de structures est lexicographique, dans l'ordre où les champs
+  ont été déclarés. C'est-à-dire que le premier champ des deux valeurs est
+  d'abord comparé ; s'il est égal, on compare le champ suivant ; et ainsi de
+  suite.
+* La comparaison des énumérations suit les règles suivantes:
+  - si les deux valeurs ont le même constructeur, les valeurs encapsulées sont
+    comparées
+  - sinon, le constructeur apparaissant le plus haut lors de la déclaration de
+    l'énumération est considéré comme le plus petit
+* Comparer des fonctions déclenche une erreur à l'exécution
 
 ### Opérations sur les entiers
 
