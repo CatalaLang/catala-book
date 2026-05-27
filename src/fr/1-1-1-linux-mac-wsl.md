@@ -56,7 +56,7 @@ Catala supporte les versions d'OCaml de `4.14.0` jusqu'à `5.4.X`.
 Exécutez les commandes suivantes pour installer la dernière version de Catala via `opam` :
 
 ```console
-$ opam update && opam install catala.1.1.0
+$ opam update && opam install catala.1.2.0
 ```
 
 Une fois terminé, le système de construction Catala devrait être installé. Vous
@@ -80,7 +80,7 @@ L'extension VSCode nécessite que le protocole de serveur de langage (LSP) de
 Catala soit installé. Cela peut être fait en exécutant :
 
 ```console
-$ opam install catala-lsp.1.1.0
+$ opam install catala-lsp.1.2.0
 ```
 
 ## Obtenir l'extension VSCode
@@ -100,7 +100,7 @@ F1 (qui ouvre l'invite VSCode) et exécuter la commande suivante
 
 Exécutez la commande suivante :
 ```shell
-$ opam install catala-format.1.1.0
+$ opam install catala-format.1.2.0
 ```
 
 ~~~admonish note
