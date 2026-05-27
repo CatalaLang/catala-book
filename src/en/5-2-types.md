@@ -218,7 +218,6 @@ Casting between base types is explicit; the syntax is `<name of desired type> of
 | money            | decimal        | Value conserved            |
 | money            | integer        | Truncation to nearest unit |
 | integer          | money          | Value conserved            |
-| decimal          | integer        | Truncation                 |
 
 ## User-declared types
 

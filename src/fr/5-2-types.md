@@ -221,7 +221,6 @@ La conversion entre les types de base est explicite ; la syntaxe est `<nom du ty
 | argent | décimal | Valeur conservée |
 | argent | entier | Troncature à l'unité la plus proche |
 | entier | argent | Valeur conservée |
-| décimal | entier | Troncature |
 
 ## Types déclarés par l'utilisateur
 
