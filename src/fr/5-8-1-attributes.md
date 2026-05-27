@@ -23,7 +23,7 @@ Le compilateur Catala reconnaît un certain nombre d'attributs prédéfinis.
 ### `#[test]`
 
 S'applique aux déclarations de champs d'application, pour indiquer leur rôle de
-test. Voir [la section sur les tests](./3-3-test-ci.md#test-par-assertion).
+test. Voir [la section sur les tests](./3-3-0-test-ci.md#test-par-assertion).
 
 ### `#[doc]` or `##`
 
