@@ -43,5 +43,5 @@ typing `y` then enter) is enough.
 Both Unix-compatible systems and Windows installation guide assume that you want
 to install the latest community release of Catala hosted on the main public
 [opam repository](https://github.com/ocaml/opam-repository/). If you want to
-install a nightly or development version go to [the nightly and custom installations
-page](./1-1-3-nightly-dev.md).
+install the testing or development version go to [the testing and custom installations
+page](./1-1-3-testing-dev.md).

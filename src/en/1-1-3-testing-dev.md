@@ -1,4 +1,4 @@
-# Nightly and development installations
+# Testing and development installations
 
 <div id="tocw"></div>
 
@@ -7,7 +7,7 @@ The previous guides about [Linux/Mac/WSL](./1-1-1-linux-mac-wsl.md) and
 install the latest community release of Catala hosted on the main public
 [opam repository](https://github.com/ocaml/opam-repository/).
 Through a different usage of the [opam](https://opam.ocaml.org/) client,
-this page presents how to get nightly versions and development versions of
+this page presents how to get testing versions and development versions of
 Catala (provided by the Catala team).
 
 ~~~admonish info title="Use the community releases first!"
@@ -18,48 +18,48 @@ alternative installation methods receive less care and attention than the
 mainstream instal path from the Catala team.
 ~~~
 
-## Nightly versions of Catala
+## Testing versions of Catala
 
 The Catala team maintains a special release distribution channel to provide
-regularly nightly versions of Catala cureated from the main development branches.
-These nightly versions contain fixes and improvements from the last community
+regularly testing versions of Catala cureated from the main development branches.
+These testing versions contain fixes and improvements from the last community
 release, but should be used at your own risk since they are not as well
 tested as the community releases.
 
-To access these nightly versions, you need to create a new switch in your local
+To access these testing versions, you need to create a new switch in your local
 `opam` pointing to a [special opam
-repository](https://gitlab.inria.fr/catala/opam-repository/-/tree/nightly)
+repository](https://gitlab.inria.fr/catala/opam-repository)
 maintained by the Catala team. This switch will be used to install the special
-`catala-full` package maintained in this special opam repository by the Catala
+`catala-full.testing` package maintained in this special opam repository by the Catala
 team. The `catala-full` package installs in a single command the whole Catala suite with
-`catala`, `catala-lsp` and `catala-format`, taking the nightly version of the
+`catala`, `catala-lsp` and `catala-format`, taking the testing version of the
 packages as defined by the Catala team.
 
 All of this can be done thanks to this magical `opam` command:
 
 ```console
-$ opam switch create --repos catala-nightly="git+https://gitlab.inria.fr/catala/opam-repository#nightly" catala-full
+$ opam switch create --repos catala-repo="git+https://gitlab.inria.fr/catala/opam-repository" catala-full.testing
 ```
 
-You now have a new switch named `catala-full` that contains the nightly version
+You now have a new switch named `catala-full` that contains the testing version
 of Catala. You can do `opam switch` to see which switches are installed
 and use `opam switch <name of the switch>` to change which switch you are
 using and go back and forth from the community release of Catala to the
-nightly version of Catala.
+testing version of Catala.
 
 If you want to make sure that you're always using
-the nightly version of Catala when you invoke `opam` from a certain repository,
+the testing version of Catala when you invoke `opam` from a certain repository,
 you can invoke `opam switch link catala-full` from that repository.
 
 After switching your version of Catala, don't forget to call `clerk clean`
 in your repository and restart your IDE.
 
-~~~admonish tip title="Updating your nightly version"
-With this setup, getting the latest nightly version from the Catala team
+~~~admonish tip title="Updating your testing version"
+With this setup, getting the latest testing version from the Catala team
 is as simple as :
 
 ```console
-$ opam update catala-nightly -u -y
+$ opam update catala-full -u -y
 ```
 ~~~
 
