@@ -30,8 +30,16 @@ you will not be able to call functions of this file from other modules.
 
 ## Imports
 
-Modules can "use" other modules to import their public types, scopes and
-constants. If you want to use module `Bar` inside module `Foo`, the top of
+Modules can "use" other modules to import their **public** types, scopes and
+constants.
+
+~~~admonish bug title="Catala pretends it doesn't know the types I'm importing, what to do?"
+Often, this kind of error messages comes from the fact that you are trying
+to import a private type from another module. See [Public and private objects](./5-6-modules.md#public-and-private-objects)
+below to know how to make your types public and usable as imports.
+~~~
+
+If you want to use module `Bar` inside module `Foo`, the top of
 `foo.catala_en` should look like:
 
 ```catala-en
@@ -64,6 +72,35 @@ type, so that for example you can refer to the type `Period` directly.
 
 This behaviour is disabled when the module name is aliased with `Using ... as`.
 ~~~
+
+### Public and private objects
+
+The Catala team believes that programmers should control precisely which interface they
+make publicly available for their modules. Indeed, not exposing internal
+functions is the key the preserve the ability to refactor the code later
+without breaking the endpoints used by the clients of the module.
+
+This is the reason why in Catala, all the type, scope and constant declarations
+inside `` ```catala `` blocks are private: they will not be accessible by other
+modules. To make a type, scope or constant declaration public and therefore
+accessible by other modules, you need to turn the containing `` ```catala ``
+block into a `` ```catala-metadata `` block. That's all!
+
+```catala-en
+> Module Bar
+
+```catala
+declaration structure Buzz ## default, only usable in this file
+  ....
+
+
+```catala-metadata
+declaration structure Fizz ## can be called in another module
+...
+
+```
+
+
 
 ## Inclusions
 
@@ -99,15 +136,5 @@ backends.
 What comes after the `Include:` is actually a Unix-style file path, that can
 refer to sub-directories or the parent directory (`../`).
 
-## Public interface and visibility
 
-The Catala team believes that programmers should control precisely which interface they
-make publicly available for their modules. Indeed, not exposing internal
-functions is the key the preserve the ability to refactor the code later
-without breaking the endpoints used by the clients of the module.
 
-This is the reason why in Catala, all the type, scope and constant declarations
-inside `` ```catala `` blocks are private: they will not be accessible by other
-modules. To make a type, scope or constant declaration public and therefore
-accessible by other modules, you need to turn the containing `` ```catala ``
-block into a `` ```catala-metadata `` block. That's all!

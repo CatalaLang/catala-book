@@ -31,7 +31,16 @@ vous ne pourrez pas appeler les fonctions de ce fichier depuis d'autres modules.
 ## Imports
 
 Les modules peuvent "utiliser" d'autres modules pour importer leurs types, champs d'application et
-constantes publics. Si vous voulez utiliser le module `Bar` à l'intérieur du module `Foo`, le haut de
+constantes **publics**.
+
+~~~admonish bug title="Catala n'arrive pas à trouver les types que j'importe, que faire ?"
+Souvent, ce genre de messages d'erreurs vient du fait que vous essayez d'importer
+un type privé depuis un autre module. Voir [Objets publics ou privés](./5-6-modules.md#objets-publics-ou-priv%C3%A9s)
+ci-dessous pour savoir comment rendre vos types publics et utilisables comme
+imports.
+~~~
+
+Si vous voulez utiliser le module `Bar` à l'intérieur du module `Foo`, le haut de
 `foo.catala_fr` devrait ressembler à :
 
 ```catala-fr
@@ -68,6 +77,18 @@ Cette possibilité est désactivée si le nom du module a été aliasé (en util
 `en tant que`).
 ~~~
 
+## Objets publics ou privés
+
+L'équipe Catala pense que les programmeurs devraient contrôler précisément quelle interface ils
+rendent publiquement disponible pour leurs modules. En effet, ne pas exposer les fonctions internes
+est la clé pour préserver la capacité de refactoriser le code plus tard
+sans casser les points de terminaison utilisés par les clients du module.
+
+C'est la raison pour laquelle en Catala, toutes les déclarations de type, de champ d'application et de constante
+à l'intérieur des blocs `` ```catala `` sont privées : elles ne seront pas accessibles par d'autres
+modules. Pour rendre une déclaration de type, de champ d'application ou de constante publique et donc
+accessible par d'autres modules, vous devez transformer le bloc `` ```catala ``
+contenant en un bloc `` ```catala-metadata ``. C'est tout !
 
 ## Inclusions
 
@@ -102,15 +123,3 @@ sont imprimées dans les backends de [programmation littéraire](./5-1-literate-
 Ce qui vient après `Inclusion:` est en fait un chemin de fichier de style Unix, qui peut
 faire référence à des sous-répertoires ou au répertoire parent (`../`).
 
-## Interface publique et visibilité
-
-L'équipe Catala pense que les programmeurs devraient contrôler précisément quelle interface ils
-rendent publiquement disponible pour leurs modules. En effet, ne pas exposer les fonctions internes
-est la clé pour préserver la capacité de refactoriser le code plus tard
-sans casser les points de terminaison utilisés par les clients du module.
-
-C'est la raison pour laquelle en Catala, toutes les déclarations de type, de champ d'application et de constante
-à l'intérieur des blocs `` ```catala `` sont privées : elles ne seront pas accessibles par d'autres
-modules. Pour rendre une déclaration de type, de champ d'application ou de constante publique et donc
-accessible par d'autres modules, vous devez transformer le bloc `` ```catala ``
-contenant en un bloc `` ```catala-metadata ``. C'est tout !
