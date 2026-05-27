@@ -26,7 +26,7 @@ as the work around it:
 * the [second section](./3-2-compilation-deployment.md) expands on the previous
   one to add automated deployment of Catala-generated artifacts using the
   different backends of the compiler;
-* the [third section](./3-3-test-ci.md) is about setting up a modern software
+* the [third section](./3-3-0-test-ci.md) is about setting up a modern software
   engineering stack around the codebase, complete with versionning, automated
   testing and continuous integration (CI);
 <!-- * the [fourth section](./3-4-external-plugins.md) is a step-by-step guide for

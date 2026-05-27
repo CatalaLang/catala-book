@@ -22,7 +22,7 @@
 - [Guide pas à pas : configurer un projet Catala](./3-project.md)
     - [Structure et configuration](./3-1-directory-config.md)
     - [Construction et déploiement](./3-2-compilation-deployment.md)
-    - [Test et intégration continue](./3-3-test-ci.md)
+    - [Test et intégration continue](./3-3-0-test-ci.md)
     - [Développement agile avec juristes](./3-5-lawyers-agile.md)
     <!-- - [Modules externes et plugins](./3-4-external-plugins.md) -->
 - [FAQ: Comment coder la loi?](./4-0-howto.md)
@@ -47,3 +47,5 @@
     - [Configuration](./6-1-clerk-toml.md)
     - [Commandes](./6-2-commands-workflow.md)
     <!-- - [Plugins du compilateur](./6-4-compiler-plugins.md) -->
+- [Plugin VS code](./7-vscode-plugin.md)
+    - [Éditeur de cas de test](./7-1-test-gui.md)

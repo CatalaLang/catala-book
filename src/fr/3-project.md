@@ -25,7 +25,7 @@ que du travail autour de celle-ci :
 * la [deuxième section](./3-2-compilation-deployment.md) développe la précédente
   pour ajouter le déploiement automatisé des artefacts générés par Catala en utilisant les
   différents backends du compilateur ;
-* la [troisième section](./3-3-test-ci.md) concerne la mise en place d'une pile de génie logiciel
+* la [troisième section](./3-3-0-test-ci.md) concerne la mise en place d'une pile de génie logiciel
   moderne autour de la base de code, complète avec gestion de versions, tests automatisés
   et intégration continue (CI) ;
 <!-- * la [quatrième section](./3-4-external-plugins.md) est un guide étape par étape pour

@@ -23,7 +23,7 @@ Some attributes affect the Catala compiler itself and have built-in support.
 ### `#[test]`
 
 Used on scope declarations to mark them for testing. See [the "Test"
-section](./3-3-test-ci.md#assertion-testing).
+section](./3-3-0-test-ci.md#assertion-testing).
 
 ### `#[doc]` or `##`
 
