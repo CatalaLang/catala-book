@@ -46,6 +46,6 @@ Les deux guides d'installation (systèmes compatibles Unix et Windows) supposent
 que vous voulez installer la dernière *release* communautaire de Catala, hébergée
 sur le principal [dépôt public de
 opam](https://github.com/ocaml/opam-repository/). Si vous voulez installer une
-version *nightly* ou de de développement, tournez-vous vers le [guide
-d'installation des version *nightly* et de
-développement](./1-1-3-nightly-dev.md).
+version *testing* ou de de développement, tournez-vous vers le [guide
+d'installation des version *testing* et de
+développement](./1-1-3-testing-dev.md).
