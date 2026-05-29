@@ -46,6 +46,7 @@
 - [The `clerk` build system](./6-clerk.md)
     - [Project configuration file](./6-1-clerk-toml.md)
     - [Commands and workflow](./6-2-commands-workflow.md)
-    <!-- - [Compiler plugins](./6-3-compiler-plugins.md) -->
+    - [Python deployment](./6-3-python-deployment.md)
+    <!-- - [Compiler plugins](./6-4-compiler-plugins.md) -->
 - [The VSCode plugin](./7-vscode-plugin.md)
     - [Test case editor](./7-1-test-gui.md)
