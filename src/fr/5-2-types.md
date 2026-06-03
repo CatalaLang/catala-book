@@ -330,9 +330,14 @@ Vous pouvez construire des valeurs de liste en utilisant la syntaxe suivante :
 | `<liste1> ++ <liste2>` | liste | Concaténer deux listes |
 | `maximum de <liste> (ou si liste vide alors <expr>)` | type des éléments | Renvoie l'élément maximum de la liste (ou un défaut optionnel) |
 | `minimum de <liste> (ou si liste vide alors <expr>)` | type des éléments | Renvoie l'élément minimum de la liste (ou un défaut optionnel) |
+| `contenu de <var> parmi <liste> tel que <expr>`  | optionnel(type des élements) | Retourne le premier élément de la liste qui satisfait `<expr>` |
 | `contenu de <var> parmi <liste> tel que <expr1> est maximum (ou si liste vide alors <expr2>)` | type des éléments | Renvoie l'élément arg-maximum de la liste (ou un défaut optionnel) |
 | `contenu de <var> parmi <liste> tel que <expr1> est minimum (ou si liste vide alors <expr2>)` | type des éléments | Renvoie l'élément arg-minimum de la liste (ou un défaut optionnel) |
 | `combine tout <var> parmi <liste> dans <acc> initialement <expr1> avec <expr2>` | type des éléments | [Plie](https://fr.wikipedia.org/wiki/Fold_(fonction_d%27ordre_sup%C3%A9rieur)) `<liste>`, commençant avec `<expr1>` et accumulant avec `<expr2>` |
+| `trie <liste> par ordre croissant`                            | liste             | Utilise l'ordre de tri par défaut sur les éléments de la liste                    |
+| `trie <liste> par ordre décroissant`                            | liste             | Utilise l'ordre de tri par défaut sur les éléments de la liste                    |
+| `trie tout <var> parmi <liste> par ordre croissant de <expr1> (puis <expr2>...)` | liste | Utilise l'ordre de tri par défaut sur le résultat de `<expr1>` etc.  |
+| `trie tout <var> parmi <liste> par ordre décroissant de <expr1> (puis <expr2>...)` | liste |  Utilise l'ordre de tri par défaut sur le résultat de `<expr1>` etc.  |
 
 ~~~admonish tip title="Itérer sur plusieurs listes en même temps"
 Ces opérations sur les listes reflètent le contenu d'une [bibliothèque de listes de base pour un langage de

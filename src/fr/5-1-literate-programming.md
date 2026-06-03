@@ -184,6 +184,10 @@ Les mots-clés réservés en Catala sont :
 `minimum`
 `est`
 `ou si liste vide alors`
+`trie`
+`par ordre croissant`
+`par ordre décroissant`
+`puis`
 `mais en remplaçant`
 `initialement`
 `nombre`

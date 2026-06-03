@@ -75,3 +75,8 @@ préconditions, de pouvoir signaler l'erreur comme venant du lieu d'appel plutô
 que de la fonction elle-même. Par exemple, lors d'un appel à
 `Utils.division_custom de 2, 0`, donner la position où `division_custom` est
 définie dans le module `Utils` ne serait pas très utile.
+
+### `#[json]`
+
+Utilisé pour fournir des valeurs de [types
+externes](./5-8-2-external-modules.md#types-externes).
