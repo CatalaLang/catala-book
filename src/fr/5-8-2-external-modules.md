@@ -121,10 +121,25 @@ module externe seront en mesure d'en observer le contenu.
 L'usage des types externes nécessite cependant des précautions particulières:
 - Suivant le backend utilisé, l'implémentation concrète du type doit se plier
   aux règles de Catala pour ce backend. Par exemple, un type externe implémenté
-  en Java doit implémenter l'interface `CatalaValue`.
+  en Java doit implémenter l'interface `CatalaValue`. Les templates générés par
+  le flag `--gen-external` fournissent les indications nécessaires. Il est en
+  particulier requis d'implémenter la méthode ou fonction `from_json`.
 - Comme mentionné ci-dessus, Catala est basé sur un modèle fonctionnel:
   **n'utilisez pas de types mutables**. Les modifications en-place de valeurs
   sont interdites. Supposons par exemple un type externe `Ensemble` qui permette
   de stocker des collections de valeurs: la fonction ajoutant un élément à
   l'ensemble devra renvoyer un nouvel ensemble comportant le nouvel élément, et
   en aucun cas modifier l'ensemble passé en argument.
+
+Les valeurs de types externes seront normalement transmises au programme Catala
+lors de son utilisation en tant que bibliothèque dans le backend choisi. Il est
+cependant possible de fournir des valeurs de types externes directement dans le
+source Catala, en utilisant l'[attribut](./5-8-1-attributes.md) `#[json]` avec
+la syntaxe suivante :
+
+```catala-expr-fr
+#[json = "<objet json sous forme de chaîne>"] TypeAbstrait
+```
+
+où `TypeAbstrait` est le nom de votre type externe. Ceci est particulièrement
+utile lors de l'écriture de tests unitaires.
