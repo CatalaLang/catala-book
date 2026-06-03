@@ -68,10 +68,10 @@ jobs:
       - uses: baptiste0928/cargo-install@v3
         with:
           crate: tree-sitter-cli
-      - name: Download catala
-        uses: wei/wget@v1
-        with:
-          args: https://github.com/CatalaLang/catala/releases/download/1.0.0/catala_1.0.0_amd64.deb -O catala.deb
+      - name: Download catala nightly
+        run: gh release download nightly --repo CatalaLang/catala --pattern '*_amd64.deb' --output catala.deb
+        env:
+          GH_TOKEN: ${{ github.token }}
       - name: Install catala
         run: sudo dpkg -i ./catala.deb || true
       - uses: actions/checkout@v4

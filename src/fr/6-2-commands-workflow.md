@@ -247,3 +247,59 @@ un travail CI ou pour s'assurer que vous n'incluez pas de fichiers périmés et 
 <!-- cmdrun clerk clean --help=plain -->
 </pre>
 ```
+
+## `clerk typecheck`
+
+Vérifie le typage des fichiers Catala donnés et de leurs dépendances sans les exécuter.
+Utile pour valider rapidement un projet sans exécuter de scope.
+
+```admonish info collapsible=true title="clerk typecheck &dash;&dash;help"
+<pre>
+<!-- cmdrun clerk typecheck --help=plain -->
+</pre>
+```
+
+## `clerk start`
+
+Prépare l'environnement de construction local avec le runtime et la bibliothèque
+standard de Catala. Non nécessaire avant les autres commandes `clerk`, mais utile
+avant d'invoquer directement le compilateur `catala`.
+
+```admonish info collapsible=true title="clerk start &dash;&dash;help"
+<pre>
+<!-- cmdrun clerk start --help=plain -->
+</pre>
+```
+
+## `clerk exceptions`
+
+Affiche l'arbre des exceptions pour les définitions d'une variable particulière
+dans un scope. Utile pour comprendre et déboguer des hiérarchies d'exceptions complexes.
+
+```admonish info collapsible=true title="clerk exceptions &dash;&dash;help"
+<pre>
+<!-- cmdrun clerk exceptions --help=plain -->
+</pre>
+```
+
+## `clerk json-schema`
+
+Affiche le schéma JSON des objets d'entrée et de sortie d'un scope donné.
+Voir aussi la section [support JSON](./5-8-3-json-support.md).
+
+```admonish info collapsible=true title="clerk json-schema &dash;&dash;help"
+<pre>
+<!-- cmdrun clerk json-schema --help=plain -->
+</pre>
+```
+
+## `clerk list-vars`
+
+Liste les variables de construction prédéfinies qui peuvent être redéfinies avec
+l'option `--vars` ou dans la section `[variables]` de `clerk.toml`.
+
+```admonish info collapsible=true title="clerk list-vars &dash;&dash;help"
+<pre>
+<!-- cmdrun clerk list-vars --help=plain -->
+</pre>
+```
