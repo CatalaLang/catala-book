@@ -248,6 +248,26 @@ to the day (and not more). Durations are a combination of a number of days,
 months and/or years. See the [language reference](./5-2-types.md#dates) for more
 details.
 
+## How do I compare a difference of two dates with a duration?
+
+When comparing the length of a period of time
+(e.g., from a person's birth date to today),
+it may feel natural to compute the difference between the two dates,
+then compare it to a duration.
+However, since the difference of two dates always yields
+a duration expressed in days
+(see the [language reference](./5-2-types.md#durations)),
+it cannot be compared to a number of months or years.
+
+For instance, `current_date - date_of_birth >= 18 year`
+is not a valid expression.
+In that case, the number of months or years should not be transformed manually
+into a number of days (e.g., `18 * 365 day`).
+Instead, use Catala's date and period addition, and date comparison:
+`current_date >= date_of_birth + 18 year`.
+This is what the
+[Date module of the standard library](5-7-standard-library.md#date-comparisons)
+does in functions such as `is_old_enough_rounding_down`.
 
 ## Which programming languages can Catala target?
 

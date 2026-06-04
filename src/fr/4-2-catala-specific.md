@@ -138,6 +138,27 @@ Quel est le résultat de `31 janv + 1 mois` ? 28 fév, 29 fév, 1er mars ? Ces a
 
 Sinon, les dates sont des dates grégoriennes au jour près. Les durées combinent jours/mois/années. Voir la [référence](./5-2-types.md#dates).
 
+## Comment comparer la différence de deux dates avec une durée ?
+
+Lorsqu'on compare la durée d'une période de temps
+(par exemple, d'une date de naissance à aujourd'hui),
+il peut sembler naturel de calculer la différence entre deux dates,
+puis de la comparer à une durée.
+Cependant, comme la différence entre deux dates donne toujours
+une durée exprimée en jours
+(voir la [référence](./5-2-types.html#durées)),
+elle ne peut pas être comparée à un nombre de mois ou d'années.
+
+Par exemple, `date_courante - date_de_naissance >= 18 an`
+n'est pas une expression valide.
+Dans ce cas, le nombre de mois ou d'années ne doit pas
+être transformé manuellement en un nombre de jours (`18 * 365 jour`).
+À la place, utilisez l'addition de dates et périodes de Catala,
+et la comparaison de dates : `date_courante >= date_de_naissance + 18 an`.
+C'est ce que fait le
+[module Date de la bibliothèque standard](./5-7-standard-library.html#comparaisons-de-dates)
+pour des fonctions comme `est_assez_âgé_arrondi_inférieur`.
+
 ## Quels langages cibles pour Catala ?
 
 Le compilateur Catala cible nativement :
