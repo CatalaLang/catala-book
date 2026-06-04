@@ -372,32 +372,34 @@ declaration enumeration OptionalInteger:
 ```
 
 But the advantage of `optional of integer` over such an `OptionalInteger` is
-that doesn't need to be declared for each type that it is used with. 
+that doesn't need to be declared for each type that it is used with.
 
 Like an enumeration, values of type `optional` can be created using `Present content
 <expr>`, and used in the forms `match <expr> with pattern` and `<expr> with
-pattern <constr>`, e.g. (see above the Enumeration section for more details)
+pattern <constr>`, e.g. (see [Enumeration](./5-2-types.md#enumerations) for more details)
 
 ```catala-expr-en
 declaration structure Tree:
   data fruit content optional of Fruit
 
-Tree { 
+declaration no_fruit content Tree equals Tree {
   -- fruit: Absent
 }
 
-Tree {
+declaration nonedible_fruit content Tree equals Tree {
   -- fruit: Present content Fruit { -- edible: false}
 }
 
-definition food equals
-  match tree.fruit with pattern
+declaration food content boolean depends on tree content Tree equals
+  let a equals match tree.fruit with pattern
     -- Absent: false
     -- Present content fruit_present : fruit_present.edible
-
-if tree.fruit with pattern Present content fruit_present and fruit_present.edible 
-then ...
-else ...
+  in
+  let b equals
+    tree.fruit with pattern Present content fruit_present and
+      fruit_present.edible
+  in
+  a and b
 ```
 
 ## Functions
