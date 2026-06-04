@@ -383,13 +383,35 @@ déclaration énumération EntierOptionnel:
 ```
 
 Mais l'avantage de `optionnel de entier` par rapport à un tel `EntierOptionnel` est
-qu'il n'a pas besoin d'être déclaré pour chaque type avec lequel il est utilisé. Comme une
-énumération, les valeurs de type `optionnel` peuvent être créées en utilisant `Présent contenu
-<expr>`, et utilisées dans les formes `selon <expr> sous forme` et `<expr> sous
-forme <constr>`, par ex.
+qu'il n'a pas besoin d'être déclaré pour chaque type avec lequel il est utilisé.
+
+Comme une énumération, les valeurs de type `optionnel` peuvent être créées en
+utilisant `Présent contenu <expr>`, et utilisées dans les formes `selon <expr>
+sous forme` et `<expr> sous forme <constr>`, par ex (voir [Enumération](./5-2-types.md#énumérations)
+ pour plus de détails)
 
 ```catala-expr-fr
-si foo sous forme Présent de bar et bar > 3 alors ...
+
+déclaration structure Arbre:
+  donnée fruit contenu optionel de Fruit
+
+déclaration pas_de_fruit contenu Arbre égal à Arbre {
+  -- fruit: Absent
+}
+
+déclaration fruit_non_comestible contenu Arbre égal à Arbre {
+  -- fruit: Présent contenu Fruit { -- comestible: faux}
+}
+
+déclaration nourriture contenu booléen dépend de arbre contenu Arbre égal à
+  soit a égal à selon arbre.fruit sous forme
+    -- Absent: faux
+    -- Présent contenu fruit_présent : fruit_présent.comestible
+  dans
+  soit b égal à
+    fruit sous forme Présent contenu fruit_présent et fruit_présent.comestible
+  dans
+  a et b
 ```
 
 ## Fonctions
