@@ -50,7 +50,7 @@ des `switch` installés et utiliser `opam switch <nom du switch>` pour changer d
 
 Si vous voulez être sûr que vous vous utilisez toujours la version *testing*
 de Catala quand vous invoquez `opam` depuis un certain dossier sur votre
-machine, vous pouvez invoquer `opam switch link catala-full` depuis ce dossier.
+machine, vous pouvez invoquer `opam switch link catala-full.testing` depuis ce dossier.
 
 Après avoir changé votre version de Catala, n'oubliez pas d'appeler `clerk clean`
 dans votre dossier et relancer votre IDE.
