@@ -49,7 +49,7 @@ testing version of Catala.
 
 If you want to make sure that you're always using
 the testing version of Catala when you invoke `opam` from a certain repository,
-you can invoke `opam switch link catala-full` from that repository.
+you can invoke `opam switch link catala-full.testing` from that repository.
 
 After switching your version of Catala, don't forget to call `clerk clean`
 in your repository and restart your IDE.
