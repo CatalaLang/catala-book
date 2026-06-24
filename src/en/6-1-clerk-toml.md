@@ -117,8 +117,9 @@ Defaults to `["ocaml"]` if omitted.
 
 #### include_sources
 
-Specifies whether to copy over the backend generated source files (e.g.,
-the `.c` or `.java`) in the `target` directory.
+Specifies whether to copy the original source files (e.g. `.catala_en`) into the
+`_target` directory, in addition to the sources generated in the target language
+(e.g. `.c` or `.java`).
 
 Example: `include_sources = true`
 
@@ -127,7 +128,7 @@ Defaults to `false`.
 #### include_objects
 
 Specifies whether to copy over the backend generated compiled files (e.g.,
-the `.o` or `.class`) in the `target` directory.
+the `.o` or `.class`) in the `_target` directory.
 
 Example: `include_objects = true`
 

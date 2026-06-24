@@ -117,8 +117,9 @@ Par défaut `["ocaml"]` si omis.
 
 #### include_sources
 
-Spécifie s'il faut copier les fichiers sources générés par le backend (par exemple,
-le `.c` ou `.java`) dans le répertoire `target`.
+Spécifie s'il faut copier les fichiers sources Catala originaux dans le
+répertoire `_target` en plus des fichiers sources générés dans le langage cible
+(par exemple `.c` ou `.java).
 
 Exemple : `include_sources = true`
 
@@ -126,8 +127,8 @@ Par défaut `false`.
 
 #### include_objects
 
-Spécifie s'il faut copier les fichiers compilés générés par le backend (par exemple,
-le `.o` ou `.class`) dans le répertoire `target`.
+Spécifie s'il faut copier les fichiers compilés générés par le backend (par
+exemple, le `.o` ou `.class`) dans le répertoire `_target`.
 
 Exemple : `include_objects = true`
 
