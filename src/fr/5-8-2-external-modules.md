@@ -53,7 +53,7 @@ modules.
 
 Cependant, pour faire fonctionner tout cela en pratique, vous devrez toujours
 implémenter le module externe en OCaml (pour l'interpréteur) et dans votre
-langage cible. Voir la [section de référence pertinente](./5-8-2-external-modules.md).
+langage cible.
 
 ## Implémenter des modules externes
 

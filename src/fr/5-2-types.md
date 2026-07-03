@@ -391,8 +391,7 @@ utilisant `Présent contenu <expr>`, et utilisées dans les formes `selon <expr>
 sous forme` et `<expr> sous forme <constr>`, par ex (voir [Enumération](./5-2-types.md#énumérations)
  pour plus de détails)
 
-```catala-expr-fr
-
+```catala-code-fr
 déclaration structure Arbre:
   donnée fruit contenu optionel de Fruit
 

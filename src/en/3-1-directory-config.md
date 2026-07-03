@@ -84,51 +84,59 @@ prefixed by the # character):
 ~~~admonish note title="`clerk.toml` configuration file for `my-project`"
 ```toml
 [project]
-include_dirs = [ "src/common",              # Which directories to include
-                 "src/tax_code",            # when looking for Catala modules
-                 "src/housing_benefits" ]   # and dependencies.
 build_dir    = "_build"    # Defines where to output the generated compiled files.
 target_dir   = "_target"   # Defines where to output the targets final files.
 
 # Each [[target]] section describes a build target for the project
 
 [[target]]
-name     = "us-tax-code"                          # The name of the target
-modules  = [ "Section_121", "Section_132", ... ]  # Modules components
-tests    = [ "tests/test_income_tax.catala_en" ]  # Related test(s)
-backends = [ "c", "java" ]                        # Output language backends
+name         = "us-tax-code"                          # The name of the target
+modules      = [ "Section_121", "Section_132", ... ]  # Modules components
+tests        = [ "tests/test_income_tax.catala_en" ]  # Related test(s)
+backends     = [ "c", "java" ]                        # Output language backends
+dependencies = [ "common" ]                           # Explicit target's dependencies
 
 [[target]]
-name     = "housing-benefits"
-modules  = [ "Section_8", ... ]
-tests    = [ "tests/test_housing_benefits.catala_en" ]
-backends = [ "ocaml", "c", "java" ]
+name         = "housing-benefits"
+modules      = [ "Section_8", ... ]
+tests        = [ "tests/test_housing_benefits.catala_en" ]
+backends     = [ "ocaml", "c", "java" ]
+dependencies = [ "common" ]
+
+[[target]]
+name     = "common"
+modules  = [ "Prorata", "Household", ... ]
+backends = [ "ocaml", "c", "java", "python" ]
 ```
 ~~~
 
-This `clerk.toml` example file first describes two project-wide configuration items
-(under the `[project]` section):
-* in which directories `clerk` should look for Catala source files when trying to find modules
-  and dependencies;
-* where to output the generated compiled files when building the project and
-  its targets.
+This `clerk.toml` example file first describes two project-wide
+configuration items (under the `[project]` section): where to output
+the generated compiled files when building the project (`build_dir`)
+and its targets (`target_dir`).
 
 The `build_dir` and `target_dir` options already defaults to `"_build"` and
 `"_target"` when absent, hence, here they can safely be omitted.
 
-Then, the configuration file defines two `[[target]]` components. A target in a
-Catala project is a bundle of Catala modules that will be compiled to one or
-multiple target programming languages, creating ready-to-use source libraries
-that you can them import and distribute to other applications in your IT system.
+Then, the configuration file defines three `[[target]]` components. A
+target in a Catala project is a bundle of Catala modules that will be
+compiled to one or multiple target programming languages, creating
+ready-to-use source libraries that you can them import and distribute
+to other applications in your IT system.
 
-For instance, the first target is named `"us-tax-code"` (you can choose it as
-you like) and will package all the declared data structures and scopes defined
-in the given `modules` and their dependencies. We also associate specific
-`tests` files (or directories) related to this target so that we can execute
-them in isolation if needed. Lastly, we define the language `backends` that this
-target should generate. In our first example, we configured the target to
-translate our code as a `C` library and as a `Java` package.
-
+For instance, the first target is named `"us-tax-code"`. You can
+choose it as you like: names of `target`, `modules` and directory
+names are unrelated. It will package all the declared data structures
+and scopes defined in the given `modules` and their implicit
+dependencies. We also associate specific `tests` files (or
+directories) related to this target so that we can execute them in
+isolation if needed. Then, we define the language `backends` that this
+target should generate. In our first example, we configured the target
+to translate our code as a `C` library and as a `Java`
+package. Lastly, we declare the target's `dependencies`: this will
+inform `clerk` that our target depends on another one and should not
+package everything together. This will be detailed in the next
+section.
 
 ~~~admonish question title="Modules or files?"
 The `modules` configuration field of a `[[target]]` section requires a list

@@ -9,56 +9,6 @@ and `housing-benefits`), that we learn to compile and deploy in C and Java. Now,
 let's make sure the deployed code is correct and practice some test-driven
 development!
 
-~~~admonish info collapsible=true title="Recap from previous section: `clerk.toml` configuration file and project hierarchy"
-Here is the `clerk.toml` configuration file of our mock project:
-```toml
-[project]
-include_dirs = [ "src/common",              # Which directories to include
-                 "src/tax_code",            # when looking for Catala modules
-                 "src/housing_benefits" ]   # and dependencies.
-build_dir    = "_build"    # Defines where to output the generated compiled files.
-target_dir   = "_target"   # Defines where to output the targets final files.
-
-# Each [[target]] section describes a build target for the project
-
-[[target]]
-name     = "us-tax-code"                          # The name of the target
-modules  = [ "Section_121", "Section_132", ... ]  # Modules components
-tests    = [ "tests/test_income_tax.catala_en" ]  # Related test(s)
-backends = [ "c", "java" ]                        # Output language backends
-
-[[target]]
-name     = "housing-benefits"
-modules  = [ "Section_8", ... ]
-tests    = [ "tests/test_housing_benefits.catala_en" ]
-backends = [ "ocaml", "c", "java" ]
-```
-Project file hierarchy:
-```
-my-project/
-│   clerk.toml
-├───src/
-│   ├───tax_code/
-│   │   │   section_121.catala_en
-│   │   │   section_132.catala_en
-│   │   │   ...
-│   │
-│   ├───housing_benefits/
-│   │   │   section_8.catala_en
-│   │   │   ...
-│   │
-│   └───common/
-│       │   prorata.catala_en
-│       │   household.catala_en
-│       │   ...
-│
-└───tests/
-    │   test_income_tax.catala_en
-    │   test_housing_benefits.catala_en
-```
-~~~
-
-
 ## Setting up tests
 
 We encourage Catala developers to write lots of tests in their projects!
@@ -72,9 +22,7 @@ for instance.
 In Catala, a test is a [scope](./5-3-scopes-toplevel.md) with no input
 variables, that calls the scope of function that you want to test with hardcoded
 inputs. For instance, imagine that one of your `src` files,
-`src/income_tax.catala_en`, contains the following scope declaration (adapted
-and expanded from [earlier](./3-2-compilation-deployment.md))
-
+`src/income_tax.catala_en`, contains the following scope declaration:
 ~~~catala-en
 > Module Income_tax
 
@@ -247,13 +195,13 @@ check the expected output. If all is good, you will get in your terminal
 a report like:
 
 ```text
-┏━━━━━━━━━━━━━━━━━━━━━━━━━  ALL TESTS PASSED  ━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃                                                                       ┃
-┃             FAILED     PASSED      TOTAL                              ┃
-┃   files          0         34         34                              ┃
-┃   tests          0        245        245                              ┃
-┃                                                                       ┃
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+$ clerk test
+┏━━━━━━━━━━━━━━━━━━━━━━━━━  ALL TESTS PASSED  ━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                                                                      ┃
+┃                     FAILED     PASSED      TOTAL      RATIO          ┃
+┃   Interpreted            0        189        189      100 %          ┃
+┃                                                                      ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 ```
 
 Of course, the numbers depend on how many tests and test files there are in your
@@ -271,6 +219,29 @@ failure:
 
 Failed cram tests will also yield a detailed report with a diff between the
 expected and computed terminal output.
+
+### Backend-testing
+
+`clerk test` also offers a `--backend <backend|all>` option which will
+automatically convert existing tests (but not cram tests)  in the
+given backend language and run it as such.
+
+```text
+$ clerk test --backend all
+┏━━━━━━━━━━━━━━━━━━━━━━━━━  ALL TESTS PASSED  ━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                                                                      ┃
+┃                     FAILED     PASSED      TOTAL      RATIO          ┃
+┃   Interpreted            0        189        189      100 %          ┃
+┃   C                      0         53         53      100 %          ┃
+┃   Java                   0         58         58      100 %          ┃
+┃   OCaml                  0         96         96      100 %          ┃
+┃   Python                 0         58         58      100 %          ┃
+┃                                                                      ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+```
+
+See [the dedicated
+section](./6-2-commands-workflow.md#backend-testing) for more details.
 
 ## Continuous integration workflow
 

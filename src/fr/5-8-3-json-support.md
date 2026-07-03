@@ -162,14 +162,18 @@ Cette commande affichera le résultat en JSON selon le JSON schema
 retourné par la commande `clerk json-schema` décrit dans la section
 précédente.
 
-~~~admonish note title="Option `--quiet`"
-Souvent, les commandes `clerk run` ou `clerk json-schema` vont
-également afficher des messages liés à la compilation sur la sortie
-standard ce qui peut empêcher de traiter la sortie en tant qu'objet
-JSON pur. Pour faire disparaître ces informations, vous pouvez
-rajouter l'option `--quiet` à votre ligne de commande ce qui
-permettra, par exemple, de rediriger la sortie de votre exécution vers
-des outils acceptant du JSON en entrée ou vers un fichier `.json`.
+~~~admonish info title="JSON dans les backends"
+Chaque backend dispose également d'une sortie JSON. En ajoutant
+simplement l'option `--backend <backend>`, vous obtiendrez la même
+sortie JSON que l'interprète Catala, mais, cette fois-ci calculé par
+le backend.
+
+Nous fournissons également des utilitaires et fonctions de conversions
+dans les traductions de programmes Catala pour manipuler et émettre du
+JSON.
+
+Cependant, l'option `--input` n'est, pour le moment, pas compatible avec
+l'option `--backend`.
 ~~~
 
 ## Correspondance des valeurs Catala avec le JSON
@@ -199,9 +203,3 @@ une chaîne de caractère.
 | énumeration | string         | `A`                     | `"A"`                    |
 | énumeration | object         | `B contenu 3`           | `{ "B": 3 }`             |
 | structure   | object         | `{--x:1 --y:vrai}`      | `{ "x": 1, "y": true }`  |
-
-~~~admonish note title="Support du JSON dans les backends"
-Pour le moment, les entrées et sorties en JSON ne sont supportés que
-par l'interprète Catala. Cependant, nous prévoyons d'ajouter son
-support dans les backends existants, ou au moins une partie.
-~~~
