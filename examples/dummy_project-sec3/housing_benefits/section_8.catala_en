@@ -1,0 +1,12 @@
+> Module Section_8
+> Using Household
+> Using Prorata
+
+```catala-metadata
+declaration scope S:
+  input x content Household
+  output r content Prorata
+
+scope S:
+  definition r equals if x.x >= 0 then P else P
+```

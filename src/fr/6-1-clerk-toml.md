@@ -13,8 +13,10 @@ Un exemple de configuration `clerk.toml` est disponible dans la [section
 
 ## Format du manifeste
 
-- `[project]` -- Table qui définit les options globales du projet.
-  - [`include_dirs`](#include_dirs) -- Les répertoires d'emplacement des sources.
+- [`[project]`](#options-project) -- Table qui définit les options globales du projet.
+  - [`name`](#name) -- Nom du projet.
+  - [`include_dirs`](#include_dirs) -- Répertoires scannés pour les sources.
+  - [`exclude_dirs`](#exclude_dirs) -- Répertoires exclus du scan de sources.
   - [`build_dir`](#build_dir) -- Le répertoire de sortie des artefacts de construction.
   - [`target_dir`](#target_dir) -- Le répertoire de sortie des cibles.
   - [`default_targets`](#default_targets) -- Les cibles par défaut à construire.
@@ -25,17 +27,35 @@ Un exemple de configuration `clerk.toml` est disponible dans la [section
   - [`modules`](#modules) -- Modules liés à la cible (*Requis*).
   - [`tests`](#tests) -- Liste des répertoires contenant des tests liés à la cible.
   - [`backends`](#backends) -- Liste des backends vers lesquels cette cible sera construite.
-  - [`include_sources`](#include_sources) -- Drapeau pour inclure les fichiers sources dans la cible compilée.
-  - [`include_objects`](#include_objects) -- Drapeau pour inclure les fichiers objets dans la cible compilée.
+  - [`dependencies`](#dependencies) -- Liste de noms des cibles en dépendance.
 - [`[variables]`](#variables) -- Table pour surcharger les variables liées à la compilation.
 
 ### Options `[project]`
 
+#### name
+
+Ce champ sera utilisé pour les réferences dans des multi-projets.
+
 #### include_dirs
 
-Définit dans quels répertoires `clerk` cherche les fichiers sources Catala.
+Définit les répertoires dans lesquels `clerk` cherchera les fichiers
+sources Catala. Cette recherche est récursive : les sous-répertoires
+des répertoires déclarés sont implicitement inclus.
 
-Exemple : `include_dirs = ["src", "src/utils"]`
+Exemple: `include_dirs = ["src", "libs/catala"]`
+
+La valeur par défaut est `["."]`, signifiant la racine du projet :
+ainsi, si cette valeur n'est pas spécifiée, l'entièreté de l'arbre du
+projet est scanné ormis les répertoires listés via l'option
+[exclude_dirs](#exclude_dirs).
+
+#### exclude_dirs
+
+Configure `clerk` pour qu'il exclus de sa découverte de fichiers
+sources les répertoires spécifiés. Cela sert à éviter de scanner des
+certains répertoires contenant des sources devant être omises.
+
+Exemple: `exclude_dirs = ["doc", "libs/non-catala"]`
 
 #### build_dir
 
@@ -79,6 +99,12 @@ Exemple : `catala_exe = "chemin/vers/catala_personnalise.exe"`
 
 ### Options `[[target]]`
 
+Les cibles (ou _targets_) regroupent un ensemble cohérent de modules
+permettant de générer des bibliothèques ou paquets dans les languages
+de backend cibles. Ainsi, à l'aide de la commande `clerk build`, les
+cibles déclarées seront construites dans le dossier `_target` (ou vers
+le dossier spécifié par le champ `target_dir`) et triés par backend.
+
 #### name
 
 Nom donné à la cible. Cela créera un alias qui peut être utilisé
@@ -91,10 +117,14 @@ cible `calcul_impot`.
 
 #### modules
 
-Modules qui seront utilisés pour compiler la `[[target]]` vers les backends
-spécifiés.
+Modules qui seront inclus dans la `[[target]]`. Ils seront alors
+utilisable dans le(s) backend(s) spécifié(s).
 
 Exemple : `modules = ["Section_121", "Section_132"]`
+
+Tout autre module en dépendance des modules spécifiés sera également
+exporté dans la cible générée (seulement s'ils ne sont pas spécifiés
+via [dependencies](#dependencies)]).
 
 #### tests
 
@@ -113,26 +143,54 @@ cible. La liste des backends actuellement supportés est : `"ocaml"`,
 
 Exemple : `backends = ["ocaml", "c", "java"]`
 
-Par défaut `["ocaml"]` si omis.
+Si non-spécifié, tous les backends sont activés.
 
-#### include_sources
+#### dependencies
 
-Spécifie s'il faut copier les fichiers sources Catala originaux dans le
-répertoire `_target` en plus des fichiers sources générés dans le langage cible
-(par exemple `.c` ou `.java).
+Attend une liste de noms d'autres cibles. Ceci donne l'indication que
+la cible dispose de dépendances et que leur génération vers les
+languages de backend cibles doivent les utiliser comme tel plutôt que
+de tout regrouper en une seule cible "stand-alone".
 
-Exemple : `include_sources = true`
 
-Par défaut `false`.
+~~~admonish info title="Comportement par défaut des inclusions de cibles"
+Par défaut, lorsque le champ `dependencies` n'est pas spécifié,
+`clerk` va inclure l'ensemble des modules requis pour son exécution
+(_i.e._, les `modules` spécifiés **ainsi que** tous les modules
+présents dans leurs chaînes de dépendance). Ceci permettra que le
+dossier généré sera auto-contenu.
 
-#### include_objects
+Cependant, lorsque l'on utilise plusieurs fois les mêmes modules dans
+plusieurs cibles d'un même projet, on tombe sur le problème où les
+modules seront inclus plusieurs fois.
 
-Spécifie s'il faut copier les fichiers compilés générés par le backend (par
-exemple, le `.o` ou `.class`) dans le répertoire `_target`.
+Par exemple, si un module `Commun` est utilisé par deux cibles `a` et
+`b`, ces deux cibles inclueront deux copies de ce module `Commun`. Si,
+par la suite, on souhaite utiliser les deux cibles dans une même
+application hôte, nous aurons un conflit lié à la présence de deux
+copies du même module.
+~~~
 
-Exemple : `include_objects = true`
+Si deux cibles `A` and `B` dépendent d'un même module `Commun` et vous
+souhaitez les utiliser dans une même application, vous pouvez utiliser
+le champ `dependencies`:
+- Soit en créant une nouvelle cible `C` incluant le module `Commun` et
+  en déclarant `dependencies= [ "C" ]` dans les configurations de
+  cibles de `A` et de `B`. Se faisant, les versions backends des
+  cibles n'utiliseront qu'une unique version du module `Commun`.
+- Une autre possibilité est de faire dépendre la cible `A` de `B`. Le
+  module `Commun` sera ainsi inclus dans `B` mais `A` sera capable de
+  le référencer via sa dépendance à la cible `B` et, ainsi, n'en
+  créera pas une copie superflue.
 
-Par défaut `false`.
+
+~~~admonish note
+Toutes les cibles dépendent implicitement de la cible `libcatala` qui
+inclus la runtime Catala et sa bibliothèque standard. Celle-ci devra
+également être _linké_ dans l'application finale.
+~~~
+
+Exemple: `dependencies = [ "commun", "calcul-impot" ]`
 
 ### `[variables]`
 

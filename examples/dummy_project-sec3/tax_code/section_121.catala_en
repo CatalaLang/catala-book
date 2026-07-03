@@ -1,0 +1,11 @@
+> Module Section_121
+> Using Household
+
+```catala-metadata
+declaration scope S:
+  input x content Household
+  output r content integer
+
+scope S:
+  definition r equals if x.x >= 0 then 0 else 0
+```

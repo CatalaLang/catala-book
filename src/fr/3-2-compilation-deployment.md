@@ -7,29 +7,32 @@ un fichier de configuration `clerk.toml` qui contenait deux cibles principales (
 et `aides-logement`) que nous visons à construire et exporter en tant que bibliothèques sources
 dans différents langages.
 
-~~~~~~admonish info collapsible=true title="Récapitulatif de la section précédente : fichier de configuration `clerk.toml` et hiérarchie du projet"
+~~~admonish info collapsible=true title="Récapitulatif de la section précédente : fichier de configuration `clerk.toml` et hiérarchie du projet"
 Voici le fichier de configuration `clerk.toml` de notre projet fictif :
 ```toml
 [project]
-include_dirs = [ "src/commun",              # Quels répertoires inclure
-                 "src/code_impots",         # lors de la recherche de modules Catala
-                 "src/aides_logement" ]     # et de dépendances.
 build_dir    = "_build"    # Définit où sortir les fichiers compilés générés.
 target_dir   = "_target"   # Définit où sortir les fichiers finaux des cibles.
 
 # Chaque section [[target]] décrit une cible de construction pour le projet
 
 [[target]]
-name     = "code-impots-us"                       # Le nom de la cible
-modules  = [ "Article_121", "Article_132", ... ]  # Composants modules
-tests    = [ "tests/test_impot_revenu.catala_fr" ] # Test(s) associé(s)
-backends = [ "c", "java" ]                        # Backends de langage de sortie
+name         = "code-impots-us"                        # Le nom de la cible
+modules      = [ "Article_121", "Article_132", ... ]   # Composants modules
+tests        = [ "tests/test_impot_revenu.catala_fr" ] # Test(s) associé(s)
+backends     = [ "c", "java" ]                         # Backends de langage de sortie
+dependencies = [ "commun" ]                            # Backends de langage de sortie
 
 [[target]]
 name     = "aides-logement"
 modules  = [ "Article_8", ... ]
 tests    = [ "tests/test_aides_logement.catala_fr" ]
 backends = [ "ocaml", "c", "java" ]
+
+[[target]]
+name     = "commun"
+modules  = [ "Prorata", "Foyer", ... ]
+backends = [ "ocaml", "c", "java", "python" ]
 ```
 Hiérarchie des fichiers du projet :
 ```
@@ -54,8 +57,7 @@ mon-projet/
     │   test_impot_revenu.catala_fr
     │   test_aides_logement.catala_fr
 ```
-~~~~~~
-
+~~~
 
 ## Construire le projet
 
@@ -75,9 +77,20 @@ projet : cela causerait des échecs de résolution de chemin dans l'outillage Ca
 ```console
 $ clerk build
 ┌─[RESULT]─
-│ Build successful. The targets can be found in the following files:
-│     [code-impots-us] → _targets/code-impots-us
-│     [aides-logement] → _targets/aides-logement
+│ Build successful. The artefacts can be found at the following:
+│
+│ [commun]
+│   "_target/python/commun"
+│   "_target/ocaml/commun"
+│   "_target/java/commun"
+│   "_target/c/commun"
+│ [aides-logements]
+│   "_target/ocaml/aides-logement"
+│   "_target/java/aides_logement"
+│   "_target/c/aides-logement"
+│ [code-impots-us]
+│   "_target/java/code_impots_us"
+│   "_target/c/code-impots-us"
 └─
 ```
 
@@ -85,24 +98,38 @@ La sortie de la commande vous montre où trouver les résultats. Chaque section 
 produit un sous-répertoire dans le répertoire `_targets/`, avec les artefacts de compilation
 à l'intérieur. Dans notre exemple, cela pourrait ressembler à ceci :
 
-<!-- TODO: package into static libraries and document it -->
+```
+_target/
+├── c/
+│   ├── commun/
+│   ├── aides-logement/
+│   ├── libcatala/
+│   ├── Makefile
+│   └── code-impots-us/
+│       ├── Section_121.c
+│       ├── Section_121.h
+│       ├── Section_132.c
+│       ├── ...
+├── java/
+│   ├── commun/
+│   ├── aides_logement/
+│   ├── libcatala/
+│   ├── pom.xml
+│   └── code-impots-us/
+│       ├── pom.xml
+│       ├── Section_121.java
+│       └── Section_132.java
+├── ocaml/
+│   ├── ...
+├── python/
+│   ├── ...
+```
 
-```
-_targets/
-├───code-impots-us/
-│   ├───c/
-│   │   │   Article_121.c
-│   │   │   Article_121.h
-│   │   │   Article_121.o
-│   │   │   ...
-│   │
-│   ├───java/
-│   │   │   Article_121.java
-│   │   │   Article_121.class
-│   │   │   ...
-│   aides-logement/
-│   │   ...
-```
+Chaque cible est préparée selon les `backends` qu'elle déclare dans sa
+configuration. Notons que chaque répertoire `<backend>` contient
+également une cible `libcatala` en plus. Ce répertoire contient la
+runtime Catala et la bibliothèque standard nécessaires à la bonne
+exécution de nos artefacts.
 
 ## Déployer le code généré
 
@@ -117,11 +144,25 @@ spécificités de vos cas d'utilisation. Fondamentalement, c'est à vous de copi
 artefacts dans `_targets` vers votre autre projet, de les compiler et de les lier à
 votre base de code existante.
 
-Par exemple, si vous souhaitez intégrer le programme Catala dans le cadre d'une application
-Java, vous devrez copier les fichiers sources Java générés depuis le
-répertoire `_target/<nom_cible>/java/` vers un sous-répertoire de votre projet Java,
-et mettre à jour votre configuration Maven `pom.xml` en conséquence afin que Maven puisse
-construire les fichiers sources générés par Catala.
+Cependant, nous fournissons également un mécanisme standardisé de
+_build_ de chaque cible en fonction du `backend` permettant de générer
+des bibliothèques exportables. Par exemple, si vous souhaitez intégrer
+le programme Catala dans le cadre d'une application Java :
+
+- Vous pouvez simplement copier les dossiers des cibles Java générés
+  depuis le répertoire `_target/java/` vers le répertoire de sources
+  votre projet Java. Chaque cible est également empaqueté en tant que
+  `package` Java.
+
+- Vous pouvez utiliser l'outil [`maven`](https://maven.apache.org/)
+  utilisant les fichiers de configuration de projet `pom.xml`: `mvn
+  package` compilera l'ensemble des cibles et produira un fichier
+  `jar` pour chacune pouvant être importées dans un projet extérieur.
+  Vous pouvez également automiser la génération et la livraison de ces
+  bibliothèques à l'aide d'un outil d'intégration continue (CI/CD).
+
+Il est à noter que Catala dispose de mécanismes similaires pour les
+autres _backends_.
 
 ~~~admonish danger title="Puis-je modifier les fichiers générés pour les adapter à mon processus de développement ?"
 L'équipe Catala ne recommande pas de modifier les fichiers générés par le compilateur
@@ -219,13 +260,15 @@ Python). Les calculs de champ d'application sont effectués dans le constructeur
 pour exécuter le champ d'application, nous devons instancier cette classe et récupérer
 le résultat.
 
-De plus, pour chaque backend, il existe une version dédiée du runtime Catala.
-Ce composant est nécessaire pour la compilation et l'exécution des
-programmes Catala générés. Les runtimes décriront les types et
-structures de données Catala, les erreurs spécifiques ainsi qu'une API pour les manipuler depuis les
-langages ciblés. Les fichiers pour le runtime devraient être inclus dans le
-`_targets/<nom-cible>` ; vous pouvez également les copier dans votre projet et
-référencer leurs types et fonctions depuis votre application.
+Tel que mentionné plus haut, pour chaque backend, il existe une
+version dédiée du runtime Catala.  Ce composant est nécessaire pour la
+compilation et l'exécution des programmes Catala générés. Les runtimes
+décriront les types et structures de données Catala, les erreurs
+spécifiques ainsi qu'une API pour les manipuler depuis les langages
+ciblés. Les fichiers pour le runtime devraient être inclus dans le
+`_targets/<backend>/<nom-cible>` ; vous pouvez également les copier dans votre
+projet et référencer leurs types et fonctions depuis votre
+application.
 
 En mettant tout cela ensemble, voici par exemple un programme Java simple qui
 exécute notre champ d'application :
@@ -235,7 +278,7 @@ import catala.runtime.CatalaMoney;
 
 class Main {
     public static void main(String[] args){
-        CatalaMoney revenu_entree = CatalaMoney.ofCents(50000*100);
+        CatalaMoney revenu_entree = new CatalaMoney(55012.52);
         CalculImpotRevenu resultat = new CalculImpotRevenu(revenu_entree);
         CatalaMoney impot_resultat = resultat.impot_revenu;
         System.out.println("Impôt sur le revenu : " + impot_resultat);
@@ -243,10 +286,9 @@ class Main {
 }
 ```
 
-Comme mentionné, les runtimes Catala offrent une API pour construire les
-valeurs spécifiques à Catala, par exemple, la méthode statique java `CatalaMoney.ofCents`
-qui construit une valeur `CatalaMoney` équivalente à une valeur de type argent.
-Seul le ciel est la limite ensuite quant à ce que vous pouvez construire !
+Les runtimes Catala offrent une API pour construire les valeurs
+spécifiques à Catala, par exemple, les objets java `CatalaMoney`
+réprésentent les valeurs de type `argent` dans Catala.
 
 Dans cette section, nous avons vu comment construire un projet, l'exporter et
 l'intégrer dans une application existante. Dans la section suivante, nous

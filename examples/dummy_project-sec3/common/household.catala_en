@@ -1,0 +1,5 @@
+> Module Household
+
+```catala-metadata
+declaration structure Household: data x content integer
+```

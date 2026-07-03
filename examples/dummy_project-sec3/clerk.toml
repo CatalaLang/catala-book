@@ -1,0 +1,24 @@
+[project]
+build_dir    = "_build"    # Defines where to output the generated compiled files.
+target_dir   = "_target"   # Defines where to output the targets final files.
+
+# Each [[target]] section describes a build target for the project
+
+[[target]]
+name         = "us-tax-code"                          # The name of the target
+modules      = [ "Section_121", "Section_132" ]       # Modules components
+tests        = [ "tests/test_income_tax.catala_en" ]  # Related test(s)
+backends     = [ "c", "java" ]                        # Output language backends
+dependencies = [ "common" ]                           # Explicit target's dependencies
+
+[[target]]
+name         = "housing-benefits"
+modules      = [ "Section_8" ]
+tests        = [ "tests/test_housing_benefits.catala_en" ]
+backends     = [ "ocaml", "c", "java" ]
+dependencies = [ "common" ]
+
+[[target]]
+name     = "common"
+modules  = [ "Prorata", "Household" ]
+backends = [ "ocaml", "c", "java", "python" ]
