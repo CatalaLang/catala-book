@@ -388,7 +388,7 @@ Like an enumeration, values of type `optional` can be created using `Present con
 <expr>`, and used in the forms `match <expr> with pattern` and `<expr> with
 pattern <constr>`, e.g. (see [Enumeration](./5-2-types.md#enumerations) for more details)
 
-```catala-expr-en
+```catala-code-en
 declaration structure Tree:
   data fruit content optional of Fruit
 

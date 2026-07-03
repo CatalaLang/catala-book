@@ -8,56 +8,6 @@ un fichier de configuration `clerk.toml` qui contenait deux cibles principales (
 et `aides-logement`), que nous avons appris à compiler et déployer en C et Java. Maintenant,
 assurons-nous que le code déployé est correct et pratiquons un peu de développement piloté par les tests !
 
-~~~admonish info collapsible=true title="Récapitulatif de la section précédente : fichier de configuration `clerk.toml` et hiérarchie du projet"
-Voici le fichier de configuration `clerk.toml` de notre projet fictif :
-```toml
-[project]
-include_dirs = [ "src/commun",              # Quels répertoires inclure
-                 "src/code_impots",         # lors de la recherche de modules Catala
-                 "src/aides_logement" ]     # et de dépendances.
-build_dir    = "_build"    # Définit où sortir les fichiers compilés générés.
-target_dir   = "_target"   # Définit où sortir les fichiers finaux des cibles.
-
-# Chaque section [[target]] décrit une cible de construction pour le projet
-
-[[target]]
-name     = "code-impots-us"                       # Le nom de la cible
-modules  = [ "Article_121", "Article_132", ... ]  # Composants modules
-tests    = [ "tests/test_impot_revenu.catala_fr" ] # Test(s) associé(s)
-backends = [ "c", "java" ]                        # Backends de langage de sortie
-
-[[target]]
-name     = "aides-logement"
-modules  = [ "Article_8", ... ]
-tests    = [ "tests/test_aides_logement.catala_fr" ]
-backends = [ "ocaml", "c", "java" ]
-```
-Hiérarchie des fichiers du projet :
-```
-mon-projet/
-│   clerk.toml
-├───src/
-│   ├───code_impots/
-│   │   │   article_121.catala_fr
-│   │   │   article_132.catala_fr
-│   │   │   ...
-│   │
-│   ├───aides_logement/
-│   │   │   article_8.catala_fr
-│   │   │   ...
-│   │
-│   └───commun/
-│       │   prorata.catala_fr
-│       │   foyer.catala_fr
-│       │   ...
-│
-└───tests/
-    │   test_impot_revenu.catala_fr
-    │   test_aides_logement.catala_fr
-```
-~~~
-
-
 ## Mise en place des tests
 
 Nous encourageons les développeurs Catala à écrire beaucoup de tests dans leurs projets !
@@ -68,11 +18,12 @@ par exemple.
 
 ### Qu'est-ce qu'un test ?
 
-En Catala, un test est un [champ d'application](./5-3-scopes-toplevel.md) sans variables d'entrée,
-qui appelle le champ d'application ou la fonction que vous voulez tester avec des entrées codées en dur.
-Par exemple, imaginez que l'un de vos fichiers `src`,
-`src/impot_revenu.catala_fr`, contient la déclaration de champ d'application suivante (adaptée
-et étendue de [plus tôt](./3-2-compilation-deployment.md))
+En Catala, un test est un [champ
+d'application](./5-3-scopes-toplevel.md) sans variables d'entrée, qui
+appelle le champ d'application ou la fonction que vous voulez tester
+avec des entrées codées en dur.  Par exemple, imaginez que l'un de vos
+fichiers `src`, `src/impot_revenu.catala_fr`, contient la déclaration
+de champ d'application suivante :
 
 ~~~catala-fr
 > Module Impot_revenu
@@ -241,18 +192,18 @@ options spécifiques et des commandes différentes de `clerk run`.
 ## Exécuter les tests et obtenir des rapports
 
 Simple : exécutez simplement `clerk test` ! Par défaut, il scannera tout votre projet à la recherche
-de `#[test]` ou `` ```catala-test-cli `` dans vos fichiers, exécutera le test,
+de `#[test]` ou `` ```catala-test-cli `` dans vos fichiers, exécutera le test,
 vérifiera la sortie attendue. Si tout est bon, vous obtiendrez dans votre terminal
-un rapport comme :
+un rapport ressemblant à ceci :
 
 ```text
-┏━━━━━━━━━━━━━━━━━━━━━━━━━  ALL TESTS PASSED  ━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃                                                                       ┃
-┃             FAILED     PASSED      TOTAL                              ┃
-┃   files          0         34         34                              ┃
-┃   tests          0        245        245                              ┃
-┃                                                                       ┃
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+$ clerk test
+┏━━━━━━━━━━━━━━━━━━━━━━━━━  ALL TESTS PASSED  ━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                                                                      ┃
+┃                     FAILED     PASSED      TOTAL      RATIO          ┃
+┃   Interpreted            0        189        189      100 %          ┃
+┃                                                                      ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 ```
 
 Bien sûr, les nombres dépendent du nombre de tests et de fichiers de test qu'il y a dans votre
@@ -270,6 +221,31 @@ l'assertion a échoué, avec la commande exacte que vous pouvez exécuter pour r
 
 Les tests cram échoués produiront également un rapport détaillé avec un diff entre la
 sortie attendue et calculée du terminal.
+
+### Test des backends
+
+`clerk test` dipose d'une option `--backend <backend|all>` permettant
+de convertir automatiquement les tests existants (ormis les
+cram-tests) vers les différents backends et les exécutent dans leurs
+environements respectifs:
+
+```text
+# clerk test --backend all
+┏━━━━━━━━━━━━━━━━━━━━━━━━━  ALL TESTS PASSED  ━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                                                                      ┃
+┃                     FAILED     PASSED      TOTAL      RATIO          ┃
+┃   Interpreted            0        189        189      100 %          ┃
+┃   C                      0         53         53      100 %          ┃
+┃   Java                   0         58         58      100 %          ┃
+┃   OCaml                  0         96         96      100 %          ┃
+┃   Python                 0         58         58      100 %          ┃
+┃                                                                      ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+```
+
+Vous pouvouez consulter [la section
+dédiée](./6-2-commands-workflow.md#backend-testing) pour plus de
+détails.
 
 ## Pipelines CI
 
