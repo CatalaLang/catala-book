@@ -14,6 +14,7 @@ An `clerk.toml` configuration example is available in [section
 ## Manifest format
 
 - `[project]` -- Table that defines the global project options.
+  - [`name`](#name) -- The name of the project.
   - [`include_dirs`](#include_dirs) -- The sources location directories.
   - [`build_dir`](#build_dir) -- The build artifact output directory.
   - [`target_dir`](#target_dir) -- The targets output directory.
@@ -25,11 +26,16 @@ An `clerk.toml` configuration example is available in [section
   - [`modules`](#modules) -- Modules linked to the target (*Required*).
   - [`tests`](#tests) -- List of directories containing tests related to the target.
   - [`backends`](#backends) -- List of backends that this target will build to.
-  - [`include_sources`](#include_sources) -- Flag to include source files in the compiled target.
-  - [`include_objects`](#include_objects) -- Flag to include object files in the compiled target.
+  <!-- - [`include_sources`](#include_sources) -- Flag to include source files in the compiled target.
+   !-- - [`include_objects`](#include_objects) -- Flag to include object files in the compiled target. -->
+  - [`dependencies`](#dependencies) -- List of other target names that this target depends on.
 - [`[variables]`](#variables) -- Table to override compilation-related variables.
 
 ### `[project]` options
+
+#### name
+
+This will be used to refer to the project in multi-project setups.
 
 #### include_dirs
 
@@ -115,24 +121,68 @@ Example: `backends = ["ocaml", "c", "java"]`
 
 Defaults to `["ocaml"]` if omitted.
 
-#### include_sources
+#### dependencies
 
-Specifies whether to copy the original source files (e.g. `.catala_en`) into the
-`_target` directory, in addition to the sources generated in the target language
-(e.g. `.c` or `.java`).
+This is a list of other target names. This gives an indication that, in the
+target language, the targets will be used to generate packages with a dependency
+relationship (rather than stand-alone).
 
-Example: `include_sources = true`
+~~~admonish info title="Default target inclusion behaviour"
+By default, when `dependencies` is not specified, `clerk` will include all
+required modules in a given target (_i.e._ the specified modules **and** all
+their dependencies), so that the target dir can be used stand-alone in the
+output language.
 
-Defaults to `false`.
+When using the resulting target directory to build a "package" in the output
+language, that means this package can be used independently. However, with
+multiple targets, some Catala modules can get included several times
+in each of them.
 
-#### include_objects
+For example, if a module is called `Common` and used by modules present in both
+targets `A` and `B`, both these targets will include module `Common`. Linking
+`A` and `B` in the target application would result in two copies of module
+`Common`.
 
-Specifies whether to copy over the backend generated compiled files (e.g.,
-the `.o` or `.class`) in the `_target` directory.
+This can cause trouble when using these packages together in the same
+application, because of a conflict between multiple instances of the same
+module.
+~~~
 
-Example: `include_objects = true`
+If two targets `A` and `B` depend on a shared module `Common` and you want to
+use them both in an application, you should use a `dependencies` specification:
+- either create a separate target `C` that includes module `Common`, and make
+  both `A` and `B` depend on `C`. This way, the backend language will properly
+  share the implementation of `Common`.
+- another possibility is to make `A` depend on `B`: `Common` will automatically
+  be included in `B` as before, but `A` will know that it can use it through `B`
+  and refrain from pulling in another copy.
 
-Defaults to `false`.
+~~~admonish note
+all targets implicitely depend on the `libcatala` target that includes
+the base Catala runtime and standard library, and should be linked just once
+into the end application.
+~~~
+
+Example: `dependencies = ["tax_computation"]`
+
+<!-- #### include_sources
+ !-- 
+ !-- Specifies whether to copy the original source files (e.g. `.catala_en`) into the
+ !-- `_target` directory, in addition to the sources generated in the target language
+ !-- (e.g. `.c` or `.java`).
+ !-- 
+ !-- Example: `include_sources = true`
+ !-- 
+ !-- Defaults to `false`.
+ !-- 
+ !-- #### include_objects
+ !-- 
+ !-- Specifies whether to copy over the backend generated compiled files (e.g.,
+ !-- the `.o` or `.class`) in the `_target` directory.
+ !-- 
+ !-- Example: `include_objects = true`
+ !-- 
+ !-- Defaults to `false`. -->
 
 ### `[variables]`
 
