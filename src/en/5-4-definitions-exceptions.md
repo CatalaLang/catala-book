@@ -202,7 +202,7 @@ to give labels to definitions, especially with complex exception structures.
 
 ### Declaring multiple definitions as one exception to a single definition
 
-In the previous example, `bar` was set exceptionnally to `0` if `fizz = 0`. What
+In the previous example, `bar` was set exceptionally to `0` if `fizz = 0`. What
 if you want to expand that behavior with two more exceptional definitions that
 set `bar` to `1` and `-1` respectively when `fizz > 0` and `fizz < 0`? These
 three exceptional definitions cannot conflict with each other because `fizz` is
@@ -293,7 +293,7 @@ To build on our running example, imagine now that the value of `bar` in the
 base case drifts over time: `42` before 2025 but `43` after. Then, you need
 two conditional definitions in the base case (those two grouped definitions
 are still mutually exclusive). This is achieved in Catala simply by giving
-the samel label `base_case` to the two base case definitions:
+the same label `base_case` to the two base case definitions:
 
 ```catala-code-en
 scope Foo:
@@ -360,13 +360,13 @@ Once you have [declared a sub-scope](./5-3-scopes-toplevel.md#sub-scopes-declara
 you will need to define its arguments by defining the input variables of the
 sub-scope in the scope. For instance, if scope `Foo` has sub-scope `bar` calling
 scope `Bar` that has input variables `fizz` and `buzz`, you will need to define
-`bar.fizz` and `bar.fuzz` with this syntax:
+`bar.fizz` and `bar.buzz` with this syntax:
 
 ```catala-code-en
 scope Foo:
   definition bar.fizz equals [...]
 
-  definition bar.fuzz equals [...]
+  definition bar.buzz equals [...]
 ```
 
 Of course, you can use exceptions and conditional definitions for these
@@ -377,7 +377,7 @@ Once you have defined all the [input variables](./5-3-scopes-toplevel.md#input-v
 you can simply refer to the sub-scope's [output variables](./5-3-scopes-toplevel.md#output-variables)
 in later expressions. For instance, if `Bar` has output variable `fizzbuzz`, then
 you can refer to `bar.fizzbuzz` as the result of `fizzbuzz` when calling `Bar`
-with arguments `bar.fizz` and `bar.fuzz`.
+with arguments `bar.fizz` and `bar.buzz`.
 
 ## Assertions
 
