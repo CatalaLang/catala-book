@@ -236,8 +236,8 @@ you should apply a tax credit or not:
 
 ```catala-expr-en
 match foo with pattern
--- NoTaxCredit: true
--- anything: false
+-- NoTaxCredit: false
+-- anything: true
 ```
 ~~~
 
