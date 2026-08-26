@@ -20,7 +20,7 @@ the module declaration is simply:
 
 The name of the file and the name of the module in the module declaration
 should match, but differences in casing are allowed as module names have to be
-in CamlCase and file names are usually snake_case.
+in CamelCase and file names are usually snake_case.
 
 ~~~admonish danger title="Don't forget the module declaration !"
 If you forget to put `> Module Foo` at the top of your file, the file will
