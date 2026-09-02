@@ -82,3 +82,24 @@ Lorsque des éléments nommés ont des sous-éléments, ceux-ci référenceront 
 ![Nommer les éléments de test](img/test_item_naming.png)
 
 Une description et un titre de test peuvent également être fournis.
+
+### Des noms lisibles pour les cas d'énumération
+
+Certaines énumérations reprennent une nomenclature administrative dont les
+noms des cas sont des codes (`C_011`, `C_028`, ...). En annotant un cas avec
+[l'attribut `#[description]`](./5-8-1-attributes.md#description),
+l'éditeur de cas de test affiche la description à côté du code au moment de
+choisir une valeur :
+
+```catala-code-fr
+déclaration énumération CodeAgence:
+  #[description = "Antenne régionale nord"]
+  -- C_011
+  #[description = "Antenne régionale sud"]
+  -- C_028
+```
+
+![Description d'un cas d'énumération dans l'éditeur de valeur](img/ctor_description.png)
+
+La recherche du sélecteur porte aussi sur les descriptions : taper « nord »
+trouve `C_011` aussi bien que taper le code lui-même.

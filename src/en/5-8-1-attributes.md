@@ -36,6 +36,16 @@ The alternative syntax `## documentation text` (a code comment starting with a
 double `#` character) is available and preferred for readability. Like the
 attribute, it must be present just above its target.
 
+### `#[description]`
+
+Attaches a short readable string to an element, which tools display beside
+its identifier. Unlike `#[doc]`, which explains an element's purpose and
+usage, a description is a caption. The compiler accepts it on declarations,
+structure fields, enumeration cases, function arguments and assertions; the
+value must be a string. For now, tooling only displays the descriptions of
+enumeration cases -- see [the test case
+editor](./7-1-test-gui.md#readable-names-for-enumeration-cases).
+
 ### `#[error.message]`
 
 The `#[error.message = "informative message"]` attribute can be attached to

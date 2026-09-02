@@ -118,3 +118,24 @@ for quick navigation.
 ![Test item naming](img/test_item_naming.png)
 
 A test description and title can also be provided.
+
+### Readable names for enumeration cases
+
+Enumerations sometimes mirror an administrative nomenclature whose case names
+are codes (`C_011`, `C_028`, ...). Annotating a case with the
+[`#[description]` attribute](./5-8-1-attributes.md#description)
+makes the test case editor show the description alongside the code when
+picking a value:
+
+```catala-code-en
+declaration enumeration AgencyCode:
+  #[description = "Northern regional office"]
+  -- C_011
+  #[description = "Southern regional office"]
+  -- C_028
+```
+
+![Enumeration case description in the value editor](img/ctor_description.png)
+
+The picker's search matches descriptions as well as codes: typing "northern"
+finds `C_011` just as typing the code itself would.
