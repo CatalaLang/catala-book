@@ -8,13 +8,13 @@ Le plugin Catala pour VSCode fournit une interface graphique (GUI) pour aider à
 Les tests Catala sont généralement écrits dans des fichiers de code source Catala, comme expliqué dans le [guide de test](./3-3-0-test-ci.md). Cependant, ces cas de test Catala ordinaires écrits par des programmeurs sont généralement incompatibles avec l'éditeur de cas de test présenté sur cette page. Les tests gérés par l'éditeur de test doivent être créés à l'intérieur de l'outil lui-même et vivre séparément des autres tests écrits sous forme de fichiers de code source Catala ordinaires.
 ~~~
 
-## Activation de l'éditeur de cas de test
+## Activer ou désactiver l'éditeur de cas de test
 
-L'éditeur de cas de test doit être activé avant la première utilisation.
-
-Pour ce faire, ouvrez le panneau de commande de VS Code (ctrl-shift-P) et recherchez "paramètres", puis filtrez en tapant "catala" dans la zone de recherche.
-
-Dans les paramètres Catala, cochez "Enable the custom test editor for Catala test files".
+L'éditeur de cas de test est activé par défaut. Pour le désactiver (ou le
+réactiver), ouvrez le panneau de commande de VS Code (ctrl-shift-P) et
+recherchez "paramètres", puis filtrez en tapant "catala" dans la zone de
+recherche : l'option est "Enable the custom test case editor for Catala test
+files".
 
 ![Panneau des paramètres avec option d'éditeur de test](img/enable_test_case_editor.png)
 

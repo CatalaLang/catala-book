@@ -18,14 +18,12 @@ created inside the tool itself and live separately from the other tests written
 as regular Catala source code files.
 ~~~
 
-## Enabling the test case editor
+## Enabling or disabling the test case editor
 
-The test case editor needs to be enabled before first use.
-
-To do so, bring the VS code command panel (ctrl-shift-P) and search for "settings",
-then filter by typing "catala" in the search box.
-
-In the catala settings, check "Enable Custom Test Editor".
+The test case editor is enabled by default. Should you need to turn it off
+(or back on), bring the VS code command panel (ctrl-shift-P) and search for
+"settings", then filter by typing "catala" in the search box: the option is
+"Enable the custom test case editor for Catala test files".
 
 ![Settings panel with test editor option](img/enable_test_case_editor.png)
 
