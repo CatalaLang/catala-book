@@ -36,6 +36,17 @@ Un commentaire commençant par `##` est automatiquement interprété comme un
 attribut de documentation de l'élément qui suit: cette syntaxe allégée `## texte
 d'explication` est à privilégier.
 
+### `#[description]`
+
+Attache une courte chaîne lisible à un élément, que les outils affichent à
+côté de son identifiant. Contrairement à `#[doc]`, qui explique le rôle et
+l'usage d'un élément, une description est une légende. Le compilateur
+l'accepte sur les déclarations, champs de structure, cas d'énumération,
+arguments de fonction et assertions ; la valeur doit être une chaîne. Pour
+l'instant, l'outillage n'affiche que les descriptions des cas d'énumération
+-- voir [l'éditeur de cas de
+test](./7-1-test-gui.md#des-noms-lisibles-pour-les-cas-dénumération).
+
 ### `#[error.message]`
 
 L'attribut `#[error.message = "message informatif"]` s'attache à une assertion
