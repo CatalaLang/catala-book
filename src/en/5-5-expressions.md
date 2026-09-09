@@ -48,7 +48,7 @@ scope, or to [toplevel constants and functions](./5-3-scopes-toplevel.md#global-
 
 ~~~admonish info title="Accessing a particular state of a scope variable"
 Some scope variables can have [multiple states](./5-4-definitions-exceptions.md#scope-variables-with-multiple-states).
-Suppose you have scope variable `foo` has states `bar` and `baz` in this order.
+Suppose scope variable `foo` has states `bar` and `baz`, in that order.
 You can either refer to `foo`, `foo state bar` or `foo state baz`, but the ability
 or meaning of these reference depend on the context according to the following
 rules.
@@ -62,7 +62,7 @@ rules.
 * Outside the definitions of `foo`, you can refer to `foo state bar` and
   `foo state baz`. It you refer simply to `foo`, it will default to the last
   state, here `baz`.
-* If `foo` in an `input` variable of the scope, then its first state cannot
+* If `foo` is an `input` variable of the scope, then its first state cannot
   be defined and will be valued by the argument of the scope when it is being
   called.
 ~~~
@@ -194,13 +194,13 @@ on enumeration values whose type has been [declared by the user](./5-2-types.md#
 Suppose you have declared the type
 
 ```catala-code-en
-declaration enumeration NoTaxCredit:
+declaration enumeration TaxCredit:
   -- NoTaxCredit
   -- TaxCreditForIndividual content Individual
   -- TaxCreditAfterDate content date
 ```
 
-and you have a value `foo` of type `NoTaxCredit`. `foo` is either an instance
+and you have a value `foo` of type `TaxCredit`. `foo` is either an instance
 of `NoTaxCredit`, or `TaxCreditForIndividual`, or `TaxCreditAfterDate`. If
 you want to use `foo`, you have to provide instructions for what to do in each of
 the three cases, since you don't know in advance which one it will be. This
@@ -327,7 +327,7 @@ calling](./5-4-definitions-exceptions.md#sub-scope-calling) when possible (with
 a single, static sub-scope call), because it enables using conditional
 definitions and exceptions on the arguments of the sub-scope. However, sometimes
 a scope has to be called dynamically under certain conditions or inside a loop,
-which makes impossible to use the former mechanism. In these situations, you can
+which makes it impossible to use the former mechanism. In these situations, you can
 use direct scope calls which are the equivalent of direct function calls, but
 for scopes, as an expression. For instance, suppose you are inside an expression
 and want to call scope `Foo` with arguments `bar` and `baz`; the syntax is:
