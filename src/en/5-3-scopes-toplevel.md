@@ -227,7 +227,7 @@ But sometimes, one knows that they will always perform a single, static
 declarative syntax making it easier for lawyers to understand what is going on.
 
 Sub-scopes are declared in the scope declaration like scope variables.
-For instance, is inside scope `Foo` you will call scope `Bar` exactly one time,
+For instance, `Bar` is inside scope `Foo`. If `Bar` is called exactly once,
 then you will write:
 
 ```catala-code-en
