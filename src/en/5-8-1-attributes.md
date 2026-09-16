@@ -53,6 +53,10 @@ The alternative syntax `## documentation text` (a code comment starting with a
 double `#` character) is available and preferred for readability. Like the
 attribute, it must be present just above its target.
 
+The documentation items attached to type or scope items declarations are
+passed down in the generated [JSON Schema](./5-8-3-json-support.md) in
+the `description` property of the objects.
+
 ### `#[description]`
 
 Attaches a short readable string to an element, which tools display beside
@@ -106,7 +110,7 @@ types](./5-8-2-external-modules.md#external-types).
 
 ### `#[testcase.*]`
 
-These attributes are used by the test case editor UI. They should be attached
+These attributes are used by the [test case editor UI](./7-1-test-gui.md). They should be attached
 to scope declarations used for tests, and usually also marked with `#[test]`.
 
 A test scope declaration produced by the test case editor UI will thus look like
