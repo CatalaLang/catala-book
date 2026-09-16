@@ -1,4 +1,4 @@
-# Test case editor 
+# Test case editor
 
 <div id="tocw"></div>
 
@@ -10,9 +10,9 @@ regressions. These tests are often written by domain experts who may or may not
 be developers.
 
 ~~~admonish info title="Which tests can be handled by the test case editor ?"
-Catala tests are usually written in Catala source code files, as explained 
-in the [testing walkthrough](./3-3-0-test-ci.md). These regular Catala test 
-cases written by programmers are however usually incompatible with the test 
+Catala tests are usually written in Catala source code files, as explained
+in the [testing walkthrough](./3-3-0-test-ci.md). These regular Catala test
+cases written by programmers are however usually incompatible with the test
 case editor presented in this page. Tests managed by the test editor need to be
 created inside the tool itself and live separately from the other tests written
 as regular Catala source code files.
@@ -47,7 +47,7 @@ within their name. Other files will trigger the text editor displaying thhe Cata
 ~~~
 
 Opening this new test in the Test Editor will show a welcome
-page that lets you create a new test. 
+page that lets you create a new test.
 
 ![New test wizard](img/add_test.png)
 
@@ -102,7 +102,7 @@ and review diffs in the same manner as other test and program files.
 
 Tests managed by the test case editor are registered as native tests in the VS
 code test view (beaker icon in the main menu) and can be searched by name or
-target scope, like the other tests written by programmers as regular Catala 
+target scope, like the other tests written by programmers as regular Catala
 source code files.
 
 ![Test search](img/test_search.png)
@@ -117,7 +117,9 @@ for quick navigation.
 
 ![Test item naming](img/test_item_naming.png)
 
-A test description and title can also be provided.
+A test description and title can also be provided through the
+[attributes](./5-8-1-attributes.md) `[#description]` and
+`#[testcase.test_title]`
 
 ### Readable names for enumeration cases
 

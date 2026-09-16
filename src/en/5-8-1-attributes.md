@@ -24,14 +24,14 @@ on which part of the Catala tooling.
 
 | Attribute                               | Attached to               | Interpreter | Generated code | Test editor UI | JSON Schema |
 |-----------------------------------------|---------------------------|:-----------:|:--------------:|:--------------:|:-----------:|
-| `#[test]`                               | Scope declarations        | ✅          |                | ✅             |             |
-| `#[doc = "..."]` or `##`                | Anything                  |             |                |                | ✅          |
+| `#[test]`                               | Scope declarations        | ✅          | ✅             | ✅             |             |
+| `#[doc = "..."]` or `##`                | Anything                  |             | ✅             |                | ✅          |
+| `#[description = "..."]`                | Anything                  |             |                | ✅             |             |
 | `#[error.message = "..."]`              | `impossible`, `assertion` | ✅          | ✅             |                |             |
 | `#[debug.print = "..."]`                | Any expression            | ✅          |                |                |             |
-| `#[implicit_position_argument]`         | Function declarations     |             | ✅             |                |             |
+| `#[implicit_position_argument]`         | Function declarations     | ✅          | ✅             |                |             |
 | `#[json = "..."]`                       | External expression       | ✅          | ✅             |                |             |
 | `#[testcase.testui]`                    | Test scope declaration    |             |                | ✅             |             |
-| `#[testcase.test_description = "..."]`  | Test scope declaration    |             |                | ✅             |             |
 | `#[testcase.test_title = "..."]`        | Test scope declaration    |             |                | ✅             |             |
 | `#[testcase.uid = "..."]`               | Any expression            |             |                | ✅             |             |
 | `#[testcase.array_item_label = "..."]`  | Array items               |             |                | ✅             |             |
@@ -116,7 +116,6 @@ this:
 #[test]
 #[testcase.testui]
 #[testcase.test_title = "Some computation"]
-#[testcase.test_description = "This is a very important test"]
 declaration scope SomeComputation:
   input children_of_age content integer
   ...
@@ -132,10 +131,6 @@ that should be displayed in the UI. Must always be accompanied by a
 
 Displays a title for the test, distinct from the scope name, in the test
 case editor UI.
-
-#### `#[testcase.test_description]`
-
-Displays a textual description of the test in the UI.
 
 #### `#[testcase.uid]`
 
