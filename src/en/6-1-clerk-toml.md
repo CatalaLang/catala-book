@@ -22,6 +22,9 @@ An `clerk.toml` configuration example is available in [section
   - [`default_targets`](#default_targets) -- The default targets to build.
   - [`catala_opts`](#catala_opts) -- Catala options override.
   - [`catala_exe`](#catala_exe) -- Catala binary path override.
+- [`[ocaml]`, `[c]`, `[python]` and `[java]`](#backend-options) --
+  Backend-specific options.
+  - [`use_libraries`](#use_libraries) -- External libraries required.
 - [`[[target]]`](#target-options) -- Multi-table that defines a project's target.
   - [`name`](#name-1) -- Name of the target (*Required*).
   - [`modules`](#modules) -- Modules linked to the target (*Required*).
@@ -95,6 +98,22 @@ Override which Catala compiler will be used to build source
 files.
 
 Example: `catala_exe = "path/to/custom_catala.exe"`
+
+### Backend options
+
+This covers the `[ocaml]`, `[c]`, `[python]` and `[java]` tables.
+
+#### use_libraries
+
+Defines the names of libraries that are needed by the project. This is useful
+when writing [external modules](./5-6-modules.md#declaring-external-modules)
+that make use of some third-party library. `clerk` will expect the library to be
+installed and available through the standard tools of the given backend, and
+will link it with the generated artefacts when appropriate:
+- For OCaml, `ocamlfind` must be present and will be used to query the library
+- For C, the include and link options are obtained through `pkgconf`
+- For Python, ???
+- For Java, ??????
 
 ### `[[target]]` options
 
