@@ -3,13 +3,22 @@
 <div id="tocw"></div>
 
 
-~~~admonish danger
-The Windows installation is currently experimental, as the [Windows support
-for the OCaml software toolchain](https://ocaml.org/docs/ocaml-on-windows) dates
-from the early 2020s. If possible, use WSL (Windows Subsystem for Linux) instead.
-~~~
+## Installing from the binary installer
 
-## Installing from sources
+The Catala team maintains a binary, `.msi` Windows installer for public releases
+of Catala that installs the whole toolchain and modifies your `$PATH` environment
+variable to make the tools accessible in your terminal or from your code editor.
+
+<p style="text-align: center;">
+<a href="https://github.com/CatalaLang/installers/releases/download/test-sign-2026-07-09/catala-1.2.0-windows-x86_64-777afe1-dirty-unsigned.msi">Download the Windows installer for Catala 1.2.1</a>
+</p>
+
+## Installing the VS Code extension
+
+Install VS Code and open it. Browse the extension marketplace and
+install the [`Catala` extension](https://marketplace.visualstudio.com/items?itemName=catalalang.catala).
+
+## Alternative method: installing from sources
 
 ### Getting Opam
 
@@ -36,7 +45,7 @@ Windows. However, the Catala's lsp server bundles a subset of Catala
 which is fine. This may be installed with the following command
 
 ```console
-$ opam install catala.1.2.0 catala-lsp.1.2.0
+$ opam install catala.1.2.1 catala-lsp.1.2.0
 ```
 ~~~admonish warning title="Ninja error"
 If the installation step fails to find the "ninja" tool, you may install it using winget.
@@ -59,37 +68,4 @@ The directory in question should be located in
 something else such as "4.14.2", double-check the directory location).
 ~~~
 
-### Getting the VS Code extension
 
-Install VS Code and open it. Browse the extension marketplace and
-install the [`Catala` extension](https://marketplace.visualstudio.com/items?itemName=catalalang.catala).
-
-### Getting the Catala code formatter
-
-Currently, the code formatter is not yet available on Windows.
-
-## Binary installer
-
-You can download and install Catala using this binary installer - you
-might need administrator privileges:
-
-- [Catala x86_64 Windows binary installer](https://gitlab.inria.fr/catala/ci-images/-/raw/catala-windows-installer/Catala.msi)
-
-~~~admonish warning title="This is an incomplete and old version of Catala"
-Currently, this installer provides the basic Catala compiler with the LSP
-server used by the VS Code extension along with the Catala code
-formatter. However, this is an old version from March 2025 (pre 1.0.0).
-This is handy for experimenting with the language but this
-does not include the full compilation toolchain and the Catala build
-system required to use modules. To get those, you will need to
-[install from the sources directly](#installing-from-sources).
-~~~
-
-Once this Catala setup file is installed, you might need to restart
-VS Code if it was previously launched. To make sure everything was
-properly installed, you can open a VS Code terminal and type `$ catala
---version`. If this does not display an error, everything should be
-properly setup.
-
-To install the Catala VS Code extension, please refer to this
-[section](#getting-the-vs-code-extension).

@@ -3,14 +3,23 @@
 <div id="tocw"></div>
 
 
-~~~admonish danger
-L'installation sous Windows est actuellement expérimentale, car le [support
-Windows pour la chaîne d'outils logicielle OCaml](https://ocaml.org/docs/ocaml-on-windows)
-date du début des années 2020. Si possible, utilisez plutôt WSL (Sous-système
-Windows pour Linux).
-~~~
+## Installation depuis l'installeur binaire
 
-## Installation depuis les sources
+L'équipe de Catala maintient un installateur binaire Windows `.msi` pour
+les *releases* publiques qui installe toute la chaîne de compilation de Catala
+et modifie votre variable d'environnement `$PATH` pour faire en sorte que
+tous les outils soient accessibles depuis un terminal ou votre éditeur de code.
+
+<p style="text-align: center;">
+<a href="https://github.com/CatalaLang/installers/releases/download/test-sign-2026-07-09/catala-1.2.0-windows-x86_64-777afe1-dirty-unsigned.msi">Télécharger l'installeur Windows pour Catala 1.2.1</a>
+</p>
+
+## Installation de l'extension VS Code
+
+Installez VS Code et ouvrez-le. Parcourez le marché des extensions et installez
+l'[extension `Catala`](https://marketplace.visualstudio.com/items?itemName=catalalang.catala).
+
+## Méthode alternative : installation depuis les sources
 
 ### Obtenir Opam
 
@@ -37,7 +46,7 @@ Windows. Cependant, le serveur lsp de Catala intègre un sous-ensemble de Catala
 qui est suffisant. Cela peut être installé avec la commande suivante
 
 ```console
-    $ opam install catala.1.2.0 catala-lsp.1.2.0
+    $ opam install catala.1.2.1 catala-lsp.1.2.0
 ```
 ~~~admonish warning title="Erreur Ninja"
 Si l'étape d'installation ne parvient pas à trouver l'outil "ninja", vous pouvez
@@ -58,15 +67,6 @@ Le répertoire en question devrait être situé dans
 `%LOCALAPPDATA%\opam\default\bin` (n.b., `default` pourrait être nommé
 autrement comme "4.14.2", vérifiez l'emplacement du répertoire).
 ~~~
-
-### Obtenir l'extension VS Code
-
-Installez VS Code et ouvrez-le. Parcourez le marché des extensions et installez
-l'[extension `Catala`](https://marketplace.visualstudio.com/items?itemName=catalalang.catala).
-
-### Obtenir l'outil de mise en forme de code Catala
-
-Actuellement, l'outil de mise en forme de code n'est pas encore disponible sur Windows.
 
 
 ## Installateur binaire

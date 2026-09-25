@@ -56,7 +56,7 @@ Catala supporte les versions d'OCaml de `4.14.0` jusqu'à `5.4.X`.
 Exécutez les commandes suivantes pour installer la dernière version de Catala via `opam` :
 
 ```console
-$ opam update && opam install catala.1.2.0
+$ opam update && opam install catala.1.2.1
 ```
 
 Une fois terminé, le système de construction Catala devrait être installé. Vous
