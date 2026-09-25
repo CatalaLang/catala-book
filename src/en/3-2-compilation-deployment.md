@@ -7,29 +7,33 @@ a `clerk.toml` configuration file that contained two main targets (`us-tax-code`
 and `housing-benefits`) that we aim to build and export as source libraries
 in different languages.
 
-~~~~~~admonish info collapsible=true title="Recap from previous section: `clerk.toml` configuration file and project hierarchy"
+~~~admonish info collapsible=true title="Recap from previous section: `clerk.toml` configuration file and project hierarchy"
 Here is the `clerk.toml` configuration file of our mock project:
 ```toml
 [project]
-include_dirs = [ "src/common",              # Which directories to include
-                 "src/tax_code",            # when looking for Catala modules
-                 "src/housing_benefits" ]   # and dependencies.
 build_dir    = "_build"    # Defines where to output the generated compiled files.
 target_dir   = "_target"   # Defines where to output the targets final files.
 
 # Each [[target]] section describes a build target for the project
 
 [[target]]
-name     = "us-tax-code"                          # The name of the target
-modules  = [ "Section_121", "Section_132", ... ]  # Modules components
-tests    = [ "tests/test_income_tax.catala_en" ]  # Related test(s)
-backends = [ "c", "java" ]                        # Output language backends
+name         = "us-tax-code"                          # The name of the target
+modules      = [ "Section_121", "Section_132", ... ]  # Modules components
+tests        = [ "tests/test_income_tax.catala_en" ]  # Related test(s)
+backends     = [ "c", "java" ]                        # Output language backends
+dependencies = [ "common" ]                           # Explicit target's dependencies
 
 [[target]]
-name     = "housing-benefits"
-modules  = [ "Section_8", ... ]
-tests    = [ "tests/test_housing_benefits.catala_en" ]
-backends = [ "ocaml", "c", "java" ]
+name         = "housing-benefits"
+modules      = [ "Section_8", ... ]
+tests        = [ "tests/test_housing_benefits.catala_en" ]
+backends     = [ "ocaml", "c", "java" ]
+dependencies = [ "common" ]
+
+[[target]]
+name     = "common"
+modules  = [ "Prorata", "Household", ... ]
+backends = [ "ocaml", "c", "java", "python" ]
 ```
 Project file hierarchy:
 ```
@@ -54,8 +58,7 @@ my-project/
     │   test_income_tax.catala_en
     │   test_housing_benefits.catala_en
 ```
-~~~~~~
-
+~~~
 
 ## Building the project
 
@@ -75,34 +78,58 @@ project: this would cause path resolution failures in the Catala tooling.
 ```console
 $ clerk build
 ┌─[RESULT]─
-│ Build successful. The targets can be found in the following files:
-│     [us-tax-code] → _targets/us-tax-code
-│     [housing-benefits] → _targets/housing-benefits
+│ Build successful. The artefacts can be found at the following:
+│
+│ [common]
+│   "_target/python/common"
+│   "_target/ocaml/common"
+│   "_target/java/common"
+│   "_target/c/common"
+│ [housing-benefits]
+│   "_target/ocaml/housing-benefits"
+│   "_target/java/housing_benefits"
+│   "_target/c/housing-benefits"
+│ [us-tax-code]
+│   "_target/java/us_tax_code"
+│   "_target/c/us-tax-code"
 └─
 ```
 
 The output of the command shows you where to find the results. Each `[[target]]`
 section yields a subdirectory in the `_targets/` directory, which the compilation
-artifacts inside. In our example, it could look like this:
-
-<!-- TODO: package into static libraries and document it -->
+artefacts inside. In our example, it could look like this:
 
 ```
-_targets/
-├───us-tax-code/
-│   ├───c/
-│   │   │   Section_121.c
-│   │   │   Section_121.h
-│   │   │   Section_121.o
-│   │   │   ...
-│   │
-│   ├───java/
-│   │   │   Section_121.java
-│   │   │   Section_121.class
-│   │   │   ...
-│   housing-benefits/
-│   │   ...
+_target/
+├── c/
+│   ├── common/
+│   ├── housing-benefits/
+│   ├── libcatala/
+│   ├── Makefile
+│   └── us-tax-code/
+│       ├── Section_121.c
+│       ├── Section_121.h
+│       ├── Section_132.c
+│       ├── ...
+├── java/
+│   ├── common/
+│   ├── housing_benefits/
+│   ├── libcatala/
+│   ├── pom.xml
+│   └── us_tax_code/
+│       ├── pom.xml
+│       ├── Section_121.java
+│       └── Section_132.java
+├── ocaml/
+│   ├── ...
+├── python/
+│   ├── ...
 ```
+
+Each target is compiled according its declared `backends` in our
+configuration. Note that each `<backend>` directory also contains an
+extra `libcatala` target. This directory contains the Catala runtime
+and standard library needed for our artefacts to be executed.
 
 ## Deploying the generated code
 
@@ -114,14 +141,27 @@ integrate it in another existing project.
 
 From this point on, the deployment requires some manual labor as it depends on
 the specifics of your use cases. Basically, it is up to you to copy the
-artifacts in `_targets` to your other project, compile them and link them to
+artefacts in `_targets` to your other project, compile them and link them to
 your existing codebase.
 
-For instance, if you want to integrate the Catala program as part of a Java
-application, you will have to copy over the generated Java source files from the
-`_target/<target_name>/java/` directory to a sub-directory of your Java project,
-and update your `pom.xml` Maven configuration accordingly so that Maven can
-build the source files generated by Catala.
+However, we provide a standard build mechanism depending on the
+backend that can be used to generate exportable libraries. For
+instance, if you want to integrate the Catala program as part of a
+Java application, you have two solutions:
+
+- The first one is to simply copy over the target's directories
+  containing the generated Java sources from `_target/java` to your
+  main project. Each `target` is declared as a separate Java
+  `package`.
+
+- The second one is to use [`maven`](https://maven.apache.org/) which
+  will read the generated `pom.xml` project configuration file: `mvn
+  package` will compile each target as a `jar` file which can be
+  linked to your project. You could also automatize this packaging
+  using a Continuous Integration (CI/CD) job to build and publishing the
+  artefacts automatically.
+
+Note that Catala offers similar capabilities for each backend.
 
 ~~~admonish danger title="Can I tweak the generated files to fit my workflow?"
 The Catala team does not recommend tweaking the files generated by the Catala
@@ -219,13 +259,14 @@ Python). Scope computations are done in the class constructor. Hence,
 to execute the scope, we need to instantiate this class and retrieve
 the result.
 
-Moreover, for every backend, there exists a dedicated version of the Catala
-runtime. This component is necessary for the compilation and execution of the
-generated Catala programs. Runtimes will describe Catala types and
-data-structures, specific errors as well as an API to manipulate them from the
-targeted languages. The files for the runtime should be included in the
-`_targets/<target-name>`; you can also copy them over to your project and
-reference their types and functions from your app.
+As mentioned, for every backend, there exists a dedicated version of
+the Catala runtime. This component is necessary for the compilation
+and execution of the generated Catala programs. Runtimes will describe
+Catala types and data-structures, specific errors as well as an API to
+manipulate them from the targeted languages. The files for the runtime
+should be included in the `_targets/<backend>/<target-name>`; you can
+also copy them over to your project and reference their types and
+functions from your app.
 
 Putting this all together, here is for instance a simple Java program that
 executes our scope:
@@ -235,7 +276,7 @@ import catala.runtime.CatalaMoney;
 
 class Main {
     public static void main(String[] args){
-        CatalaMoney income_input = CatalaMoney.ofCents(50000*100);
+        CatalaMoney income_input = new CatalaMoney(55012.52);
         IncomeTaxComputation result = new IncomeTaxComputation(income_input);
         CatalaMoney tax_result = result.income_tax;
         System.out.println("Income tax: " + tax_result);
@@ -243,9 +284,8 @@ class Main {
 }
 ```
 
-As mentioned, Catala runtimes offer an API to build the
-catala-specific values, e.g., the `CatalaMoney.ofCents` java static
-method that build a `CatalaMoney` value equivalent to a money-type
+Catala runtimes offer an API to build the catala-specific values,
+e.g., `CatalaMoney` objects are the equivalent of a money-type Catala
 value. Only sky is the limit afterwards as to what you can build!
 
 In this section, we have seen how to build a project, export it and

@@ -84,51 +84,59 @@ préfixés par le caractère #) :
 ~~~admonish note title="Fichier de configuration `clerk.toml` pour `mon-projet`"
 ```toml
 [project]
-include_dirs = [ "src/commun",              # Quels répertoires inclure
-                 "src/code_impots",         # lors de la recherche de modules Catala
-                 "src/aides_logement" ]     # et de dépendances.
 build_dir    = "_build"    # Définit où sortir les fichiers compilés générés.
 target_dir   = "_target"   # Définit où sortir les fichiers finaux des cibles.
 
 # Chaque section [[target]] décrit une cible de construction pour le projet
 
 [[target]]
-name     = "code-impots-us"                       # Le nom de la cible
-modules  = [ "Article_121", "Article_132", ... ]  # Composants modules
-tests    = [ "tests/test_impot_revenu.catala_fr" ] # Test(s) associé(s)
-backends = [ "c", "java" ]                        # Backends de langage de sortie
+name         = "code-impots-us"                        # Le nom de la cible
+modules      = [ "Article_121", "Article_132", ... ]   # Composants modules
+tests        = [ "tests/test_impot_revenu.catala_fr" ] # Test(s) associé(s)
+backends     = [ "c", "java" ]                         # Backends de langage de sortie
+dependencies = [ "commun" ]                            # Backends de langage de sortie
 
 [[target]]
 name     = "aides-logement"
 modules  = [ "Article_8", ... ]
 tests    = [ "tests/test_aides_logement.catala_fr" ]
 backends = [ "ocaml", "c", "java" ]
+
+[[target]]
+name     = "commun"
+modules  = [ "Prorata", "Foyer", ... ]
+backends = [ "ocaml", "c", "java", "python" ]
 ```
 ~~~
 
-Cet exemple de fichier `clerk.toml` décrit d'abord deux éléments de configuration à l'échelle du projet
-(sous la section `[project]`) :
-* dans quels répertoires `clerk` doit chercher les fichiers sources Catala lorsqu'il essaie de trouver des modules
-  et des dépendances ;
-* où sortir les fichiers compilés générés lors de la construction du projet et
-  de ses cibles.
+Cet exemple de fichier `clerk.toml` décrit d'abord deux éléments de
+configuration à l'échelle du projet (sous la section `[project]`) : où
+générer les fichiers compilés générés lors de la construction du
+projet (`build_dir`) et de ses cibles (`target_dir`).
 
 Les options `build_dir` et `target_dir` ont déjà pour valeur par défaut `"_build"` et
 `"_target"` lorsqu'elles sont absentes, donc, ici elles peuvent être omises en toute sécurité.
 
-Ensuite, le fichier de configuration définit deux composants `[[target]]`. Une cible dans un
+Ensuite, le fichier de configuration définit trois composants (ou cibles) `[[target]]`. Une cible dans un
 projet Catala est un ensemble de modules Catala qui seront compilés vers un ou
 plusieurs langages de programmation cibles, créant des bibliothèques sources prêtes à l'emploi
 que vous pouvez ensuite importer et distribuer à d'autres applications dans votre système informatique.
 
-Par exemple, la première cible est nommée `"code-impots-us"` (vous pouvez la choisir comme
-vous le souhaitez) et empaquettera toutes les structures de données déclarées et les champs d'application définis
-dans les `modules` donnés et leurs dépendances. Nous associons également des fichiers (ou répertoires) de
-`tests` spécifiques liés à cette cible afin que nous puissions les exécuter
-isolément si nécessaire. Enfin, nous définissons les `backends` de langage que cette
-cible doit générer. Dans notre premier exemple, nous avons configuré la cible pour
-traduire notre code en tant que bibliothèque `C` et en tant que paquet `Java`.
-
+Par exemple, la première cible est nommée `"code-impots-us"`. Vous
+pouvez la choisir comme vous le souhaitez : les noms associés aux
+`target`, `modules` et les noms de répertoires ne sont pas
+corrélés. Cela empaquettera toutes les structures de données déclarées
+et les champs d'application définis dans les `modules` donnés et leurs
+dépendances. Nous associons également des fichiers (ou répertoires) de
+`tests` spécifiques liés à cette cible afin que nous puissions les
+exécuter isolément si nécessaire. Puis, nous définissons les
+`backends` de langage que cette cible doit générer. Dans notre premier
+exemple, nous avons configuré la cible pour traduire notre code en
+tant que bibliothèque `C` et en tant que paquet `Java`. Enfin, nous
+déclarons les dépendances entre cibles : cela donnera l'information à
+`clerk` des dépendances entre nos cibles et aura comme effet de
+séparer les cibles en plusieurs composants au moment de la génération
+des cibles. Nous détaillerons ce mécanisme dans la prochaine section.
 
 ~~~admonish question title="Modules ou fichiers ?"
 Le champ de configuration `modules` d'une section `[[target]]` nécessite une liste

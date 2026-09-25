@@ -154,13 +154,16 @@ This will yield the result as a JSON object following the scope output
 JSON schema obtained using the `clerk json-schema` command described
 in the previous section.
 
-~~~admonish note title="`--quiet` option"
-Often, the `clerk run` or `clerk json-schema` commands will also
-display compilation informations on the standard output which would
-prevent the output to be treated as pure JSON. To prevent this, you
-may add the `--quiet` option to your command line which will allow
-you, for example, to redirect your cleaned out output to JSON
-accepting tools or to a `.json` file.
+~~~admonish info title="JSON in backends"
+Each backend also support outputs as JSON objects. By adding the
+`--backend <backend>` option, you will obtain the same output as
+Catala's interpretation but computed by the backend.
+
+We also provide, for each translated Catala programs, utilities in
+each backend to output the results as a JSON object.
+
+However, we currently do not support the `--input` option in
+`--backend` mode.
 ~~~
 
 ## Correspondence between Catala values and JSON
@@ -189,9 +192,3 @@ either represented as direct JSON integers (accepting values up to
 | enumeration | string         | `A`                     | `"A"`                    |
 | enumeration | object         | `B content 3`           | `{ "B": 3 }`             |
 | structure   | object         | `{--x:1 --y:true}`      | `{ "x": 1, "y": true }`  |
-
-~~~admonish note title="JSON support in backends"
-Currently, JSON inputs and outputs are only supported in the Catala
-interpreter backend. However, we plan to add support to it in the
-other existing backends or, at least some of it.
-~~~

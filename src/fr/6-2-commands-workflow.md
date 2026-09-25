@@ -35,18 +35,14 @@ projet Catala, avec la sortie suivante :
 
 ```console
 $ clerk test
-┏━━━━━━━━━━━━━━━━━━━━━━━━  ALL TESTS PASSED  ━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃                                                                    ┃
-┃             FAILED     PASSED      TOTAL                           ┃
-┃   files          0         37         37                           ┃
-┃   tests          0        261        261                           ┃
-┃                                                                    ┃
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+┏━━━━━━━━━━━━━━━━━━━━━━━━━  ALL TESTS PASSED  ━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                                                                      ┃
+┃                     FAILED     PASSED      TOTAL      RATIO          ┃
+┃   Interpreted            0        189        189      100 %          ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 ```
 
-La ligne `tests` de ce rapport compte le nombre de tests échoués et réussis.
-La ligne `files` affiche le nombre de fichiers où soit tous les tests
-passent, soit il y a au moins un test qui échoue.
+La ligne `Interpreted` de ce rapport compte le nombre de tests échoués et réussis.
 
 Vous pouvez imprimer les détails sur les fichiers contenant des tests réussis et échoués
 avec le drapeau `--verbose`. De plus, il est possible d'exécuter la
@@ -56,17 +52,6 @@ Vous pouvez restreindre la portée des tests exécutés par `clerk test` en four
 * `clerk test <fichier>` exécutera uniquement les tests dans `<fichier>` ;
 * `clerk test <dossier>` exécutera uniquement les tests à l'intérieur des fichiers dans `<dossier>` (ou ses sous-répertoires) ;
 * `clerk test <cible>` exécutera uniquement les tests liés à la [construction `<cible>`](./6-1-clerk-toml.md).
-
-
-~~~admonish info title="Qu'utilise `clerk test` pour exécuter les tests ?"
-`clerk test` exécute les tests avec l'interpréteur Catala. Si votre déploiement
-utilise un backend spécifique, disons python, il est fortement recommandé d'inclure également
-une exécution de `clerk test --backend=python` dans votre CI. Avec cette option,
-`clerk test` exécute Python sur le code Python généré par le compilateur Catala.
- De cette façon, vous serez protégé de l'éventualité qu'un bug dans le backend
-que vous utilisez conduise à un résultat différent pour le même programme Catala. La confiance
-n'exclut pas de vérifier minutieusement !
-~~~
 
 ### Déclarer les tests
 
@@ -200,6 +185,63 @@ section `` ```catala-test-cli`` qui ne fournit que la commande sans sortie atten
 <!-- cmdrun clerk test --help=plain -->
 </pre>
 ```
+
+### Backend testing
+
+Il est également possible de tester les programmes Catala traduits
+dans les backends spécifiés. Par exemple, supposons que votre
+déploiement utilise le backend python, vous voudriez alors pouvoir
+tester que la traduction python est fidèle au programme Catala
+originel. Pour cela, vous pouvez utiliser lancer la commande `clerk
+test --backend=python` (ou encore [`clerk ci`](#clerk-ci) comme décrit
+plus bas).
+
+En ajoutant cette option, `clerk test` va lancer Python sur les tests
+traduits et, se faisant, vous protégera d'un bug éventuel lié à cette
+traduction du code.
+
+On peut fournir plusieurs valeurs à L'option `--backend` en répétant
+l'option ou en séparant les valeurs par des virgules :
+```console
+$ clerk test --backend c --backend java
+# OR
+$ clerk test --backend "c, java"
+```
+
+Vous pouvez également utiliser `--backend all` pour activer tous les
+tests possible de backend:
+
+```console
+$ clerk test --backend all
+┏━━━━━━━━━━━━━━━━━━━━━━━━━  ALL TESTS PASSED  ━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                                                                      ┃
+┃                     FAILED     PASSED      TOTAL      RATIO          ┃
+┃   Interpreted            0        189        189      100 %          ┃
+┃   C                      0         53         53      100 %          ┃
+┃   Java                   0         58         58      100 %          ┃
+┃   OCaml                  0         96         96      100 %          ┃
+┃   Python                 0         58         58      100 %          ┃
+┃                                                                      ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+```
+
+Il est à noter que seuls les tests éligibles sont convertis vers leurs
+versions backend. Ainsi, si un test associé à une `target` ne déclare
+que le seul backend `python`, il sera omis des tests des autres
+backends et vice versa.
+
+~~~admonish important title="Ensuring consistency between backends"
+Pour chaque test traduit, un test de cohérence supplémentaire (en plus
+des assertions éventuelles) est généré qui s'assure que le résultat
+obtenu par le test traduit équivaut bien au résultat obtenu par le
+test Catala originel. Ainsi, si un test exécuté par l'interprète
+Catala retourne un résultat différent du même test traduit en `c`, le
+test échouera.
+
+Ce mécanisme nous apporte une assurance supplémentaire sur le fait que
+le code Catala traduit conserve le même comportement que lors de
+l'interprètation.
+~~~
 
 ## `clerk ci`
 
