@@ -9,15 +9,11 @@ L'équipe de Catala maintient un installateur binaire Windows `.msi` pour
 les *releases* publiques qui installe toute la chaîne de compilation de Catala
 et modifie votre variable d'environnement `$PATH` pour faire en sorte que
 tous les outils soient accessibles depuis un terminal ou votre éditeur de code.
+L'installeur détecte également VSCode et y installe l'extension Catala idoine.
 
 <p style="text-align: center;">
 <a href="https://github.com/CatalaLang/installers/releases/download/test-sign-2026-07-09/catala-1.2.0-windows-x86_64-777afe1-dirty-unsigned.msi">Télécharger l'installeur Windows pour Catala 1.2.1</a>
 </p>
-
-## Installation de l'extension VS Code
-
-Installez VS Code et ouvrez-le. Parcourez le marché des extensions et installez
-l'[extension `Catala`](https://marketplace.visualstudio.com/items?itemName=catalalang.catala).
 
 ## Méthode alternative : installation depuis les sources
 
@@ -68,28 +64,7 @@ Le répertoire en question devrait être situé dans
 autrement comme "4.14.2", vérifiez l'emplacement du répertoire).
 ~~~
 
+### Obtenir l'extension VS Code
 
-## Installateur binaire
-
-Vous pouvez télécharger et installer Catala en utilisant cet installateur
-binaire - vous pourriez avoir besoin des privilèges d'administrateur :
-
-- [Installateur binaire Windows Catala x86_64](https://gitlab.inria.fr/verifisc/docker-catala/-/raw/catala-windows-installer/Catala.msi)
-
-~~~admonish warning title="Ceci est une version incomplète de Catala"
-Actuellement, cet installateur fournit le compilateur Catala de base avec le
-serveur LSP utilisé par l'extension VS Code ainsi que l'outil de mise en forme de code
-Catala. C'est pratique pour expérimenter avec le langage mais cela n'inclut pas
-la chaîne de compilation complète et le système de construction Catala requis
-pour utiliser les modules. Pour obtenir ceux-ci, vous devrez [installer
-directement depuis les sources](#installation-depuis-les-sources).
-~~~
-
-Une fois ce fichier d'installation Catala installé, vous devrez peut-être
-redémarrer VS Code s'il était déjà lancé. Pour vous assurer que tout a été
-correctement installé, vous pouvez ouvrir un terminal VS Code et taper `$ catala
---version`. Si cela n'affiche pas d'erreur, tout devrait être correctement
-configuré.
-
-Pour installer l'extension VS Code Catala, veuillez vous référer à cette
-[section](#obtenir-lextension-vs-code).
+Installez VS Code et ouvrez-le. Parcourez le marché des extensions et installez
+l'[extension `Catala`](https://marketplace.visualstudio.com/items?itemName=catalalang.catala).

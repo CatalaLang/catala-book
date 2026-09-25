@@ -6,17 +6,15 @@
 ## Installing from the binary installer
 
 The Catala team maintains a binary, `.msi` Windows installer for public releases
-of Catala that installs the whole toolchain and modifies your `$PATH` environment
-variable to make the tools accessible in your terminal or from your code editor.
+of Catala that installs the whole toolchain and modifies your `$PATH`
+environment variable to make the tools accessible in your terminal or from your
+code editor. The installer also detects if you have VSCode and automatically
+installs the Catala VSCode extension for it.
 
 <p style="text-align: center;">
 <a href="https://github.com/CatalaLang/installers/releases/download/test-sign-2026-07-09/catala-1.2.0-windows-x86_64-777afe1-dirty-unsigned.msi">Download the Windows installer for Catala 1.2.1</a>
 </p>
 
-## Installing the VS Code extension
-
-Install VS Code and open it. Browse the extension marketplace and
-install the [`Catala` extension](https://marketplace.visualstudio.com/items?itemName=catalalang.catala).
 
 ## Alternative method: installing from sources
 
@@ -68,4 +66,7 @@ The directory in question should be located in
 something else such as "4.14.2", double-check the directory location).
 ~~~
 
+### Geting the VS Code extension
 
+Install VS Code and open it. Browse the extension marketplace and
+install the [`Catala` extension](https://marketplace.visualstudio.com/items?itemName=catalalang.catala).
