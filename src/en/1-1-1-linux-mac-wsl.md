@@ -56,7 +56,7 @@ Catala supports OCaml versions from `4.14.0` up to `5.4.X`.
 Run the following commands to install the latest Catala version via `opam`:
 
 ```console
-$ opam update && opam install catala.1.2.0
+$ opam update && opam install catala.1.2.1
 ```
 
 Once this finishes, the Catala build system should
