@@ -66,7 +66,7 @@ The directory in question should be located in
 something else such as "4.14.2", double-check the directory location).
 ~~~
 
-### Geting the VS Code extension
+### Getting the VS Code extension
 
 Install VS Code and open it. Browse the extension marketplace and
 install the [`Catala` extension](https://marketplace.visualstudio.com/items?itemName=catalalang.catala).
