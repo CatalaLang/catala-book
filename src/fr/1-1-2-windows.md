@@ -12,7 +12,7 @@ tous les outils soient accessibles depuis un terminal ou votre éditeur de code.
 L'installeur détecte également VSCode et y installe l'extension Catala idoine.
 
 <p style="text-align: center;">
-<a href="https://github.com/CatalaLang/installers/releases/download/test-sign-2026-07-09/catala-1.2.0-windows-x86_64-777afe1-dirty-unsigned.msi">Télécharger l'installeur Windows pour Catala 1.2.1</a>
+<a href="https://github.com/CatalaLang/installers/releases/latest">Télécharger le dernier installeur Windows de Catala</a>
 </p>
 
 ## Méthode alternative : installation depuis les sources

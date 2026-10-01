@@ -12,7 +12,7 @@ code editor. The installer also detects if you have VSCode and automatically
 installs the Catala VSCode extension for it.
 
 <p style="text-align: center;">
-<a href="https://github.com/CatalaLang/installers/releases/download/test-sign-2026-07-09/catala-1.2.0-windows-x86_64-777afe1-dirty-unsigned.msi">Download the Windows installer for Catala 1.2.1</a>
+<a href="https://github.com/CatalaLang/installers/releases/latest">Download the latest Windows installer for Catala</a>
 </p>
 
 
