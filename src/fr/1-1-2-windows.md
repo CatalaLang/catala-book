@@ -42,7 +42,7 @@ Windows. Cependant, le serveur lsp de Catala intègre un sous-ensemble de Catala
 qui est suffisant. Cela peut être installé avec la commande suivante
 
 ```console
-    $ opam install catala.1.2.1 catala-lsp.1.2.0
+    $ opam install catala.1.3.0 catala-lsp.1.3.0
 ```
 ~~~admonish warning title="Erreur Ninja"
 Si l'étape d'installation ne parvient pas à trouver l'outil "ninja", vous pouvez
