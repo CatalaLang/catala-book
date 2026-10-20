@@ -114,3 +114,27 @@ Une fois installé, vous pouvez rafraîchir votre environnement VSCode (`F1`, pu
 `Developer: Reload Window`) ce qui notifiera l'extension Catala que l'outil de mise en forme
 est maintenant disponible. Vous pouvez invoquer l'outil de mise en forme en utilisant `F1`,
 puis `Format Document` ou par un raccourci clavier défini par l'utilisateur.
+
+## Auto-complétion
+
+Les commandes `catala` et `clerk` gèrent l'auto-complétion de la ligne de
+commande. Cette dernière étant très dépendante du système et du shell, elle
+demande un étape de configuration supplémentaire. Pour des instructions
+détaillées (en anglais), référez-vous à [cette
+page](https://erratique.ch/software/cmdliner/doc/cli.html#user_configuration) ;
+les instructions simplifiées qui suivent supposent que l'auto-complétion est
+déjà activée sur le système:
+
+* Pour `bash` (le shell par défaut sur la plupart des distributions Linux)
+  - ajoutez la ligne suivante au fichier `~/.bashrc`, puis relancez le shell:
+    ```bash
+    XDG_DATA_DIRS="$(opam var share):${XDG_DATA_DIRS}"
+    ```
+* Pour `zsh` (le shell par défaut sous MacOS)
+  - ajoutez la ligne suivante *en haut* du fichier `~/.zshrc`, puis relancez le shell:
+    ```zsh
+    FPATH="$(opam var share)/zsh/site-functions:${FPATH}"
+    ```
+
+Consultez le lien ci-dessus pour plus d'indications, ou si la complétion n'est
+pas déjà active dans votre shell.

@@ -115,3 +115,26 @@ Once this is installed, you may refresh your VSCode environment (`F1`, then
 `Developer: Reload Window`) which will notify the Catala extension that the
 formatter is now available. You can invoke the formatter using `F1`, then
 `Format Document` or by a user-defined's key-binding.
+
+## Setting up shell completion
+
+The `catala` and `clerk` commands support automatic completion. This needs some
+setup from the user as it is very dependent on the system and shell being used:
+for detailed instructions, see
+[here](https://erratique.ch/software/cmdliner/doc/cli.html#user_configuration).
+If you already have completion setup in your shell, here are simplified
+instructions:
+
+* If you are using `bash` (the default on most Linux distributions):
+  - add the following line to the `~/.bashrc` file, then restart the shell:
+    ```bash
+    XDG_DATA_DIRS="$(opam var share):${XDG_DATA_DIRS}"
+    ```
+* If you are using `zsh` (the default on MacOS)
+  - add the following line *on top of* the `~/.zshrc` file, then restart the shell:
+    ```zsh
+    FPATH="$(opam var share)/zsh/site-functions:${FPATH}"
+    ```
+
+If that is not enough, or shell completion isn't set up already on your system,
+see the link above.
