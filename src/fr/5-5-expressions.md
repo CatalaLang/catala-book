@@ -25,6 +25,8 @@ Si vous êtes familier avec ce format, vous pouvez le lire ci-dessous :
     -- <variante énum 1>: <expr 1>
     -- <variante énum 2> contenu <variable>: <expr 2>
     -- <variante énum 3> contenu (<variable 1>, <variable 2>, ...): <expr 3>
+  | selon <expr 1>, <expr 2>, ... sous forme          # Filtrage de plusieurs valeurs
+    -- <variante énum 1>, n'importe quel, ...: <expr 1>
   | <expr> sous forme <variante énum>                 # Test variante motif
   | <expr> sous forme <variante énum> contenu <variable> # Idem avec liaison contenu
       et <expr>                                       #   et test sur la variable
@@ -273,9 +275,36 @@ foo sous forme CreditImpotPourIndividu contenu individu et individu.revenu >= 10
 ```
 ~~~
 
+### Filtrer plusieurs valeurs à la fois
+
+Vous pouvez filtrer plusieurs valeurs à la fois en les séparant par des
+virgules. Chaque cas donne alors un motif par valeur, lui aussi séparé par des
+virgules, et `n'importe quel` peut être utilisé pour une valeur dont le cas
+n'importe pas. Par exemple, avec `déduction` de type `optionnel de argent` :
+
+```catala-expr-fr
+selon foo, déduction sous forme
+-- PasDeCreditImpot, n'importe quel: 0 €
+-- CreditImpotPourIndividu contenu individu, Présent contenu montant:
+  individu.revenu * 10% - montant
+-- CreditImpotPourIndividu contenu individu, Absent: individu.revenu * 10%
+-- CreditImpotApresDate contenu date_début, n'importe quel:
+  si date_courante >= date_début alors 1000 € sinon 0 €
+```
+
+Les valeurs filtrées peuvent aussi être écrites entre parenthèses, comme dans
+`selon (foo, déduction) sous forme`, ou être une seule expression de
+[type n-uplet](./5-2-types.md#n-uplets).
+
+Les cas sont essayés de haut en bas, et le premier qui correspond est utilisé.
+Un cas composé d'un seul `n'importe quel` correspond à toutes les combinaisons,
+et doit être le dernier. Le compilateur signale une erreur si une combinaison
+de cas n'est pas traitée (en indiquant laquelle), et un avertissement si un cas
+ne peut jamais être atteint parce que les cas au-dessus le couvrent déjà.
+
 ~~~admonish question title="Le filtrage par motif de Catala est-il aussi puissant que celui d'OCaml ou Haskell ?" collapsible=true
 Non, actuellement le filtrage par motif de Catala est basique et permet seulement de
-faire correspondre le type d'énumération le plus externe de la valeur. L'équipe Catala a des
+faire correspondre le type d'énumération le plus externe de chaque valeur. L'équipe Catala a des
 [plans](https://github.com/CatalaLang/catala/issues/199)
 pour implémenter progressivement des fonctionnalités de filtrage par motif plus avancées, mais elles
 n'ont pas encore été implémentées.
