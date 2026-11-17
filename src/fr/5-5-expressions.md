@@ -25,9 +25,12 @@ Si vous êtes familier avec ce format, vous pouvez le lire ci-dessous :
     -- <variante énum 1>: <expr 1>
     -- <variante énum 2> contenu <variable>: <expr 2>
     -- <variante énum 3> contenu (<variable 1>, <variable 2>, ...): <expr 3>
+    -- <variante énum 4> ou <variante énum 5>: <expr 4>
   | <expr> sous forme <variante énum>                 # Test variante motif
   | <expr> sous forme <variante énum> contenu <variable> # Idem avec liaison contenu
       et <expr>                                       #   et test sur la variable
+  | <expr> sous forme                                 # Test de plusieurs variantes
+      (<variante énum 1> ou <variante énum 2> ou ...)
   | <expr> mais en remplaçant                         # Mises à jour partielles structure
       {  -- <variable 1>: <expr 1> -- ... }
   | - <expr>                                          # Négation
@@ -238,6 +241,36 @@ selon foo sous forme
 ```
 ~~~
 
+~~~admonish tip title="Regrouper des cas avec `ou`"
+Quand plusieurs cas donnent le même résultat, vous pouvez les écrire dans un
+seul cas, séparés par `ou` :
+
+```catala-expr-fr
+selon foo sous forme
+-- PasDeCreditImpot: faux
+-- CreditImpotPourIndividu ou CreditImpotApresDate: vrai
+```
+
+Les cas regroupés peuvent aussi lier leur contenu, à condition que chacun lie
+les mêmes variables, avec les mêmes types. Par exemple, avec
+
+```catala-code-fr
+déclaration énumération Paiement:
+  -- ParChèque contenu (date, argent)
+  -- ParVirement contenu (argent, date)
+  -- EnNature
+```
+
+vous pouvez écrire :
+
+```catala-expr-fr
+selon paiement sous forme
+-- ParChèque contenu (date_paiement, montant)
+ou ParVirement contenu (montant, date_paiement): montant
+-- EnNature: 0 €
+```
+~~~
+
 ~~~admonish info title="Tester un cas spécifique"
 Vous pouvez créer un test booléen pour un cas spécifique d'une valeur énum avec
 le filtrage par motif :
@@ -271,6 +304,17 @@ Mais à la place vous pouvez aussi écrire le plus concis :
 ```catala-expr-fr
 foo sous forme CreditImpotPourIndividu contenu individu et individu.revenu >= 10 000 €
 ```
+
+Pour tester plusieurs cas à la fois, écrivez-les entre parenthèses, séparés
+par `ou` :
+
+```catala-expr-fr
+foo sous forme (CreditImpotPourIndividu ou CreditImpotApresDate)
+```
+
+Les parenthèses sont obligatoires : sans elles, `ou` est l'opérateur booléen,
+donc `foo sous forme PasDeCreditImpot ou éligible` signifie
+`(foo sous forme PasDeCreditImpot) ou éligible`.
 ~~~
 
 ~~~admonish question title="Le filtrage par motif de Catala est-il aussi puissant que celui d'OCaml ou Haskell ?" collapsible=true

@@ -25,9 +25,12 @@ If you're familiar with this format, you can read it below:
     -- <enum variant 1>: <expr 1>
     -- <enum variant 2> of <variable>: <expr 2>
     -- <enum variant 2> of (<variable 1>, <variable 2>, ...) : <expr 3>
+    -- <enum variant 3> or <enum variant 4>: <expr 4>
   | <expr> with pattern <enum variant>                # Pattern variant test
   | <expr> with pattern <enum variant> of <variable>  # Ditto with content binding
       and <expr>                                      #   and test on the variable
+  | <expr> with pattern                               # Test of several variants
+      (<enum variant 1> or <enum variant 2> or ...)
   | <expr> but replace                                # Structure partial updates
       {  -- <variable 1>: <expr 1> -- ... }
   | - <expr>                                          # Negation
@@ -241,6 +244,36 @@ match foo with pattern
 ```
 ~~~
 
+~~~admonish tip title="Grouping cases with `or`"
+When several cases share the same result, you can list them in a single
+case, separated by `or`:
+
+```catala-expr-en
+match foo with pattern
+-- NoTaxCredit: false
+-- TaxCreditForIndividual or TaxCreditAfterDate: true
+```
+
+The grouped cases can also bind their content, as long as each of them binds
+the same variables, with the same types. For instance, with
+
+```catala-code-en
+declaration enumeration Payment:
+  -- ByCheck content (date, money)
+  -- ByTransfer content (money, date)
+  -- InKind
+```
+
+you can write:
+
+```catala-expr-en
+match payment with pattern
+-- ByCheck content (payment_date, amount)
+or ByTransfer content (amount, payment_date): amount
+-- InKind: $0
+```
+~~~
+
 ~~~admonish info title="Testing for a specific case"
 You can create a boolean test for a specific case of an enum value with
 pattern matching:
@@ -274,6 +307,17 @@ But instead you can also write the more concise:
 ```catala-expr-en
 foo with pattern TaxCreditForIndividual content individual and individual.income >= $10,000
 ```
+
+To test for several cases at once, list them between parentheses, separated
+by `or`:
+
+```catala-expr-en
+foo with pattern (TaxCreditForIndividual or TaxCreditAfterDate)
+```
+
+The parentheses are required: without them, `or` is the boolean operator, so
+`foo with pattern NoTaxCredit or eligible` means
+`(foo with pattern NoTaxCredit) or eligible`.
 ~~~
 
 ~~~admonish question title="Is Catala's pattern matching as powerful as OCaml or Haskell's?" collapsible=true
