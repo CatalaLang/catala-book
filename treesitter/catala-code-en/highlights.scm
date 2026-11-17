@@ -65,6 +65,7 @@
 (type_variable) @variable
 
 (match_case (WILDCARD) @variable.parameter)
+(match_case (OR) @function)
 
 (e_fieldaccess (DOT)* @function)
 

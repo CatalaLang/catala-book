@@ -25,6 +25,7 @@ Si vous êtes familier avec ce format, vous pouvez le lire ci-dessous :
     -- <variante énum 1>: <expr 1>
     -- <variante énum 2> contenu <variable>: <expr 2>
     -- <variante énum 3> contenu (<variable 1>, <variable 2>, ...): <expr 3>
+    -- <variante énum 4> ou <variante énum 5>: <expr 4>
   | <expr> sous forme <variante énum>                 # Test variante motif
   | <expr> sous forme <variante énum> contenu <variable> # Idem avec liaison contenu
       et <expr>                                       #   et test sur la variable
@@ -235,6 +236,36 @@ vous devez appliquer un crédit d'impôt ou non :
 selon foo sous forme
 -- PasDeCreditImpot: vrai
 -- n'importe quel: faux
+```
+~~~
+
+~~~admonish tip title="Regrouper des cas avec `ou`"
+Quand plusieurs cas donnent le même résultat, vous pouvez les écrire dans un
+seul cas, séparés par `ou` :
+
+```catala-expr-fr
+selon foo sous forme
+-- PasDeCreditImpot: faux
+-- CreditImpotPourIndividu ou CreditImpotApresDate: vrai
+```
+
+Les cas regroupés peuvent aussi lier leur contenu, à condition que chacun lie
+les mêmes variables, avec les mêmes types. Par exemple, avec
+
+```catala-code-fr
+déclaration énumération Paiement:
+  -- ParChèque contenu (date, argent)
+  -- ParVirement contenu (argent, date)
+  -- EnNature
+```
+
+vous pouvez écrire :
+
+```catala-expr-fr
+selon paiement sous forme
+-- ParChèque contenu (date_paiement, montant)
+ou ParVirement contenu (montant, date_paiement): montant
+-- EnNature: 0 €
 ```
 ~~~
 
