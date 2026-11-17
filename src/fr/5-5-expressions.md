@@ -29,6 +29,8 @@ Si vous êtes familier avec ce format, vous pouvez le lire ci-dessous :
   | <expr> sous forme <variante énum>                 # Test variante motif
   | <expr> sous forme <variante énum> contenu <variable> # Idem avec liaison contenu
       et <expr>                                       #   et test sur la variable
+  | <expr> sous forme                                 # Test de plusieurs variantes
+      (<variante énum 1> ou <variante énum 2> ou ...)
   | <expr> mais en remplaçant                         # Mises à jour partielles structure
       {  -- <variable 1>: <expr 1> -- ... }
   | - <expr>                                          # Négation
@@ -302,6 +304,17 @@ Mais à la place vous pouvez aussi écrire le plus concis :
 ```catala-expr-fr
 foo sous forme CreditImpotPourIndividu contenu individu et individu.revenu >= 10 000 €
 ```
+
+Pour tester plusieurs cas à la fois, écrivez-les entre parenthèses, séparés
+par `ou` :
+
+```catala-expr-fr
+foo sous forme (CreditImpotPourIndividu ou CreditImpotApresDate)
+```
+
+Les parenthèses sont obligatoires : sans elles, `ou` est l'opérateur booléen,
+donc `foo sous forme PasDeCreditImpot ou éligible` signifie
+`(foo sous forme PasDeCreditImpot) ou éligible`.
 ~~~
 
 ~~~admonish question title="Le filtrage par motif de Catala est-il aussi puissant que celui d'OCaml ou Haskell ?" collapsible=true

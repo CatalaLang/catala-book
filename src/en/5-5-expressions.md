@@ -29,6 +29,8 @@ If you're familiar with this format, you can read it below:
   | <expr> with pattern <enum variant>                # Pattern variant test
   | <expr> with pattern <enum variant> of <variable>  # Ditto with content binding
       and <expr>                                      #   and test on the variable
+  | <expr> with pattern                               # Test of several variants
+      (<enum variant 1> or <enum variant 2> or ...)
   | <expr> but replace                                # Structure partial updates
       {  -- <variable 1>: <expr 1> -- ... }
   | - <expr>                                          # Negation
@@ -305,6 +307,17 @@ But instead you can also write the more concise:
 ```catala-expr-en
 foo with pattern TaxCreditForIndividual content individual and individual.income >= $10,000
 ```
+
+To test for several cases at once, list them between parentheses, separated
+by `or`:
+
+```catala-expr-en
+foo with pattern (TaxCreditForIndividual or TaxCreditAfterDate)
+```
+
+The parentheses are required: without them, `or` is the boolean operator, so
+`foo with pattern NoTaxCredit or eligible` means
+`(foo with pattern NoTaxCredit) or eligible`.
 ~~~
 
 ~~~admonish question title="Is Catala's pattern matching as powerful as OCaml or Haskell's?" collapsible=true

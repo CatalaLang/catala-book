@@ -59,6 +59,7 @@
 
 (match_case (WILDCARD) @variable.parameter)
 (match_case (OR) @function)
+(e_test_match (OR) @function)
 
 (e_fieldaccess (DOT)* @function)
 
