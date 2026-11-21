@@ -25,6 +25,8 @@ If you're familiar with this format, you can read it below:
     -- <enum variant 1>: <expr 1>
     -- <enum variant 2> of <variable>: <expr 2>
     -- <enum variant 2> of (<variable 1>, <variable 2>, ...) : <expr 3>
+  | match <expr 1>, <expr 2>, ... with pattern        # Matching several values
+    -- <enum variant 1>, anything, ...: <expr 1>
   | <expr> with pattern <enum variant>                # Pattern variant test
   | <expr> with pattern <enum variant> of <variable>  # Ditto with content binding
       and <expr>                                      #   and test on the variable
@@ -276,9 +278,36 @@ foo with pattern TaxCreditForIndividual content individual and individual.income
 ```
 ~~~
 
+### Matching several values at once
+
+You can match several values at once by separating them with commas. Each
+case then gives one pattern per value, also separated by commas, and
+`anything` can be used for a value whose case does not matter. For instance,
+with `deduction` of type `optional of money`:
+
+```catala-expr-en
+match foo, deduction with pattern
+-- NoTaxCredit, anything: $0
+-- TaxCreditForIndividual content individual, Present content amount:
+  individual.income * 10% - amount
+-- TaxCreditForIndividual content individual, Absent: individual.income * 10%
+-- TaxCreditAfterDate content start_date, anything:
+  if today >= start_date then $1000 else $0
+```
+
+The matched values can also be written between parentheses, as in
+`match (foo, deduction) with pattern`, or be a single expression of
+[tuple type](./5-2-types.md#tuples).
+
+Cases are tried from top to bottom, and the first one that matches is used.
+A case made of a single `anything` matches every combination, and must come
+last. The compiler reports an error if a combination of cases is not handled
+(it shows which one), and a warning if a case can never be reached because
+the cases above it already cover it.
+
 ~~~admonish question title="Is Catala's pattern matching as powerful as OCaml or Haskell's?" collapsible=true
 No, currently Catala's pattern matching is bare-bones and allows only to
-match the outer-most enumeration type of the value. The Catala team has
+match the outer-most enumeration type of each value. The Catala team has
 [plans](https://github.com/CatalaLang/catala/issues/199)
 to gradually implement more advanced pattern matching features, but they
 have not yet been implemented.
