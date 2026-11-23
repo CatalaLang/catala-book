@@ -301,6 +301,31 @@ Useful to validate a project quickly without executing any scope.
 </pre>
 ```
 
+## Lints
+
+The lints reported by `catala` and `clerk` can be selected with the
+`--enable-lint=LINT[,LINT…]` and `--disable-lint=LINT[,LINT…]` options.
+Both options can be repeated and accept comma-separated values, where
+`LINT` is one of `all`, `empty-definition`, `identical-rules`,
+`state-ignores-previous`, `unused-enum-constructor`,
+`unused-local-variable`, `unused-struct-field` or `unused-variable`.
+
+A named lint takes precedence over `all`, and disabling a lint takes
+precedence over enabling it. For example, the following command only
+runs the `unused-variable` lint:
+
+```console
+$ clerk typecheck --disable-lint=all --enable-lint=unused-variable
+```
+
+Lints can also be configured for the whole project with the
+[`enable_lints`](./6-1-clerk-toml.md#enable_lints) and
+[`disable_lints`](./6-1-clerk-toml.md#disable_lints) keys of
+`clerk.toml`. Options given on the command line take precedence over
+these keys.
+
+Currently, all lints are enabled by default.
+
 ## `clerk start`
 
 Prepares the local build environment with the Catala runtime and standard library.

@@ -21,6 +21,8 @@ An `clerk.toml` configuration example is available in [section
   - [`target_dir`](#target_dir) -- The targets output directory.
   - [`default_targets`](#default_targets) -- The default targets to build.
   - [`catala_opts`](#catala_opts) -- Catala options override.
+  - [`enable_lints`](#enable_lints) -- Lints to enable.
+  - [`disable_lints`](#disable_lints) -- Lints to disable.
   - [`catala_exe`](#catala_exe) -- Catala binary path override.
 - [`[[target]]`](#target-options) -- Multi-table that defines a project's target.
   - [`name`](#name-1) -- Name of the target (*Required*).
@@ -88,6 +90,26 @@ Defines which options will be passed to the Catala compiler when
 building Catala programs. *Warning*: use with caution.
 
 Example: `catala_opts = ["--trace", "--whole-program"]`
+
+#### enable_lints
+
+Defines which [lints](./6-2-commands-workflow.md#lints) are enabled when
+building Catala programs. Accepts the same lint names as the
+`--enable-lint` option, unknown names are rejected.
+
+Example: `enable_lints = ["unused-variable"]`
+
+#### disable_lints
+
+Defines which [lints](./6-2-commands-workflow.md#lints) are disabled when
+building Catala programs. Disabling a lint takes precedence over enabling
+it, and named lints take precedence over `"all"`.
+
+Example: `disable_lints = ["all"]`
+
+Options given on the `clerk` command line take precedence over
+`enable_lints` and `disable_lints`: for instance, `clerk build
+--enable-lint=all` re-enables the lints disabled here.
 
 #### catala_exe
 

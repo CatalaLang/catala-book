@@ -301,6 +301,30 @@ Utile pour valider rapidement un projet sans exécuter de scope.
 </pre>
 ```
 
+## Lints
+
+Les lints signalés par `catala` et `clerk` se sélectionnent avec les
+options `--enable-lint=LINT[,LINT…]` et `--disable-lint=LINT[,LINT…]`.
+Ces deux options peuvent être répétées et acceptent des valeurs séparées
+par des virgules, où `LINT` vaut `all`, `empty-definition`,
+`identical-rules`, `state-ignores-previous`, `unused-enum-constructor`,
+`unused-local-variable`, `unused-struct-field` ou `unused-variable`.
+
+Un lint nommé est prioritaire sur `all`, et la désactivation d'un lint
+est prioritaire sur son activation. Par exemple, la commande suivante
+n'exécute que le lint `unused-variable` :
+
+```console
+$ clerk typecheck --disable-lint=all --enable-lint=unused-variable
+```
+
+Les lints peuvent aussi être configurés pour tout le projet avec les
+clés [`enable_lints`](./6-1-clerk-toml.md#enable_lints) et
+[`disable_lints`](./6-1-clerk-toml.md#disable_lints) de `clerk.toml`.
+Les options passées en ligne de commande sont prioritaires sur ces clés.
+
+Actuellement, tous les lints sont activés par défaut.
+
 ## `clerk start`
 
 Prépare l'environnement de construction local avec le runtime et la bibliothèque

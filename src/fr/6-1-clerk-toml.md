@@ -21,6 +21,8 @@ Un exemple de configuration `clerk.toml` est disponible dans la [section
   - [`target_dir`](#target_dir) -- Le répertoire de sortie des cibles.
   - [`default_targets`](#default_targets) -- Les cibles par défaut à construire.
   - [`catala_opts`](#catala_opts) -- Surcharge des options Catala.
+  - [`enable_lints`](#enable_lints) -- Lints à activer.
+  - [`disable_lints`](#disable_lints) -- Lints à désactiver.
   - [`catala_exe`](#catala_exe) -- Surcharge du chemin du binaire Catala.
 - `[[target]]` -- Multi-table qui définit une cible de projet.
   - [`name`](#name) -- Nom de la cible (*Requis*).
@@ -89,6 +91,27 @@ Définit quelles options seront passées au compilateur Catala lors de
 la construction des programmes Catala. *Attention* : utiliser avec précaution.
 
 Exemple : `catala_opts = ["--trace", "--whole-program"]`
+
+#### enable_lints
+
+Définit quels [lints](./6-2-commands-workflow.md#lints) sont activés lors
+de la construction des programmes Catala. Accepte les mêmes noms de
+lints que l'option `--enable-lint` , les noms inconnus sont rejetés.
+
+Exemple : `enable_lints = ["unused-variable"]`
+
+#### disable_lints
+
+Définit quels [lints](./6-2-commands-workflow.md#lints) sont désactivés
+lors de la construction des programmes Catala. La désactivation d'un
+lint est prioritaire sur son activation, et les lints nommés sont
+prioritaires sur `"all"`.
+
+Exemple : `disable_lints = ["all"]`
+
+Les options passées à `clerk` en ligne de commande sont prioritaires sur
+`enable_lints` et `disable_lints` : par exemple, `clerk build
+--enable-lint=all` réactive les lints désactivés ici.
 
 #### catala_exe
 
