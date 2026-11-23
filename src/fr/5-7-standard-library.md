@@ -745,9 +745,9 @@ déclaration divise_par_année
 ## Module `Liste`
 
 ```catala-code-fr
-## Donne la liste constituée des entiers consécutifs de `début` à `fin`.
-## Si `fin <= début`, le résultat est une liste vide.
-## **Exemple**: `séquence de 3, 6` donne la liste `[ 3; 4; 5; 6 ]`
+## Donne la liste constituée des entiers consécutifs de `début` à `fin`,
+## `fin` exclue. Si `fin <= début`, le résultat est une liste vide.
+## **Exemple**: `séquence de 3, 6` donne la liste `[ 3; 4; 5 ]`
 déclaration séquence
   contenu liste de entier
   dépend de

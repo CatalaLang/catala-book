@@ -741,9 +741,9 @@ declaration split_by_year
 ## Module `List`
 
 ```catala-code-en
-## Returns a list made of the consecutive integers from `begin` to `end`.
-## If `end <= begin`, the returned list is empty.
-## **Example:** `sequence of 3, 6 = [ 3; 4; 5; 6 ]`
+## Returns a list made of the consecutive integers from `begin` to `end`,
+## `end` exluded. If `end <= begin`, the returned list is empty.
+## **Example:** `sequence of 3, 6 = [ 3; 4; 5 ]`
 declaration sequence
   content list of integer
   depends on
