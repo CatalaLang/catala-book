@@ -306,9 +306,26 @@ Utile pour valider rapidement un projet sans exécuter de scope.
 Les lints signalés par `catala` et `clerk` se sélectionnent avec les
 options `--enable-lint=LINT[,LINT…]` et `--disable-lint=LINT[,LINT…]`.
 Ces deux options peuvent être répétées et acceptent des valeurs séparées
-par des virgules, où `LINT` vaut `all`, `empty-definition`,
-`identical-rules`, `state-ignores-previous`, `unused-enum-constructor`,
-`unused-local-variable`, `unused-struct-field` ou `unused-variable`.
+par des virgules, où `LINT` vaut `all` (tous les lints) ou l'un des
+suivants :
+
+* `empty-definition` : une variable de champ d'application qui n'est ni
+  une entrée, ni définie ;
+* `identical-rules` : plusieurs définitions ou règles d'une même
+  variable avec des conditions et des conséquences identiques ;
+* `state-ignores-previous` : un état de variable dont la définition
+  n'utilise pas l'état précédent ;
+* `unused-enum-constructor` : une énumération, ou l'un de ses
+  constructeurs, jamais utilisé ;
+* `unused-local-variable` : une variable locale (`soit ... dans`) jamais
+  utilisée ;
+* `unused-struct-field` : une structure, ou l'un de ses champs, jamais
+  utilisé ;
+* `unused-variable` : une variable de champ d'application qui ne
+  contribue au calcul d'aucune sortie de son champ d'application.
+
+`unused-enum-constructor` et `unused-struct-field` ne sont pas vérifiés
+dans les [modules](./5-6-modules.md).
 
 Un lint nommé est prioritaire sur `all`, et la désactivation d'un lint
 est prioritaire sur son activation. Par exemple, la commande suivante
