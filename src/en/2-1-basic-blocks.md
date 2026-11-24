@@ -211,6 +211,31 @@ seen from outside the scope; it's not part of the return value of the scope.
 Note that a variable can also be simultaneously an input and an output of the
 scope, in that case it should be annotated with `input output`.
 
+~~~admonish tip title="Documenting declarations"
+The `#` comments above are notes for whoever reads the source code. To
+document what a declaration means for _the people who will use it_, write a
+_doc comment_. Doc comments start with `##`, and they document the item right
+below them.
+
+```catala-code-en
+## Computes the income tax of an individual, as defined by article 1.
+declaration scope IncomeTaxComputation:
+  ## The individual whose income tax is computed.
+  input individual content Individual
+  internal tax_rate content decimal
+  ## Income tax due by the individual for the year.
+  ##
+  ## The amount is not rounded.
+  output income_tax content money
+```
+
+Unlike regular comments, doc comments are kept by the compiler: they end up,
+for instance, in the generated code and in the [JSON
+Schema](./5-8-3-json-support.md) of your inputs. As in Markdown, consecutive
+`##` lines form a single paragraph, and a blank `##` line starts a new one.
+See [the reference](./5-8-1-attributes.md#doc-or-) for the details.
+~~~
+
 Once the scope has been declared, we can use it to define our computation
 rules and finally code up article 1!
 

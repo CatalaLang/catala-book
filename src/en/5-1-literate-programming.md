@@ -124,6 +124,10 @@ Inside Catala code block, you can comment your code by prefixing lines with
 `#`. Comments will be ignored by the compiler at runtime but weaved into
 the documentation like legal specifications in free text mode.
 
+Comments starting with `##` are different: they are _doc comments_, which
+document the declaration that follows them and are kept by the compiler. See
+[the `#[doc]` attribute](./5-8-1-attributes.md#doc-or-).
+
 ### Reserved keywords
 
 Certain words are reserved in Catala for keywords and thus cannot be
