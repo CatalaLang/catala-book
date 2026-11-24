@@ -212,6 +212,32 @@ définie, mais sera rendue accessible à l'appelant. Il est également possible 
 combiner en déclarant une variable comme `entrée résultat`, auquel cas elle
 devra être spécifiée par l'appelant, et lui sera retournée sans modification.
 
+~~~admonish tip title="Documenter les déclarations"
+Les commentaires `#` ci-dessus sont des notes pour qui lit le code source. Pour
+documenter ce que signifie une déclaration pour _les personnes qui
+l'utiliseront_, écrivez un _commentaire de documentation_. Ces commentaires
+commencent par `##` et documentent l'élément situé juste en dessous.
+
+```catala-code-fr
+## Calcule l'impôt sur le revenu d'une personne, tel que défini à l'article 1.
+déclaration champ d'application CalculImpôtRevenu:
+  ## La personne dont on calcule l'impôt sur le revenu.
+  entrée personne contenu Personne
+  interne taux_imposition contenu décimal
+  ## Impôt sur le revenu dû par la personne pour l'année.
+  ##
+  ## Le montant n'est pas arrondi.
+  résultat impôt_revenu contenu argent
+```
+
+Contrairement aux commentaires ordinaires, les commentaires de documentation
+sont conservés par le compilateur: on les retrouve par exemple dans le code
+généré et dans le [JSON Schema](./5-8-3-json-support.md) de vos entrées. Comme
+en Markdown, des lignes `##` consécutives forment un seul paragraphe, et une
+ligne `##` vide commence un nouveau paragraphe. Voir [la
+référence](./5-8-1-attributes.md#doc-or-) pour les détails.
+~~~
+
 Cette déclaration effectuée, nous allons enfin pouvoir définir le calcul à
 effectuer !
 
