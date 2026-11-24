@@ -99,8 +99,8 @@ paragraphes.
 Les commentaires ordinaires (`#`) et les lignes vides entre les fragments sont
 ignorés.
 
-Les attributs de documentations attachés à un type ou des déclarations de  variables
-de champ d'application sont propagées dans le [JSON Schema](./5-8-3-json-support.md)
+Les attributs de documentation attachés à un type ou des déclarations de variables
+de champ d'application sont propagés dans le [JSON Schema](./5-8-3-json-support.md)
 généré en tant que propriété `description` des objets. Le backend Java
 transforme la documentation en commentaires Javadoc.
 
