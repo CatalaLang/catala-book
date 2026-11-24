@@ -301,6 +301,47 @@ Useful to validate a project quickly without executing any scope.
 </pre>
 ```
 
+## Lints
+
+The lints reported by `catala` and `clerk` can be selected with the
+`--enable-lint=LINT[,LINT…]` and `--disable-lint=LINT[,LINT…]` options.
+Both options can be repeated and accept comma-separated values, where
+`LINT` is `all` (every lint) or one of the following:
+
+* `empty-definition`: a scope variable that is neither an input nor
+  defined anywhere;
+* `identical-rules`: several definitions or rules of the same variable
+  with identical conditions and consequences;
+* `state-ignores-previous`: a variable state whose definition does not
+  use the previous state;
+* `unused-enum-constructor`: an enumeration, or one of its constructors,
+  that is never used;
+* `unused-local-variable`: a local variable (`let ... in`) that is never
+  used;
+* `unused-struct-field`: a structure, or one of its fields, that is never
+  used;
+* `unused-variable`: a scope variable that does not contribute to
+  computing any output of its scope.
+
+`unused-enum-constructor` and `unused-struct-field` are not checked in
+[modules](./5-6-modules.md).
+
+A named lint takes precedence over `all`, and disabling a lint takes
+precedence over enabling it. For example, the following command only
+runs the `unused-variable` lint:
+
+```console
+$ clerk typecheck --disable-lint=all --enable-lint=unused-variable
+```
+
+Lints can also be configured for the whole project with the
+[`enable_lints`](./6-1-clerk-toml.md#enable_lints) and
+[`disable_lints`](./6-1-clerk-toml.md#disable_lints) keys of
+`clerk.toml`. Options given on the command line take precedence over
+these keys.
+
+Currently, all lints are enabled by default.
+
 ## `clerk start`
 
 Prepares the local build environment with the Catala runtime and standard library.
