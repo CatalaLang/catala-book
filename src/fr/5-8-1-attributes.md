@@ -51,11 +51,58 @@ et devrait indiquer le rôle et les modalités d'utilisation de l'élément asso
 
 Un commentaire commençant par `##` est automatiquement interprété comme un
 attribut de documentation de l'élément qui suit: cette syntaxe allégée `## texte
-d'explication` est à privilégier.
+d'explication` est à privilégier. Comme l'attribut, elle doit se trouver juste
+au-dessus de l'élément documenté. C'est un raccourci pour la syntaxe d'attribut
+ci-dessus, et les deux sont interchangeables. Une ligne `##` ne peut pas
+contenir de retour à la ligne, mais on peut en écrire plusieurs, comme
+ci-dessous. Les deux formes peuvent être mélangées au-dessus d'un même élément,
+et le compilateur les vérifie de la même façon. Les trois déclarations suivantes
+ont la même documentation:
 
-Les attributs de documentations attachés à un type ou des déclarations de  variables
-de champ d'application sont propagées dans le [JSON Schema](./5-8-3-json-support.md)
-généré en tant que propriété `description` des objets.
+```catala-code-fr
+## Nombre d'enfants du foyer
+## âgés de moins de 18 ans.
+entrée enfants_âge contenu entier
+```
+
+```catala-code-fr
+#[doc = "Nombre d'enfants du foyer"]
+#[doc = "âgés de moins de 18 ans."]
+entrée enfants_âge contenu entier
+```
+
+```catala-code-fr
+#[doc = "Nombre d'enfants du foyer\nâgés de moins de 18 ans."]
+entrée enfants_âge contenu entier
+```
+
+#### Interprétation du texte de documentation
+
+La documentation d'un élément est composée de _fragments_:
+
+* chaque ligne `##` est un fragment, dont le texte est la suite de la ligne
+  après `## ` (avec une espace) ou `##` (s'il n'y a pas d'espace), sans les
+  espaces en fin de ligne. S'il y a plusieurs espaces juste après `##`, seule la
+  première est retirée.
+* chaque attribut `#[doc = "..."]` est un fragment, dont le texte est la valeur
+  de la chaîne, inchangée.
+
+Les fragments sont joints dans l'ordre du code source, séparés par exactement un
+retour à la ligne. L'indentation dans le texte n'est pas modifiée: si vous
+écrivez `##␣␣␣texte`, le fragment est `␣␣texte`.
+
+Comme en Markdown, un simple retour à la ligne dans la documentation est un
+retour à la ligne souple, sans signification. Les lignes vides (c'est-à-dire
+les commentaires ou attributs de documentation au texte vide) séparent les
+paragraphes.
+
+Les commentaires ordinaires (`#`) et les lignes vides entre les fragments sont
+ignorés.
+
+Les attributs de documentation attachés à un type ou des déclarations de variables
+de champ d'application sont propagés dans le [JSON Schema](./5-8-3-json-support.md)
+généré en tant que propriété `description` des objets. Le backend Java
+transforme la documentation en commentaires Javadoc.
 
 ### `#[description]`
 

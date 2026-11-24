@@ -51,11 +51,54 @@ explain the purpose and usage of its linked element.
 
 The alternative syntax `## documentation text` (a code comment starting with a
 double `#` character) is available and preferred for readability. Like the
-attribute, it must be present just above its target.
+attribute, it must be present just above its target. It is syntactic sugar
+for the attribute syntax above, and can be used interchangeably. A single `##`
+line cannot contain a line break, but several lines can be used, as below. Both
+forms can be mixed above the same element, and the compiler checks them in the
+same way. The following three declarations have the same documentation:
+
+```catala-code-en
+## Number of children of the household
+## that are under 18 years old.
+input children_of_age content integer
+```
+
+```catala-code-en
+#[doc = "Number of children of the household"]
+#[doc = "that are under 18 years old."]
+input children_of_age content integer
+```
+
+```catala-code-en
+#[doc = "Number of children of the household\nthat are under 18 years old."]
+input children_of_age content integer
+```
+
+#### How the documentation text is interpreted
+
+The documentation of an element is made of _fragments_:
+
+* each `##` line is one fragment, whose text is the rest of the line after
+  `## ` (with one space) or `##` (if there is no space), with trailing
+  whitespace removed. If there is more than one space immediately after `##`,
+  only the first one is removed.
+* each `#[doc = "..."]` attribute is one fragment, whose text is the value of
+  the string, unchanged.
+
+The fragments are joined in source order, separated by exactly one newline.
+Indentation inside the text is not changed: if you write `##␣␣␣text`, the
+fragment is `␣␣text`.
+
+As in Markdown, a single line break inside the documentation is a soft break
+and has no semantic meaning. Blank lines (that is, doc comments or attributes
+with empty text) separate paragraphs.
+
+Regular comments (`#`) and empty lines between fragments are ignored.
 
 The documentation items attached to type or scope items declarations are
 passed down in the generated [JSON Schema](./5-8-3-json-support.md) in
-the `description` property of the objects.
+the `description` property of the objects. The Java backend turns
+documentation into Javadoc comments.
 
 ### `#[description]`
 

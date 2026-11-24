@@ -120,6 +120,10 @@ fermer les blocs de code Catala est très stricte et doit être strictement resp
 `#`. Les commentaires seront ignorés par le compilateur à l'exécution mais tissés dans
 la documentation comme des spécifications juridiques en mode texte libre.
 
+Les commentaires commençant par `##` sont différents: ce sont des _commentaires
+de documentation_, qui documentent la déclaration qui les suit et sont conservés
+par le compilateur. Voir [l'attribut `#[doc]`](./5-8-1-attributes.md#doc-or-).
+
 ### Mots-clés réservés
 
 Certains mots sont réservés en Catala pour les mots-clés et ne peuvent donc pas être
